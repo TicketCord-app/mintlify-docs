@@ -1,0 +1,176 @@
+---
+title: "Troubleshooting"
+description: "Error codes and solutions for common issues"
+---
+
+## Error Codes
+
+When something goes wrong, TicketCord displays an error code to help identify the issue. Find your error code below for solutions.
+
+### TC001 - Rate Limited
+
+**What it means:** Discord is temporarily blocking requests because too many actions were performed too quickly.
+
+**Common causes:**
+- Closing/reopening tickets rapidly
+- Renaming many ticket channels in a short time
+- Discord limits channel edits to 2 per 10 minutes
+
+**Solution:** Wait 5-10 minutes and try again. This is a Discord limitation, not a TicketCord issue.
+
+---
+
+### TC002 - Permission Denied
+
+**What it means:** The bot lacks the required permissions to perform the action.
+
+**Common causes:**
+- Bot role is below other roles in the hierarchy
+- Bot missing channel-specific permissions
+- Category permissions override bot permissions
+
+**Solution:**
+1. Go to **Server Settings → Roles**
+2. Drag the bot's role **above** the staff roles
+3. Ensure the bot has these permissions: Manage Channels, Manage Roles, Send Messages, Embed Links, Attach Files, Read Message History
+
+<Warning>
+  If you invited the bot manually instead of through the dashboard, permissions may be incorrectly configured. Use the dashboard invite link to fix this.
+</Warning>
+
+---
+
+### TC004 - Resource Not Found
+
+**What it means:** A channel, category, or role that TicketCord needs no longer exists.
+
+**Common causes:**
+- Ticket category was deleted
+- Configured log/transcript channel was deleted
+- Staff role was deleted
+
+**Solution:**
+1. Go to [ticketcord.net/dashboard](https://ticketcord.net/dashboard)
+2. Select your bot and server
+3. Update the configuration to select existing channels/roles
+4. Or run `/setup` again to create new resources
+
+---
+
+### TC005 - Discord API Error
+
+**What it means:** Discord's servers returned an error or are temporarily unavailable.
+
+**Common causes:**
+- Discord is experiencing an outage
+- Temporary network issues
+- Unknown Discord API error
+
+**Solution:** Wait a few minutes and try again. If the issue persists, check [Discord Status](https://discordstatus.com) for outages.
+
+---
+
+### TC008 - Failed to Fetch Resources
+
+**What it means:** The bot couldn't retrieve the list of roles or channels from Discord.
+
+**Common causes:**
+- Temporary Discord API issue
+- Bot missing "View Channels" permission
+
+**Solution:** Try again in a few moments. If it persists, verify the bot has proper permissions in your server.
+
+---
+
+### TC009 - Invalid Selection
+
+**What it means:** No valid option was selected, or the selected resource doesn't meet requirements.
+
+**Common causes:**
+- No roles/channels selected in a dropdown
+- Ticket limit reached for your plan
+- No suitable text channels exist in the server
+
+**Solution:** Make sure to select an option from the dropdown. If you've hit your ticket limit, close some existing tickets or upgrade your plan.
+
+---
+
+### TC010 - Unknown Action
+
+**What it means:** An internal error occurred processing your request.
+
+**Solution:** Try the action again. If it persists, [contact support](https://ticketcord.net/support).
+
+<Note>
+  This error is rare and usually indicates a bug. Please report it so we can fix it.
+</Note>
+
+---
+
+### TC011 - Configuration Not Found
+
+**What it means:** The server hasn't been configured yet, or the configuration was reset.
+
+**Solution:**
+1. Go to [ticketcord.net/dashboard](https://ticketcord.net/dashboard)
+2. Select your bot and server
+3. Complete the configuration wizard
+4. Make sure to save your settings
+
+---
+
+## Common Issues
+
+### Bot is offline
+
+**Possible causes:**
+- Bot token was reset in Discord Developer Portal
+- Bot was removed from the server
+
+**Solution:**
+1. Check if the bot is still in your server
+2. If the token was reset, go to the dashboard and click **Update Credentials** to enter the new token
+
+### Tickets not creating
+
+**Possible causes:**
+- No ticket embed sent to a channel
+- Bot missing permissions in the ticket category
+- Configuration not saved
+
+**Solution:**
+1. Verify you've created and sent a ticket embed with an Open Ticket button
+2. Check bot permissions in the ticket category
+3. Ensure configuration is saved in the dashboard
+
+### Staff can't see tickets
+
+**Possible causes:**
+- Staff don't have the correct roles
+- Staff roles not configured in dashboard
+- Category permissions misconfigured
+
+**Solution:**
+1. Assign staff the Ticket Admin or Ticket Support role
+2. Verify these roles are selected in dashboard configuration
+3. Check that the ticket category allows these roles to view channels
+
+### Transcripts not generating
+
+**Possible causes:**
+- No transcript channel configured
+- Bot missing permissions in transcript channel
+- Auto-transcript disabled
+
+**Solution:**
+1. Configure a transcript channel in the dashboard
+2. Ensure bot can send messages and attach files in that channel
+3. Enable auto-transcript in automation settings
+
+---
+
+## Still Need Help?
+
+<Card title="Contact Support" icon="headset" href="https://ticketcord.net/support">
+  Get help via private DM from our support team
+</Card>

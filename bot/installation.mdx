@@ -1,0 +1,118 @@
+---
+title: "Installation"
+description: "Create your Discord bot and connect it to TicketCord"
+---
+
+## Prerequisites
+
+Before you begin, you'll need:
+
+- A Discord account
+- **Manage Server** permission on your target server
+- A Discord bot application (we'll create this below)
+
+## Create a Discord Application
+
+<Steps>
+  <Step title="Go to Discord Developer Portal">
+    Visit [discord.com/developers/applications](https://discord.com/developers/applications) and sign in.
+  </Step>
+
+  <Step title="Create New Application">
+    Click **New Application**, enter a name, and click **Create**.
+
+    <Frame>
+      <img src="/images/CreateBot.png" alt="Create new Discord application" />
+    </Frame>
+  </Step>
+
+  <Step title="Create Bot User">
+    Go to the **Bot** tab and click **Add Bot**.
+  </Step>
+
+  <Step title="Disable Public Bot">
+    In the **Bot** tab, find **Public Bot** and **turn it OFF** (toggle should be gray, not blue). This prevents others from adding your bot to their servers.
+
+    <Warning>
+      Make sure the toggle is **disabled** (gray). The image below shows where to find it - click the toggle to turn it off.
+    </Warning>
+
+    <Frame>
+      <img src="/images/PublicBot.png" alt="Disable public bot setting" />
+    </Frame>
+  </Step>
+
+  <Step title="Privileged Gateway Intents">
+    TicketCord automatically enables all required **Privileged Gateway Intents** when your bot connects.
+
+    <Warning>
+      Do not manually change any intent settings. Disabling intents will break your bot's functionality.
+    </Warning>
+  </Step>
+
+  <Step title="Copy Bot Token">
+    Click **Reset Token** and copy the token. You'll need this for TicketCord.
+
+    <Warning>
+      Keep your token secret! Anyone with your token has full control of your bot.
+    </Warning>
+
+    <Info>
+      If you reset your token after adding the bot to TicketCord, your bot will go offline. To fix this, go to your bot in the dashboard and click **Update Credentials** to enter the new token. The bot will automatically restart once updated.
+    </Info>
+  </Step>
+</Steps>
+
+## Connect to TicketCord
+
+<Steps>
+  <Step title="Sign in to Dashboard">
+    Go to [ticketcord.net/dashboard](https://ticketcord.net/dashboard) and sign in with Discord.
+  </Step>
+
+  <Step title="Add Custom Bot">
+    Click **Add Bot** and enter your credentials:
+    - **Client ID** - Found in your Discord application's General Information
+    - **Client Secret** - Found in your Discord application's OAuth2 settings
+    - **Bot Token** - The token you copied earlier
+
+    <Info>
+      TicketCord will automatically configure your bot's intents and settings during validation.
+    </Info>
+  </Step>
+
+  <Step title="Validate & Create">
+    Click **Validate & Continue**. TicketCord will verify your credentials and display your bot's information. Review and click **Create Bot** to finish.
+  </Step>
+
+  <Step title="Invite to Server">
+    From your bot's dashboard, click **Invite** and select your server. This ensures all required permissions are configured correctly.
+  </Step>
+</Steps>
+
+## Required Permissions
+
+TicketCord bots need these permissions to function properly:
+
+| Permission | Reason |
+|------------|--------|
+| Manage Channels | Create and delete ticket channels |
+| Manage Roles | Manage ticket access permissions |
+| Send Messages | Send ticket messages and responses |
+| Embed Links | Send rich embed messages |
+| Attach Files | Send transcripts and attachments |
+| Read Message History | Read ticket conversations |
+| Add Reactions | Add reactions to messages |
+| Use External Emojis | Use custom emoji in embeds |
+
+<Info>
+  When you invite your bot through the TicketCord dashboard, all required permissions are **automatically configured** for you.
+</Info>
+
+<Warning>
+  **Do not invite your bot manually** through Discord's developer portal. Manual invites may result in incorrect permissions, causing features like ticket creation, transcripts, or role management to fail.
+</Warning>
+
+<Card title="Next: Configuration" icon="gear" href="/bot/configuration">
+  Configure your bot's ticket system
+</Card>

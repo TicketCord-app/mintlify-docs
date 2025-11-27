@@ -1,0 +1,124 @@
+---
+title: "Configuration"
+description: "Configure your bot's ticket system and features"
+---
+
+## Setup Flow Overview
+
+After adding your bot and inviting it to your server, follow this process:
+
+<Steps>
+  <Step title="Run /setup in Discord">
+    Creates the basic Discord infrastructure (categories and roles)
+  </Step>
+  <Step title="Complete configuration on dashboard">
+    Select the created resources and configure all features
+  </Step>
+  <Step title="Create ticket embeds">
+    Build embeds with buttons that users click to open tickets
+  </Step>
+</Steps>
+
+## Step 1: Run /setup Command
+
+In your Discord server, run the setup command:
+
+```
+/setup
+```
+
+<Info>
+  You need **Administrator** permission or **Manage Channels** + **Manage Roles** permissions to run this command.
+</Info>
+
+This command creates:
+
+| Resource | Description |
+|----------|-------------|
+| 🎫 Tickets | Category where new tickets are created |
+| 📁 Closed Tickets | Category where closed tickets are moved |
+| Ticket Admin | Role with full ticket management access |
+| Ticket Support | Role with basic ticket access |
+
+<Warning>
+  The `/setup` command only creates Discord resources. You **must** complete the configuration on the dashboard for your bot to work.
+</Warning>
+
+### Handling Existing Resources
+
+If `/setup` detects existing ticket categories or roles, you'll see options to:
+
+- **Create Anyway** - Creates new resources with unique names
+- **Use Existing** - Skip creation and configure existing resources on the dashboard
+
+## Step 2: Dashboard Configuration
+
+After running `/setup`, go to [ticketcord.net/dashboard](https://ticketcord.net/dashboard) to complete the setup:
+
+<Steps>
+  <Step title="Select your bot and server">
+    Choose the bot and server you just set up
+  </Step>
+  <Step title="Configure Essential Settings">
+    - **Ticket Category** - Select the 🎫 Tickets category
+    - **Closed Category** - Select the 📁 Closed Tickets category
+    - **Staff Roles** - Select the Admin and Support roles created by `/setup`
+    - **Log Channel** - Choose where ticket events are logged (optional)
+    - **Transcript Channel** - Choose where transcripts are saved (optional)
+  </Step>
+  <Step title="Assign roles to your staff">
+    In Discord, give your team members the Ticket Admin or Ticket Support roles
+  </Step>
+</Steps>
+
+## Step 3: Create Ticket Embeds
+
+Ticket embeds are messages with buttons that users click to open tickets. *(Sometimes called "panels" in other bots)*
+
+1. Go to **Embeds** in the dashboard
+2. Click **Create Embed**
+3. Design your embed using the builder
+4. Add a button with the **Open Ticket** action
+5. Send to your desired channel (e.g., #support)
+
+<Tip>
+  You can create multiple embeds for different ticket types (support, sales, applications, etc.) by using different ticket categories.
+</Tip>
+
+## Additional Settings
+
+### Automation
+
+Configure automatic ticket management in the dashboard:
+
+| Setting | Description |
+|---------|-------------|
+| Auto-close | Close tickets after inactivity period |
+| Auto-delete | Delete tickets after closing |
+| Auto-transcript | Generate transcripts when tickets close |
+| Auto-reminder | Remind staff of open tickets |
+
+### AI Features
+
+<Info>AI features require a Pro or Enterprise plan.</Info>
+
+- **Knowledge Base** - Auto-suggest answers from your documentation
+- **Smart Routing** - Automatically assign tickets to the right team
+- **Priority Detection** - AI-powered ticket prioritization
+
+## Slash Commands
+
+Your bot includes these commands for managing tickets:
+
+| Command | Description |
+|---------|-------------|
+| `/setup` | Create ticket categories and roles |
+| `/close` | Close the current ticket |
+| `/claim` | Claim a ticket |
+| `/transcript` | Generate a transcript |
+| `/add @user` | Add user to ticket |
+| `/remove @user` | Remove user from ticket |
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
+  Get instant support via private DM
+</Card>
