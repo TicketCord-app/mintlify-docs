@@ -1,0 +1,220 @@
+---
+title: "Translation"
+description: "Automatically translate messages between customers and staff"
+---
+
+Translation uses AI to automatically translate messages between different languages. Your team can support customers worldwide without needing multilingual staff.
+
+<Info>
+  Translation is a **Pro** feature. [Upgrade your plan](https://ticketcord.net/pricing) to access it.
+</Info>
+
+## How It Works
+
+1. Customer sends a message in their language
+2. AI detects the language automatically
+3. Message is translated for staff
+4. Staff replies are translated back for the customer
+
+**Example:**
+> Customer (Spanish): "Hola, necesito ayuda con mi cuenta"
+>
+> Staff sees: "Hello, I need help with my account" [Translated from Spanish]
+>
+> Staff replies: "Sure, I can help. What's the issue?"
+>
+> Customer sees: "Claro, puedo ayudar. ¿Cuál es el problema?"
+
+## Getting Started
+
+<Steps>
+  <Step title="Enable Translation">
+    Go to **AI Features** → **Translation** and toggle it on.
+  </Step>
+  <Step title="Set Staff Language">
+    Choose the language your staff works in (usually English).
+  </Step>
+  <Step title="Configure Mode">
+    Choose how translations should work (auto-detect recommended).
+  </Step>
+</Steps>
+
+## Translation Modes
+
+| Mode | Description | Best For |
+|------|-------------|----------|
+| **Auto-Detect** | Automatically detects and translates any language | Most setups |
+| **Customer to Staff** | Only translate customer messages | When staff are multilingual |
+| **Staff to Customer** | Only translate staff messages | When customers expect translated replies |
+| **Bidirectional** | Translate both ways | Full automatic translation |
+
+<Tip>
+  **Auto-Detect with Bidirectional** is recommended for most teams.
+</Tip>
+
+## Supported Languages
+
+Translation supports 15+ languages including:
+
+| Common | Asian | European |
+|--------|-------|----------|
+| English | Japanese | German |
+| Spanish | Chinese | French |
+| Portuguese | Korean | Italian |
+| | Hindi | Russian |
+| | Arabic | Dutch |
+
+## Settings
+
+### Staff Language
+
+Set the primary language your team uses:
+- Messages TO staff are translated to this language
+- Messages FROM staff are translated to the customer's detected language
+
+### Auto-Detect Threshold
+
+Minimum confidence for language detection (0-100%):
+- **80%+ (default)** - Only translate when confident about the language
+- **60-80%** - Translate more often, may occasionally misdetect
+
+### Display Mode
+
+How translated messages appear:
+
+| Mode | How It Works |
+|------|--------------|
+| **Embed Replace** | Translated text replaces original in an embed |
+| **Reply Preserve** | Bot replies with translation, keeps original visible |
+| **Smart Auto** | Chooses best display based on message length |
+
+<Tip>
+  **Reply Preserve** is useful when you want to see the original text alongside the translation.
+</Tip>
+
+### Translation Delay
+
+Seconds to wait before translating:
+- **0** - Immediate translation
+- **2-5** - Wait for user to finish typing
+- **10+** - For users who send multiple messages
+
+## Filters
+
+Skip translation for certain content:
+
+| Filter | Description | Default |
+|--------|-------------|---------|
+| **Short Messages** | Skip very short messages | On (10 chars min) |
+| **Code Blocks** | Don't translate code | On |
+| **Commands** | Don't translate bot commands | On |
+| **Emoji Only** | Don't translate pure emoji messages | On |
+| **Links Only** | Don't translate URL-only messages | On |
+
+### Custom Skip Patterns
+
+Add custom patterns to skip translation:
+- Product names that shouldn't be translated
+- Technical terms
+- Abbreviations
+
+## Quality Settings
+
+### Confidence Threshold
+
+Minimum confidence for showing translation:
+- **70%+ (default)** - Only show confident translations
+- Lower values may show lower-quality translations
+
+### Review Threshold
+
+When confidence is below this, flag for human review:
+- Staff sees the translation but with a warning
+- Useful for catching potential mistranslations
+
+### Max Message Length
+
+Maximum characters to translate per message:
+- Very long messages may be split
+- Default is 4000 characters
+
+## Notifications
+
+Configure when to notify staff:
+
+| Option | Description |
+|--------|-------------|
+| **On Translation** | Notify when a message is translated |
+| **On Detection Failure** | Notify when language can't be detected |
+| **On Low Confidence** | Notify when translation confidence is low |
+
+## How Staff Sees Translations
+
+When a customer message is translated, staff sees:
+
+```
+John: Hello, I need help with my account
+
+🌐 Translated from Spanish (95% confidence)
+Original: "Hola, necesito ayuda con mi cuenta"
+```
+
+Staff can:
+- See the original text
+- Know the source language
+- See translation confidence
+
+## Accuracy Tips
+
+### Context Matters
+
+AI translates better with context:
+- Complete sentences translate better than fragments
+- Proper grammar helps accuracy
+- Avoid excessive abbreviations
+
+### Technical Terms
+
+Some terms shouldn't be translated:
+- Product names
+- Technical jargon
+- Use the skip patterns feature
+
+### Regional Variations
+
+AI uses standard language versions:
+- Spanish = Castilian Spanish (adaptable)
+- Portuguese = Brazilian Portuguese (most common)
+- Chinese = Simplified Chinese (default)
+
+## Troubleshooting
+
+### Message Not Translated
+
+1. **Check language** - Is it a supported language?
+2. **Check filters** - Is the message being filtered?
+3. **Check length** - Is it too short?
+4. **Check confidence** - Is detection confident enough?
+
+### Wrong Language Detected
+
+1. **Check message content** - Mixed languages confuse detection
+2. **Lower threshold** - But may cause more errors
+3. **Let users specify** - Consider a language field in ticket forms
+
+### Poor Translation Quality
+
+1. **Check original** - Is the original text clear?
+2. **Check length** - Very short phrases may lack context
+3. **Report issues** - Note problematic translations for review
+
+### High Token Usage
+
+Translation uses AI tokens. To reduce usage:
+1. **Enable filters** - Skip short messages, code, etc.
+2. **Raise threshold** - Only translate confident detections
+3. **One direction** - Use "Customer to Staff" if staff are multilingual
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
+  Get instant support via private DM
+</Card>

@@ -1,0 +1,230 @@
+---
+title: "Sentiment Detection"
+description: "Detect customer mood and alert staff to frustrated users"
+---
+
+Sentiment Detection uses AI to analyze the emotional tone of customer messages. When a customer is frustrated, angry, or upset, your team can be alerted immediately.
+
+<Info>
+  Sentiment Detection is a **Pro** feature. [Upgrade your plan](https://ticketcord.net/pricing) to access it.
+</Info>
+
+## How It Works
+
+1. Customer sends a message
+2. AI analyzes the emotional tone
+3. If a concerning sentiment is detected, staff is notified
+4. Staff can respond appropriately
+
+**Example:**
+> Customer: "This is ridiculous! I've been waiting 3 days and STILL no response!!"
+>
+> AI detects: **Frustrated** / **Angry**
+>
+> Staff gets pinged: "⚠️ Frustrated customer in #ticket-12345"
+
+## Detected Sentiments
+
+| Sentiment | Description | Typical Signs |
+|-----------|-------------|---------------|
+| **Angry** | Strong negative emotion | ALL CAPS, profanity, threats |
+| **Frustrated** | Persistent dissatisfaction | Repeated complaints, exasperation |
+| **Upset** | General unhappiness | Disappointment, sadness |
+| **Confused** | Uncertainty or misunderstanding | Questions, "I don't understand" |
+| **Happy** | Positive emotions | Thank yous, exclamations of joy |
+| **Neutral** | No strong emotion | Factual statements |
+
+## Getting Started
+
+<Steps>
+  <Step title="Enable Sentiment Detection">
+    Go to **AI Features** → **Sentiment Detection** and toggle it on.
+  </Step>
+  <Step title="Set Up Actions">
+    Configure what happens when each sentiment is detected.
+  </Step>
+  <Step title="Assign Roles">
+    Choose which roles get notified for each sentiment.
+  </Step>
+</Steps>
+
+## Tone Actions
+
+For each sentiment, you can configure an action:
+
+| Action | Description |
+|--------|-------------|
+| **Ping Role** | Notify a specific role when detected |
+| **Do Nothing** | Track the sentiment but don't notify |
+
+### Example Setup
+
+| Sentiment | Action | Role |
+|-----------|--------|------|
+| Angry | Ping Role | @Senior Support |
+| Frustrated | Ping Role | @Support Team |
+| Upset | Ping Role | @Support Team |
+| Confused | Do Nothing | - |
+| Happy | Do Nothing | - |
+| Neutral | Do Nothing | - |
+
+<Tip>
+  Only ping for negative sentiments to avoid notification fatigue.
+</Tip>
+
+## Settings
+
+### Analysis Mode
+
+When to analyze sentiment:
+
+| Mode | Description | Best For |
+|------|-------------|----------|
+| **First Message** | Analyze immediately | Quick detection |
+| **First 5 Messages** | Wait for more context | Better accuracy |
+| **Smart Detection** | AI decides timing | Recommended |
+
+**Smart Detection** waits if:
+- Staff is actively responding
+- More context would help
+- Message is ambiguous
+
+### Delay Before Analysis
+
+Seconds to wait before analyzing:
+- **0** - Immediate
+- **15-30** - Let user finish typing
+- **60+** - Wait for multi-message context
+
+## What AI Looks For
+
+### Language Signals
+
+| Signal | Sentiment |
+|--------|-----------|
+| ALL CAPS | Angry/Frustrated |
+| Exclamation marks!!! | Strong emotion |
+| Question marks??? | Confused |
+| Thank you, great! | Happy |
+| "I don't understand" | Confused |
+| Profanity | Angry |
+
+### Context Clues
+
+- **Repeated issues** → Frustrated
+- **Waiting mentions** → Frustrated/Upset
+- **Threats to leave** → Angry
+- **Compliments** → Happy
+- **Neutral facts** → Neutral
+
+### Combination Detection
+
+AI considers multiple signals together:
+```
+"This is the THIRD time I'm asking!!"
+     ↓
+Repeated issue (frustrated) + CAPS (angry) + !! (strong emotion)
+     ↓
+Result: Frustrated (primary) + Angry (secondary)
+```
+
+## How Staff Sees It
+
+When concerning sentiment is detected:
+
+```
+⚠️ Sentiment Alert: Frustrated Customer
+
+Ticket: #ticket-12345
+Customer: John Smith
+Sentiment: Frustrated (87% confidence)
+
+"I've been waiting for 3 days with no response"
+```
+
+Staff can:
+- Click to open the ticket
+- See the confidence level
+- Review the triggering message
+
+## Best Practices
+
+### Respond Appropriately
+
+When alerted to negative sentiment:
+
+**Do:**
+- Acknowledge their frustration
+- Apologize for the experience
+- Offer a solution quickly
+- Escalate if needed
+
+**Don't:**
+- Be defensive
+- Ignore the sentiment
+- Use generic responses
+- Keep them waiting longer
+
+### Train Your Team
+
+Help staff handle different sentiments:
+- **Angry** → Stay calm, empathize, escalate if needed
+- **Frustrated** → Acknowledge, explain, resolve quickly
+- **Confused** → Clarify, guide step-by-step
+- **Upset** → Empathize, offer solution
+
+### Combine with Other Features
+
+Sentiment Detection works well with:
+
+**Priority Detection:**
+```
+Angry + High Priority → Immediate escalation
+```
+
+**Auto-Routing:**
+```
+Frustrated customers → Senior support
+```
+
+**Knowledge Base:**
+```
+Adjust AI tone when sentiment is negative
+```
+
+## Troubleshooting
+
+### Not Detecting Sentiment
+
+1. **Check if enabled** - Verify Sentiment Detection is on
+2. **Check analysis mode** - "Smart Detection" may wait
+3. **Check message content** - Very short messages may not have enough signals
+
+### Wrong Sentiment Detected
+
+1. **Context matters** - Sarcasm and irony are hard to detect
+2. **Cultural differences** - Some expressions vary by culture
+3. **Ambiguous messages** - Short messages may be misread
+
+### Too Many Alerts
+
+1. **Adjust actions** - Set some sentiments to "Do Nothing"
+2. **Increase delay** - Wait longer before analyzing
+3. **Use Smart Detection** - Let AI decide when to alert
+
+### Missed Angry Customers
+
+1. **Lower sensitivity** - Some expressions are subtle
+2. **Check action config** - Make sure "Angry" has an action
+3. **Check role config** - Verify the notification role exists
+
+## Privacy Note
+
+Sentiment Detection analyzes message content to detect emotional tone. It does not:
+- Store sentiment history long-term
+- Share data with third parties
+- Use data for purposes other than detection
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
+  Get instant support via private DM
+</Card>

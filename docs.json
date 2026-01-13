@@ -31,6 +31,38 @@
         ]
       },
       {
+        "group": "Commands",
+        "pages": [
+          "commands/overview",
+          "commands/ticket-management",
+          "commands/staff-tools",
+          "commands/admin",
+          "commands/utility"
+        ]
+      },
+      {
+        "group": "AI Features",
+        "pages": [
+          "ai/overview",
+          {
+            "group": "Knowledge Base",
+            "pages": [
+              "ai/knowledge-base",
+              "ai/knowledge-base-sources",
+              "ai/knowledge-base-settings",
+              "ai/knowledge-base-feedback",
+              "ai/train-command"
+            ]
+          },
+          "ai/auto-routing",
+          "ai/priority-detection",
+          "ai/duplicate-detection",
+          "ai/translation",
+          "ai/sentiment-detection",
+          "ai/atlas"
+        ]
+      },
+      {
         "group": "Integrations",
         "pages": [
           "integrations/webhooks"

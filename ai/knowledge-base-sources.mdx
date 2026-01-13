@@ -1,0 +1,207 @@
+---
+title: "Adding Sources"
+description: "How to add and manage Knowledge Base sources"
+---
+
+Sources are the content your bot learns from. This guide walks you through adding different types of sources and managing them effectively.
+
+## Adding a Source
+
+<Steps>
+  <Step title="Open Knowledge Base Settings">
+    Go to your bot's dashboard → select your server → **AI Features** → **Knowledge Base**
+  </Step>
+  <Step title="Click Add Source">
+    Click the **Add Source** button in the Sources section.
+  </Step>
+  <Step title="Fill in the Details">
+    Enter the required information based on your source type.
+  </Step>
+  <Step title="Save and Index">
+    Click **Save** to add the source, then click **Index** to scan the content.
+  </Step>
+</Steps>
+
+## Source Types Explained
+
+### Single Page
+
+Best for individual pages with focused content.
+
+**Settings:**
+- **URL** - The exact page URL (e.g., `https://example.com/faq`)
+- **Title** - A name for this source (e.g., "FAQ Page")
+- **Description** - Optional notes about what this source contains
+
+**Example use cases:**
+- Your FAQ page
+- A specific product guide
+- Terms of service
+- Pricing information
+
+<Tip>
+  Single pages index fastest and are great for content that changes rarely.
+</Tip>
+
+### Documentation Site
+
+Best for multi-page documentation with linked content.
+
+**Settings:**
+- **URL** - The starting page URL (usually your docs homepage)
+- **Title** - A name for this source (e.g., "Product Documentation")
+- **Crawl Depth** - How many pages to scan (1-5 levels deep)
+
+**How crawling works:**
+1. The bot visits your starting URL
+2. It finds all links on that page
+3. It follows those links and scans each page
+4. This continues until it reaches your crawl depth limit or 100 pages
+
+**Example use cases:**
+- Full product documentation
+- Help center articles
+- Wiki pages
+- Guide collections
+
+<Warning>
+  Higher crawl depths take longer to index. Start with 1-2 and increase if needed.
+</Warning>
+
+### Discord Channel
+
+Best for using existing Discord content as a knowledge source.
+
+**Settings:**
+- **Channel** - Select a text channel from your server
+- **Title** - A name for this source
+- **Include Bot Messages** - Whether to learn from bot messages too
+
+**Example use cases:**
+- Announcements channel (for product updates)
+- Rules channel
+- FAQ channel with pinned messages
+- Staff resources channel
+
+<Info>
+  The bot only indexes messages it can see. Make sure the bot has access to the channel.
+</Info>
+
+## Managing Sources
+
+### Viewing Source Status
+
+Each source shows its current status:
+
+| Status | Meaning |
+|--------|---------|
+| **Pending** | Source added but not yet indexed |
+| **Indexing** | Currently scanning content |
+| **Completed** | Ready to use |
+| **Failed** | Something went wrong (check the error message) |
+
+### Re-indexing a Source
+
+To update a source with new content:
+
+1. Find the source in your list
+2. Click the **Refresh** icon
+3. Wait for indexing to complete
+
+<Tip>
+  Set up automatic updates (daily/weekly/monthly) if your content changes frequently.
+</Tip>
+
+### Deleting a Source
+
+To remove a source:
+
+1. Find the source in your list
+2. Click the **Trash** icon
+3. Confirm deletion
+
+<Warning>
+  Deleting a source removes all its indexed content. The bot will no longer use it for suggestions.
+</Warning>
+
+## Best Practices
+
+### Choose Quality Over Quantity
+
+- **Do**: Add your most helpful, accurate documentation
+- **Don't**: Add everything and hope for the best
+
+Quality sources with clear, well-written content work better than many sources with unclear information.
+
+### Use Descriptive Titles
+
+Good titles help you manage sources later:
+- ✅ "Billing FAQ - Payments and Refunds"
+- ❌ "Page 1"
+
+### Set Appropriate Priorities
+
+If you have multiple sources, set priorities:
+- **10 (highest)** - Official documentation, FAQs
+- **5 (default)** - General guides
+- **1 (lowest)** - Community content, older guides
+
+Higher priority sources are checked first when answering questions.
+
+### Use Categories for Accuracy
+
+Limit sources to relevant ticket categories:
+
+| Source | Categories |
+|--------|------------|
+| Billing docs | Billing, Payments |
+| Technical guides | Technical Support |
+| Getting started | General |
+
+This prevents the billing FAQ from answering technical questions.
+
+### Keep Content Updated
+
+Outdated content leads to wrong answers:
+- Set automatic updates for frequently changing content
+- Manually refresh sources after major documentation changes
+- Delete sources for deprecated features
+
+## Troubleshooting
+
+### "Failed to index" Error
+
+**Common causes:**
+1. **Page not accessible** - The URL might be wrong or the page requires login
+2. **Page blocked crawling** - Some sites block automated access
+3. **Network issues** - Temporary connectivity problems
+
+**Solutions:**
+1. Verify the URL works in your browser
+2. Make sure the page is publicly accessible (no login required)
+3. Try again after a few minutes
+
+### "No content found" Error
+
+**Common causes:**
+1. **JavaScript-only content** - Some pages load content with JavaScript
+2. **Empty page** - The page has no text content
+3. **Login wall** - Content requires authentication
+
+**Solutions:**
+1. Check if the page content is visible without JavaScript
+2. Use a different page with actual text content
+3. Use a public-facing version of the page
+
+### Source Shows 0 Chunks
+
+This means no usable content was found. Check:
+1. Does the page have text content?
+2. Is the content behind a login?
+3. Is the page structure unusual?
+
+Try a different page or use a Discord channel source instead.
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
+  Get instant support via private DM
+</Card>

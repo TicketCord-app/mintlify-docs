@@ -1,0 +1,260 @@
+---
+title: "The /train Command"
+description: "Teach your bot from historical ticket conversations"
+---
+
+The `/train` command lets you teach your bot from past ticket conversations. It analyzes resolved tickets and extracts question-answer pairs that are added to your Knowledge Base.
+
+<Info>
+  The `/train` command requires a **Pro** or **Enterprise** plan.
+</Info>
+
+## What It Does
+
+The `/train` command:
+1. Scans your resolved tickets from the past X days
+2. Uses AI to identify question-answer pairs
+3. Extracts the best Q&A from each conversation
+4. Adds them to your Knowledge Base automatically
+
+This captures the "tribal knowledge" your team has built up - answers to common questions that may not be in your documentation.
+
+## Running /train
+
+### Basic Usage
+
+In any channel where your bot is active, run:
+
+```
+/train
+```
+
+The bot will analyze tickets from the last 90 days (default).
+
+### Specifying Days
+
+To analyze a different time period:
+
+```
+/train days:30
+```
+
+This analyzes tickets from the last 30 days.
+
+| Parameter | Range | Default |
+|-----------|-------|---------|
+| days | 7-365 | 90 |
+
+<Tip>
+  Start with 30-60 days to test. Increase to 90+ once you're confident it's working well.
+</Tip>
+
+### Requirements
+
+To run `/train`, you need:
+- **Administrator** permission in the server
+- Knowledge Base **enabled** in your dashboard
+- At least one **resolved** ticket in the time period
+
+## The Training Process
+
+After running `/train`, you'll see:
+
+<Steps>
+  <Step title="Counting Tickets">
+    The bot counts how many tickets are available to analyze.
+  </Step>
+  <Step title="Analyzing Conversations">
+    AI reads through each ticket conversation, looking for:
+    - Clear questions from users
+    - Helpful answers from staff
+    - Complete resolution patterns
+  </Step>
+  <Step title="Extracting Q&A Pairs">
+    The AI extracts question-answer pairs that would help future users.
+  </Step>
+  <Step title="Adding to Knowledge Base">
+    Extracted Q&A pairs are stored and used for future suggestions.
+  </Step>
+</Steps>
+
+### Progress Updates
+
+While training, you'll see updates like:
+
+```
+🤖 Training in Progress
+Analyzing stored tickets from the last 90 days...
+
+📊 Progress: 15/42 tickets (35%)
+✅ Extracted: 8 Q&A pairs
+
+[Cancel Training]
+```
+
+### Cancelling Training
+
+Click the **Cancel Training** button to stop training early. Any Q&A pairs already extracted will be kept.
+
+## First-Time Setup
+
+### AI Consent
+
+The first time you run `/train`, you'll need to accept AI data processing terms.
+
+**Why is this required?**
+- Ticket conversations are sent to AI for analysis
+- This may include user messages and staff responses
+- You're authorizing this processing
+
+<Warning>
+  Only the **bot owner** can accept AI consent terms. If you're not the owner, ask them to run `/train` first.
+</Warning>
+
+### Consent Prompt
+
+You'll see:
+
+```
+📋 AI Data Processing Consent Required
+
+To use /train, we need your consent to process ticket conversations with AI.
+
+What happens:
+• Ticket messages are analyzed to extract Q&A pairs
+• AI learns from staff responses to help future users
+• Data is processed securely and not shared
+
+[Accept] [Decline]
+```
+
+Click **Accept** to proceed, or **Decline** to cancel.
+
+## What Makes Good Training Data
+
+The AI looks for tickets that have:
+
+### Clear Questions
+
+```
+User: How do I cancel my subscription?
+```
+
+### Helpful Answers
+
+```
+Staff: Go to Settings → Subscription → Cancel. 
+       Your access continues until the billing period ends.
+```
+
+### Complete Resolution
+
+Tickets that were marked as resolved or closed with a solution.
+
+## What Gets Skipped
+
+The AI skips tickets that:
+- Were closed without a real solution
+- Had mostly back-and-forth troubleshooting
+- Contained only small talk or greetings
+- Were spam or test tickets
+
+## After Training
+
+### Viewing Results
+
+After training completes, you'll see:
+
+```
+✅ Training Complete!
+
+📊 Results:
+• Tickets analyzed: 42
+• Q&A pairs extracted: 12
+• Tokens used: 150K
+
+Your bot is now smarter! New Q&A will be used in future suggestions.
+```
+
+### Using Trained Knowledge
+
+Trained Q&A pairs are automatically used when:
+- Users open new tickets with similar questions
+- The Knowledge Base searches for answers
+- No better documentation source exists
+
+### Retraining
+
+You can run `/train` again to:
+- Capture newer ticket conversations
+- Learn from recently resolved issues
+- Update knowledge after your team's processes change
+
+<Info>
+  There's a cooldown between training runs to prevent overuse. You'll see how long to wait if you try to train too soon.
+</Info>
+
+## Best Practices
+
+### Train After Major Updates
+
+Run `/train` after:
+- Launching new features
+- Resolving new types of issues
+- Your team learns new troubleshooting steps
+
+### Combine with Documentation
+
+`/train` works best alongside documentation sources:
+- Documentation provides official information
+- Trained Q&A provides real-world answers
+- Together they cover more questions
+
+### Regular Training Schedule
+
+Consider training:
+- Monthly for active support teams
+- After resolving 50+ new tickets
+- When you notice AI missing common questions
+
+### Review the Results
+
+Check your Knowledge Base after training:
+- Look at the extracted Q&A pairs
+- Verify they're accurate
+- Delete any that aren't helpful
+
+## Troubleshooting
+
+### "No Tickets Found"
+
+This means:
+- No resolved tickets in the time period
+- Tickets don't have enough content
+- Knowledge Base isn't enabled
+
+**Solution:** Check that you have resolved tickets and Knowledge Base is enabled.
+
+### "Training Stalled"
+
+If training shows no progress for 5+ minutes:
+- The process may have encountered an error
+- Try cancelling and running again
+- Check for bot connectivity issues
+
+### "Consent Required" for Non-Owner
+
+Only the bot owner can accept AI consent.
+
+**Solution:** Ask the bot owner to run `/train` first and accept consent.
+
+### Low Q&A Extraction
+
+If few Q&A pairs are extracted:
+- Tickets may not have clear question-answer patterns
+- Staff responses may be too brief
+- Try a longer time period (more tickets)
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
+  Get instant support via private DM
+</Card>

@@ -1,0 +1,220 @@
+---
+title: "Ticket Management"
+description: "Commands for managing ticket lifecycle - opening, closing, claiming, and access control"
+---
+
+These commands control the core ticket lifecycle and are available on all plans.
+
+## /close
+
+Close the current ticket channel.
+
+```
+/close [reason] [silent]
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `reason` | Text | No | Reason for closing the ticket |
+| `silent` | Boolean | No | Close without sending a notification message |
+
+**Permission:** Ticket creator or staff
+
+**What happens:**
+- Channel is renamed from `ticket-XXXX` to `closed-XXXX`
+- Ticket is moved to the closed tickets category
+- Creator loses access to send messages
+- Ticket messages are compressed for storage
+- Transcript is generated (if auto-transcript is enabled)
+
+<Info>
+  If **Skip Close Confirmation** is enabled in your dashboard settings, the ticket closes immediately. Otherwise, you'll see a confirmation dialog.
+</Info>
+
+**Example:**
+```
+/close reason:Issue resolved
+/close silent:True
+```
+
+---
+
+## /reopen
+
+Reopen a closed ticket.
+
+```
+/reopen
+```
+
+**Permission:** Ticket creator or staff
+
+**What happens:**
+- Channel is renamed from `closed-XXXX` back to `ticket-XXXX`
+- Ticket is moved back to the open tickets category
+- Creator regains full access
+- Status changes from "closed" to "open"
+
+<Tip>
+  Reopening preserves the full conversation history - nothing is lost.
+</Tip>
+
+---
+
+## /claim
+
+Claim ownership of a ticket.
+
+```
+/claim
+```
+
+**Permission:** Staff only
+
+**What happens:**
+- Your name is displayed as the ticket handler
+- Other staff can see who's working on it
+- Prevents duplicate effort on the same ticket
+- Claim information shows in the ticket channel
+
+<Warning>
+  Only one staff member can claim a ticket at a time. Use `/unclaim` to release it.
+</Warning>
+
+---
+
+## /unclaim
+
+Release your claim on a ticket.
+
+```
+/unclaim
+```
+
+**Permission:** The claimer or any staff member
+
+**What happens:**
+- Removes the claim from the ticket
+- Other staff can now claim it
+- Claim message is deleted from channel
+
+<Info>
+  Staff members can unclaim tickets claimed by others to help redistribute workload.
+</Info>
+
+---
+
+## /add
+
+Add a user or role to the current ticket.
+
+```
+/add <user_or_role>
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `user_or_role` | User/Role | Yes | The user or role to add |
+
+**Permission:** Ticket creator or staff
+
+**What happens:**
+- User/role gains access to view and send messages in the ticket
+- A notification is sent to the channel
+- Added users can participate in the conversation
+
+**Example:**
+```
+/add @JohnDoe
+/add @Support Team
+```
+
+---
+
+## /remove
+
+Remove a user or role from the current ticket.
+
+```
+/remove <user_or_role>
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `user_or_role` | User/Role | Yes | The user or role to remove |
+
+**Permission:** Ticket creator or staff
+
+**What happens:**
+- User/role loses access to the ticket channel
+- They can no longer view or send messages
+- A notification is sent to the channel
+
+<Warning>
+  You cannot remove the ticket creator or staff roles from a ticket.
+</Warning>
+
+---
+
+## /rename
+
+Rename the current ticket channel.
+
+```
+/rename <name>
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `name` | Text | Yes | New name for the ticket |
+
+**Permission:** Ticket creator or staff
+
+**What happens:**
+- Channel name changes to `ticket-XXXX-newname`
+- Original ticket number is preserved
+- Helps identify tickets by topic
+
+**Example:**
+```
+/rename billing-issue
+/rename vip-support
+```
+
+<Info>
+  Channel names follow Discord's naming rules - lowercase, no spaces, max 100 characters.
+</Info>
+
+---
+
+## /closerequest
+
+Request that the ticket creator close their ticket.
+
+```
+/closerequest [reason]
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `reason` | Text | No | Reason for requesting closure |
+
+**Permission:** Staff only
+
+**What happens:**
+- Creator receives a message asking if their issue is resolved
+- They can choose to close the ticket or keep it open
+- Useful when staff believe the issue is resolved
+
+**Example:**
+```
+/closerequest reason:Your issue appears to be resolved. Please confirm!
+```
+
+<Tip>
+  This is more polite than closing directly - it gives the user a chance to ask follow-up questions.
+</Tip>
+
+<Card title="Staff Tools" icon="arrow-right" href="/commands/staff-tools">
+  Learn about notes, tags, and transcripts
+</Card>

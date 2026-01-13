@@ -1,0 +1,263 @@
+---
+title: "Staff Tools"
+description: "Commands for staff productivity - notes, tags, transcripts, and quick replies"
+---
+
+These commands help staff work efficiently and maintain ticket organization.
+
+## /note
+
+Manage internal staff notes on a ticket. Notes are only visible to staff members.
+
+```
+/note add <content>
+/note view
+/note remove <note_id>
+```
+
+### Subcommands
+
+| Subcommand | Description |
+|------------|-------------|
+| `add` | Add a new note to the ticket |
+| `view` | View all notes on the ticket |
+| `remove` | Remove a specific note |
+
+**Permission:** Staff only
+
+### Adding Notes
+
+```
+/note add content:Customer is a VIP - prioritize response
+/note add content:Waiting for billing team confirmation
+```
+
+Notes include:
+- The staff member who created it
+- Timestamp when created
+- The note content
+
+### Viewing Notes
+
+```
+/note view
+```
+
+Displays all notes on the current ticket in chronological order.
+
+### Removing Notes
+
+```
+/note remove note_id:1
+```
+
+<Info>
+  Notes are internal and never visible to the ticket creator or other non-staff users.
+</Info>
+
+---
+
+## /tag
+
+Manage tags on the current ticket for organization and filtering.
+
+```
+/tag add <tag>
+/tag remove <tag>
+/tag list
+/tag clear
+```
+
+### Subcommands
+
+| Subcommand | Description |
+|------------|-------------|
+| `add` | Add a tag to the ticket |
+| `remove` | Remove a tag from the ticket |
+| `list` | List all tags on the ticket |
+| `clear` | Remove all tags from the ticket |
+
+**Permission:** Staff only
+
+### Adding Tags
+
+```
+/tag add tag:billing
+/tag add tag:urgent
+/tag add tag:needs-followup
+```
+
+<Tip>
+  Tags help you filter and search tickets in the dashboard. Use consistent naming for best results.
+</Tip>
+
+### Viewing Tags
+
+```
+/tag list
+```
+
+Shows all tags currently on the ticket.
+
+### Removing Tags
+
+```
+/tag remove tag:urgent
+/tag clear
+```
+
+---
+
+## /transcript
+
+Generate a transcript of the ticket conversation.
+
+```
+/transcript
+```
+
+**Permission:** Ticket creator or staff
+
+**What happens:**
+- Creates a formatted record of all messages
+- Includes timestamps, usernames, and message content
+- Attachments and embeds are referenced
+- Transcript is saved according to your settings
+
+### Transcript Formats
+
+Transcripts can be delivered as:
+
+| Format | Description |
+|--------|-------------|
+| **Discord Message** | Posted directly in the channel |
+| **Web Page** | Hosted HTML page with full formatting |
+| **Channel Archive** | Saved to your configured transcript channel |
+
+<Info>
+  Configure transcript settings in your dashboard under **Automation** → **Transcripts**.
+</Info>
+
+---
+
+## /reply
+
+Send a pre-configured canned response.
+
+```
+/reply <response_name>
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `response_name` | Choice | Yes | Name of the canned response |
+
+**Permission:** Staff only  
+**Plan:** Basic or higher
+
+**What happens:**
+- Sends the pre-configured response message
+- Can include variables like ticket number, user mention
+- Saves time on common responses
+
+### Setting Up Replies
+
+1. Go to your dashboard
+2. Navigate to **Quick Replies** (or **Canned Responses**)
+3. Create responses with names and content
+4. Use `/reply` to send them
+
+**Example responses:**
+
+| Name | Content |
+|------|---------|
+| `greeting` | "Thanks for contacting support! I'll be with you shortly." |
+| `resolved` | "Glad we could help! Feel free to open a new ticket if you need anything else." |
+| `escalate` | "I'm escalating this to our senior team. You'll hear back within 24 hours." |
+
+<Tip>
+  Use variables in your replies: `{user}` for mention, `{ticket}` for ticket number.
+</Tip>
+
+---
+
+## /priority
+
+Set the priority level for a ticket. Adds a visual indicator to the channel name.
+
+```
+/priority <level>
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `level` | Choice | Yes | Priority level to set |
+
+**Choices:**
+- `urgent` - Adds red indicator
+- `high` - Adds orange indicator
+- `medium` - Adds yellow indicator
+- `low` - Adds green indicator
+- `none` - Removes priority indicator
+
+**Permission:** Staff only  
+**Plan:** Requires AI plan (Pro or higher)
+
+**What happens:**
+- Channel name gets priority emoji prefix
+- Ticket is flagged in the dashboard
+- Helps staff identify critical issues
+
+**Example:**
+```
+/priority level:urgent
+```
+
+Channel becomes: `🔴-ticket-0001`
+
+<Warning>
+  Channel renaming is rate-limited by Discord. Rapid priority changes may be delayed.
+</Warning>
+
+---
+
+## /stats
+
+View ticket statistics for the current server.
+
+```
+/stats [period]
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `period` | Choice | No | Time period for stats |
+
+**Choices:**
+- `today` - Today's statistics
+- `week` - Last 7 days
+- `month` - Last 30 days
+- `all` - All-time statistics
+
+**Permission:** Staff only  
+**Plan:** Pro or higher
+
+**Statistics include:**
+- Total tickets opened/closed
+- Average resolution time
+- Staff response times
+- Ticket volume by category
+- Peak hours
+
+**Example:**
+```
+/stats period:week
+```
+
+<Info>
+  For detailed analytics, visit the **Analytics** section in your dashboard.
+</Info>
+
+<Card title="Administration Commands" icon="arrow-right" href="/commands/admin">
+  Learn about setup, embeds, and approvals
+</Card>

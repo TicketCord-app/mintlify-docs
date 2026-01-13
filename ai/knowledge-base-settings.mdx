@@ -1,0 +1,250 @@
+---
+title: "Settings & Customization"
+description: "Fine-tune how your Knowledge Base responds to questions"
+---
+
+Customize your Knowledge Base settings to match your support style and workflow.
+
+## AI Response Settings
+
+### Response Style
+
+Control how detailed AI suggestions should be:
+
+<AccordionGroup>
+  <Accordion title="Concise">
+    Short, to-the-point answers. Best for:
+    - Simple yes/no questions
+    - Quick reference information
+    - Experienced users who want fast answers
+
+    **Example:**
+    > "Yes, you can cancel anytime from Settings → Subscription → Cancel."
+  </Accordion>
+  <Accordion title="Balanced (Recommended)">
+    Mix of context and actionable steps. Best for:
+    - Most support scenarios
+    - When users need guidance but not hand-holding
+    - General-purpose support
+
+    **Example:**
+    > "You can cancel your subscription at any time. Go to Settings → Subscription → Cancel. Your access continues until the end of your billing period."
+  </Accordion>
+  <Accordion title="Helpful">
+    Detailed explanations with extra context. Best for:
+    - Complex features
+    - New users who need more guidance
+    - When detailed steps are important
+
+    **Example:**
+    > "You can cancel your subscription at any time without penalty. Here's how:
+    > 1. Click the gear icon to open Settings
+    > 2. Select 'Subscription' from the menu
+    > 3. Click 'Cancel Subscription'
+    > 4. You'll keep access until your billing period ends on [date]
+    >
+    > If you change your mind, you can resubscribe anytime."
+  </Accordion>
+</AccordionGroup>
+
+### Confidence Threshold
+
+The minimum confidence level before showing a suggestion.
+
+| Threshold | What Happens |
+|-----------|--------------|
+| **High (70%+)** | Only shows answers the AI is very confident about. Fewer suggestions, but more accurate. |
+| **Medium (50-70%)** | Shows more suggestions. Some may be less accurate. |
+| **Low (below 50%)** | Shows many suggestions. Higher chance of irrelevant answers. |
+
+<Tip>
+  Start at 70% (default). Lower it if users aren't getting suggestions, raise it if suggestions are often wrong.
+</Tip>
+
+### Max Response Tokens
+
+Limits how long AI responses can be. The default (2000 tokens) allows for complete, detailed answers.
+
+- **Lower values** (500-1000): Shorter, more concise answers
+- **Higher values** (2000+): Longer, more detailed answers
+
+<Info>
+  1 token ≈ 4 characters. 2000 tokens ≈ 1500 words maximum.
+</Info>
+
+## Trigger Settings
+
+Control when the bot provides suggestions.
+
+### On Ticket Creation
+
+When enabled, the bot reads the user's initial message and immediately suggests relevant answers.
+
+**Best for:**
+- Most support setups
+- Providing instant help
+- Reducing time-to-first-response
+
+### Trigger Keywords
+
+Add specific words that trigger Knowledge Base searches:
+
+**Example keywords:**
+- `help`, `how do I`, `can I`
+- Product-specific terms like `refund`, `upgrade`, `cancel`
+
+Leave empty to trigger on all messages.
+
+### Delay Before Suggestion
+
+Wait time (in seconds) before the bot sends a suggestion. Default is 2 seconds.
+
+**Why use a delay:**
+- Gives users time to send follow-up messages
+- Prevents spam-like rapid responses
+- Allows message batching for multi-message questions
+
+**Settings:**
+- **0 seconds** - Immediate response (may interrupt users)
+- **2-5 seconds** - Recommended for most setups
+- **10+ seconds** - For slower-paced support
+
+### Minimum Message Length
+
+Only trigger on messages with at least this many characters. Default is 10.
+
+**Why use this:**
+- Ignores greetings like "hi" or "hello"
+- Focuses on actual questions
+- Reduces unnecessary AI calls
+
+**Recommended settings:**
+- **10 characters** - Captures "What is X?" style questions
+- **20+ characters** - Only triggers on detailed questions
+
+## Behavior Settings
+
+### Stop After Staff Response
+
+When enabled, the bot stops suggesting answers once a staff member replies.
+
+**When to use:**
+- Staff prefers to handle tickets without AI help
+- To prevent AI from contradicting staff
+- For complex issues that need human judgment
+
+**When to disable:**
+- AI should continue helping during long conversations
+- Staff uses AI as a tool to find information
+
+### Respect Staff Presence
+
+When enabled, the bot backs off for 5 minutes after staff sends a message.
+
+**How it works:**
+1. Staff sends a message
+2. Bot pauses suggestions for 5 minutes
+3. If user asks again after 5 minutes, bot can suggest
+
+**When to use:**
+- Staff is actively helping and doesn't want interruption
+- AI should only help when staff is idle
+
+### Outside Business Hours Only
+
+When enabled, AI only suggests answers outside your configured business hours.
+
+**When to use:**
+- Human-first support during work hours
+- AI coverage for after-hours tickets
+- Weekend/holiday coverage
+
+<Info>
+  Configure your business hours in **Server Settings** → **Automation** → **Business Hours**.
+</Info>
+
+## Display Settings
+
+### Show Source Info
+
+When enabled, suggestions include:
+- The source title (e.g., "From: FAQ Page")
+- A link to the original page
+
+**When to enable:**
+- Users want to read more details
+- Transparency is important
+- You want users to explore documentation
+
+**When to disable:**
+- Cleaner, simpler suggestions
+- You prefer users to stay in Discord
+
+### Show Confidence Score
+
+When enabled, suggestions show the AI's confidence percentage.
+
+**Example with confidence:**
+> 💡 **Suggestion** (87% confident)
+> You can cancel anytime from Settings...
+
+**When to enable:**
+- Users should know how reliable the answer is
+- Training staff to recognize AI limitations
+- Debugging suggestion quality
+
+**When to disable:**
+- Cleaner appearance
+- Users don't need technical details
+
+## Saving Your Settings
+
+After making changes:
+
+1. Click **Edit** to enter edit mode
+2. Make your changes
+3. Click **Save** to apply
+
+<Warning>
+  Changes don't apply until you click Save. If you navigate away, unsaved changes are lost.
+</Warning>
+
+## Recommended Configurations
+
+### Quick Support Team
+
+For teams that want fast, minimal AI assistance:
+
+| Setting | Value |
+|---------|-------|
+| Response Style | Concise |
+| Confidence Threshold | 80% |
+| Delay | 0 seconds |
+| Stop After Staff Response | ✅ Enabled |
+
+### Comprehensive Support
+
+For teams that want detailed AI assistance:
+
+| Setting | Value |
+|---------|-------|
+| Response Style | Helpful |
+| Confidence Threshold | 60% |
+| Delay | 3 seconds |
+| Stop After Staff Response | ❌ Disabled |
+| Show Source Info | ✅ Enabled |
+
+### After-Hours Coverage
+
+For AI-only support outside business hours:
+
+| Setting | Value |
+|---------|-------|
+| Response Style | Helpful |
+| Confidence Threshold | 70% |
+| Outside Business Hours Only | ✅ Enabled |
+| Auto-Escalation | ✅ Enabled |
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
+  Get instant support via private DM
+</Card>

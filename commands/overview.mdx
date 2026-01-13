@@ -1,0 +1,80 @@
+---
+title: "Commands Overview"
+description: "Complete reference for all TicketCord slash commands"
+---
+
+TicketCord provides a comprehensive set of slash commands for managing your ticket system. Commands are organized by function and have specific permission requirements.
+
+## Quick Reference
+
+| Command | Permission | Plan | Description |
+|---------|------------|------|-------------|
+| `/help` | Everyone | All | View available commands |
+| `/close` | Creator/Staff | All | Close the current ticket |
+| `/reopen` | Creator/Staff | All | Reopen a closed ticket |
+| `/claim` | Staff | All | Claim a ticket |
+| `/unclaim` | Claimer/Staff | All | Release a claimed ticket |
+| `/add` | Creator/Staff | All | Add user or role to ticket |
+| `/remove` | Creator/Staff | All | Remove user or role from ticket |
+| `/rename` | Creator/Staff | All | Rename a ticket channel |
+| `/closerequest` | Staff | All | Request ticket closure from creator |
+| `/transcript` | Creator/Staff | All | Generate ticket transcript |
+| `/note` | Staff | All | Manage internal staff notes |
+| `/tag` | Staff | All | Manage ticket tags |
+| `/embed` | Manage Messages | All | Send custom embed message |
+| `/setup` | Administrator | All | Create ticket infrastructure |
+| `/on-call` | Staff/Everyone | All | Manage on-call status |
+| `/reply` | Staff | Basic+ | Send canned response |
+| `/priority` | Staff | AI Plan | Set ticket priority |
+| `/stats` | Staff | Pro+ | View ticket statistics |
+| `/approval` | Staff | Enterprise | Manage approval workflow |
+| `/purge` | Server Owner | All | Bulk delete tickets |
+| `Find ticket` | Staff | All | Context menu: find user's tickets |
+
+## Permission Levels
+
+<Info>
+  Commands check permissions in real-time. If staff roles change, permissions update immediately.
+</Info>
+
+| Level | Who |
+|-------|-----|
+| **Everyone** | Any user in the server |
+| **Creator** | The user who opened the ticket |
+| **Staff** | Users with configured staff roles |
+| **Claimer** | Staff member who claimed the ticket |
+| **Manage Messages** | Users with Discord's Manage Messages permission |
+| **Administrator** | Users with Discord's Administrator permission |
+| **Server Owner** | The server owner only |
+
+## Plan Requirements
+
+Some commands require specific subscription plans:
+
+| Plan | Features |
+|------|----------|
+| **Free** | Basic ticket management commands |
+| **Basic** | + Canned responses (`/reply`) |
+| **Pro** | + Statistics (`/stats`), AI priority |
+| **Enterprise** | + Approval workflow (`/approval`) |
+
+<Tip>
+  Most ticket management commands work on all plans. AI-powered features require Pro or higher.
+</Tip>
+
+## Command Categories
+
+<CardGroup cols={2}>
+  <Card title="Ticket Management" icon="ticket" href="/commands/ticket-management">
+    Open, close, claim, and manage tickets
+  </Card>
+  <Card title="Staff Tools" icon="wrench" href="/commands/staff-tools">
+    Notes, tags, transcripts, and quick replies
+  </Card>
+  <Card title="Administration" icon="gear" href="/commands/admin">
+    Setup, embeds, approvals, and bulk operations
+  </Card>
+  <Card title="Utility" icon="circle-info" href="/commands/utility">
+    Help, on-call status, and user lookups
+  </Card>
+</CardGroup>

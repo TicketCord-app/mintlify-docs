@@ -1,0 +1,228 @@
+---
+title: "Administration"
+description: "Commands for server setup, custom embeds, approvals, and bulk operations"
+---
+
+These commands are for server administrators and require elevated permissions.
+
+## /setup
+
+Create the Discord infrastructure needed for your ticket system.
+
+```
+/setup
+```
+
+**Permission:** Administrator
+
+**What it creates:**
+
+| Resource | Description |
+|----------|-------------|
+| **Tickets** category | Where new tickets are created |
+| **Closed Tickets** category | Where closed tickets are moved |
+| **Ticket Admin** role | Full ticket management access |
+| **Ticket Support** role | Basic ticket access |
+
+<Warning>
+  The `/setup` command only creates Discord resources. You **must** complete configuration on the [dashboard](https://ticketcord.net/dashboard) for your bot to work.
+</Warning>
+
+### Handling Existing Resources
+
+If `/setup` detects existing ticket categories or roles, you'll see options:
+
+| Option | Description |
+|--------|-------------|
+| **Create Anyway** | Creates new resources with unique names |
+| **Use Existing** | Skip creation - configure existing resources on dashboard |
+| **Cancel** | Abort setup |
+
+### After Running Setup
+
+<Steps>
+  <Step title="Go to the dashboard">
+    Visit [ticketcord.net/dashboard](https://ticketcord.net/dashboard)
+  </Step>
+  <Step title="Select resources">
+    Choose the categories and roles created by `/setup`
+  </Step>
+  <Step title="Configure settings">
+    Set up automation, AI features, and other options
+  </Step>
+  <Step title="Create embeds">
+    Build ticket embeds with buttons for users to open tickets
+  </Step>
+</Steps>
+
+---
+
+## /embed
+
+Send a custom embed message to a channel.
+
+```
+/embed <embed_name> [channel]
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `embed_name` | Choice | Yes | Name of the saved embed |
+| `channel` | Channel | No | Target channel (defaults to current) |
+
+**Permission:** Manage Messages
+
+**What happens:**
+- Sends the pre-designed embed to the channel
+- Includes any configured buttons (like "Open Ticket")
+- Embeds are created in the dashboard
+
+### Creating Embeds
+
+1. Go to your dashboard
+2. Navigate to **Embeds**
+3. Click **Create Embed**
+4. Design using the visual builder
+5. Save with a name
+
+### Embed Features
+
+| Feature | Description |
+|---------|-------------|
+| **Rich formatting** | Title, description, fields, images, footer |
+| **Custom colors** | Match your server's branding |
+| **Buttons** | Add interactive buttons (Open Ticket, Link, etc.) |
+| **Dropdown menus** | Let users select ticket categories |
+
+**Example:**
+```
+/embed embed_name:support-panel channel:#get-help
+```
+
+<Tip>
+  Create different embeds for different support types: general support, sales inquiries, bug reports, etc.
+</Tip>
+
+---
+
+## /approval
+
+Manage approval workflows for sensitive actions. Staff can request approval from senior staff before taking certain actions.
+
+```
+/approval request <type> <reason> [urgency] [amount] [custom_type]
+/approval approve [reason]
+/approval reject <reason>
+/approval status
+```
+
+**Permission:** Staff  
+**Plan:** Enterprise only
+
+### Subcommands
+
+| Subcommand | Description |
+|------------|-------------|
+| `request` | Submit an approval request |
+| `approve` | Approve a pending request |
+| `reject` | Reject a pending request |
+| `status` | View current approval status |
+
+### Request Options
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `type` | Choice | Yes | Type of approval |
+| `reason` | Text | Yes | Detailed reason for request |
+| `urgency` | Choice | No | How urgent is this |
+| `amount` | Text | No | Amount involved (for refunds) |
+| `custom_type` | Text | No | Custom type name |
+
+**Type choices:**
+- `refund` - Refund request
+- `ban` - Ban request
+- `policy_exception` - Policy exception
+- `escalation` - Escalation request
+- `custom` - Custom type
+
+### Requesting Approval
+
+```
+/approval request type:refund reason:Customer received damaged product amount:$49.99 urgency:high
+```
+
+### Approving/Rejecting
+
+Only users with approval authority can approve or reject:
+
+```
+/approval approve reason:Verified damage in photos
+/approval reject reason:Outside return window - policy doesn't allow
+```
+
+### Approval Workflow
+
+<Steps>
+  <Step title="Staff submits request">
+    Uses `/approval request` with details
+  </Step>
+  <Step title="Notification sent">
+    Approvers receive notification in configured channel
+  </Step>
+  <Step title="Review and decide">
+    Approver uses `/approval approve` or `/approval reject`
+  </Step>
+  <Step title="Action taken">
+    Original staff member is notified of decision
+  </Step>
+</Steps>
+
+<Info>
+  Configure approval roles and notification channels in your dashboard under **Enterprise Features** → **Approvals**.
+</Info>
+
+---
+
+## /purge
+
+Bulk delete tickets from your server. **Use with caution.**
+
+```
+/purge <type> [older_than]
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `type` | Choice | Yes | What to purge |
+| `older_than` | Integer | No | Days threshold |
+
+**Type choices:**
+- `closed` - Delete closed tickets only
+- `all` - Delete all tickets
+
+**Permission:** Server Owner only
+
+<Warning>
+  This action is **irreversible**. Deleted tickets cannot be recovered. Transcripts should be generated before purging.
+</Warning>
+
+### Safety Measures
+
+- Only the server owner can use this command
+- A confirmation dialog is shown before deletion
+- You can limit to tickets older than X days
+
+**Example:**
+```
+/purge type:closed older_than:30
+```
+
+This deletes all closed tickets older than 30 days.
+
+<Tip>
+  Set up **auto-delete** in your dashboard for automatic cleanup instead of manual purging.
+</Tip>
+
+<Card title="Utility Commands" icon="arrow-right" href="/commands/utility">
+  Learn about help, on-call, and user lookups
+</Card>

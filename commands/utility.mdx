@@ -1,0 +1,214 @@
+---
+title: "Utility Commands"
+description: "Help, on-call management, and user lookup commands"
+---
+
+These utility commands help with general bot usage and team coordination.
+
+## /help
+
+View available commands and get help.
+
+```
+/help
+```
+
+**Permission:** Everyone
+
+**What it shows:**
+- List of available commands
+- Brief description of each
+- Your permission level
+- Link to documentation
+
+<Info>
+  Command visibility depends on your permissions. Staff see more commands than regular users.
+</Info>
+
+---
+
+## /on-call
+
+Manage your on-call availability status. Shows other staff who's available to handle tickets.
+
+```
+/on-call toggle
+/on-call status
+```
+
+### Subcommands
+
+| Subcommand | Permission | Description |
+|------------|------------|-------------|
+| `toggle` | Staff | Toggle your on-call status |
+| `status` | Everyone | View current on-call roster |
+
+### Toggling Status
+
+```
+/on-call toggle
+```
+
+**Permission:** Staff only
+
+Toggles your availability between:
+- **On-Call** - You're available to handle tickets
+- **Off-Call** - You're not currently available
+
+<Tip>
+  Use this when going on break, ending your shift, or focusing on other tasks.
+</Tip>
+
+### Viewing Roster
+
+```
+/on-call status
+```
+
+**Permission:** Everyone
+
+Shows:
+- Which staff members are currently on-call
+- When they went on-call
+- Total staff available
+
+**Example output:**
+```
+Currently On-Call (3 staff):
+Sarah - On-call since 2:30 PM
+Mike - On-call since 3:00 PM  
+Alex - On-call since 1:15 PM
+```
+
+### Use Cases
+
+| Scenario | Action |
+|----------|--------|
+| Starting your shift | `/on-call toggle` (to go on-call) |
+| Taking a break | `/on-call toggle` (to go off-call) |
+| Checking coverage | `/on-call status` |
+| End of day | `/on-call toggle` (to go off-call) |
+
+<Info>
+  On-call status is per-server. Your status in one server doesn't affect other servers.
+</Info>
+
+---
+
+## Find Ticket (Context Menu)
+
+Find all tickets created by a specific user. This is a **context menu command** - right-click on a user to access it.
+
+### How to Use
+
+<Steps>
+  <Step title="Right-click on a user">
+    Find the user in the member list or a message
+  </Step>
+  <Step title="Select 'Apps'">
+    Hover over the Apps submenu
+  </Step>
+  <Step title="Click 'Find ticket'">
+    The command runs immediately
+  </Step>
+</Steps>
+
+**Permission:** Manage Messages (staff)
+
+### What It Shows
+
+- **Open tickets** - Active tickets from this user
+- **Closed tickets** - Previous tickets from this user
+- **Channel links** - Click to jump to each ticket
+- **Ticket status** - Current state of each ticket
+
+**Example output:**
+```
+Tickets for @JohnDoe
+
+Open Tickets:
+#ticket-0145 - billing-issue (claimed by @Sarah)
+#ticket-0152 - general
+
+Closed Tickets:
+#closed-0098 - refund-request
+#closed-0087 - account-help
+```
+
+### Use Cases
+
+| Scenario | Why Use It |
+|----------|-----------|
+| Repeat customer | Check their history before responding |
+| VIP identification | See if they've had issues before |
+| Issue patterns | Identify recurring problems |
+| Context gathering | Understand the customer relationship |
+
+<Tip>
+  This is faster than searching in the dashboard when you need quick access to a user's ticket history.
+</Tip>
+
+<Info>
+  Deleted ticket channels won't appear in results, even if the database record exists.
+</Info>
+
+---
+
+## Command Tips
+
+### Autocomplete
+
+Many commands support autocomplete:
+- Start typing the command
+- Options appear as you type
+- Use arrow keys to navigate
+- Press Tab or Enter to select
+
+### Ephemeral Responses
+
+Some command responses are **ephemeral** (only visible to you):
+- Error messages
+- Confirmation prompts
+- Sensitive information
+
+### Rate Limits
+
+Discord has rate limits on certain actions:
+- Channel renaming (2 per 10 minutes)
+- Message sending (5 per 5 seconds per channel)
+- Bulk operations may be queued
+
+<Warning>
+  If you see "Rate limited" errors, wait a moment before trying again.
+</Warning>
+
+---
+
+## Troubleshooting
+
+### Command Not Appearing
+
+1. **Check permissions** - You may not have access to that command
+2. **Refresh Discord** - Press Ctrl+R to refresh the command list
+3. **Check plan** - Some commands require specific plans
+4. **Bot permissions** - Ensure the bot has necessary Discord permissions
+
+### Command Errors
+
+| Error | Solution |
+|-------|----------|
+| "Not a ticket channel" | Run the command inside a ticket channel |
+| "Missing permissions" | Check your staff role assignment |
+| "Feature not available" | Upgrade your plan or enable the feature |
+| "Rate limited" | Wait and try again |
+
+### Getting Help
+
+<CardGroup cols={2}>
+  <Card title="Support Server" icon="discord" href="https://ticketcord.net/support">
+    Get help from our team via DM
+  </Card>
+  <Card title="Documentation" icon="book" href="/">
+    Browse the full documentation
+  </Card>
+</CardGroup>

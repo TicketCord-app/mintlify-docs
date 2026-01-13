@@ -1,0 +1,226 @@
+---
+title: "Atlas AI"
+description: "Your dashboard assistant for analytics, insights, and ticket information"
+---
+
+Atlas AI is your intelligent dashboard assistant. Ask questions about your tickets, get analytics insights, and find information quickly - all through natural conversation.
+
+<Info>
+  Atlas AI is a **Pro** feature. [Upgrade your plan](https://ticketcord.net/pricing) to access it.
+</Info>
+
+## What Atlas Can Do
+
+<CardGroup cols={2}>
+  <Card title="Ticket Insights" icon="ticket">
+    Find specific tickets, read conversations, check status
+  </Card>
+  <Card title="Analytics" icon="chart-line">
+    Get stats, trends, and performance metrics
+  </Card>
+  <Card title="Staff Performance" icon="users">
+    Check response times, resolution rates, workload
+  </Card>
+  <Card title="Bot Performance" icon="robot">
+    Compare bots, check activity, monitor health
+  </Card>
+</CardGroup>
+
+## Getting Started
+
+1. Open your dashboard
+2. Click the **Atlas AI** icon in the sidebar
+3. Select your bot from the dropdown
+4. Start asking questions!
+
+## Example Questions
+
+### Ticket Information
+
+```
+"Show me ticket #42"
+"What's the status of John's latest ticket?"
+"Find tickets about billing from last week"
+"How many tickets are currently open?"
+```
+
+### Analytics
+
+```
+"What's our average response time this month?"
+"How many tickets did we resolve this week?"
+"What's our busiest day for tickets?"
+"Show ticket volume trends for the past 30 days"
+```
+
+### Staff Performance
+
+```
+"Who resolved the most tickets this week?"
+"What's Sarah's average response time?"
+"Which staff member handles billing tickets?"
+"Show staff performance for the past month"
+```
+
+### Bot Performance
+
+```
+"How is my support bot performing?"
+"Compare activity across all my bots"
+"Which server has the most tickets?"
+"Show bot performance metrics"
+```
+
+## Referencing Tickets
+
+You can reference specific tickets using `@ticket:ID`:
+
+```
+Tell me about @ticket:42
+What was the resolution for @ticket:123?
+```
+
+As you type `@ticket:`, Atlas suggests recent tickets you can select.
+
+## Sessions
+
+Atlas remembers your conversation within a session:
+
+```
+You: "Show me open billing tickets"
+Atlas: [Shows 5 billing tickets]
+You: "Which one has been waiting longest?"
+Atlas: [Knows you mean billing tickets]
+```
+
+### Session Features
+
+- **History** - Previous conversations are saved
+- **Context** - Atlas remembers what you discussed
+- **Pin Sessions** - Save important conversations for later
+- **New Session** - Start fresh when changing topics
+
+## Available Tools
+
+Atlas uses these tools to answer your questions:
+
+### getTicketDetails
+
+Retrieves comprehensive ticket information:
+- Full conversation history
+- Status and priority
+- Staff assignments
+- Timeline and timestamps
+
+### getStaffPerformance
+
+Analyzes staff metrics:
+- Response times
+- Resolution rates
+- Ticket volume handled
+- Activity patterns
+
+### getTicketAnalytics
+
+Generates analytics reports:
+- Volume trends
+- Category breakdowns
+- Resolution metrics
+- Peak hours analysis
+
+### getBotPerformance
+
+Compares bot performance:
+- Guild/server counts
+- Activity metrics
+- Ticket volumes per bot
+
+### getRecentActivity
+
+Fetches filtered activity:
+- Recent tickets by criteria
+- Status changes
+- Staff actions
+
+## Best Practices
+
+### Be Specific
+
+Specific questions get better answers:
+- ✅ "What was our response time for billing tickets last week?"
+- ❌ "How are we doing?"
+
+### Use Time Ranges
+
+Specify time periods for better results:
+- "This week", "Last month", "Past 30 days"
+- "Since January", "In Q4"
+
+### Reference Context
+
+Use ticket IDs and staff names when possible:
+- "@ticket:123"
+- "Sarah's performance"
+- "Billing category"
+
+### Ask Follow-Ups
+
+Atlas remembers context, so follow up naturally:
+```
+"Show me unresolved tickets"
+"Which one is highest priority?"
+"What's the history on that one?"
+```
+
+## Data Security
+
+Atlas only accesses data you own:
+- Your bots only
+- Your servers only
+- No access to other users' data
+
+All queries are:
+- Authenticated with your session
+- Limited to your bot IDs
+- Read-only (cannot modify data)
+
+## Token Usage
+
+Atlas queries use AI tokens:
+- Simple questions: ~500-1,000 tokens
+- Complex analytics: ~2,000-3,000 tokens
+- Ticket lookups: ~500-1,500 tokens
+
+<Tip>
+  Token usage is shown after each response so you can monitor consumption.
+</Tip>
+
+## Troubleshooting
+
+### "No data found"
+
+1. **Check bot selection** - Make sure the right bot is selected
+2. **Check time range** - Expand the time period
+3. **Check criteria** - Your filters might be too narrow
+
+### Slow Responses
+
+1. **Complex queries** - Large data requests take longer
+2. **Ticket history** - Full conversations are data-intensive
+3. **Be patient** - Atlas shows progress while working
+
+### Wrong Information
+
+1. **Clarify question** - Be more specific
+2. **Check context** - Atlas might be using previous context
+3. **Start new session** - Clear context if needed
+
+### Can't Find Tickets
+
+1. **Check ticket ID** - Verify the number is correct
+2. **Check ownership** - Ticket must be from your bot
+3. **Check access** - You need access to the server
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
+  Get instant support via private DM
+</Card>

@@ -1,0 +1,276 @@
+---
+title: "Knowledge Base"
+description: "Teach your bot to automatically answer questions from your documentation"
+---
+
+The Knowledge Base lets you connect your documentation, FAQs, or website to your bot. When users open tickets, your bot automatically suggests relevant answers based on what you've taught it.
+
+<Info>
+  Knowledge Base is a **Pro** feature. [Upgrade your plan](https://ticketcord.net/pricing) to access it.
+</Info>
+
+## How It Works
+
+1. **Add Sources** - Connect your website, documentation, or FAQ pages
+2. **Bot Learns** - We scan and understand your content automatically
+3. **Auto-Suggest** - When users ask questions, your bot suggests answers from your sources
+
+Your support team doesn't need to type the same answers repeatedly. The bot handles common questions while staff focus on complex issues.
+
+## Getting Started
+
+<Steps>
+  <Step title="Enable Knowledge Base">
+    Go to your bot's dashboard → select your server → **AI Features** → **Knowledge Base**
+
+    Toggle the switch to enable it.
+  </Step>
+  <Step title="Add a Source">
+    Click **Add Source** and enter:
+    - **URL** - Link to your documentation page
+    - **Title** - A name to identify this source
+    - **Type** - Single page or documentation site
+
+    Click **Save** then **Index** to scan the content.
+  </Step>
+  <Step title="Test It">
+    Open a test ticket and ask a question that your documentation answers.
+
+    Your bot should suggest an answer within a few seconds.
+  </Step>
+</Steps>
+
+## Source Types
+
+You can add different types of content sources:
+
+| Type | Best For | How It Works |
+|------|----------|--------------|
+| **Single Page** | FAQ pages, specific guides | Scans one page only |
+| **Documentation Site** | Full documentation | Crawls multiple pages (up to 100) |
+| **Discord Channel** | Announcements, rules | Indexes messages from a channel |
+
+### Single Page
+
+Use this for standalone pages like:
+- FAQ pages
+- Pricing pages
+- Individual guides or tutorials
+
+The bot scans just that one page and learns from its content.
+
+### Documentation Site
+
+Use this for complete documentation sites. The bot will:
+1. Start from your main page
+2. Follow links to discover more pages
+3. Scan up to 100 pages automatically
+
+<Tip>
+  Set the **Crawl Depth** to control how many pages are scanned. Start with 1-2 and increase if needed.
+</Tip>
+
+### Discord Channel
+
+Use this to teach your bot from existing Discord content:
+- Announcement channels
+- Rules channels
+- FAQ channels
+
+The bot reads messages from the channel and learns from them.
+
+<Warning>
+  Only use public channels. The bot respects Discord permissions and won't access private channels.
+</Warning>
+
+## Source Settings
+
+Each source has settings you can customize:
+
+### Update Frequency
+
+How often the bot checks for changes:
+
+| Frequency | When to Use |
+|-----------|-------------|
+| **Manual** | Content rarely changes |
+| **Daily** | Active documentation with frequent updates |
+| **Weekly** | Moderate update frequency |
+| **Monthly** | Stable content that rarely changes |
+
+<Info>
+  You can always manually re-index a source by clicking the **Refresh** button.
+</Info>
+
+### Priority
+
+Sources with higher priority (1-10) are checked first when answering questions. Use this when you have:
+- Official documentation (high priority)
+- Community guides (lower priority)
+
+### Categories
+
+Assign sources to specific ticket categories. For example:
+- Billing documentation → only used for "Billing" tickets
+- Technical guides → only used for "Technical Support" tickets
+
+Leave empty to use the source for all tickets.
+
+## AI Settings
+
+Customize how your bot responds to questions.
+
+### Response Style
+
+Choose how detailed AI suggestions should be:
+
+| Style | Description |
+|-------|-------------|
+| **Concise** | Short answers that get straight to the point |
+| **Balanced** | Mix of context and actionable steps (recommended) |
+| **Helpful** | Detailed explanations with extra context |
+
+### Confidence Threshold
+
+The minimum confidence level (0-100%) required before showing a suggestion:
+
+- **70%+ (default)** - Only shows suggestions the AI is confident about
+- **50-70%** - Shows more suggestions, but some may be less accurate
+- **Below 50%** - Not recommended, may show irrelevant suggestions
+
+<Tip>
+  Start with 70% and adjust based on your results. Lower it if the bot isn't suggesting answers often enough.
+</Tip>
+
+## Behavior Settings
+
+Control when and how the bot provides suggestions.
+
+### Stop After Staff Response
+
+When enabled, the bot stops suggesting answers once a staff member replies. This prevents the AI from interrupting staff conversations.
+
+### Respect Staff Presence
+
+When enabled, the bot backs off if staff members are actively responding to a ticket. It waits 5 minutes after the last staff message before suggesting again.
+
+### Outside Business Hours Only
+
+Only provide AI suggestions when no staff are available (outside your configured business hours). Useful if you want humans to handle tickets during work hours.
+
+## Feedback System
+
+The feedback system helps your bot learn and improve over time.
+
+### How It Works
+
+When your bot suggests an answer, users see thumbs up/down buttons:
+- 👍 **Helpful** - The answer was useful
+- 👎 **Not Helpful** - The answer wasn't relevant or correct
+
+The bot uses this feedback to improve future suggestions.
+
+### Settings
+
+| Setting | Description |
+|---------|-------------|
+| **Enable Feedback** | Show vote buttons on suggestions |
+| **Staff Only Voting** | Only count votes from staff members |
+| **Self-Learning** | Automatically adjust content ranking based on votes |
+
+### Self-Learning
+
+When enabled, the bot automatically:
+- **Boosts** content that gets positive feedback (shown more often)
+- **Penalizes** content that gets negative feedback (shown less often)
+
+This happens after a minimum number of votes (default: 3) to avoid acting on outliers.
+
+## Escalation
+
+When the AI doesn't have a good answer, it can automatically escalate to your team.
+
+### Auto-Escalation
+
+When enabled, the bot will:
+1. Detect when it can't find a confident answer
+2. Notify your staff team
+3. Let users know a human will help them
+
+### Human Assistance Detection
+
+The bot understands when users want to talk to a human. Phrases like:
+- "I want to speak to someone"
+- "Can I talk to a real person?"
+- "Human please"
+
+Will trigger immediate escalation to your team.
+
+## The /train Command
+
+The `/train` command lets you teach your bot from historical ticket conversations.
+
+### How It Works
+
+1. Run `/train` in your Discord server
+2. Choose how many days of history to analyze (default: 90 days)
+3. The bot scans resolved tickets and learns Q&A pairs
+4. This knowledge is added to your Knowledge Base
+
+<Info>
+  Only administrators can use the `/train` command.
+</Info>
+
+### When to Use It
+
+- When first setting up Knowledge Base
+- After resolving many new types of issues
+- To capture tribal knowledge from your team
+
+### AI Consent
+
+The first time you run `/train`, you'll be asked to accept AI data processing terms. This is required because:
+- Ticket conversations are sent to AI for analysis
+- The AI extracts question-answer pairs
+- These pairs are stored in your Knowledge Base
+
+Only the bot owner can accept these terms.
+
+## Limits by Plan
+
+| Feature | Pro | Enterprise |
+|---------|-----|------------|
+| Knowledge Base Sources | 2 | 15 |
+| AI Tokens/Month | 10M | 30M |
+| Auto-Updates | ✅ | ✅ |
+| Feedback Analytics | ✅ | ✅ |
+
+<Card title="Upgrade Your Plan" icon="rocket" href="https://ticketcord.net/pricing">
+  Get more sources and AI tokens with Enterprise
+</Card>
+
+## Troubleshooting
+
+### Bot Not Suggesting Answers
+
+1. **Check if enabled** - Make sure Knowledge Base is toggled on
+2. **Check sources** - At least one source should be indexed (green status)
+3. **Lower confidence** - Try lowering the confidence threshold to 50%
+4. **Check triggers** - Make sure "On Ticket Creation" is enabled
+
+### Indexing Failed
+
+1. **Check the URL** - Make sure the page is publicly accessible
+2. **Try again** - Sometimes pages are temporarily unavailable
+3. **Check page size** - Very large pages (50,000+ characters) may be trimmed
+
+### Wrong Answers
+
+1. **Check source content** - Make sure your documentation is accurate
+2. **Add better sources** - More specific documentation helps
+3. **Use categories** - Limit which tickets can use each source
+4. **Enable feedback** - Let users vote to improve suggestions
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
+  Get instant support via private DM
+</Card>

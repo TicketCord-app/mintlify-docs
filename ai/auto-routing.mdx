@@ -1,0 +1,227 @@
+---
+title: "Auto-Routing"
+description: "Automatically route tickets to the right category or team"
+---
+
+Auto-Routing uses AI to analyze ticket content and automatically move tickets to the appropriate category. No more manual sorting - the bot handles it for you.
+
+<Info>
+  Auto-Routing is a **Pro** feature. [Upgrade your plan](https://ticketcord.net/pricing) to access it.
+</Info>
+
+## How It Works
+
+1. User opens a ticket
+2. AI reads the message content
+3. AI matches content against your routing rules
+4. Ticket is automatically moved to the right category
+
+**Example:**
+> User: "I need a refund for my last purchase"
+
+AI detects "refund" and moves the ticket to your "Billing" category.
+
+## Getting Started
+
+<Steps>
+  <Step title="Enable Auto-Routing">
+    Go to **AI Features** → **Auto-Routing** and toggle it on.
+  </Step>
+  <Step title="Create Routing Rules">
+    Click **Add Rule** and define what triggers the route and where tickets should go.
+  </Step>
+  <Step title="Test It">
+    Open a test ticket with content that matches your rule to verify it works.
+  </Step>
+</Steps>
+
+## Analysis Modes
+
+Choose when the AI analyzes tickets:
+
+| Mode | Description | Best For |
+|------|-------------|----------|
+| **First Message Only** | Analyze immediately after the first message | Fast routing, simple tickets |
+| **First 3 Messages** | Wait for up to 3 messages before analyzing | More context, better accuracy |
+| **First 5 Messages** | Wait for up to 5 messages | Complex tickets needing more context |
+| **Smart Detection** | AI decides when it has enough context | Recommended for most setups |
+
+<Tip>
+  **Smart Detection** is recommended - it balances speed with accuracy by waiting only when needed.
+</Tip>
+
+## Creating Routing Rules
+
+Each rule has three parts:
+1. **Triggers** - What to look for
+2. **Conditions** - Specific criteria to match
+3. **Actions** - What to do when matched
+
+### Triggers
+
+You can trigger routing based on:
+
+| Trigger | Description | Example |
+|---------|-------------|---------|
+| **Keywords** | Specific words or phrases | "refund", "payment", "bug" |
+| **Topic** | General topic categories | billing, technical, general |
+| **Sentiment** | User's emotional state | angry, frustrated, confused |
+| **Urgency** | How urgent the request seems | low, medium, high, critical |
+| **Language** | Detected language | English, Spanish, French |
+
+### Conditions
+
+Set specific criteria for each trigger:
+
+**Keywords Example:**
+```
+Keywords: refund, payment failed, charge, billing
+```
+
+**Sentiment Example:**
+```
+Sentiments: angry, frustrated
+→ Route to senior support
+```
+
+**Topic Example:**
+```
+Topics: bug_report, technical
+→ Route to Technical Support category
+```
+
+### Actions
+
+When a rule matches, you can:
+
+| Action | Description |
+|--------|-------------|
+| **Move to Category** | Route ticket to a specific category |
+| **Add to Queue** | Add to a priority queue for staff |
+| **Notify Staff** | Ping a role when routed |
+| **Add Tags** | Automatically tag the ticket |
+
+## Rule Priority
+
+When multiple rules might match, priority determines which one wins:
+
+- Higher priority (1-10) = checked first
+- First matching rule is applied
+- Lower priority rules are skipped
+
+**Example:**
+```
+Rule 1 (Priority 10): Keywords "urgent", "emergency" → Critical Support
+Rule 2 (Priority 5): Topic "technical" → Technical Support
+```
+
+If someone says "urgent technical issue", Rule 1 matches first (higher priority).
+
+## Confidence Threshold
+
+Each rule has a confidence threshold (0-100%):
+
+- **80%+ (High)** - Only route when very confident
+- **60-80% (Medium)** - Balance of accuracy and coverage
+- **Below 60% (Low)** - Route more often, may be less accurate
+
+<Warning>
+  Low confidence thresholds may cause incorrect routing. Start high and lower if needed.
+</Warning>
+
+## Fallback Behavior
+
+When no rules match, you can:
+
+| Option | Description |
+|--------|-------------|
+| **No Action** | Leave ticket in original category |
+| **Move to Default** | Route to a fallback category |
+| **Notify Staff** | Alert staff to manually review |
+
+## Templates
+
+TicketCord includes pre-built templates for common setups:
+
+### Business Support
+Routes based on billing, sales, and support topics.
+
+### SaaS Product
+Routes based on bugs, feature requests, and technical issues.
+
+### Community
+Routes based on general inquiries, reports, and applications.
+
+<Tip>
+  Start with a template and customize it for your needs.
+</Tip>
+
+## Delay Before Analysis
+
+You can set a delay (in seconds) before AI analyzes the ticket:
+
+- **0 seconds** - Immediate analysis
+- **5-10 seconds** - Wait for user to finish typing
+- **30+ seconds** - Wait for follow-up messages
+
+<Info>
+  Some users send multiple messages. A short delay lets them finish before routing.
+</Info>
+
+## Example Rules
+
+### Billing Issues to Billing Team
+
+```
+Trigger: Keywords
+Keywords: refund, payment, charge, invoice, billing, subscription
+Action: Move to "Billing Support" category
+Notify: @Billing Team
+Priority: 8
+```
+
+### Frustrated Users to Senior Staff
+
+```
+Trigger: Sentiment
+Sentiments: angry, frustrated
+Action: Move to "Priority Support" category
+Notify: @Senior Support
+Priority: 10
+```
+
+### Bug Reports to Technical
+
+```
+Trigger: Topic
+Topics: bug_report, technical
+Keywords: bug, broken, error, not working, crash
+Action: Move to "Technical Support" category
+Add Tags: needs-investigation
+Priority: 7
+```
+
+## Troubleshooting
+
+### Tickets Not Being Routed
+
+1. **Check if enabled** - Make sure Auto-Routing is toggled on
+2. **Check rules** - Verify you have at least one active rule
+3. **Check conditions** - Make sure the ticket content matches your triggers
+4. **Lower confidence** - Try lowering the confidence threshold
+
+### Wrong Category
+
+1. **Check priority** - Higher priority rules match first
+2. **Check conditions** - Make sure conditions aren't too broad
+3. **Add specificity** - Use more specific keywords or combinations
+
+### Delayed Routing
+
+1. **Check analysis mode** - "First Message" is fastest
+2. **Check delay setting** - Lower the delay before analysis
+3. **Check confidence** - Higher confidence may take longer to confirm
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
+  Get instant support via private DM
+</Card>

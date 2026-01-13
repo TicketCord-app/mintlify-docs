@@ -1,0 +1,204 @@
+---
+title: "Duplicate Detection"
+description: "Find and link tickets about the same issue"
+---
+
+Duplicate Detection uses AI to identify when multiple tickets are about the same issue. This helps your team avoid duplicate work and provides consistent answers.
+
+<Info>
+  Duplicate Detection is a **Pro** feature. [Upgrade your plan](https://ticketcord.net/pricing) to access it.
+</Info>
+
+## How It Works
+
+1. User opens a new ticket
+2. AI compares it to recent tickets (same user and others)
+3. If a similar ticket is found, staff is notified
+4. Staff can link or merge the tickets
+
+**Example:**
+> User opens Ticket #42: "My payment isn't going through"
+>
+> User opened Ticket #40 yesterday: "Payment failing on checkout"
+>
+> AI detects these are likely the same issue and alerts staff.
+
+## Why It Matters
+
+### Avoid Duplicate Work
+
+Without detection, two staff members might work on the same issue independently, wasting time and potentially giving conflicting answers.
+
+### Consistent Answers
+
+When tickets are linked, staff can see previous responses and provide consistent information.
+
+### Faster Resolution
+
+If a similar ticket was already resolved, staff can apply the same solution immediately.
+
+## Getting Started
+
+<Steps>
+  <Step title="Enable Duplicate Detection">
+    Go to **AI Features** → **Duplicate Detection** and toggle it on.
+  </Step>
+  <Step title="Configure Thresholds">
+    Set how confident AI should be before flagging duplicates.
+  </Step>
+  <Step title="Test It">
+    Open two tickets with similar content to verify detection works.
+  </Step>
+</Steps>
+
+## Confidence Levels
+
+AI assigns a confidence level to potential duplicates:
+
+| Level | Confidence | What It Means |
+|-------|------------|---------------|
+| **Very High** | 90%+ | Almost certainly the same issue |
+| **High** | 75-90% | Very likely related |
+| **Medium** | 60-75% | Possibly related, review recommended |
+| **Low** | 45-60% | Might be related, less certain |
+
+<Tip>
+  Start with **High** threshold (75%) and adjust based on your experience. Too low = false positives. Too high = missed duplicates.
+</Tip>
+
+## Settings
+
+### Confidence Thresholds
+
+Customize the threshold for each confidence level:
+
+```
+Very High: 90%+    → Automatically notify
+High: 75-90%       → Flag for review
+Medium: 60-75%     → Suggest possible match
+Low: 45-60%        → Only show on request
+```
+
+### Time Window
+
+How far back to search for duplicates:
+- **24 hours** - Only very recent tickets
+- **7 days** - Recommended for most teams
+- **30 days** - For recurring issues
+
+### Scope
+
+What tickets to compare against:
+
+| Option | Description |
+|--------|-------------|
+| **Same User Only** | Only compare tickets from the same user |
+| **All Users** | Compare against all recent tickets |
+| **Same Category** | Only compare within the same category |
+
+## How Detection Works
+
+### Content Similarity
+
+AI compares the meaning, not just exact words:
+
+```
+Ticket A: "My payment isn't working"
+Ticket B: "Payment failed at checkout"
+→ Detected as similar (same meaning)
+```
+
+### Topic Matching
+
+AI understands the general topic:
+
+```
+Ticket A: "How do I upgrade my plan?"
+Ticket B: "What's the process for upgrading?"
+→ Detected as similar (same topic)
+```
+
+### User Context
+
+The same user opening multiple tickets is weighted higher:
+
+```
+Same user + similar content = likely duplicate
+Different users + similar content = might be same issue affecting multiple users
+```
+
+## What Staff Sees
+
+When a duplicate is detected, staff sees:
+
+1. **Notification** in the ticket with confidence level
+2. **Link** to the potential duplicate ticket
+3. **Options** to:
+   - View the other ticket
+   - Link the tickets
+   - Dismiss the suggestion
+
+## Actions
+
+### Link Tickets
+
+Connect two related tickets without merging them:
+- Both tickets remain open
+- Staff can see they're related
+- Good for related but distinct issues
+
+### Dismiss
+
+Mark the suggestion as incorrect:
+- AI learns from this feedback
+- The suggestion won't appear again
+- Use when tickets aren't actually related
+
+## Best Practices
+
+### Review, Don't Auto-Merge
+
+Duplicate detection suggests matches - staff should verify:
+- Are they truly the same issue?
+- Should they be linked or merged?
+- Is additional context needed?
+
+### Use Consistent Subject Lines
+
+Help AI by using clear subject lines:
+- ✅ "Payment failing with error code 401"
+- ❌ "Help!!!" (hard to match)
+
+### Check Before Creating
+
+Encourage users to check existing tickets:
+- Reduces actual duplicates
+- Makes detection more accurate
+- Improves support efficiency
+
+## Troubleshooting
+
+### Too Many False Positives
+
+If unrelated tickets are being flagged:
+1. **Raise threshold** - Increase confidence requirement
+2. **Narrow scope** - Check "Same User Only" or "Same Category"
+3. **Reduce time window** - Shorten to 24-48 hours
+
+### Missing Obvious Duplicates
+
+If duplicates aren't being detected:
+1. **Lower threshold** - Decrease confidence requirement
+2. **Expand scope** - Check "All Users"
+3. **Extend time window** - Increase to 14-30 days
+
+### Same User, Different Issues
+
+If different issues from the same user are flagged:
+1. **Check thresholds** - Make sure "Medium" isn't too low
+2. **Review scope** - "Same Category" may help
+3. **Train your users** - Encourage clear subject lines
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
+  Get instant support via private DM
+</Card>
