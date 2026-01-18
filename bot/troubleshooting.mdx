@@ -7,20 +7,25 @@ description: "Error codes and solutions for common issues"
 
 When something goes wrong, TicketCord displays an error code to help identify the issue. Find your error code below for solutions.
 
-### TC001 - Rate Limited
+### TC001 - Rate Limited {#tc001-rate-limited}
 
 **What it means:** Discord is temporarily blocking requests because too many actions were performed too quickly.
 
 **Common causes:**
 - Closing/reopening tickets rapidly
 - Renaming many ticket channels in a short time
+- Pinning/unpinning tickets quickly
 - Discord limits channel edits to 2 per 10 minutes
 
 **Solution:** Wait 5-10 minutes and try again. This is a Discord limitation, not a TicketCord issue.
 
+<Tip>
+  When you hit this limit, TicketCord will still save your changes (like pinning a ticket). The visual update (channel name change) will be applied automatically once the rate limit resets.
+</Tip>
+
 ---
 
-### TC002 - Permission Denied
+### TC002 - Permission Denied {#tc002-permission-denied}
 
 **What it means:** The bot lacks the required permissions to perform the action.
 
@@ -40,7 +45,7 @@ When something goes wrong, TicketCord displays an error code to help identify th
 
 ---
 
-### TC004 - Resource Not Found
+### TC004 - Resource Not Found {#tc004-resource-not-found}
 
 **What it means:** A channel, category, or role that TicketCord needs no longer exists.
 
@@ -57,7 +62,7 @@ When something goes wrong, TicketCord displays an error code to help identify th
 
 ---
 
-### TC005 - Discord API Error
+### TC005 - Discord API Error {#tc005-discord-api-error}
 
 **What it means:** Discord's servers returned an error or are temporarily unavailable.
 
@@ -70,7 +75,7 @@ When something goes wrong, TicketCord displays an error code to help identify th
 
 ---
 
-### TC008 - Failed to Fetch Resources
+### TC008 - Failed to Fetch Resources {#tc008-failed-to-fetch-resources}
 
 **What it means:** The bot couldn't retrieve the list of roles or channels from Discord.
 
@@ -82,7 +87,7 @@ When something goes wrong, TicketCord displays an error code to help identify th
 
 ---
 
-### TC009 - Invalid Selection
+### TC009 - Invalid Selection {#tc009-invalid-selection}
 
 **What it means:** No valid option was selected, or the selected resource doesn't meet requirements.
 
@@ -95,7 +100,7 @@ When something goes wrong, TicketCord displays an error code to help identify th
 
 ---
 
-### TC010 - Unknown Action
+### TC010 - Unknown Action {#tc010-unknown-action}
 
 **What it means:** An internal error occurred processing your request.
 
@@ -107,7 +112,7 @@ When something goes wrong, TicketCord displays an error code to help identify th
 
 ---
 
-### TC011 - Configuration Not Found
+### TC011 - Configuration Not Found {#tc011-configuration-not-found}
 
 **What it means:** The server hasn't been configured yet, or the configuration was reset.
 
@@ -116,6 +121,23 @@ When something goes wrong, TicketCord displays an error code to help identify th
 2. Select your bot and server
 3. Complete the configuration wizard
 4. Make sure to save your settings
+
+---
+
+### TC012 - Input Validation Error {#tc012-input-validation}
+
+**What it means:** The input you provided is invalid or doesn't meet the requirements.
+
+**Common causes:**
+- Invalid time format for auto-close settings
+- Time value is too short (minimum 15 minutes) or too long (maximum 30 days)
+- Missing required parameters in a command
+
+**Solution:** Check the format of your input. For time values, use formats like `30M` (30 minutes), `2H` (2 hours), or `1D` (1 day).
+
+<Info>
+  Valid time range for auto-close: **15 minutes** to **30 days**
+</Info>
 
 ---
 
