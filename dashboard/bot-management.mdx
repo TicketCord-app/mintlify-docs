@@ -1,0 +1,239 @@
+---
+title: "Bot Management"
+description: "Create, configure, and manage your Discord bots"
+---
+Manage all your custom Discord bots from the dashboard, including creation, configuration, and monitoring.
+
+## Your Bots
+
+### Bot Limits by Plan
+
+| Plan | Maximum Bots |
+|------|--------------|
+| Free | 1 |
+| Basic | 3 |
+| Pro | 3 |
+| Enterprise | 6 |
+
+### Bot List View
+
+Your bot list shows:
+
+- Bot name and avatar
+- Status (Online/Offline/Starting)
+- Connected servers count
+- Last activity
+- Quick actions
+
+## Creating a Bot
+
+<Steps>
+  <Step title="Click Create Bot">
+    From the dashboard, click **Create New Bot**
+  </Step>
+  <Step title="Create Discord Application">
+    Follow the guide to create a Discord application at [discord.com/developers](https://discord.com/developers/applications)
+  </Step>
+  <Step title="Enter Credentials">
+    Copy your Bot Token and Client ID into TicketCord
+  </Step>
+  <Step title="Configure Settings">
+    Set bot name, avatar, and initial settings
+  </Step>
+  <Step title="Invite to Server">
+    Use the generated invite link to add your bot to Discord
+  </Step>
+</Steps>
+
+<Warning>
+  Never share your bot token publicly. If compromised, regenerate it immediately in Discord Developer Portal.
+</Warning>
+
+## Bot Status
+
+### Status Indicators
+
+| Status | Meaning |
+|--------|---------|
+| 🟢 **Online** | Bot is connected and operational |
+| 🟡 **Starting** | Bot is connecting to Discord |
+| 🔴 **Offline** | Bot is not connected |
+| ⚪ **Stopped** | Bot manually stopped |
+
+### Checking Bot Health
+
+The bot detail page shows:
+
+- **Uptime**: Time since last restart
+- **Latency**: Response time to Discord
+- **Servers**: Connected guild count
+- **Last Event**: Most recent activity
+
+## Bot Configuration
+
+### Basic Settings
+
+| Setting | Description |
+|---------|-------------|
+| **Name** | Display name (synced from Discord) |
+| **Avatar** | Bot profile picture |
+| **Status** | Custom presence message |
+| **Activity Type** | Playing, Watching, Listening, etc. |
+
+<Info>
+  Custom status is available on **Basic** plan and above.
+</Info>
+
+### Customization (Paid Plans)
+
+| Feature | Basic | Pro | Enterprise |
+|---------|-------|-----|------------|
+| Custom status | ✅ | ✅ | ✅ |
+| Remove branding | ✅ | ✅ | ✅ |
+| Custom footer text | ❌ | ❌ | ✅ |
+| Custom footer icon | ❌ | ❌ | ✅ |
+
+## Managing Bot Credentials
+
+### Updating Bot Token
+
+If you need to update your bot token:
+
+<Steps>
+  <Step title="Generate New Token">
+    In Discord Developer Portal, regenerate your bot token
+  </Step>
+  <Step title="Update in TicketCord">
+    Go to Bot Settings → Credentials
+  </Step>
+  <Step title="Paste New Token">
+    Enter the new token and save
+  </Step>
+  <Step title="Restart Bot">
+    The bot will restart with the new token
+  </Step>
+</Steps>
+
+### Security Best Practices
+
+- Regenerate tokens if exposed
+- Use unique tokens per bot
+- Never commit tokens to version control
+- Monitor for unusual activity
+
+## Bot Actions
+
+### Starting/Stopping
+
+- **Start**: Connects bot to Discord
+- **Stop**: Disconnects bot (keeps configuration)
+- **Restart**: Stops and starts the bot
+
+<Note>
+  Stopping a bot doesn't delete any data. Tickets and configuration are preserved.
+</Note>
+
+### Deleting a Bot
+
+<Warning>
+  Deleting a bot removes all associated configurations and data. This cannot be undone.
+</Warning>
+
+To delete a bot:
+
+1. Go to Bot Settings → Danger Zone
+2. Click **Delete Bot**
+3. Confirm by typing the bot name
+4. Bot and all data are permanently removed
+
+## Server Management
+
+### Viewing Connected Servers
+
+For each bot, you can see:
+
+- All Discord servers where it's installed
+- Member count per server
+- Configuration status
+- Last activity
+
+### Per-Server Settings
+
+Click a server to manage:
+
+- Ticket categories and channels
+- Staff roles
+- Welcome messages
+- AI features
+- Automation rules
+
+## Diagnostics
+
+### Bot Health Check
+
+Run diagnostics to check:
+
+- Discord API connection
+- Database connectivity
+- Permission verification
+- Configuration validation
+
+### Error Codes
+
+If your bot encounters issues, you may see error codes:
+
+| Code | Meaning | Solution |
+|------|---------|----------|
+| TC001 | Invalid token | Regenerate and update token |
+| TC002 | Missing permissions | Grant required permissions |
+| TC003 | Rate limited | Wait and retry |
+| TC004 | Configuration error | Check server setup |
+
+See [Troubleshooting](/bot/troubleshooting) for full error code reference.
+
+### Logs
+
+View recent bot activity:
+
+- Connection events
+- Command usage
+- Errors and warnings
+- Performance metrics
+
+## Multi-Bot Management
+
+### Organizing Multiple Bots
+
+<Tip>
+  Use clear naming conventions like "Support Bot - Gaming" and "Support Bot - Sales" to distinguish bots.
+</Tip>
+
+### Sharing Configuration
+
+Currently, each bot has independent configuration. To copy settings:
+
+1. Export configuration from source bot
+2. Import into target bot
+3. Adjust server-specific settings
+
+## Performance Monitoring
+
+### Metrics Available
+
+- **Response Time**: Average command latency
+- **Uptime**: Percentage of time online
+- **Tickets Handled**: Daily/weekly/monthly counts
+- **AI Usage**: Token consumption
+
+### Alerts
+
+Set up alerts for:
+
+- Bot goes offline
+- High error rate
+- Unusual activity
+- Token usage thresholds
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/discord">
+  Join our Discord for support
+</Card>

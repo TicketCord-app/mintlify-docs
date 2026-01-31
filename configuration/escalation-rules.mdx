@@ -1,0 +1,262 @@
+---
+title: "Escalation Rules"
+description: "Automatically escalate tickets based on conditions"
+---
+Configure automatic escalation to ensure important tickets get the right attention.
+
+## What is Escalation?
+
+Escalation automatically routes tickets to senior staff or specialized teams when certain conditions are met. This ensures:
+
+- Urgent issues get immediate attention
+- Stuck tickets don't fall through cracks
+- Complex issues reach appropriate experts
+- Customer satisfaction is maintained
+
+## Types of Escalation
+
+<CardGroup cols={2}>
+  <Card title="Time-Based" icon="clock">
+    Escalate if no response within X hours
+  </Card>
+  <Card title="Priority-Based" icon="triangle-exclamation">
+    Escalate high/urgent tickets automatically
+  </Card>
+  <Card title="Sentiment-Based" icon="face-angry">
+    Escalate negative sentiment tickets
+  </Card>
+  <Card title="Manual" icon="hand">
+    Staff can escalate at any time
+  </Card>
+</CardGroup>
+
+## Creating Escalation Rules
+
+<Steps>
+  <Step title="Navigate to Settings">
+    Dashboard → Configuration → Escalation Rules
+  </Step>
+  <Step title="Click Create Rule">
+    Select **Create New Rule**
+  </Step>
+  <Step title="Define Trigger">
+    Set the condition that triggers escalation
+  </Step>
+  <Step title="Set Action">
+    Configure what happens when escalated
+  </Step>
+  <Step title="Save Rule">
+    Rule is now active
+  </Step>
+</Steps>
+
+## Trigger Conditions
+
+### Time-Based Triggers
+
+| Condition | Description |
+|-----------|-------------|
+| **No Response** | No staff reply within X time |
+| **No Resolution** | Ticket open longer than X time |
+| **Idle** | No activity for X time |
+| **Reopened** | Ticket reopened X times |
+
+### Priority Triggers
+
+| Condition | Description |
+|-----------|-------------|
+| **Priority Level** | Ticket is urgent/high priority |
+| **Priority Change** | Priority increased |
+| **VIP Customer** | Specific user or role |
+
+### Sentiment Triggers
+
+<Info>
+  Sentiment triggers require AI features (**Pro** or **Enterprise**).
+</Info>
+
+| Condition | Description |
+|-----------|-------------|
+| **Negative Sentiment** | AI detects frustration |
+| **Escalation Request** | User asks to speak to manager |
+| **Threatening Language** | Concerning message detected |
+
+### Keyword Triggers
+
+- Specific words (e.g., "urgent", "emergency")
+- Phrases (e.g., "speak to manager")
+- Regex patterns for complex matching
+
+## Escalation Actions
+
+### Notification Actions
+
+| Action | Description |
+|--------|-------------|
+| **Notify Staff** | Send alert to specific users |
+| **Notify Role** | Alert everyone with a role |
+| **Channel Alert** | Post in a staff channel |
+| **DM** | Direct message to user |
+
+### Assignment Actions
+
+| Action | Description |
+|--------|-------------|
+| **Reassign** | Move to specific user |
+| **Add Staff** | Add user to ticket |
+| **Transfer Team** | Move to different team |
+
+### Ticket Actions
+
+| Action | Description |
+|--------|-------------|
+| **Change Priority** | Increase priority level |
+| **Add Tag** | Apply escalation tag |
+| **Move Category** | Change ticket category |
+| **Add Note** | Internal note added |
+
+## Escalation Levels
+
+### Single-Level Escalation
+
+Simple escalation to one target:
+
+```
+Ticket → Trigger → Senior Staff
+```
+
+### Multi-Level Escalation
+
+Progressive escalation over time:
+
+```
+Level 1 (1 hour): Team Lead
+Level 2 (2 hours): Manager
+Level 3 (4 hours): Director
+```
+
+### Configuring Levels
+
+<Steps>
+  <Step title="Create Base Rule">
+    Initial escalation rule
+  </Step>
+  <Step title="Add Level 2">
+    New rule with longer time + Level 1 condition
+  </Step>
+  <Step title="Continue">
+    Add more levels as needed
+  </Step>
+</Steps>
+
+## Escalation Recipients
+
+### By Role
+
+Escalate to anyone with a specific Discord role:
+
+- All role members can respond
+- Workload distributed
+- Easy to maintain
+
+### By User
+
+Escalate to specific individuals:
+
+- Named person responsible
+- Use for specialized topics
+- Backup users recommended
+
+### Round-Robin
+
+Distribute escalations evenly:
+
+- Each escalation goes to next user
+- Prevents one person getting all
+- Configurable rotation
+
+## Escalation Paths
+
+### By Category
+
+Different escalation for different ticket types:
+
+| Category | Escalation Path |
+|----------|-----------------|
+| Billing | Finance Team → Finance Manager |
+| Technical | Tier 2 Support → Engineering |
+| General | Senior Support → Support Manager |
+
+### By Priority
+
+| Priority | Escalation |
+|----------|------------|
+| Low | Standard path |
+| Medium | Standard path (faster) |
+| High | Skip to manager |
+| Urgent | Immediate to senior staff |
+
+## Preventing False Escalations
+
+### Exclusions
+
+Don't escalate if:
+
+- Ticket is already assigned to escalation target
+- Ticket has been responded to (for time-based)
+- Certain tags present
+- Outside business hours (optional)
+
+### De-escalation
+
+Return to normal when:
+
+- Issue resolved
+- Priority lowered
+- Manually de-escalated
+- Customer satisfied
+
+## Monitoring Escalations
+
+### Escalation Dashboard
+
+Track:
+
+- Active escalations
+- Escalation rate over time
+- Time to resolve escalated tickets
+- Most common triggers
+
+### Alerts
+
+Get notified when:
+
+- Escalation rate spikes
+- Same ticket escalates multiple times
+- Escalation target unavailable
+
+## Best Practices
+
+<Tip>
+  **Balance Sensitivity**
+  Too aggressive = alert fatigue. Too conservative = missed issues.
+</Tip>
+
+<Tip>
+  **Multiple Channels**
+  Use both dashboard and Discord notifications for critical escalations.
+</Tip>
+
+<Tip>
+  **Document Paths**
+  Help staff understand escalation criteria and processes.
+</Tip>
+
+<Tip>
+  **Review Regularly**
+  Analyze what's being escalated and refine rules accordingly.
+</Tip>
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/discord">
+  Questions about escalation? Join our Discord
+</Card>

@@ -1,0 +1,242 @@
+---
+title: "Auto-Close on User Leave"
+description: "Automatically close tickets when the user leaves your server"
+---
+Automatically close tickets when the ticket creator leaves, is kicked, or is banned from your Discord server.
+
+## Why Use This Feature?
+
+When a user leaves your server:
+
+- They can no longer respond to their ticket
+- Tickets become unresolvable
+- Open tickets clutter your queue
+- Staff time is wasted on abandoned tickets
+
+Auto-close on user leave solves this by:
+
+- Detecting when ticket creators leave
+- Automatically closing their tickets
+- Optionally saving transcripts
+- Keeping your ticket queue clean
+
+## How It Works
+
+```
+User Leaves Server
+       ↓
+System Detects Leave
+       ↓
+Finds User's Open Tickets
+       ↓
+Closes Tickets
+       ↓
+Optionally: Generates Transcripts
+       ↓
+Optionally: Deletes Channels
+```
+
+## Setting Up
+
+<Steps>
+  <Step title="Navigate to Configuration">
+    Dashboard → Configuration → Automation
+  </Step>
+  <Step title="Find Auto-Close Settings">
+    Scroll to **Auto-Close on User Leave**
+  </Step>
+  <Step title="Enable Feature">
+    Toggle the setting on
+  </Step>
+  <Step title="Configure Options">
+    Set transcript and notification preferences
+  </Step>
+  <Step title="Save">
+    Feature is now active
+  </Step>
+</Steps>
+
+## Configuration Options
+
+### Basic Settings
+
+| Option | Description |
+|--------|-------------|
+| **Enabled** | Turn feature on/off |
+| **Generate Transcript** | Save transcript before closing |
+| **Delete Channel** | Remove Discord channel |
+| **Delay** | Wait X minutes before closing |
+
+### Close Message
+
+Customize the closure message in the ticket:
+
+```
+This ticket has been automatically closed because 
+{{user}} is no longer a member of this server.
+```
+
+### Transcript Options
+
+If generating transcripts:
+
+| Option | Description |
+|--------|-------------|
+| **Auto-Generate** | Always create transcript |
+| **Store** | Save to transcript storage |
+| **Send to Logs** | Post in log channel |
+
+## Trigger Events
+
+The feature triggers when a user:
+
+| Event | Description |
+|-------|-------------|
+| **Leaves** | User voluntarily leaves server |
+| **Kicked** | User is kicked by staff |
+| **Banned** | User is banned from server |
+
+All events trigger ticket closure by default.
+
+### Configuring Events
+
+You can enable/disable specific triggers:
+
+- Leave: Close when user leaves voluntarily
+- Kick: Close when user is kicked
+- Ban: Close when user is banned
+
+## Notification Options
+
+### Ticket Closure Embed
+
+When a ticket is auto-closed, an embed is posted:
+
+```
+╔═══════════════════════════════════════╗
+║  🔒 Ticket Closed                     ║
+╠═══════════════════════════════════════╣
+║  This ticket was automatically closed ║
+║  because the user left the server.    ║
+║                                       ║
+║  Reason: User Left                    ║
+║  Time: January 15, 2026 3:45 PM       ║
+╚═══════════════════════════════════════╝
+```
+
+### Log Channel
+
+Optionally log auto-closures:
+
+- Send notification to log channel
+- Include ticket details
+- Track closure reasons
+
+## Multiple Tickets
+
+If a user has multiple open tickets:
+
+- All their tickets are closed
+- Each gets its own closure message
+- Transcripts generated for each (if enabled)
+- Processed sequentially to avoid rate limits
+
+## Delay Option
+
+### Why Use a Delay?
+
+- User might rejoin quickly
+- Accidental disconnects happen
+- Gives grace period
+
+### How Delay Works
+
+1. User leaves server
+2. System waits configured delay (e.g., 5 minutes)
+3. If user hasn't rejoined, tickets close
+4. If user rejoins, nothing happens
+
+### Configuring Delay
+
+| Delay | Best For |
+|-------|----------|
+| 0 (Immediate) | Permanent closures |
+| 5 minutes | Quick rejoin grace |
+| 30 minutes | Longer grace period |
+
+## Staff Tickets
+
+### What Happens to Staff?
+
+If a staff member leaves:
+
+- Their tickets remain open (if they created any)
+- Tickets they're assigned to are unassigned
+- Configurable behavior
+
+### Staff Leave Options
+
+| Option | Behavior |
+|--------|----------|
+| **Treat as User** | Close their tickets |
+| **Keep Open** | Don't auto-close staff tickets |
+| **Unassign Only** | Remove from assigned tickets |
+
+## Best Practices
+
+<Tip>
+  **Enable Transcripts**
+  Save transcripts before closing for record-keeping.
+</Tip>
+
+<Tip>
+  **Use Short Delay**
+  5-minute delay handles accidental disconnects without stale tickets.
+</Tip>
+
+<Tip>
+  **Log Closures**
+  Track auto-closures in your log channel for awareness.
+</Tip>
+
+<Tip>
+  **Review Settings**
+  Periodically check if settings match your support needs.
+</Tip>
+
+## Interaction with Other Features
+
+### Auto-Close Timer
+
+If both auto-close on leave AND timed auto-close are enabled:
+
+- User leave triggers immediate closure (or after delay)
+- Takes precedence over timed auto-close
+
+### SLA
+
+When ticket is auto-closed due to user leaving:
+
+- SLA timer stops
+- Not counted as breach (user unavailable)
+- Marked as special closure reason
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tickets not closing automatically">
+    Check that the feature is enabled and your bot has proper permissions (Manage Channels if deleting).
+  </Accordion>
+
+  <Accordion title="Transcripts not generating">
+    Verify transcript options are enabled in the auto-close settings.
+  </Accordion>
+
+  <Accordion title="User rejoined but ticket still closed">
+    If the delay passed before they rejoined, ticket would close. They can open a new one.
+  </Accordion>
+</AccordionGroup>
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/discord">
+  Questions about auto-close? Join our Discord
+</Card>

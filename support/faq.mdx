@@ -1,0 +1,271 @@
+---
+title: "Frequently Asked Questions"
+description: "Common questions about TicketCord answered"
+---
+Find answers to the most common questions about TicketCord.
+
+## General Questions
+
+<AccordionGroup>
+  <Accordion title="What is TicketCord?">
+    TicketCord is a Discord ticket management platform that lets you create custom support bots for your Discord server. It includes features like AI-powered knowledge base, analytics, webhooks, and more.
+  </Accordion>
+
+  <Accordion title="How many servers can I use TicketCord on?">
+    Each bot you create can be added to multiple Discord servers. The number of bots you can create depends on your plan:
+    - Free: 1 bot
+    - Basic: 3 bots
+    - Pro: 3 bots
+    - Enterprise: 6 bots
+  </Accordion>
+
+  <Accordion title="Is there a ticket limit?">
+    No! All plans include unlimited tickets. There's no cap on how many tickets you can create.
+  </Accordion>
+
+  <Accordion title="How long is ticket data stored?">
+    Ticket data is stored indefinitely. Even on the Free plan, your tickets and transcripts are kept forever unless you delete them.
+  </Accordion>
+
+  <Accordion title="Can I use multiple bots on the same server?">
+    Yes, you can add multiple TicketCord bots to the same Discord server if needed (e.g., different bots for different departments).
+  </Accordion>
+</AccordionGroup>
+
+## Getting Started
+
+<AccordionGroup>
+  <Accordion title="How do I create my first bot?">
+    1. Sign in at [ticketcord.net/dashboard](https://ticketcord.net/dashboard)
+    2. Click **Create Bot**
+    3. Follow the guide to create a Discord application
+    4. Enter your bot token
+    5. Invite the bot to your server
+    6. Run `/setup` in Discord
+
+    See our [Quick Start](/quickstart) guide for detailed steps.
+  </Accordion>
+
+  <Accordion title="Where do I get a bot token?">
+    Bot tokens are created in the [Discord Developer Portal](https://discord.com/developers/applications):
+    1. Create a new application
+    2. Go to the Bot section
+    3. Click "Reset Token" to get your token
+    4. Copy and paste it into TicketCord
+  </Accordion>
+
+  <Accordion title="What permissions does the bot need?">
+    At minimum, the bot needs:
+    - Manage Channels (create ticket channels)
+    - Manage Roles (manage ticket permissions)
+    - Send Messages
+    - Embed Links
+    - Read Message History
+
+    See [Installation](/bot/installation) for the full permissions table.
+  </Accordion>
+
+  <Accordion title="How do I run the setup command?">
+    After inviting your bot, type `/setup` in any channel where the bot can see messages. This starts the interactive setup wizard.
+  </Accordion>
+</AccordionGroup>
+
+## Features
+
+<AccordionGroup>
+  <Accordion title="How does the Knowledge Base work?">
+    The Knowledge Base lets you add content from websites or documents. When users create tickets, AI searches this content and suggests relevant answers automatically. See [Knowledge Base](/ai/knowledge-base) for full details.
+  </Accordion>
+
+  <Accordion title="What AI features are available?">
+    TicketCord includes several AI features (Pro/Enterprise plans):
+    - **Knowledge Base**: Automatic suggestions from your content
+    - **Auto-Routing**: Route tickets to the right team
+    - **Priority Detection**: Automatically set ticket priority
+    - **Duplicate Detection**: Find similar tickets
+    - **Translation**: Translate tickets to other languages
+    - **Sentiment Detection**: Detect user mood
+    - **Atlas AI**: Dashboard AI assistant
+  </Accordion>
+
+  <Accordion title="What are webhooks?">
+    Webhooks send ticket events to external URLs in real-time. Use them to integrate with Slack, Zapier, custom systems, and more. See [Webhooks](/integrations/webhooks). Webhooks are an Enterprise feature.
+  </Accordion>
+
+  <Accordion title="Can I customize the ticket embeds?">
+    Yes! Use the Embed Designer in the dashboard to customize colors, text, buttons, and fields for your ticket panels. The number of custom embeds depends on your plan.
+  </Accordion>
+
+  <Accordion title="How do transcripts work?">
+    When a ticket is closed, a transcript can be generated. Transcripts are HTML pages showing the full conversation with messages, attachments, and formatting preserved.
+  </Accordion>
+</AccordionGroup>
+
+## Billing & Plans
+
+<AccordionGroup>
+  <Accordion title="What's included in the free plan?">
+    The Free plan includes:
+    - 1 custom bot
+    - Unlimited tickets
+    - All Discord commands
+    - Web dashboard
+    - Ticket transcripts
+    - Community support
+
+    The main limitations are no AI features, TicketCord branding required, and limited embeds.
+  </Accordion>
+
+  <Accordion title="How does the free trial work?">
+    All paid plans have a 7-day free trial:
+    - €1 card verification to start (refunded instantly)
+    - Full access to all plan features
+    - Cancel anytime before trial ends
+    - Auto-downgrades to Free if no payment added
+  </Accordion>
+
+  <Accordion title="Can I change plans?">
+    Yes! You can upgrade or downgrade anytime:
+    - Upgrades: Instant access, prorated billing
+    - Downgrades: Take effect at next billing date
+    - Cancel: Keep access until period ends
+  </Accordion>
+
+  <Accordion title="What payment methods are accepted?">
+    We accept all major credit cards (Visa, Mastercard, American Express) through Stripe. PayPal is not currently supported.
+  </Accordion>
+
+  <Accordion title="Is there a refund policy?">
+    For EU customers, there's a 14-day withdrawal right for unused services. For other cases, contact us at hi@ticketcord.net.
+  </Accordion>
+
+  <Accordion title="What happens to my data if I downgrade?">
+    All your data is preserved. Features above your new plan limit become read-only. You can upgrade again to regain full access.
+  </Accordion>
+</AccordionGroup>
+
+## Technical Questions
+
+<AccordionGroup>
+  <Accordion title="Why is my bot offline?">
+    Common causes:
+    - Invalid bot token (regenerate in Discord Developer Portal)
+    - Missing permissions (reinvite with correct permissions)
+    - Discord outage (check Discord status)
+    - Rate limited (wait and retry)
+
+    See [Troubleshooting](/bot/troubleshooting) for error codes.
+  </Accordion>
+
+  <Accordion title="Commands aren't showing up in Discord">
+    Try these steps:
+    1. Wait a few minutes (slash commands can take time to register)
+    2. Ensure bot has "Use Application Commands" permission
+    3. Restart the bot from the dashboard
+    4. Reinvite the bot if issue persists
+  </Accordion>
+
+  <Accordion title="Ticket channels aren't being created">
+    Check that:
+    - Bot has "Manage Channels" permission
+    - Ticket category has space (Discord limit: 50 channels per category)
+    - Bot's role is high enough in the hierarchy
+  </Accordion>
+
+  <Accordion title="How do I reset my bot?">
+    To reset your bot configuration:
+    1. Go to Dashboard → Bot Settings
+    2. Click **Reset Configuration**
+    3. Confirm the reset
+    4. Run `/setup` again in Discord
+  </Accordion>
+
+  <Accordion title="Can I self-host TicketCord?">
+    No, TicketCord is a hosted service only. Self-hosting is not available.
+  </Accordion>
+</AccordionGroup>
+
+## Privacy & Security
+
+<AccordionGroup>
+  <Accordion title="Is my data secure?">
+    Yes. We use:
+    - Strong encryption for sensitive data
+    - TLS for all connections
+    - EU-based hosting
+    - Regular security audits
+
+    See our [Privacy Policy](https://ticketcord.net/privacy) for details.
+  </Accordion>
+
+  <Accordion title="What data do you collect?">
+    We collect:
+    - Discord IDs (user, server, channel)
+    - Ticket content (messages, attachments)
+    - Account information (email from Discord)
+    - Usage analytics
+
+    See our [Privacy Policy](https://ticketcord.net/privacy) for details.
+  </Accordion>
+
+  <Accordion title="Can I export my data?">
+    Yes! Go to Dashboard → Settings → Privacy → Export My Data. You'll receive a download link via email. See [GDPR Export](/features/gdpr-export).
+  </Accordion>
+
+  <Accordion title="How do I delete my account?">
+    Go to Dashboard → Settings → Privacy → Danger Zone → Delete Account. This permanently deletes all your data.
+  </Accordion>
+
+  <Accordion title="Is TicketCord GDPR compliant?">
+    Yes. We're fully GDPR compliant with:
+    - Data export capabilities
+    - Right to deletion
+    - EU data hosting
+    - Proper consent mechanisms
+
+    See our [Privacy Policy](https://ticketcord.net/privacy).
+  </Accordion>
+</AccordionGroup>
+
+## AI Features
+
+<AccordionGroup>
+  <Accordion title="How many AI tokens do I get?">
+    Token allocation varies by plan:
+    - Free: 0 tokens
+    - Basic: 0 tokens
+    - Pro: Included allocation
+    - Enterprise: Maximum allocation
+
+    Check your dashboard for current usage.
+  </Accordion>
+
+  <Accordion title="Do AI tokens roll over?">
+    No, tokens reset at the start of each billing cycle. Unused tokens don't carry over.
+  </Accordion>
+
+  <Accordion title="Why isn't the Knowledge Base giving good answers?">
+    Tips to improve:
+    - Add more relevant content sources
+    - Ensure content is up-to-date
+    - Adjust confidence thresholds
+    - Use the training feature to improve
+
+    See [Knowledge Base Feedback](/ai/knowledge-base-feedback).
+  </Accordion>
+
+  <Accordion title="Can I disable AI features?">
+    Yes, each AI feature can be individually enabled or disabled in your server configuration.
+  </Accordion>
+</AccordionGroup>
+
+## Still Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Discord Support" icon="discord" href="https://ticketcord.net/discord">
+    Join our community for help
+  </Card>
+  <Card title="Email Support" icon="envelope" href="mailto:hi@ticketcord.net">
+    Contact us directly
+  </Card>
+</CardGroup>

@@ -1,0 +1,299 @@
+---
+title: "Bulk Operations"
+description: "Perform actions on multiple tickets at once"
+---
+Save time by performing actions on multiple tickets simultaneously.
+
+<Info>
+  Bulk operations are available on **Basic** plan and above.
+</Info>
+
+## What Are Bulk Operations?
+
+Bulk operations let you:
+
+- Select multiple tickets
+- Apply an action to all at once
+- Complete tasks faster
+- Maintain consistency
+
+## Available Bulk Actions
+
+| Action | Description |
+|--------|-------------|
+| **Close** | Close all selected tickets |
+| **Reopen** | Reopen closed tickets |
+| **Assign** | Assign to a staff member |
+| **Unassign** | Remove assignment |
+| **Set Priority** | Change priority level |
+| **Add Tag** | Apply a tag |
+| **Remove Tag** | Remove a tag |
+| **Move Category** | Change category |
+| **Export** | Download selected tickets |
+| **Delete** | Permanently remove |
+
+## Using Bulk Operations
+
+### Selecting Tickets
+
+<Steps>
+  <Step title="Go to Tickets">
+    Dashboard → Tickets
+  </Step>
+  <Step title="Select Tickets">
+    Check boxes next to tickets to select
+  </Step>
+  <Step title="Or Select All">
+    Use the header checkbox to select all visible
+  </Step>
+  <Step title="View Count">
+    Selected count shows in toolbar
+  </Step>
+</Steps>
+
+### Selection Options
+
+| Option | Description |
+|--------|-------------|
+| **Individual** | Click checkbox per ticket |
+| **Select All** | Selects all on current page |
+| **Select Filtered** | Select all matching filter |
+| **Deselect All** | Clear selection |
+
+### Performing the Action
+
+<Steps>
+  <Step title="Select Tickets">
+    Check boxes for desired tickets
+  </Step>
+  <Step title="Click Action">
+    Choose action from toolbar
+  </Step>
+  <Step title="Configure">
+    Set options if applicable
+  </Step>
+  <Step title="Confirm">
+    Review and confirm
+  </Step>
+  <Step title="Wait">
+    Progress indicator shows completion
+  </Step>
+</Steps>
+
+## Bulk Close
+
+Close multiple tickets at once:
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| **Close Reason** | Optional message |
+| **Generate Transcripts** | Create transcripts for all |
+| **Notify Users** | Send closure notification |
+| **Delete Channels** | Remove Discord channels |
+
+### Example Use Cases
+
+- End-of-week cleanup
+- Close abandoned tickets
+- Resolve batch of similar issues
+
+## Bulk Assign
+
+Assign multiple tickets:
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| **Assign To** | Select staff member |
+| **Notify Assignee** | Send notification |
+| **Add Note** | Optional internal note |
+
+### Distribution
+
+Optionally distribute evenly:
+
+- Round-robin assignment
+- Balance workload
+- Avoid overloading one person
+
+## Bulk Priority
+
+Change priority for multiple tickets:
+
+- Select new priority level
+- All selected tickets updated
+- SLA timers may recalculate
+
+## Bulk Tagging
+
+Add or remove tags:
+
+### Add Tags
+
+1. Select tickets
+2. Click **Add Tag**
+3. Choose tag(s)
+4. Apply
+
+### Remove Tags
+
+1. Select tickets
+2. Click **Remove Tag**
+3. Choose tag(s) to remove
+4. Apply
+
+## Bulk Export
+
+Export selected tickets:
+
+### Formats
+
+| Format | Contents |
+|--------|----------|
+| **CSV** | Metadata spreadsheet |
+| **JSON** | Full structured data |
+| **PDF** | Formatted transcripts |
+
+### Process
+
+1. Select tickets
+2. Click **Export**
+3. Choose format
+4. Download when ready
+
+## Bulk Delete
+
+<Warning>
+  Bulk delete is permanent and cannot be undone.
+</Warning>
+
+### Confirmation
+
+Before bulk delete:
+
+1. Count of tickets shown
+2. Warning message displayed
+3. Type confirmation phrase
+4. Click confirm
+
+### What's Deleted
+
+- Ticket data
+- Message history
+- Attachments
+- Transcripts
+
+Discord channels can optionally be deleted.
+
+## Using Filters with Bulk
+
+### Filter First
+
+Apply filters to narrow selection:
+
+1. Set filter criteria
+2. Select all filtered results
+3. Perform bulk action
+
+### Example Workflows
+
+**Close all old tickets:**
+1. Filter: Status = Open, Updated > 30 days ago
+2. Select All
+3. Bulk Close
+
+**Assign unassigned to team:**
+1. Filter: Unassigned
+2. Select All
+3. Bulk Assign (round-robin)
+
+**Tag VIP tickets:**
+1. Filter: User Role = VIP
+2. Select All
+3. Add Tag "VIP"
+
+## Progress and Completion
+
+### Progress Indicator
+
+During bulk operations:
+
+- Progress bar shows completion
+- Count of processed tickets
+- Estimated time remaining
+
+### Completion Summary
+
+After completion:
+
+- Success count
+- Failed count (if any)
+- Error details for failures
+- Done notification
+
+## Limitations
+
+### Batch Size
+
+- Maximum 100 tickets per operation
+- For more, perform multiple batches
+- Large operations may take time
+
+### Rate Limits
+
+- Discord API limits apply
+- Channel deletion is rate-limited
+- System queues requests appropriately
+
+### Permissions
+
+Actions require appropriate permissions:
+
+- Delete requires admin
+- Assign requires staff
+- Close requires staff
+
+## Best Practices
+
+<Tip>
+  **Preview First**
+  Review your filter before selecting all. Verify you're affecting intended tickets.
+</Tip>
+
+<Tip>
+  **Start Small**
+  Test with a few tickets before large bulk operations.
+</Tip>
+
+<Tip>
+  **Use Filters**
+  Filter down to specific sets rather than manual selection.
+</Tip>
+
+<Tip>
+  **Off-Peak Hours**
+  Run large operations during low-activity periods.
+</Tip>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Some tickets failed">
+    Check error details. Common causes: permission issues, rate limits.
+  </Accordion>
+
+  <Accordion title="Operation is slow">
+    Large batches take time. Discord rate limits affect channel operations.
+  </Accordion>
+
+  <Accordion title="Can't select all">
+    You may need to narrow filters or work in smaller batches.
+  </Accordion>
+</AccordionGroup>
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/discord">
+  Questions about bulk operations? Join our Discord
+</Card>

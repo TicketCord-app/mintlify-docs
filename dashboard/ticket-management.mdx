@@ -1,0 +1,242 @@
+---
+title: "Ticket Management"
+description: "View, search, filter, and manage tickets in the dashboard"
+---
+The Tickets page is your command center for viewing and managing all support tickets.
+
+## Viewing Tickets
+
+### Ticket List
+
+The main ticket view shows:
+
+| Column | Description |
+|--------|-------------|
+| **ID** | Unique ticket identifier |
+| **Subject** | Ticket title or first message |
+| **Creator** | User who opened the ticket |
+| **Status** | Open, Closed, or Pending |
+| **Priority** | None, Low, Medium, High, Urgent |
+| **Assigned** | Staff member handling the ticket |
+| **Created** | When the ticket was opened |
+| **Updated** | Last activity timestamp |
+
+### Ticket Details
+
+Click any ticket to view:
+
+- Full conversation history
+- Attached files and images
+- Internal staff notes
+- Activity timeline
+- Ticket metadata
+
+## Searching Tickets
+
+### Quick Search
+
+Use the search bar to find tickets by:
+
+- Ticket ID
+- Creator username
+- Message content
+- Tags
+
+### Advanced Filters
+
+Click **Filters** to narrow results:
+
+<AccordionGroup>
+  <Accordion title="Status Filters">
+    - All tickets
+    - Open only
+    - Closed only
+    - Pending approval
+  </Accordion>
+  
+  <Accordion title="Date Filters">
+    - Created date range
+    - Last updated range
+    - Closed date range
+  </Accordion>
+  
+  <Accordion title="Assignment Filters">
+    - Unassigned
+    - Assigned to me
+    - Assigned to specific staff
+  </Accordion>
+  
+  <Accordion title="Priority Filters">
+    - Any priority
+    - Specific priority level
+    - Urgent only
+  </Accordion>
+  
+  <Accordion title="Category Filters">
+    - Specific ticket category
+    - Multiple categories
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Combine multiple filters to create precise queries. Filters persist across sessions.
+</Tip>
+
+## Bulk Operations
+
+<Info>
+  Bulk operations are available on **Basic** plan and above.
+</Info>
+
+### Selecting Multiple Tickets
+
+1. Check the checkbox next to tickets you want to select
+2. Or use **Select All** to select all visible tickets
+3. Selected count appears in the toolbar
+
+### Available Bulk Actions
+
+| Action | Description |
+|--------|-------------|
+| **Close** | Close all selected tickets |
+| **Assign** | Assign to a staff member |
+| **Set Priority** | Change priority level |
+| **Add Tag** | Apply a tag to all selected |
+| **Export** | Download selected tickets |
+| **Delete** | Permanently delete selected |
+
+<Warning>
+  Bulk delete is permanent and cannot be undone. Transcripts are also deleted.
+</Warning>
+
+### Performing Bulk Actions
+
+<Steps>
+  <Step title="Select Tickets">
+    Check boxes next to tickets or use Select All
+  </Step>
+  <Step title="Choose Action">
+    Click the action button in the toolbar
+  </Step>
+  <Step title="Confirm">
+    Review the action and confirm
+  </Step>
+  <Step title="Wait for Completion">
+    Progress indicator shows completion status
+  </Step>
+</Steps>
+
+## Ticket Actions
+
+### Individual Ticket Actions
+
+From the ticket detail view:
+
+| Action | Description |
+|--------|-------------|
+| **Close** | Close the ticket |
+| **Reopen** | Reopen a closed ticket |
+| **Claim** | Assign to yourself |
+| **Transfer** | Assign to another staff |
+| **Add Note** | Add internal note |
+| **Set Priority** | Change priority |
+| **Generate Transcript** | Create transcript file |
+| **Delete** | Permanently delete |
+
+### Quick Actions
+
+Right-click (or use the ⋮ menu) on any ticket for quick actions without opening the detail view.
+
+## Transcripts
+
+### Viewing Transcripts
+
+1. Open a ticket (closed tickets have transcripts)
+2. Click **View Transcript** or **Generate Transcript**
+3. Transcript opens in new tab
+
+### Transcript Contents
+
+Transcripts include:
+
+- All messages in order
+- Timestamps
+- User avatars and names
+- Attached images (embedded)
+- File attachments (links)
+- Staff notes (optional)
+
+### Sharing Transcripts
+
+- Copy the transcript URL
+- Links are permanent and don't expire
+- Anyone with the link can view (no authentication required)
+
+<Note>
+  To keep transcripts private, don't share the URL publicly.
+</Note>
+
+## Exporting Data
+
+### Export Options
+
+| Format | Contents |
+|--------|----------|
+| **CSV** | Ticket metadata (ID, status, dates, etc.) |
+| **JSON** | Full ticket data including messages |
+| **PDF** | Formatted transcript document |
+
+### How to Export
+
+<Steps>
+  <Step title="Filter Tickets">
+    Apply filters to select which tickets to export
+  </Step>
+  <Step title="Click Export">
+    Select **Export** from the actions menu
+  </Step>
+  <Step title="Choose Format">
+    Select CSV, JSON, or PDF
+  </Step>
+  <Step title="Download">
+    File downloads automatically
+  </Step>
+</Steps>
+
+<Info>
+  Large exports may take time to generate. You'll receive a download link when ready.
+</Info>
+
+## Ticket Statistics
+
+At the top of the ticket list, you'll see:
+
+- **Total Tickets**: All-time count
+- **Open Tickets**: Currently open
+- **Avg. Resolution Time**: Time to close
+- **Satisfaction Rate**: If feedback enabled
+
+## Tips for Efficient Management
+
+<Tip>
+  **Keyboard Shortcuts**
+  - `j/k` - Move up/down in list
+  - `Enter` - Open selected ticket
+  - `Esc` - Close detail view
+  - `c` - Close ticket
+  - `a` - Assign ticket
+</Tip>
+
+<Tip>
+  **Save Time with Filters**
+  Create filter presets for common queries like "My open tickets" or "Urgent unassigned"
+</Tip>
+
+<Tip>
+  **Use Tags**
+  Tag tickets by topic, product, or issue type for better organization and reporting
+</Tip>
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/discord">
+  Join our Discord for support
+</Card>

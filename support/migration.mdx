@@ -1,0 +1,279 @@
+---
+title: "Migration Guide"
+description: "Migrate to TicketCord from other ticket bots"
+---
+Switching to TicketCord from another ticket bot? This guide helps make the transition smooth.
+
+## Before You Start
+
+### What to Prepare
+
+- Admin access to your Discord server
+- Access to your current ticket bot's settings
+- List of your ticket categories/teams
+- Any custom settings you want to preserve
+
+### What Transfers
+
+| Transfers | Doesn't Transfer |
+|-----------|------------------|
+| Your configuration preferences | Historical tickets from other bots |
+| Staff roles (same Discord roles) | Ticket transcripts from other bots |
+| Categories (can recreate) | User statistics |
+| Custom messages (manual) | Bot-specific integrations |
+
+## Migration Steps
+
+<Steps>
+  <Step title="Document Current Setup">
+    Note your current configuration: categories, roles, messages, automation
+  </Step>
+  <Step title="Create TicketCord Bot">
+    Sign up and create your bot at [ticketcord.net](https://ticketcord.net)
+  </Step>
+  <Step title="Configure Settings">
+    Recreate your setup in TicketCord dashboard
+  </Step>
+  <Step title="Run /setup">
+    Complete the setup wizard in Discord
+  </Step>
+  <Step title="Test Thoroughly">
+    Create test tickets to verify everything works
+  </Step>
+  <Step title="Switch Over">
+    Remove old bot, announce the change
+  </Step>
+</Steps>
+
+## Migrating from Ticket Tool
+
+### Equivalent Features
+
+| Ticket Tool | TicketCord Equivalent |
+|-------------|----------------------|
+| Ticket panels | Custom embeds with buttons |
+| Support teams | Staff roles |
+| Ticket categories | Ticket categories |
+| Transcripts | Transcripts (stored online) |
+| Custom messages | Welcome messages |
+| Close reasons | Close reasons |
+
+### Configuration Mapping
+
+**Panels → Embeds:**
+1. Go to Dashboard → Configuration → Embeds
+2. Create new embed with similar design
+3. Add buttons for ticket creation
+4. Deploy to your support channel
+
+**Teams → Staff Roles:**
+1. Go to Configuration → Staff
+2. Add your existing Discord roles
+3. Set permissions for each role
+
+**Auto-close → Automation:**
+1. Go to Configuration → Automation
+2. Enable auto-close
+3. Set timing and conditions
+
+## Migrating from ModMail
+
+### Key Differences
+
+| ModMail | TicketCord |
+|---------|------------|
+| DM-based tickets | Channel or DM-based |
+| Single thread per user | Multiple tickets possible |
+| Server-specific bot | Custom bot per setup |
+
+### Equivalent Features
+
+| ModMail | TicketCord |
+|---------|------------|
+| DM to open ticket | Button click or DM |
+| Snippet | Canned responses |
+| Logs | Transcripts |
+| Categories | Categories |
+| Auto-close | Auto-close |
+
+### Migration Steps
+
+1. **Enable DM Mode** (if desired):
+   - Configure bot to accept DM tickets
+   - Set up welcome message for DM tickets
+
+2. **Recreate Categories**:
+   - Create matching categories in TicketCord
+   - Assign to appropriate Discord categories
+
+3. **Import Snippets**:
+   - Create canned responses for your snippets
+   - Use same shortcuts for consistency
+
+## Migrating from Discord Tickets
+
+### Feature Comparison
+
+| Discord Tickets | TicketCord |
+|-----------------|------------|
+| Ticket panels | Custom embeds |
+| Staff roles | Staff roles |
+| Transcripts | Transcripts (cloud stored) |
+| Buttons | Full button/dropdown support |
+| Basic stats | Advanced analytics |
+
+### Additional TicketCord Features
+
+When migrating, you gain:
+
+- AI-powered knowledge base
+- Automatic routing
+- Priority detection
+- Webhook integrations
+- Detailed analytics
+- Dashboard management
+
+## Migrating from Other Bots
+
+### General Migration Approach
+
+1. **Export what you can**: Take screenshots of settings
+2. **List features used**: Document what you actually use
+3. **Find equivalents**: Map to TicketCord features
+4. **Configure gradually**: Don't rush the setup
+5. **Test before switching**: Ensure parity
+
+### Common Settings to Recreate
+
+| Setting | Where in TicketCord |
+|---------|---------------------|
+| Welcome message | Configuration → Welcome |
+| Staff roles | Configuration → Staff |
+| Categories | Configuration → Categories |
+| Close reasons | Configuration → Close Settings |
+| Transcripts | Configuration → Transcripts |
+| Auto-close | Configuration → Automation |
+| Custom embeds | Configuration → Embeds |
+
+## Handling Historical Data
+
+### Your Old Tickets
+
+TicketCord cannot import tickets from other bots because:
+
+- Different data formats
+- No standardized export
+- Privacy considerations
+
+### Recommendations
+
+<Tip>
+  **Keep Old Bot Running (Temporarily)**
+  Run both bots briefly so you can reference old tickets if needed.
+</Tip>
+
+<Tip>
+  **Export Transcripts**
+  If your old bot supports it, export transcripts before removing.
+</Tip>
+
+<Tip>
+  **Screenshot Important Info**
+  Capture any critical ticket information manually.
+</Tip>
+
+## Parallel Running
+
+### Safe Transition
+
+Run both bots simultaneously during transition:
+
+1. Set up TicketCord in test channels
+2. Train staff on new system
+3. Gradually direct users to new system
+4. Monitor for issues
+5. Remove old bot when confident
+
+### Avoiding Conflicts
+
+- Use different channels for each bot
+- Clearly label which is which
+- Set old bot to read-only if possible
+
+## Staff Training
+
+### What's Different
+
+Educate your team on:
+
+| Old Way | TicketCord Way |
+|---------|----------------|
+| Bot commands | Dashboard + commands |
+| Text transcripts | Web-based transcripts |
+| Manual stats | Analytics dashboard |
+| No AI | AI suggestions (Pro+) |
+
+### Training Resources
+
+- Share this documentation
+- Create channel for questions
+- Run practice sessions
+- Document server-specific workflows
+
+## Announcing the Change
+
+### Communication Plan
+
+1. **Before switch**: Announce upcoming change
+2. **Transition day**: Clear instructions
+3. **After switch**: Address questions
+
+### Example Announcement
+
+```
+📢 **Support System Update**
+
+We're upgrading to a new ticket system! Here's what you need to know:
+
+**What's changing:**
+- New ticket buttons in #support
+- Better organized ticket channels
+- Faster response suggestions (AI-powered!)
+
+**What to do:**
+- Use the new button to create tickets
+- Old tickets remain viewable
+
+**Questions?** Ask in #general or open a ticket!
+```
+
+## Troubleshooting Migration
+
+<AccordionGroup>
+  <Accordion title="Commands conflict with old bot">
+    Remove or disable the old bot's slash commands, or remove the old bot entirely.
+  </Accordion>
+
+  <Accordion title="Users confused by two systems">
+    Clearly differentiate channels and announce the transition prominently.
+  </Accordion>
+
+  <Accordion title="Missing a feature from old bot">
+    Check our documentation - the feature might exist under a different name. If not, suggest it in our Discord!
+  </Accordion>
+
+  <Accordion title="Staff struggling with new system">
+    Provide training, share documentation, and allow time to adjust.
+  </Accordion>
+</AccordionGroup>
+
+## Need Help Migrating?
+
+<CardGroup cols={2}>
+  <Card title="Discord Support" icon="discord" href="https://ticketcord.net/discord">
+    Get help from our community
+  </Card>
+  <Card title="Email Support" icon="envelope" href="mailto:hi@ticketcord.net">
+    Contact us for migration assistance
+  </Card>
+</CardGroup>
