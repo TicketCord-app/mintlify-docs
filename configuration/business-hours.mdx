@@ -1,0 +1,248 @@
+---
+title: "Business Hours"
+description: "Configure operating hours for your support team"
+---
+Define when your support team is available to affect SLA timers, auto-responses, and availability indicators.
+
+<Info>
+  Business hours configuration is an **Enterprise** feature.
+</Info>
+
+## Why Set Business Hours?
+
+Business hours help you:
+
+- **Fair SLA Tracking**: Don't breach overnight
+- **Set Expectations**: Tell users when to expect responses
+- **Auto-Responses**: Different messages outside hours
+- **Staff Scheduling**: Show who's available when
+
+## Configuring Business Hours
+
+### Setting Your Schedule
+
+<Steps>
+  <Step title="Navigate to Settings">
+    Dashboard → Configuration → Business Hours
+  </Step>
+  <Step title="Select Timezone">
+    Choose your team's timezone
+  </Step>
+  <Step title="Define Hours">
+    Set start and end time for each day
+  </Step>
+  <Step title="Save">
+    Schedule is now active
+  </Step>
+</Steps>
+
+### Weekly Schedule
+
+Define hours for each day:
+
+| Day | Start | End | Status |
+|-----|-------|-----|--------|
+| Monday | 9:00 AM | 6:00 PM | Open |
+| Tuesday | 9:00 AM | 6:00 PM | Open |
+| Wednesday | 9:00 AM | 6:00 PM | Open |
+| Thursday | 9:00 AM | 6:00 PM | Open |
+| Friday | 9:00 AM | 6:00 PM | Open |
+| Saturday | 10:00 AM | 2:00 PM | Limited |
+| Sunday | - | - | Closed |
+
+### Multiple Shifts
+
+For 24/7 coverage with breaks:
+
+- Add multiple time ranges per day
+- Example: 9 AM - 12 PM, 1 PM - 6 PM
+
+## Timezone Settings
+
+### Selecting Timezone
+
+Choose from standard timezones:
+
+- Your team's primary location
+- UTC for distributed teams
+- Customer-centric timezone
+
+### Daylight Saving
+
+- Automatically handled
+- Schedule adjusts with DST changes
+- No manual updates needed
+
+## Holidays
+
+### Adding Holidays
+
+<Steps>
+  <Step title="Open Business Hours">
+    Go to Business Hours settings
+  </Step>
+  <Step title="Click Holidays">
+    Select the Holidays tab
+  </Step>
+  <Step title="Add Holiday">
+    Enter date and description
+  </Step>
+  <Step title="Save">
+    Holiday is added to calendar
+  </Step>
+</Steps>
+
+### Holiday Options
+
+| Option | Description |
+|--------|-------------|
+| **Full Day Off** | Treated as closed |
+| **Modified Hours** | Custom hours for that day |
+| **Recurring** | Annual holidays (Christmas, etc.) |
+
+### Example Holidays
+
+| Date | Name | Hours |
+|------|------|-------|
+| Dec 25 | Christmas | Closed |
+| Jan 1 | New Year's | Closed |
+| Jul 4 | Independence Day | 10 AM - 2 PM |
+
+## Impact on Features
+
+### SLA Timers
+
+With business hours enabled:
+
+| Setting | Behavior |
+|---------|----------|
+| **Pause Outside Hours** | Timer stops after close, resumes at open |
+| **Count All Time** | Timer runs 24/7 regardless |
+| **Per Priority** | Different rules by priority |
+
+### Auto-Close
+
+Timing is calculated in business hours:
+
+- "Close after 24 hours" = 24 business hours
+- Excludes nights, weekends, holidays
+
+### Auto-Responses
+
+Configure different messages:
+
+**During Hours:**
+```
+Thanks for reaching out! Our team will respond shortly.
+```
+
+**Outside Hours:**
+```
+Thanks for your message! Our team is currently offline 
+and will respond when we're back at 9 AM EST.
+```
+
+## Displaying Hours to Users
+
+### In Ticket Panels
+
+Show availability in embed:
+
+```
+🟢 We're Online
+Support available until 6:00 PM EST
+```
+
+Or:
+
+```
+🔴 Currently Offline
+Support returns at 9:00 AM EST
+```
+
+### Expected Response Time
+
+Dynamically calculate:
+
+- "Expected response: ~2 hours"
+- "Expected response: Tomorrow at 9 AM"
+
+## Multiple Schedules
+
+### By Category
+
+Different hours for different ticket types:
+
+| Category | Hours |
+|----------|-------|
+| General Support | M-F 9-5 |
+| Sales | M-F 8-8, Sat 10-2 |
+| Emergency | 24/7 |
+
+### By Team
+
+Different teams, different schedules:
+
+- US Team: EST hours
+- EU Team: CET hours
+- Combined coverage: Extended hours
+
+## Staff Scheduling
+
+### Viewing Availability
+
+Business hours help show:
+
+- Who's currently on shift
+- When shifts change
+- Coverage gaps
+
+### On-Call Integration
+
+Combine with on-call features:
+
+- Primary staff during hours
+- On-call staff outside hours
+- Automatic routing by schedule
+
+## Best Practices
+
+<Tip>
+  **Be Realistic**
+  Set hours you can actually staff. Overpromising leads to poor experience.
+</Tip>
+
+<Tip>
+  **Communicate Clearly**
+  Tell users your hours in ticket panels and welcome messages.
+</Tip>
+
+<Tip>
+  **Plan for Holidays**
+  Add holidays in advance. Last-minute changes cause confusion.
+</Tip>
+
+<Tip>
+  **Review Coverage**
+  Regularly check if hours match actual availability.
+</Tip>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="SLA still running overnight">
+    Check that SLA policy is set to use business hours, not 24/7.
+  </Accordion>
+
+  <Accordion title="Wrong time showing to users">
+    Verify timezone setting matches your intended display zone.
+  </Accordion>
+
+  <Accordion title="Holiday not recognized">
+    Ensure date format is correct and holiday is saved.
+  </Accordion>
+</AccordionGroup>
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/discord">
+  Questions about business hours? Join our Discord
+</Card>

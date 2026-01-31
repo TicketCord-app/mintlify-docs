@@ -22,6 +22,16 @@
         ]
       },
       {
+        "group": "Dashboard",
+        "pages": [
+          "dashboard/overview",
+          "dashboard/ticket-management",
+          "dashboard/bot-management",
+          "dashboard/analytics",
+          "dashboard/settings"
+        ]
+      },
+      {
         "group": "Bot",
         "pages": [
           "bot/overview",
@@ -38,6 +48,16 @@
           "commands/staff-tools",
           "commands/admin",
           "commands/utility"
+        ]
+      },
+      {
+        "group": "Configuration",
+        "pages": [
+          "configuration/approval-workflows",
+          "configuration/sla-management",
+          "configuration/escalation-rules",
+          "configuration/business-hours",
+          "configuration/canned-responses"
         ]
       },
       {
@@ -59,13 +79,41 @@
           "ai/duplicate-detection",
           "ai/translation",
           "ai/sentiment-detection",
+          "ai/proactive-triggers",
           "ai/atlas"
+        ]
+      },
+      {
+        "group": "Features",
+        "pages": [
+          "features/scheduled-reports",
+          "features/bulk-operations",
+          "features/keyboard-shortcuts",
+          "features/dm-welcome",
+          "features/user-leave-closure",
+          "features/gdpr-export"
         ]
       },
       {
         "group": "Integrations",
         "pages": [
           "integrations/webhooks"
+        ]
+      },
+      {
+        "group": "Billing",
+        "pages": [
+          "billing/plans",
+          "billing/manage-subscription",
+          "billing/trials",
+          "billing/invoices"
+        ]
+      },
+      {
+        "group": "Support",
+        "pages": [
+          "support/faq",
+          "support/migration"
         ]
       }
     ]

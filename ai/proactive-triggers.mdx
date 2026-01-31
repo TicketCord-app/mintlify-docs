@@ -1,0 +1,336 @@
+---
+title: "Proactive Triggers"
+description: "Automatically offer help based on user activity"
+---
+
+# Proactive Triggers
+
+Proactively offer assistance to users based on their behavior, even before they ask for help.
+
+<Info>
+  Proactive triggers require **Pro** or **Enterprise** plan.
+</Info>
+
+## What Are Proactive Triggers?
+
+Proactive triggers let your bot:
+
+- Monitor for specific patterns or behaviors
+- Automatically offer relevant help
+- Engage users before they open tickets
+- Reduce support volume with preemptive assistance
+
+## How It Works
+
+```
+User Activity
+     ↓
+Pattern Detected
+     ↓
+Trigger Condition Met
+     ↓
+Proactive Response Sent
+     ↓
+User Helped (No Ticket Needed)
+```
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Error Messages" icon="circle-exclamation">
+    Detect when users share error codes and offer solutions
+  </Card>
+  <Card title="Confusion Signals" icon="question">
+    Respond to "how do I" or "help" messages
+  </Card>
+  <Card title="New Members" icon="user-plus">
+    Welcome and guide new server members
+  </Card>
+  <Card title="Repeated Questions" icon="rotate">
+    Address frequently asked questions automatically
+  </Card>
+</CardGroup>
+
+## Setting Up Proactive Triggers
+
+<Steps>
+  <Step title="Navigate to Settings">
+    Dashboard → AI Features → Proactive Triggers
+  </Step>
+  <Step title="Create New Trigger">
+    Click **Create Trigger**
+  </Step>
+  <Step title="Define Conditions">
+    Set what activates this trigger
+  </Step>
+  <Step title="Configure Response">
+    Set what the bot sends
+  </Step>
+  <Step title="Set Channels">
+    Choose where trigger is active
+  </Step>
+  <Step title="Save Trigger">
+    Trigger is now monitoring
+  </Step>
+</Steps>
+
+## Trigger Conditions
+
+### Keyword Matching
+
+| Match Type | Description |
+|------------|-------------|
+| **Contains** | Message includes keyword |
+| **Starts with** | Message begins with phrase |
+| **Exact match** | Message is exactly the phrase |
+| **Regex** | Pattern matching |
+
+### Examples
+
+| Trigger | Pattern | Type |
+|---------|---------|------|
+| Error codes | `ERROR:`, `ERR_` | Contains |
+| How-to questions | `how do i`, `how to` | Contains |
+| Help requests | `!help`, `/help` | Starts with |
+| Specific formats | `[A-Z]{3}-\d{4}` | Regex |
+
+### AI-Based Detection
+
+Use AI to detect intent:
+
+- Questions (even without "?")
+- Confusion or frustration
+- Specific topics
+- Request for assistance
+
+## Response Types
+
+### Text Response
+
+Simple text message:
+
+```
+I noticed you mentioned an error code. 
+Check our troubleshooting guide: [link]
+```
+
+### Embed Response
+
+Rich formatted response:
+
+```
+╔═══════════════════════════════════════╗
+║  💡 Need Help?                        ║
+╠═══════════════════════════════════════╣
+║  I noticed you might need assistance. ║
+║                                       ║
+║  📚 Check our FAQ                     ║
+║  🎫 Open a ticket                     ║
+║  💬 Ask in #help                      ║
+╚═══════════════════════════════════════╝
+```
+
+### Knowledge Base Response
+
+Pull answer from your knowledge base:
+
+- AI searches KB for relevant content
+- Suggests matching articles
+- Offers to open ticket if not helpful
+
+### Button Response
+
+Message with action buttons:
+
+- Open a ticket
+- View documentation
+- Ask in help channel
+- Dismiss
+
+## Channel Configuration
+
+### Where Triggers Are Active
+
+Choose specific channels:
+
+- General chat channels
+- Help-seeking channels
+- Specific category channels
+- Exclude private channels
+
+### Channel Types
+
+| Setting | Behavior |
+|---------|----------|
+| **Allowlist** | Only these channels |
+| **Blocklist** | Everywhere except these |
+| **All** | Every channel bot can see |
+
+<Note>
+  Ticket channels are excluded by default to avoid interference.
+</Note>
+
+## Trigger Behavior
+
+### Cooldowns
+
+Prevent spam by setting cooldowns:
+
+| Cooldown Type | Description |
+|---------------|-------------|
+| **Per User** | Once per user per X minutes |
+| **Per Channel** | Once per channel per X minutes |
+| **Global** | Once total per X minutes |
+
+### Rate Limits
+
+| Setting | Recommended |
+|---------|-------------|
+| Per user cooldown | 5-15 minutes |
+| Per channel cooldown | 1-5 minutes |
+| Maximum per hour | 10-50 |
+
+### Response Timing
+
+Configure when response is sent:
+
+- **Immediate**: Right after trigger
+- **Delayed**: Wait X seconds
+- **Quiet hours**: Different behavior outside hours
+
+## Advanced Options
+
+### Conditions
+
+Combine multiple conditions:
+
+```
+IF message contains "error"
+AND user is new member (joined < 7 days)
+AND channel is #general
+THEN send help response
+```
+
+### User Filters
+
+Trigger only for certain users:
+
+| Filter | Description |
+|--------|-------------|
+| **New Members** | Joined recently |
+| **No Roles** | Members without roles |
+| **Specific Roles** | Has certain role |
+| **Exclude Staff** | Don't trigger for staff |
+
+### Context Awareness
+
+Consider conversation context:
+
+- Don't interrupt active conversations
+- Consider thread vs main channel
+- Respect ongoing support interactions
+
+## Analytics
+
+### Tracking Performance
+
+Monitor trigger effectiveness:
+
+| Metric | Description |
+|--------|-------------|
+| **Times Triggered** | How often it fires |
+| **Helpful Rate** | User engagement |
+| **Ticket Prevention** | Tickets avoided |
+| **Feedback** | User reactions |
+
+### Optimization
+
+Use analytics to improve:
+
+- Adjust keywords if too many false positives
+- Improve responses if low engagement
+- Remove ineffective triggers
+
+## Best Practices
+
+<Tip>
+  **Start Conservative**
+  Begin with specific triggers, expand gradually.
+</Tip>
+
+<Tip>
+  **Be Helpful, Not Annoying**
+  Users shouldn't feel bombarded. Use cooldowns.
+</Tip>
+
+<Tip>
+  **Test Thoroughly**
+  Trigger in test channel first to verify behavior.
+</Tip>
+
+<Tip>
+  **Provide Value**
+  Only trigger when you can genuinely help.
+</Tip>
+
+<Tip>
+  **Allow Dismissal**
+  Include a way for users to dismiss if not helpful.
+</Tip>
+
+## Examples
+
+### Error Code Helper
+
+**Trigger**: Message contains error pattern
+**Response**: 
+```
+I noticed you shared an error code. 
+Here are some quick fixes:
+• Error TC001: Regenerate your bot token
+• Error TC002: Check bot permissions
+• Error TC003: Wait and retry
+
+Still stuck? Click below to open a ticket.
+[Open Ticket]
+```
+
+### New Member Guide
+
+**Trigger**: User's first message in server
+**Response**:
+```
+Welcome to the server! 👋
+
+Quick links to get started:
+📜 Rules: #rules
+❓ FAQ: #faq  
+🎫 Support: #support
+
+Need help? Just ask here or open a ticket!
+```
+
+### FAQ Auto-Answer
+
+**Trigger**: Message matches common question
+**Response**: AI-generated answer from knowledge base with option to create ticket if not helpful.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Trigger not firing">
+    Check channel permissions, trigger conditions, and cooldowns.
+  </Accordion>
+
+  <Accordion title="Too many false positives">
+    Make trigger conditions more specific or add exclusions.
+  </Accordion>
+
+  <Accordion title="Response feels spammy">
+    Increase cooldowns and limit active triggers.
+  </Accordion>
+</AccordionGroup>
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/discord">
+  Questions about proactive triggers? Join our Discord
+</Card>

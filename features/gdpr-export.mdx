@@ -1,0 +1,221 @@
+---
+title: "GDPR Data Export"
+description: "Export your data for GDPR compliance"
+---
+Export all your personal data from TicketCord as required by GDPR and other privacy regulations.
+
+## Your Right to Data Portability
+
+Under GDPR Article 20, you have the right to:
+
+- Receive your personal data
+- Get it in a structured, commonly used format
+- Transfer it to another service
+
+## What's Included
+
+Your data export contains:
+
+| Category | Data |
+|----------|------|
+| **Account** | Profile, settings, preferences |
+| **Bots** | Bot configurations |
+| **Guilds** | Server configurations |
+| **Tickets** | All ticket data you own |
+| **Transcripts** | Generated transcripts |
+| **Analytics** | Your usage statistics |
+| **Billing** | Payment history |
+
+## Requesting an Export
+
+### Via Dashboard
+
+<Steps>
+  <Step title="Open Settings">
+    Dashboard → Profile → Settings
+  </Step>
+  <Step title="Go to Privacy">
+    Scroll to the Privacy section
+  </Step>
+  <Step title="Click Export">
+    Select **Export My Data**
+  </Step>
+  <Step title="Confirm">
+    Verify your email address
+  </Step>
+  <Step title="Wait for Email">
+    You'll receive a download link when ready
+  </Step>
+</Steps>
+
+### Processing Time
+
+| Data Size | Typical Time |
+|-----------|-------------|
+| Small (few tickets) | Minutes |
+| Medium | 1-2 hours |
+| Large | Up to 24 hours |
+
+You'll receive an email notification when your export is ready.
+
+## Export Format
+
+### File Structure
+
+Your export is a ZIP file containing:
+
+```
+export/
+├── account.json
+├── bots/
+│   ├── bot-123.json
+│   └── bot-456.json
+├── guilds/
+│   ├── guild-789.json
+│   └── guild-012.json
+├── tickets/
+│   ├── ticket-001.json
+│   ├── ticket-002.json
+│   └── ...
+├── transcripts/
+│   └── transcript-001.html
+├── analytics.json
+└── billing.json
+```
+
+### Data Format
+
+- **JSON files**: Machine-readable structured data
+- **HTML files**: Human-readable transcripts
+- **UTF-8 encoding**: Proper character support
+- **Timestamps**: ISO 8601 format
+
+## Download & Security
+
+### Download Link
+
+When ready, you'll receive:
+
+- Email notification
+- Secure download link
+- Link valid for 7 days
+
+### Security Measures
+
+- Links are unique and single-use
+- HTTPS encrypted download
+- Identity verification required
+- Automatic expiration
+
+## Using Your Export
+
+### Viewing Data
+
+- JSON files can be opened in any text editor
+- Use JSON viewers for better formatting
+- Transcripts open in any browser
+
+### Importing Elsewhere
+
+Your data is portable:
+
+- Standard JSON format
+- Can be processed by other tools
+- No proprietary formats
+
+## Multiple Languages
+
+The export interface supports all TicketCord languages:
+
+- Export request page translated
+- Email notifications in your language
+- Data content in original language
+
+## Export Limitations
+
+### What's NOT Included
+
+| Not Included | Reason |
+|--------------|--------|
+| Other users' data | Privacy of others |
+| System logs | Technical data |
+| Aggregated analytics | Not personal data |
+| Bot tokens | Security risk |
+
+### Rate Limits
+
+- One export request per 24 hours
+- Prevents abuse
+- Contact support for urgent needs
+
+## Data Deletion
+
+After exporting, you may also delete your data:
+
+1. Go to Settings → Privacy
+2. Click **Delete My Account**
+3. Follow confirmation steps
+
+<Warning>
+  Account deletion is permanent. Export your data first if you want to keep it.
+</Warning>
+
+## For Server Owners
+
+### Guild Data
+
+As a server owner, your export includes:
+
+- Your server configurations
+- Staff settings you created
+- Tickets in servers you own
+
+### Other Users' Tickets
+
+You won't receive:
+
+- Content of tickets you didn't create
+- Other users' personal information
+- Staff members' private data
+
+## Compliance
+
+### GDPR
+
+Compliant with:
+
+- Article 15: Right of access
+- Article 20: Right to data portability
+- Provided within 30 days
+
+### Other Regulations
+
+Also supports:
+
+- CCPA (California)
+- UK GDPR
+- Other privacy laws
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Email not received">
+    Check spam folder. Verify email in settings is correct.
+  </Accordion>
+
+  <Accordion title="Download link expired">
+    Request a new export from the dashboard.
+  </Accordion>
+
+  <Accordion title="Export seems incomplete">
+    Large exports may take time. Wait for completion email.
+  </Accordion>
+
+  <Accordion title="Can't open JSON files">
+    Use a text editor or online JSON viewer.
+  </Accordion>
+</AccordionGroup>
+
+<Card title="Need Help?" icon="headset" href="mailto:hi@ticketcord.net">
+  Contact support for export assistance
+</Card>
