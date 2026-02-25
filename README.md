@@ -12,7 +12,7 @@ TicketCord is a Discord ticket management platform that lets communities run ful
 
 ## Documentation
 
-This repo powers the TicketCord documentation site built with [Mintlify](https://mintlify.com). Topics covered:
+This repo powers the [TicketCord documentation site](https://docs.ticketcord.net) built with [Mintlify](https://mintlify.com). Topics covered:
 
 - **Getting Started** — Quick start guide and bot setup
 - **Dashboard** — Ticket management, bot management, analytics
@@ -29,7 +29,8 @@ This repo powers the TicketCord documentation site built with [Mintlify](https:/
 | Website | [ticketcord.net](https://ticketcord.net) |
 | Documentation | [docs.ticketcord.net](https://docs.ticketcord.net) |
 | Discord | [ticketcord.net/discord](https://ticketcord.net/discord) |
-| Status | [status.ticketcord.net](https://status.ticketcord.net) |
+| Status | [status.ticketcord.net](https://ticketcord.net/status) |
+| Product Hunt | [producthunt.com/products/ticketcord](https://www.producthunt.com/products/ticketcord) |
 
 ## License
 
