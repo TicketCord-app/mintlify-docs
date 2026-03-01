@@ -1,0 +1,280 @@
+---
+title: "Developer Reference"
+description: "Pre-fill fields, configure CSP, and advanced widget embedding for developers"
+---
+
+This page covers the technical details of embedding the Web Chat Widget: pre-filling visitor data, Content Security Policy configuration, framework-specific setup, and the JavaScript API.
+
+<Info>
+  This is a developer-focused reference. For general setup, see the [Widget Setup](/integrations/webchat-setup) guide.
+</Info>
+
+## Pre-Filling Visitor Fields
+
+If your website already knows the visitor's name or email (e.g., from a login session), you can pre-fill the widget's form fields and optionally lock them so the visitor cannot change them.
+
+### Via Data Attributes
+
+Add attributes directly to the script tag:
+
+```html
+<script
+  src="https://ticketcord.net/api/webchat/widget.js"
+  data-widget-key="WK_your_key_here"
+  data-visitor-name="Jane Smith"
+  data-visitor-email="jane@example.com"
+  data-visitor-message="I need help with my order"
+  data-lock-name="true"
+  data-lock-email="true"
+  defer
+></script>
+```
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-visitor-name` | Pre-fill the name field |
+| `data-visitor-email` | Pre-fill the email field |
+| `data-visitor-message` | Pre-fill the first message |
+| `data-lock-name` | Set to `"true"` to make the name field read-only |
+| `data-lock-email` | Set to `"true"` to make the email field read-only |
+| `data-lock-message` | Set to `"true"` to make the message field read-only |
+
+<Tip>
+  **Lock fields when you trust the data.** If the name and email come from your authenticated session, lock them to prevent visitors from impersonating other users. If the data is just a convenience default, leave them unlocked.
+</Tip>
+
+### Via JavaScript API
+
+For dynamic values (e.g., loaded after the page renders), set the `window.TicketCordWidget` object **before** the script loads, or at any point before the visitor opens the widget:
+
+```javascript
+window.TicketCordWidget = {
+  prefill: {
+    name: 'Jane Smith',
+    email: 'jane@example.com',
+    message: 'I need help with my order',
+    lockName: true,
+    lockEmail: true,
+    lockMessage: false
+  }
+}
+```
+
+<Note>
+  The JavaScript API and data attributes can be used together. If both are present, the JavaScript API values take priority.
+</Note>
+
+---
+
+## Content Security Policy (CSP)
+
+If your website uses a `Content-Security-Policy` header, you need to allow the widget's domain. Add the following directives:
+
+```
+script-src 'self' https://ticketcord.net;
+connect-src 'self' https://ticketcord.net;
+style-src 'self' 'unsafe-inline';
+img-src 'self' https://ticketcord.net https://cdn.discordapp.com;
+```
+
+### Directive Breakdown
+
+| Directive | Why It's Needed |
+|-----------|----------------|
+| `script-src https://ticketcord.net` | The widget script itself |
+| `connect-src https://ticketcord.net` | API calls (config, session, messages) and the SSE stream |
+| `style-src 'unsafe-inline'` | The widget injects its own styles into a shadow DOM |
+| `img-src https://cdn.discordapp.com` | Staff avatar images from Discord |
+
+<Warning>
+  If you see `Refused to load` or `Refused to connect` errors in the console, your CSP is blocking the widget. Add the domains listed above to the relevant directives.
+</Warning>
+
+### Next.js Example
+
+If you're using Next.js with a custom CSP in `next.config.ts`:
+
+```typescript next.config.ts
+const cspDirectives = [
+  "default-src 'self'",
+  "script-src 'self' https://ticketcord.net",
+  "connect-src 'self' https://ticketcord.net",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' https://ticketcord.net https://cdn.discordapp.com",
+  // ... your other directives
+]
+
+const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: cspDirectives.join('; ')
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### Image Domains
+
+If your framework restricts which domains can serve images (e.g., Next.js `images.remotePatterns`), add both domains:
+
+```typescript next.config.ts
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'ticketcord.net' },
+      { protocol: 'https', hostname: 'cdn.discordapp.com' },
+    ]
+  }
+}
+```
+
+---
+
+## Framework-Specific Embedding
+
+### React / Next.js
+
+Use the `Script` component with the `afterInteractive` strategy:
+
+```tsx
+import Script from 'next/script'
+
+export default function Layout({ children }) {
+  return (
+    <>
+      {children}
+      <Script
+        src="https://ticketcord.net/api/webchat/widget.js"
+        data-widget-key="WK_your_key_here"
+        strategy="afterInteractive"
+      />
+    </>
+  )
+}
+```
+
+For dynamic pre-fill values from your auth context:
+
+```tsx
+'use client'
+
+import Script from 'next/script'
+import { useSession } from 'next-auth/react'
+
+export function ChatWidget() {
+  const { data: session } = useSession()
+
+  return (
+    <Script
+      src="https://ticketcord.net/api/webchat/widget.js"
+      data-widget-key="WK_your_key_here"
+      data-visitor-name={session?.user?.name ?? ''}
+      data-visitor-email={session?.user?.email ?? ''}
+      data-lock-name={session?.user?.name ? 'true' : 'false'}
+      data-lock-email={session?.user?.email ? 'true' : 'false'}
+      strategy="afterInteractive"
+    />
+  )
+}
+```
+
+### Vue / Nuxt
+
+In your main layout or `app.vue`:
+
+```vue
+<template>
+  <div>
+    <NuxtPage />
+  </div>
+</template>
+
+<script setup>
+useHead({
+  script: [
+    {
+      src: 'https://ticketcord.net/api/webchat/widget.js',
+      'data-widget-key': 'WK_your_key_here',
+      defer: true
+    }
+  ]
+})
+</script>
+```
+
+### WordPress
+
+Add this to your theme's `footer.php` before the closing `</body>` tag, or use a plugin like "Insert Headers and Footers":
+
+```html
+<script
+  src="https://ticketcord.net/api/webchat/widget.js"
+  data-widget-key="WK_your_key_here"
+  defer
+></script>
+```
+
+### Static HTML
+
+Paste the snippet before `</body>` in every page where you want the widget:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Website</title>
+</head>
+<body>
+  <!-- Your page content -->
+
+  <script
+    src="https://ticketcord.net/api/webchat/widget.js"
+    data-widget-key="WK_your_key_here"
+    defer
+  ></script>
+</body>
+</html>
+```
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Widget bubble doesn't appear">
+    Open your browser console (F12) and look for `[TicketCord WebChat]` messages:
+
+    - **`Widget disabled: no allowed domains are configured`** — Add your domain to the allowed domains list in the dashboard.
+    - **`Widget blocked: this domain is not in the allowed domains list`** — The current page's origin doesn't match any allowed domain. Check for typos (e.g., `http` vs `https`, `www` vs non-www).
+    - **`Widget disabled: the bot owner's plan no longer includes web chat`** — The plan was downgraded. Upgrade back to Pro or Enterprise.
+    - **No console output at all** — Verify the `data-widget-key` attribute is correct and the script URL is reachable.
+  </Accordion>
+  <Accordion title="CSP errors in the console">
+    Your Content Security Policy is blocking the widget. See the [CSP section](#content-security-policy-csp) above for the required directives.
+  </Accordion>
+  <Accordion title="Staff avatar images not loading">
+    Add `https://cdn.discordapp.com` to your `img-src` CSP directive. Discord serves avatar images from this domain.
+  </Accordion>
+  <Accordion title="Pre-fill values not appearing">
+    - Ensure the data attributes are on the `<script>` tag itself, not on a parent element.
+    - If using the JavaScript API, set `window.TicketCordWidget` **before** the script loads, or ensure the widget hasn't already initialized.
+    - Check that the pre-chat form is enabled in your dashboard settings — pre-fill values only appear on the form.
+  </Accordion>
+  <Accordion title="Widget loads but messages don't send">
+    - Check that the bot is online in your dashboard.
+    - Verify the ticket category exists and the bot has permissions to create channels in it.
+    - Look for rate limit errors in the console — the default is 10 messages per minute.
+  </Accordion>
+</AccordionGroup>
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
+  Get instant support via private DM
+</Card>

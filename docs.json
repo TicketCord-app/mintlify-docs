@@ -97,7 +97,15 @@
       {
         "group": "Integrations",
         "pages": [
-          "integrations/webhooks"
+          "integrations/webhooks",
+          {
+            "group": "Web Chat Widget",
+            "pages": [
+              "integrations/webchat-overview",
+              "integrations/webchat-setup",
+              "integrations/webchat-developer"
+            ]
+          }
         ]
       },
       {

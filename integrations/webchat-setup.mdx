@@ -1,0 +1,102 @@
+---
+title: "Widget Setup"
+description: "Enable the Web Chat Widget and embed it on your website"
+---
+
+This guide walks you through enabling the widget in your dashboard and adding the embed snippet to your website.
+
+## Prerequisites
+
+- A **Pro** or **Enterprise** plan
+- At least one ticket category configured in your server
+- The bot online and connected to your Discord server
+
+## Step 1: Enable the Widget
+
+<Steps>
+  <Step title="Open the Web Chat tab">
+    Go to your **Dashboard** → select your bot and server → click the **Web Chat** tab in the configuration panel.
+  </Step>
+  <Step title="Toggle the widget on">
+    Switch the **Enable Web Chat Widget** toggle to on. A unique **Widget Key** (`WK_...`) is generated automatically.
+  </Step>
+  <Step title="Add at least one allowed domain">
+    In the **Allowed Domains** section, add every domain where you will embed the widget (e.g., `https://example.com`). The widget will not load on domains that are not in this list.
+  </Step>
+  <Step title="Save your changes">
+    Click **Save All** at the top of the page.
+  </Step>
+</Steps>
+
+<Warning>
+  Allowed domains are **required**. The widget will refuse to load if no domains are configured. This is a security measure to prevent unauthorized sites from using your widget key.
+</Warning>
+
+## Step 2: Add the Embed Snippet
+
+Copy the script tag shown in the dashboard and paste it into your website's HTML, just before the closing `</body>` tag:
+
+```html
+<script
+  src="https://ticketcord.net/api/webchat/widget.js"
+  data-widget-key="WK_your_key_here"
+  defer
+></script>
+```
+
+That's it. The widget bubble will appear in the bottom-right corner of your page (configurable).
+
+<Tip>
+  The `defer` attribute ensures the widget loads after your page content, so it never blocks rendering.
+</Tip>
+
+## Step 3: Configure Settings
+
+Back in the dashboard, you can customize:
+
+| Setting | Description |
+|---------|-------------|
+| **Category** | Which Discord category to create ticket channels in |
+| **Greeting** | Welcome message shown when a visitor opens the widget |
+| **Accent Color** | Primary color of the chat bubble and header |
+| **Position** | Bottom-left or bottom-right placement |
+| **Pre-Chat Form** | Require name and email before chatting |
+| **Auto-Reply** | Automatic first response when a ticket is created |
+| **Allow Visitor Close** | Let visitors close their own tickets from the widget |
+| **Theme** | Light, dark, or auto (follows system preference) |
+| **Branding** | Show or hide the "Powered by TicketCord" badge (Pro+ can remove) |
+| **Rate Limit** | Maximum messages per minute per visitor |
+| **Ping Roles** | Staff roles to notify when a new webchat ticket is created |
+
+## Step 4: Test It
+
+Open your website in a browser and verify:
+
+1. The chat bubble appears
+2. Clicking it opens the pre-chat form (if enabled) or the chat view
+3. Sending a message creates a channel in your Discord server
+4. Staff replies in Discord appear in the widget
+
+<Info>
+  If the widget does not appear, open your browser's developer console (F12) and look for `[TicketCord WebChat]` messages. Common issues include an incorrect widget key, a missing allowed domain, or an expired plan.
+</Info>
+
+## Allowed Domains
+
+The widget validates the embedding page's origin against your allowed domains list on every request. You can add up to 20 domains.
+
+**Format:** Full origin including protocol — `https://example.com` (no trailing slash, no paths).
+
+**Examples:**
+
+| Domain | Valid? |
+|--------|--------|
+| `https://example.com` | Yes |
+| `https://shop.example.com` | Yes |
+| `http://localhost:3000` | No — localhost is automatically allowed in development mode |
+| `example.com` | No — missing protocol |
+| `https://example.com/support` | No — no paths allowed |
+
+<Card title="Developer Reference" icon="code" href="/integrations/webchat-developer">
+  Pre-fill fields, configure CSP headers, and more
+</Card>
