@@ -42,11 +42,16 @@ Before you begin, you'll need:
     </Frame>
   </Step>
 
-  <Step title="Privileged Gateway Intents">
-    TicketCord automatically enables all required **Privileged Gateway Intents** when your bot connects.
+  <Step title="Enable Privileged Gateway Intents">
+    In the Discord Developer Portal, open your application's **Bot** page and enable these under **Privileged Gateway Intents**:
+
+    - **Server Members Intent**
+    - **Message Content Intent**
+
+    Discord requires you to enable these yourself — TicketCord cannot turn them on for you. If they're off, your bot can't connect and Discord reports a "disallowed intent" error (code 4014).
 
     <Warning>
-      Do not manually change any intent settings. Disabling intents will break your bot's functionality.
+      Don't disable these later. Turning them off will break your bot until they're re-enabled.
     </Warning>
   </Step>
 
@@ -77,7 +82,7 @@ Before you begin, you'll need:
     - **Bot Token** - The token you copied earlier
 
     <Info>
-      TicketCord will automatically configure your bot's intents and settings during validation.
+      Validation checks your credentials and connection. If it fails with a "disallowed intent" (4014) error, go back to the Developer Portal and enable the two Privileged Gateway Intents, then validate again.
     </Info>
   </Step>
 
