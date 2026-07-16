@@ -19,7 +19,7 @@ TicketCord offers flexible pricing to fit communities of all sizes, from small D
     All Pro features without AI - great for communities that don't need AI.
     - 3 custom bots
     - Remove branding
-    - Priority support (24h)
+    - Priority support
     - Analytics dashboard
     - 5 custom embeds
   </Card>
@@ -29,12 +29,12 @@ TicketCord offers flexible pricing to fit communities of all sizes, from small D
     - AI-powered features
     - Knowledge base (2 sources)
     - Atlas AI assistant
-    - Smart auto-routing
+    - Priority & duplicate detection
   </Card>
   <Card title="Enterprise" icon="building">
     Full access for large organizations with advanced needs.
     - 6 custom bots
-    - 15 KB sources + GitHub
+    - 15 knowledge base sources
     - Webhooks (20 per guild)
     - SLA management
     - Custom footer/branding
@@ -46,7 +46,7 @@ TicketCord offers flexible pricing to fit communities of all sizes, from small D
 | **Bots & Tickets** |
 | Custom Discord bots | 1 | 3 | 3 | 6 |
 | Tickets per month | Unlimited | Unlimited | Unlimited | Unlimited |
-| Ticket history | Forever | Forever | Forever | Forever |
+| Closed-ticket content retention | Up to 90 days | 90/180/365 days or manual | 90/180/365 days or manual | 90/180/365 days or manual |
 | **Branding** |
 | TicketCord footer | Required | Removed | Removed | Custom |
 | Custom bot status | No | Yes | Yes | Yes |
@@ -58,12 +58,11 @@ TicketCord offers flexible pricing to fit communities of all sizes, from small D
 | AI tokens/month | 0 | 0 | Included | Maximum |
 | Atlas AI assistant | No | No | Yes | Yes |
 | Knowledge base sources | 0 | 0 | 2 | 15 |
-| GitHub KB integration | No | No | No | Yes |
-| Smart auto-routing | No | No | Yes | Yes |
+| Smart auto-routing | No | No | No | Yes |
 | Priority detection | No | No | Yes | Yes |
 | Duplicate detection | No | No | Yes | Yes |
-| Translation | No | No | Yes | Yes |
-| Sentiment detection | No | No | Yes | Yes |
+| Translation | No | No | No | Yes |
+| Sentiment detection | No | No | No | Yes |
 | **Integrations** |
 | Webhooks per guild | 0 | 0 | 0 | 20 |
 | Webhook rate limit/min | - | - | - | 60 |
@@ -73,7 +72,7 @@ TicketCord offers flexible pricing to fit communities of all sizes, from small D
 | Multi-stage approvals | No | No | No | Yes |
 | Scheduled reports | No | No | No | Yes |
 | **Support** |
-| Support type | Community | Priority (24h) | Priority (24h) | Priority (12h) |
+| Support type | Community | Priority | Priority | Priority |
 ## Billing Options
 ### Monthly vs Yearly
 Save **17%** when you choose yearly billing:
@@ -86,11 +85,11 @@ Save **17%** when you choose yearly billing:
   Yearly plans are billed upfront for the full year and automatically renew unless cancelled.
 </Tip>
 ## Free Trial
-All paid plans include a **7-day free trial**:
-- Full access to all plan features during trial
-- €1 card verification to start (refunded instantly)
-- Cancel anytime before trial ends
-- Automatic conversion to paid subscription after trial
+Paid plans include a **7-day free trial** (available once per account):
+- Access to your plan's features during the trial
+- AI usage during the trial is capped at 1M tokens (instead of the full plan allocation)
+- Cancel anytime before the trial ends
+- Converts to a paid subscription after the trial if a payment method is on file
 
 <Note>
   If you don't add a payment method before the trial ends, your account will automatically downgrade to the Free plan.
@@ -114,7 +113,8 @@ All paid plans include a **7-day free trial**:
 
 - Features above your new plan limit become read-only
 - Extra bots beyond your limit are automatically stopped
-- Existing tickets and transcripts remain accessible
+- Existing tickets and transcripts remain accessible, subject to your plan's retention policy
+- On a downgrade to Free, closed-ticket content retention resets to the Free policy (up to 90 days) for tickets going forward
 - AI tokens reset to new plan allocation at next billing cycle
 ## Frequently Asked Questions
 <AccordionGroup>
