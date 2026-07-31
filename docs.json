@@ -68,6 +68,7 @@
             "group": "Knowledge Base",
             "pages": [
               "ai/knowledge-base",
+              "ai/mcp",
               "ai/knowledge-base-sources",
               "ai/knowledge-base-settings",
               "ai/knowledge-base-feedback",

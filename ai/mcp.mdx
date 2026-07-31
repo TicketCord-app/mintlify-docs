@@ -1,0 +1,259 @@
+---
+title: "Connect Claude Code or Codex"
+description: "Securely search and manage your TicketCord Knowledge Base from an AI tool using MCP"
+---
+
+MCP lets Claude Code or Codex work with your TicketCord Knowledge Base after you sign in and approve access. Think of it as a secure bridge between your AI tool and TicketCord.
+
+You can ask questions in everyday language, review what the tool finds, and tell it to update your knowledge without clicking through every dashboard screen.
+
+<Info>
+  You must be the TicketCord account owner, and your active plan must include Knowledge Base access. Dashboard staff cannot create an MCP connection.
+</Info>
+
+<Warning>
+  One MCP connection covers every TicketCord bot you own now and every bot you add later. After listing your Knowledge Bases, every action on a specific Knowledge Base targets one bot and server. TicketCord checks your ownership and plan before every request.
+</Warning>
+
+## What You Need
+
+- A TicketCord account that owns at least one bot
+- An active plan with Knowledge Base access
+- [Claude Code](https://code.claude.com/docs/en/installation) or the [Codex CLI](https://learn.chatgpt.com/docs/codex/cli)
+- Access to a browser so you can sign in and approve the connection
+
+## Connect Your AI Tool
+
+<Steps>
+  <Step title="Open the connection card">
+    In the TicketCord dashboard, select a bot and server. Open **Knowledge Base → Configuration**, then find **Connect AI tools**.
+  </Step>
+
+  <Step title="Add TicketCord to your AI tool">
+    Use the commands for the tool you installed.
+
+    **Claude Code**
+
+    ```bash
+    claude mcp add --transport http ticketcord https://ticketcord.com/api/mcp --scope user
+    claude mcp login ticketcord
+    ```
+
+    **Codex**
+
+    ```bash
+    codex mcp add ticketcord --url https://ticketcord.com/api/mcp
+    codex mcp login ticketcord
+    ```
+  </Step>
+
+  <Step title="Approve access in your browser">
+    TicketCord opens in your browser. Sign in and review:
+
+    - The warning that the connection covers your entire account
+    - Read permission for viewing and searching knowledge
+    - Write permission for changing settings, sources, and entries
+    - Delete permission for permanently removing sources and entries
+
+    Select **Allow access** to continue or **Deny** to cancel.
+  </Step>
+
+  <Step title="Return to your AI tool">
+    When the page says **Authentication complete**, close the browser tab and return to Claude Code or Codex.
+
+    Start with:
+
+    ```text
+    List my TicketCord knowledge bases.
+    ```
+  </Step>
+</Steps>
+
+## What You Can Do
+
+### Find Answers
+
+Ask Claude Code or Codex to search your Knowledge Base by meaning. TicketCord returns short matching passages with source names and confidence, then your AI tool uses those passages to answer.
+
+```text
+Search our refund policy and summarize it with source names.
+```
+
+### Check Knowledge Base Health
+
+List your Knowledge Bases and inspect their settings, sources, indexing status, and entries.
+
+```text
+List my knowledge bases and show which ones have no ready sources.
+```
+
+### Manage Sources
+
+Create, edit, enable, disable, reindex, or delete:
+
+- Web pages
+- Discord channels
+- GitHub repositories that are already connected to TicketCord
+
+Creating a source automatically queues its first index. Ask for a reindex after the source content changes.
+
+```text
+Add https://docs.example.com as a documentation source and start indexing it.
+```
+
+<Info>
+  Connecting or disconnecting your GitHub account still happens only in the TicketCord dashboard.
+</Info>
+
+### Manage Entries
+
+List, create, edit, review, approve, reject, or delete Knowledge Base entries.
+
+```text
+Show pending entries and recommend whether I should approve or reject each one. Do not change anything yet.
+```
+
+### Change Settings
+
+Update the same Knowledge Base settings that are editable in the dashboard, including:
+
+- Enabled state and product information
+- Triggers and display options
+- Answer quality and update behavior
+- Feedback and ticket learning
+- Auto Support
+
+Usage counters, plan limits, and internal settings remain read-only.
+
+## Complete Action List
+
+<AccordionGroup>
+  <Accordion title="Read and search">
+    - List Knowledge Bases: `list_knowledge_bases`
+    - View one Knowledge Base: `get_knowledge_base`
+    - Search for relevant passages: `search_knowledge_base`
+    - List available source choices: `list_knowledge_source_options`
+    - List Knowledge Base entries: `list_knowledge_entries`
+  </Accordion>
+
+  <Accordion title="Settings and sources">
+    - Change Knowledge Base settings: `update_knowledge_base_settings`
+    - Add a source: `create_knowledge_source`
+    - Edit, enable, or disable a source: `update_knowledge_source`
+    - Reindex a source: `index_knowledge_source`
+    - Delete a source: `delete_knowledge_source`
+  </Accordion>
+
+  <Accordion title="Entries">
+    - Create an entry: `create_knowledge_entry`
+    - Edit an approved entry: `update_knowledge_entry`
+    - Approve or reject a pending entry: `review_knowledge_entry`
+    - Delete an entry: `delete_knowledge_entry`
+  </Accordion>
+</AccordionGroup>
+
+## Useful Prompts
+
+### Review Before Changing Anything
+
+```text
+Find entries that mention our old pricing. Show them first and do not change anything.
+```
+
+```text
+Show me the current password reset answer, explain what is outdated, and wait for my approval before editing it.
+```
+
+### Keep Documentation Current
+
+```text
+Show all webpage sources that have not been indexed recently. Do not reindex them yet.
+```
+
+```text
+Reindex the source named Product Documentation and tell me whether it completed successfully.
+```
+
+### Review Learned Answers
+
+```text
+List pending entries, group similar questions together, and recommend approve or reject for each one.
+```
+
+### Compare Your Servers
+
+```text
+List my TicketCord knowledge bases and summarize which servers have Knowledge Base disabled or no ready sources.
+```
+
+## Permissions and Safety
+
+| Permission | What It Allows |
+|------------|----------------|
+| **Read** (`kb:read`) | View targets, settings, sources, search results, and entries |
+| **Write** (`kb:write`) | Change settings, manage sources and indexing, and create, edit, or review entries |
+| **Delete** (`kb:delete`) | Permanently delete sources and entries |
+
+<Warning>
+  Deleting a source or entry is permanent. For risky changes, ask the AI tool to show what it found and explain its planned action before it changes anything.
+</Warning>
+
+TicketCord applies these protections on every request:
+
+- Ownership and plan access are checked again, even after authorization
+- Every action on a specific Knowledge Base must name its bot and server
+- Search results are limited and exclude internal IDs, secrets, and private backend details
+- Knowledge Base text is treated as content, not as instructions for the AI tool
+- Write and delete actions are recorded in TicketCord's audit trail without storing prompts or Knowledge Base content
+
+Never store passwords, API keys, secrets, or customer data in your Knowledge Base.
+
+## Revoke a Connection
+
+1. Open a bot and server in the TicketCord dashboard.
+2. Go to **Knowledge Base → Configuration**.
+3. Find the connection under **Connect AI tools**.
+4. Select **Revoke** and confirm.
+
+Revocation takes effect immediately. The AI tool must complete authorization again before it can access TicketCord.
+
+## Plan Changes
+
+If your plan expires or no longer includes Knowledge Base access, TicketCord pauses MCP access on the next request. The connection can work again after you upgrade to an eligible plan, unless you revoked it or its refresh access expired.
+
+## Troubleshooting
+
+### The browser did not open
+
+Run the login command again. Your terminal should display an authorization link that you can open manually.
+
+```bash
+claude mcp login ticketcord
+```
+
+or
+
+```bash
+codex mcp login ticketcord
+```
+
+### The consent request expired
+
+The authorization page is temporary and can only be used once. Close the old tab and run the login command again to receive a new request. Do not submit the expired page again.
+
+### Authentication completed, but the tool is still waiting
+
+Return to your terminal and give the client a moment to finish. If it does not complete, cancel the login command and run it again. Do not reuse the previous browser tab.
+
+### Access was denied
+
+Check that:
+
+1. You are signed in as the TicketCord account owner.
+2. Your current plan includes Knowledge Base access.
+3. You still own the bot and server named in the request.
+4. The connection has not been revoked.
+
+<Card title="Knowledge Base Sources" icon="book" href="/ai/knowledge-base-sources">
+  Learn how to prepare and maintain high-quality sources.
+</Card>
