@@ -7,6 +7,16 @@ MCP lets Claude Code or Codex work with your TicketCord Knowledge Base after you
 
 You can ask questions in everyday language, review what the tool finds, and tell it to update your knowledge without clicking through every dashboard screen.
 
+<button
+  id="copy-mcp-prompt-btn"
+  className="not-prose inline-flex cursor-pointer items-center gap-2 rounded-xl bg-primary dark:bg-primary-light px-5 py-3 text-sm font-semibold text-white dark:text-zinc-950 shadow-sm transition-opacity duration-200 hover:opacity-90"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+  <span data-copy-label>Copy agent setup prompt</span>
+</button>
+
+Paste the copied prompt into Claude Code, Codex, or another MCP-capable agent and it will install the connection, walk you through authorization, and learn how to use TicketCord correctly. The [full prompt](#fastest-setup-copy-one-prompt) is shown below, and the rest of this page covers the same steps manually.
+
 <Info>
   You must be the TicketCord account owner, and your active plan must include Knowledge Base access. Dashboard staff cannot create an MCP connection.
 </Info>
@@ -17,7 +27,7 @@ You can ask questions in everyday language, review what the tool finds, and tell
 
 ## Fastest Setup: Copy One Prompt
 
-Skip the manual steps by pasting a single prompt into your AI tool. Copy the prompt below with the copy button, paste it into Claude Code, Codex, or another MCP-capable agent, and it will install the connection, walk you through authorization, and learn how to use TicketCord correctly.
+This is the prompt behind the **Copy agent setup prompt** button above. You can also copy it here with the code block's copy button and review exactly what your agent is told to do.
 
 ````text Copy this prompt into your AI agent expandable
 You are connecting to the TicketCord MCP server so you can search and manage my TicketCord Knowledge Base. Follow these instructions exactly.
@@ -73,8 +83,6 @@ Once the connection is verified, ask me what I want to do first and suggest thes
 - "List pending entries and recommend approve or reject for each one. Do not change anything yet."
 - "Show all webpage sources that have not been indexed recently."
 ````
-
-Prefer to set things up by hand instead? The rest of this page walks through the same steps manually.
 
 ## What You Need
 
