@@ -15,6 +15,67 @@ You can ask questions in everyday language, review what the tool finds, and tell
   One MCP connection covers every TicketCord bot you own now and every bot you add later. After listing your Knowledge Bases, every action on a specific Knowledge Base targets one bot and server. TicketCord checks your ownership and plan before every request.
 </Warning>
 
+## Fastest Setup: Copy One Prompt
+
+Skip the manual steps by pasting a single prompt into your AI tool. Copy the prompt below with the copy button, paste it into Claude Code, Codex, or another MCP-capable agent, and it will install the connection, walk you through authorization, and learn how to use TicketCord correctly.
+
+````text Copy this prompt into your AI agent expandable
+You are connecting to the TicketCord MCP server so you can search and manage my TicketCord Knowledge Base. Follow these instructions exactly.
+
+## 1. Install the connection
+
+Detect which tool you are running in and use the matching commands.
+
+If you are Claude Code, run:
+
+claude mcp add --transport http ticketcord https://ticketcord.com/api/mcp --scope user
+claude mcp login ticketcord
+
+If you are Codex, run:
+
+codex mcp add ticketcord --url https://ticketcord.com/api/mcp
+codex mcp login ticketcord
+
+If you are another MCP-capable agent, register a remote HTTP MCP server named "ticketcord" at https://ticketcord.com/api/mcp using OAuth authorization, following your own tool's configuration method.
+
+## 2. Help me authorize
+
+The login command opens my browser to a TicketCord consent page. Tell me to:
+1. Sign in as the TicketCord account owner (dashboard staff accounts cannot authorize MCP).
+2. Review the requested permissions: read (view and search), write (change settings, sources, entries), delete (permanently remove sources and entries).
+3. Select "Allow access".
+
+Warn me that one connection covers every bot my account owns, now and in the future. If the browser does not open, run the login command again and show me the authorization link from the terminal so I can open it manually. Consent pages are single-use: if one expires, start a fresh login instead of resubmitting the old tab.
+
+## 3. Verify the connection
+
+After I confirm authorization is complete, call the list_knowledge_bases tool and show me a short summary of my knowledge bases (bot, server, enabled state, number of ready sources). If the call fails, check with me that: I am the account owner, my plan includes Knowledge Base access, and the connection was not revoked in the dashboard under Knowledge Base -> Configuration -> Connect AI tools.
+
+## 4. How to use TicketCord tools
+
+Available tools:
+- Read and search: list_knowledge_bases, get_knowledge_base, search_knowledge_base, list_knowledge_source_options, list_knowledge_entries
+- Settings and sources: update_knowledge_base_settings, create_knowledge_source, update_knowledge_source, index_knowledge_source, delete_knowledge_source
+- Entries: create_knowledge_entry, update_knowledge_entry, review_knowledge_entry, delete_knowledge_entry
+
+Rules you must follow:
+- Every action on a specific Knowledge Base targets exactly one bot and one server. If I have several, ask me which one before acting.
+- Search returns short passages with source names and confidence. Use those passages to answer, and cite the source names.
+- Creating a source automatically queues its first index. Suggest a reindex when I say the source content changed.
+- Sources can be web pages, Discord channels, or GitHub repositories that are already connected in the TicketCord dashboard. Connecting or disconnecting GitHub itself happens only in the dashboard.
+- Before any write, and especially before any delete, show me what you found and what you plan to change, then wait for my approval. Deletes are permanent.
+- Never store passwords, API keys, secrets, or customer data in the Knowledge Base.
+
+## 5. Finish
+
+Once the connection is verified, ask me what I want to do first and suggest these starters:
+- "Search our refund policy and summarize it with source names."
+- "List pending entries and recommend approve or reject for each one. Do not change anything yet."
+- "Show all webpage sources that have not been indexed recently."
+````
+
+Prefer to set things up by hand instead? The rest of this page walks through the same steps manually.
+
 ## What You Need
 
 - A TicketCord account that owns at least one bot
