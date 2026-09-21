@@ -1,131 +1,99 @@
 ---
 title: "Webhooks"
-description: "Integrate TicketCord with external services via webhooks"
+description: "Receive signed HTTP notifications for 23 ticket events and connect TicketCord to Zapier, Make, Slack, or your own service"
 ---
 
-Webhooks allow you to receive real-time notifications when events occur in your ticket system. Use them to integrate with services like Zapier, Make.com, Slack, Jira, or your own custom applications.
+Webhooks send an HTTP `POST` to a URL you choose every time something happens in your tickets: a ticket is created or closed, a message arrives, a priority changes, an SLA is breached, an approval is decided, and so on. Each request is signed so your receiver can prove it came from TicketCord. Use them to push tickets into a CRM, alert a Slack channel, or drive automation platforms such as Zapier, Make, or n8n. They are for Enterprise servers that need TicketCord data outside Discord and the dashboard.
 
 <Info>
-  Webhooks are an **Enterprise** feature. [Upgrade your plan](https://ticketcord.com/pricing) to access webhooks.
+  Webhooks are an **Enterprise** feature. Each server can have up to **20** webhooks, and each webhook delivers at most **60** events per minute. Only the bot owner can create, edit, test, or delete webhooks and view delivery logs; dashboard staff see the list with the URL hidden. [Upgrade your plan](https://ticketcord.com/pricing) to use webhooks.
 </Info>
 
-## Quick Start
+## Creating a webhook
 
-For most integrations (Zapier, Make.com, n8n, etc.), simply:
+<Steps>
+  <Step title="Open the Integrations tab">
+    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **Integrations** under the **Platform** group. Scroll to the **Webhooks** section; the header shows "Using X of 20 webhooks".
+  </Step>
+  <Step title="Click Create Webhook">
+    Enter a **Name** and the **URL** of your receiver, then tick the events you want. Events are grouped as **Ticket Lifecycle**, **Messages**, **Priority & SLA**, **Sentiment & Approvals**, and **Notes & Access Control**. Pick at least one.
+  </Step>
+  <Step title="Save the secret">
+    On **Webhook Created Successfully**, copy the secret and store it somewhere safe. It is shown once and cannot be retrieved later. You need it to verify signatures.
+  </Step>
+  <Step title="Send a test">
+    Use **Test Fire** on the webhook's row. A test payload is queued for delivery under the first event type you subscribed to, and the result appears in **View Logs** within a minute.
+  </Step>
+</Steps>
 
-1. Go to **Webhooks** in your dashboard
-2. Click **Create Webhook**
-3. Enter the URL from your integration service
-4. Select the events you want to receive
-5. Save - you're done!
+For no-code platforms (Zapier, Make, n8n), paste the catch-hook URL the platform gives you as the **URL**, subscribe to the events you need, and map the fields from the payloads below. Signature verification is optional there.
 
-No additional configuration needed for standard integrations.
+## Settings
 
-## Event Types
+| Field | Allowed values | Default |
+|-------|----------------|---------|
+| **Name** | 1 to 50 characters: letters, numbers, spaces, hyphens, underscores | required |
+| **URL** | `https://` only, public hostname, no embedded credentials | required |
+| **Events** | any of the 23 events below, at least one | none |
+| **Active** | on or off (toggle on the row) | on |
+| Retry policy (advanced, not in the form) | up to 5 retries, backoff multiplier 1 to 5, initial delay 100 ms to 10 s | 3 retries, multiplier 2, 1 s |
 
-TicketCord supports 23 webhook events:
+URL rules are enforced on save and again at delivery time: `http://`, `localhost`, private and internal IP addresses, and hostnames that resolve to them are rejected with messages such as "Webhook URL must use HTTPS protocol" or "Webhook hostname resolves to an internal/private IP address".
 
-### Ticket Events
+## Events
 
-| Event | Description |
-|-------|-------------|
-| `ticket.created` | A new ticket was created |
-| `ticket.claimed` | Staff member claimed a ticket |
-| `ticket.unclaimed` | Ticket was unclaimed |
-| `ticket.closed` | Ticket was closed |
-| `ticket.reopened` | Closed ticket was reopened |
-| `ticket.deleted` | Ticket was deleted |
-| `ticket.renamed` | Ticket subject was changed |
+TicketCord sends 23 event types.
 
-### Message Events
+| Group | Events |
+|-------|--------|
+| Ticket lifecycle | `ticket.created`, `ticket.claimed`, `ticket.unclaimed`, `ticket.closed`, `ticket.reopened`, `ticket.deleted`, `ticket.renamed` |
+| Messages | `message.created`, `message.edited`, `message.deleted` |
+| Priority and SLA | `priority.changed`, `sla.warning`, `sla.breach` |
+| Sentiment and approvals | `sentiment.negative`, `approval.requested`, `approval.approved`, `approval.denied` |
+| Notes and access | `ticket.note.added`, `ticket.note.removed`, `ticket.user.added`, `ticket.user.removed`, `ticket.role.added`, `ticket.role.removed` |
 
-| Event | Description |
-|-------|-------------|
-| `message.created` | New message in a ticket |
-| `message.edited` | Message was edited |
-| `message.deleted` | Message was deleted |
+`sla.*` events need [SLA Management](/configuration/sla-management), `approval.*` events need [Approval Workflows](/configuration/approval-workflows), and `sentiment.negative` needs [Sentiment Detection](/ai/sentiment-detection) to be enabled on the server; otherwise they never fire.
 
-### Priority & SLA Events
+## Request format
 
-| Event | Description |
-|-------|-------------|
-| `priority.changed` | Ticket priority was updated |
-| `sla.breach` | SLA time limit was exceeded |
-| `sla.warning` | SLA is close to breaching |
-| `sentiment.negative` | Negative sentiment detected in ticket |
+Every delivery is a `POST` with a JSON body and these headers:
 
-### Approval Events
+| Header | Value |
+|--------|-------|
+| `Content-Type` | `application/json` |
+| `User-Agent` | `TicketCord-Webhooks/1.0` |
+| `X-TicketCord-Event` | The event type, for example `ticket.created` |
+| `X-TicketCord-Timestamp` | Unix time in seconds when the request was signed |
+| `X-TicketCord-Signature` | Hex HMAC-SHA256 signature (see below) |
 
-| Event | Description |
-|-------|-------------|
-| `approval.requested` | Approval was requested |
-| `approval.approved` | Approval was granted |
-| `approval.denied` | Approval was denied |
-
-### Ticket Notes
-
-| Event | Description |
-|-------|-------------|
-| `ticket.note.added` | Internal note was added |
-| `ticket.note.removed` | Internal note was removed |
-
-### Access Control Events
-
-| Event | Description |
-|-------|-------------|
-| `ticket.user.added` | User was added to ticket |
-| `ticket.user.removed` | User was removed from ticket |
-| `ticket.role.added` | Role was added to ticket |
-| `ticket.role.removed` | Role was removed from ticket |
-
-## Payload Structure
-
-All webhooks are delivered as `POST` requests with JSON payloads.
-
-### Base Structure
-
-Every webhook follows this structure:
+The body always has the same envelope:
 
 ```json
 {
   "event": "ticket.created",
   "timestamp": 1702483200,
-  "data": { ... },
+  "data": { },
   "attemptNumber": 1
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `event` | string | Event type (e.g., `ticket.created`) |
-| `timestamp` | number | Unix timestamp when event occurred |
-| `data` | object | Event-specific payload (see examples below) |
-| `attemptNumber` | number | Delivery attempt (1 = first try, 2+ = retries) |
+| Field | Type | Meaning |
+|-------|------|---------|
+| `event` | string | Event type, identical to the header |
+| `timestamp` | number | Unix time in seconds, identical to the header |
+| `data` | object | Event payload; shape depends on the event |
+| `attemptNumber` | number | `1` for the first try, `2` and up for retries |
 
-### Payload Examples
+Redirects are not followed, so the URL must answer directly. Any `2xx` status counts as success; the response body is ignored.
+
+### Payloads
+
+Fields marked optional are omitted when empty. IDs are strings; times are ISO 8601.
 
 <AccordionGroup>
-  <Accordion title="ticket.created">
-    ```json
-    {
-      "event": "ticket.created",
-      "timestamp": 1702483200,
-      "data": {
-        "ticketId": "507f1f77bcf86cd799439011",
-        "ticketNumber": 42,
-        "channelId": "111222333444555666",
-        "creatorId": "123456789012345678",
-        "creatorName": "John Doe",
-        "category": "Billing",
-        "priority": "medium",
-        "subject": "Need help with billing",
-        "createdAt": "2024-12-13T10:00:00.000Z"
-      },
-      "attemptNumber": 1
-    }
-    ```
-  </Accordion>
-  <Accordion title="ticket.closed">
+  <Accordion title="ticket.created, ticket.claimed, ticket.closed, ticket.reopened, ticket.deleted">
+    `ticketId`, `ticketNumber`, `channelId`, `creatorId`, and optionally `creatorName`, `claimerId`, `claimerName`, `category`, `priority`, `subject`, `createdAt`, `closedAt`, `reopenedAt`, `deletedAt`, `closeReason`, `reopenReason`, `staffMemberId`, `staffName`.
+
     ```json
     {
       "event": "ticket.closed",
@@ -145,24 +113,15 @@ Every webhook follows this structure:
     }
     ```
   </Accordion>
-  <Accordion title="ticket.claimed">
-    ```json
-    {
-      "event": "ticket.claimed",
-      "timestamp": 1702484000,
-      "data": {
-        "ticketId": "507f1f77bcf86cd799439011",
-        "ticketNumber": 42,
-        "channelId": "111222333444555666",
-        "creatorId": "123456789012345678",
-        "claimerId": "999888777666555444",
-        "claimerName": "Support Agent"
-      },
-      "attemptNumber": 1
-    }
-    ```
+  <Accordion title="ticket.unclaimed">
+    `ticketId`, `ticketNumber`, `channelId`, `previousClaimer`, `unclaimedBy`, `unclaimedAt`, optionally `previousClaimerName`, `unclaimedByName`.
   </Accordion>
-  <Accordion title="message.created">
+  <Accordion title="ticket.renamed">
+    `ticketId`, `ticketNumber`, `channelId`, `oldName`, `newName`, `renamedBy`, `renamedAt`, optionally `renamedByName`.
+  </Accordion>
+  <Accordion title="message.created, message.edited, message.deleted">
+    `messageId`, `ticketId`, `channelId`, `authorId`, `content`, `embeds` (count), `attachments` (count), `isStaff`, `isBot`, `createdAt`, optionally `authorName`, `editedAt`, `deletedAt`, `oldContent`, `deletedBy`, `mentions` (array of user IDs), `roleMentions` (array of role IDs).
+
     ```json
     {
       "event": "message.created",
@@ -185,683 +144,199 @@ Every webhook follows this structure:
     ```
   </Accordion>
   <Accordion title="priority.changed">
-    ```json
-    {
-      "event": "priority.changed",
-      "timestamp": 1702485000,
-      "data": {
-        "ticketId": "507f1f77bcf86cd799439011",
-        "channelId": "111222333444555666",
-        "oldPriority": "medium",
-        "newPriority": "high",
-        "changedBy": "999888777666555444",
-        "changedByName": "Support Agent",
-        "reason": "Urgent billing issue",
-        "timestamp": "2024-12-13T10:30:00.000Z"
-      },
-      "attemptNumber": 1
-    }
-    ```
+    `ticketId`, `channelId`, `oldPriority`, `newPriority`, `changedBy`, `changedByName`, `timestamp`, optionally `reason`.
+  </Accordion>
+  <Accordion title="sla.warning, sla.breach">
+    `ticketId`, `channelId`, `priority`, `eventType` (`warning` or `breach`), `slaType` (`first_response` or `resolution`), `targetMinutes`, `elapsedMinutes`, `percentageUsed`, `timestamp`, optionally `remainingMinutes`, `breachTime`, `warningPercentage`, `assignedStaff`, `assignedStaffName`, `escalationLevel`, `idempotencyKey`.
+  </Accordion>
+  <Accordion title="sentiment.negative">
+    `ticketId`, `channelId`, `messageId`, `customerId`, `sentiment` (`angry`, `frustrated`, or `upset`), `confidence` (0 to 1), `timestamp`, optionally `customerName`, `messageContent` (first 200 characters), `detectedTone`, `assignedStaff`.
+  </Accordion>
+  <Accordion title="approval.requested, approval.approved, approval.denied">
+    `approvalId`, `ticketId`, `channelId`, `approvalType` (`refund`, `ban`, `policy_exception`, `escalation`, `custom`), `eventType` (`requested`, `approved`, `denied`), `requestedBy`, `requestedAt`, optionally `requestedByName`, `approverId`, `approverName`, `reason`, `decision`, `decisionReason`, `decidedAt`, `customerId`, `amount`, `metadata`.
+  </Accordion>
+  <Accordion title="ticket.note.added, ticket.note.removed">
+    `noteId`, `ticketId`, `ticketNumber`, `channelId`, `authorId`, optionally `authorName`, `content` (added only), `createdAt`, `removedBy`, `removedByName`, `removedAt`.
+  </Accordion>
+  <Accordion title="ticket.user.added, ticket.user.removed, ticket.role.added, ticket.role.removed">
+    `ticketId`, `ticketNumber`, `channelId`, `eventType` (`user_added`, `user_removed`, `role_added`, `role_removed`), `targetType` (`user` or `role`), `targetId`, `performedBy`, `performedAt`, optionally `targetName`, `performedByName`.
+  </Accordion>
+  <Accordion title="Test Fire payload">
+    Sent under your first subscribed event type: `test: true`, `message: "This is a test webhook delivery from TicketCord"`, `timestamp` (ISO), `botId`, `guildId`, `webhookId`.
   </Accordion>
 </AccordionGroup>
 
-### Headers
+## Verifying signatures
 
-Every webhook request includes these headers:
+Every request is signed with your webhook secret, a 64-character hex string shown once at creation.
 
-| Header | Description |
-|--------|-------------|
-| `Content-Type` | Always `application/json` |
-| `User-Agent` | `TicketCord-Webhooks/1.0` |
-| `X-TicketCord-Event` | The event type (e.g., `ticket.created`) |
-| `X-TicketCord-Timestamp` | Unix timestamp when request was created |
-| `X-TicketCord-Signature` | HMAC signature for verification |
+1. Read `X-TicketCord-Timestamp` (Unix seconds) and `X-TicketCord-Signature`.
+2. Take the raw request body exactly as received, before any JSON parsing.
+3. Build the string `v0:<timestamp>:<raw body>`.
+4. Compute HMAC-SHA256 of that string with your secret and encode it as lowercase hex.
+5. Compare it to the header with a constant-time comparison. There is no `v0=` prefix on the header value; it is the bare hex digest.
+6. Reject requests whose timestamp is more than 5 minutes old to block replays.
 
-## Retry Policy
-
-Failed webhook deliveries are automatically retried:
-
-- **Attempts**: 1 delivery plus up to 3 retries by default (configurable per webhook, 0 to 5)
-- **Backoff**: Exponential, 1s, 2s, 4s by default (initial delay 100 ms to 10 s, multiplier 1 to 5, capped at 5 minutes)
-- **429 responses**: not counted as a failed attempt; delivery pauses for the `Retry-After` value (default 60 seconds) and is requeued
-- **Success codes**: Any 2xx response is considered successful
-- **Timeout**: 30 seconds per request
-- **Limits**: 20 webhooks per server, 60 deliveries per minute per webhook, HTTPS endpoints only (no private addresses)
-- **Logs**: Delivery logs are kept for 30 days
-
----
-
-## Building a Custom Webhook Receiver
-
-<Info>
-  This section is for developers building custom integrations. Most users can skip this and use services like Zapier or Make.com.
-</Info>
-
-### Basic Receiver
-
-A minimal webhook receiver that accepts events and responds quickly:
-
-<CodeGroup dropdown>
-```typescript server.ts
-import express, { Request, Response } from 'express';
-
-const app = express();
-app.use(express.json());
-
-interface WebhookPayload {
-  event: string;
-  timestamp: number;
-  data: Record<string, unknown>;
-  attemptNumber: number;
-}
-
-app.post('/webhooks/ticketcord', (req: Request, res: Response) => {
-  const { event, data, attemptNumber } = req.body as WebhookPayload;
-
-  console.log(`Received: ${event} (attempt ${attemptNumber})`);
-
-  // TODO: Process event (send to queue, database, etc.)
-
-  // Always respond quickly with 200 to acknowledge receipt
-  res.status(200).json({ received: true });
-});
-
-app.listen(3000);
-```
+### Node receiver with verification
 
 ```javascript server.js
 const express = require('express');
-const app = express();
-
-app.use(express.json());
-
-app.post('/webhooks/ticketcord', (req, res) => {
-  const { event, data, attemptNumber } = req.body;
-
-  console.log(`Received: ${event} (attempt ${attemptNumber})`);
-
-  // TODO: Process event (send to queue, database, etc.)
-
-  // Always respond quickly with 200 to acknowledge receipt
-  res.status(200).json({ received: true });
-});
-
-app.listen(3000);
-```
-
-```python server.py
-from flask import Flask, request, jsonify
-
-app = Flask(__name__)
-
-@app.route('/webhooks/ticketcord', methods=['POST'])
-def handle_webhook():
-    payload = request.json
-    event = payload['event']
-    data = payload['data']
-
-    print(f"Received: {event}")
-
-    # TODO: Process event (send to queue, database, etc.)
-
-    # Always respond quickly with 200 to acknowledge receipt
-    return jsonify({'received': True}), 200
-
-if __name__ == '__main__':
-    app.run(port=3000)
-```
-
-```go server.go
-package main
-
-import (
-	"encoding/json"
-	"io"
-	"log"
-	"net/http"
-)
-
-type WebhookPayload struct {
-	Event         string                 `json:"event"`
-	Timestamp     int64                  `json:"timestamp"`
-	Data          map[string]interface{} `json:"data"`
-	AttemptNumber int                    `json:"attemptNumber"`
-}
-
-func main() {
-	http.HandleFunc("/webhooks/ticketcord", func(w http.ResponseWriter, r *http.Request) {
-		body, _ := io.ReadAll(r.Body)
-		defer r.Body.Close()
-
-		var payload WebhookPayload
-		json.Unmarshal(body, &payload)
-
-		log.Printf("Received: %s (attempt %d)", payload.Event, payload.AttemptNumber)
-
-		// TODO: Process event (send to queue, database, etc.)
-
-		// Always respond quickly with 200 to acknowledge receipt
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]bool{"received": true})
-	})
-
-	log.Fatal(http.ListenAndServe(":3000", nil))
-}
-```
-
-```php server.php
-<?php
-header('Content-Type: application/json');
-
-$payload = json_decode(file_get_contents('php://input'), true);
-$event = $payload['event'];
-$data = $payload['data'];
-
-error_log("Received: $event");
-
-// TODO: Process event (send to queue, database, etc.)
-
-// Always respond quickly with 200 to acknowledge receipt
-http_response_code(200);
-echo json_encode(['received' => true]);
-```
-</CodeGroup>
-
-<Tip>
-  **Best Practice**: Respond with `200` immediately, then process events asynchronously (via queue, background job, etc.) to avoid timeouts.
-</Tip>
-
-### Signature Verification
-
-For production systems, **always verify** that webhook requests actually come from TicketCord. This prevents attackers from sending fake events to your endpoint.
-
-#### How Signatures Work
-
-Each webhook request is signed using your webhook's secret key:
-
-1. TicketCord creates a signature string: `v0:{timestamp}:{payload}`
-2. Generates HMAC-SHA256 hash using your secret
-3. Sends the hash in the `X-TicketCord-Signature` header
-
-#### Verification Steps
-
-1. Extract the timestamp from `X-TicketCord-Timestamp` header
-2. Get the raw JSON payload body (before parsing)
-3. Compute: `HMAC-SHA256("v0:{timestamp}:{payload}", your_secret)`
-4. Compare your computed signature with `X-TicketCord-Signature`
-5. Verify timestamp is within 5 minutes (replay attack protection)
-
-<Warning>
-  **Why verify timestamps?** Without timestamp validation, an attacker could intercept a valid webhook and replay it later. By checking the timestamp is recent, you ensure the request is fresh.
-</Warning>
-
-#### Complete Examples with Signature Verification
-
-<CodeGroup dropdown>
-```typescript server.ts
-import crypto from 'crypto';
-import express, { Request, Response } from 'express';
-
-// Extend Express Request to include rawBody
-declare global {
-  namespace Express {
-    interface Request {
-      rawBody?: string;
-    }
-  }
-}
-
-const app = express();
-
-// ============================================================
-// IMPORTANT: Capture raw body BEFORE JSON parsing
-// The signature is computed on the raw string, not parsed JSON
-// ============================================================
-app.use(express.json({
-  verify: (req: Request, _res, buf) => {
-    req.rawBody = buf.toString();
-  }
-}));
-
-// Load your webhook secret from environment variables
-const WEBHOOK_SECRET = process.env.TICKETCORD_WEBHOOK_SECRET;
-
-if (!WEBHOOK_SECRET) {
-  console.error('ERROR: TICKETCORD_WEBHOOK_SECRET environment variable not set');
-  process.exit(1);
-}
-
-/**
- * Verify that a webhook request is authentic
- */
-function verifySignature(payload: string, timestamp: number, signature: string): boolean {
-  // STEP 1: Check timestamp freshness (prevent replay attacks)
-  const currentTime = Math.floor(Date.now() / 1000);
-  const age = Math.abs(currentTime - timestamp);
-
-  if (age > 300) {
-    console.warn(`[Security] Request too old: ${age} seconds`);
-    return false;
-  }
-
-  // STEP 2: Compute expected signature
-  const signatureBase = `v0:${timestamp}:${payload}`;
-  const expectedSignature = crypto
-    .createHmac('sha256', WEBHOOK_SECRET)
-    .update(signatureBase)
-    .digest('hex');
-
-  // STEP 3: Compare signatures using constant-time comparison
-  try {
-    return crypto.timingSafeEqual(
-      Buffer.from(signature, 'hex'),
-      Buffer.from(expectedSignature, 'hex')
-    );
-  } catch {
-    return false;
-  }
-}
-
-app.post('/webhooks/ticketcord', (req: Request, res: Response) => {
-  const signature = req.headers['x-ticketcord-signature'] as string;
-  const timestampHeader = req.headers['x-ticketcord-timestamp'] as string;
-  const eventType = req.headers['x-ticketcord-event'] as string;
-
-  if (!signature || !timestampHeader) {
-    return res.status(401).json({ error: 'Missing signature headers' });
-  }
-
-  const timestamp = parseInt(timestampHeader, 10);
-  if (isNaN(timestamp)) {
-    return res.status(401).json({ error: 'Invalid timestamp' });
-  }
-
-  if (!verifySignature(req.rawBody!, timestamp, signature)) {
-    console.warn(`[Security] Invalid signature for ${eventType} event`);
-    return res.status(401).json({ error: 'Invalid signature' });
-  }
-
-  console.log(`[Webhook] Verified ${eventType} event`);
-
-  // Process the event...
-
-  res.status(200).json({ received: true });
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Secure webhook server running on port ${PORT}`);
-});
-```
-
-```javascript server.js
 const crypto = require('crypto');
-const express = require('express');
+
 const app = express();
+const SECRET = process.env.TICKETCORD_WEBHOOK_SECRET;
 
-// ============================================================
-// IMPORTANT: Capture raw body BEFORE JSON parsing
-// The signature is computed on the raw string, not parsed JSON
-// ============================================================
-app.use(express.json({
-  verify: (req, res, buf) => {
-    req.rawBody = buf.toString();
-  }
-}));
+// Keep the raw body: the signature covers the exact bytes TicketCord sent.
+app.use('/webhooks/ticketcord', express.raw({ type: 'application/json' }));
 
-// Load your webhook secret from environment variables
-const WEBHOOK_SECRET = process.env.TICKETCORD_WEBHOOK_SECRET;
+function verify(rawBody, timestamp, signature) {
+  const age = Math.abs(Math.floor(Date.now() / 1000) - Number(timestamp));
+  if (!Number.isFinite(age) || age > 300) return false;
 
-if (!WEBHOOK_SECRET) {
-  console.error('ERROR: TICKETCORD_WEBHOOK_SECRET environment variable not set');
-  process.exit(1);
-}
-
-/**
- * Verify that a webhook request is authentic
- */
-function verifySignature(payload, timestamp, signature) {
-  // STEP 1: Check timestamp freshness (prevent replay attacks)
-  const currentTime = Math.floor(Date.now() / 1000);
-  const age = Math.abs(currentTime - timestamp);
-
-  if (age > 300) {
-    console.warn(`[Security] Request too old: ${age} seconds`);
-    return false;
-  }
-
-  // STEP 2: Compute expected signature
-  const signatureBase = `v0:${timestamp}:${payload}`;
-  const expectedSignature = crypto
-    .createHmac('sha256', WEBHOOK_SECRET)
-    .update(signatureBase)
+  const expected = crypto
+    .createHmac('sha256', SECRET)
+    .update(`v0:${timestamp}:${rawBody.toString('utf8')}`)
     .digest('hex');
 
-  // STEP 3: Compare signatures using constant-time comparison
-  try {
-    return crypto.timingSafeEqual(
-      Buffer.from(signature, 'hex'),
-      Buffer.from(expectedSignature, 'hex')
-    );
-  } catch (error) {
-    return false;
-  }
+  const a = Buffer.from(expected, 'hex');
+  const b = Buffer.from(signature, 'hex');
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
 app.post('/webhooks/ticketcord', (req, res) => {
-  const signature = req.headers['x-ticketcord-signature'];
-  const timestampHeader = req.headers['x-ticketcord-timestamp'];
-  const eventType = req.headers['x-ticketcord-event'];
+  const signature = req.get('X-TicketCord-Signature') || '';
+  const timestamp = req.get('X-TicketCord-Timestamp') || '';
 
-  if (!signature || !timestampHeader) {
-    return res.status(401).json({ error: 'Missing signature headers' });
-  }
-
-  const timestamp = parseInt(timestampHeader, 10);
-  if (isNaN(timestamp)) {
-    return res.status(401).json({ error: 'Invalid timestamp' });
-  }
-
-  if (!verifySignature(req.rawBody, timestamp, signature)) {
-    console.warn(`[Security] Invalid signature for ${eventType} event`);
+  if (!verify(req.body, timestamp, signature)) {
     return res.status(401).json({ error: 'Invalid signature' });
   }
 
-  console.log(`[Webhook] Verified ${eventType} event`);
+  const { event, data, attemptNumber } = JSON.parse(req.body.toString('utf8'));
 
-  // Process the event...
-
+  // Acknowledge first, then do the real work so you stay under the 30 s timeout.
   res.status(200).json({ received: true });
+
+  setImmediate(() => {
+    if (attemptNumber > 1) {
+      // A retry: make your handling idempotent (for example key on data.ticketId + event + timestamp).
+    }
+    switch (event) {
+      case 'ticket.created':
+        console.log(`New ticket #${data.ticketNumber} from ${data.creatorName}`);
+        break;
+      case 'sla.breach':
+        console.log(`SLA ${data.slaType} breached on ${data.ticketId}`);
+        break;
+      default:
+        console.log(`Received ${event}`);
+    }
+  });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Secure webhook server running on port ${PORT}`);
-});
+app.listen(3000);
 ```
 
+### Python receiver with verification
+
 ```python server.py
-import os
-import hmac
-import hashlib
-import time
+import os, hmac, hashlib, time
 from flask import Flask, request, jsonify, abort
 
 app = Flask(__name__)
+SECRET = os.environ['TICKETCORD_WEBHOOK_SECRET'].encode()
 
-# Load your webhook secret from environment variables
-WEBHOOK_SECRET = os.environ.get('TICKETCORD_WEBHOOK_SECRET')
-
-if not WEBHOOK_SECRET:
-    raise RuntimeError('TICKETCORD_WEBHOOK_SECRET environment variable not set')
-
-
-def verify_signature(payload: bytes, timestamp: int, signature: str) -> bool:
-    """Verify that a webhook request is authentic."""
-    # STEP 1: Check timestamp freshness (prevent replay attacks)
-    current_time = int(time.time())
-    age = abs(current_time - timestamp)
-
-    if age > 300:
-        print(f"[Security] Request too old: {age} seconds")
-        return False
-
-    # STEP 2: Compute expected signature
-    signature_base = f"v0:{timestamp}:{payload.decode('utf-8')}"
-    expected_signature = hmac.new(
-        WEBHOOK_SECRET.encode('utf-8'),
-        signature_base.encode('utf-8'),
-        hashlib.sha256
-    ).hexdigest()
-
-    # STEP 3: Compare signatures using constant-time comparison
-    return hmac.compare_digest(signature, expected_signature)
-
-
-@app.route('/webhooks/ticketcord', methods=['POST'])
-def handle_webhook():
-    signature = request.headers.get('X-TicketCord-Signature', '')
-    timestamp_header = request.headers.get('X-TicketCord-Timestamp', '')
-    event_type = request.headers.get('X-TicketCord-Event', '')
-
-    if not signature or not timestamp_header:
-        abort(401, description='Missing signature headers')
-
+def verify(raw: bytes, timestamp: str, signature: str) -> bool:
     try:
-        timestamp = int(timestamp_header)
+        age = abs(int(time.time()) - int(timestamp))
     except ValueError:
-        abort(401, description='Invalid timestamp')
+        return False
+    if age > 300:
+        return False
+    expected = hmac.new(SECRET, f"v0:{timestamp}:".encode() + raw, hashlib.sha256).hexdigest()
+    return hmac.compare_digest(expected, signature)
 
-    # request.data gives us the raw bytes before JSON parsing
-    if not verify_signature(request.data, timestamp, signature):
-        print(f'[Security] Invalid signature for {event_type} event')
-        abort(401, description='Invalid signature')
-
-    print(f'[Webhook] Verified {event_type} event')
-
-    # Process the event...
-
-    return jsonify({'received': True}), 200
-
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 3000))
-    app.run(host='0.0.0.0', port=port)
+@app.post('/webhooks/ticketcord')
+def receive():
+    if not verify(request.get_data(), request.headers.get('X-TicketCord-Timestamp', ''),
+                  request.headers.get('X-TicketCord-Signature', '')):
+        abort(401)
+    payload = request.get_json()
+    print(payload['event'], payload['data'].get('ticketId'))
+    return jsonify(received=True), 200
 ```
 
-```go server.go
-package main
+<Tip>
+  Respond with `200` as soon as the signature checks out and process the event afterwards. A receiver that takes longer than 30 seconds is treated as failed and retried, which means duplicate work for you.
+</Tip>
 
-import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/hex"
-	"encoding/json"
-	"fmt"
-	"io"
-	"log"
-	"math"
-	"net/http"
-	"os"
-	"strconv"
-	"time"
-)
+## Delivery, retries, and rate limits
 
-var webhookSecret = os.Getenv("TICKETCORD_WEBHOOK_SECRET")
+- **Timeout**: 30 seconds per request.
+- **Success**: any `2xx` response.
+- **Retries**: a failed delivery (non-`2xx`, timeout, or connection error) is retried up to 3 times by default with exponential backoff of 1 s, 2 s, then 4 s (capped at 5 minutes for custom policies). `attemptNumber` in the body tells you which try you are seeing.
+- **429 responses**: not counted as a failure. Delivery pauses for the seconds given in your `Retry-After` header (60 if absent, at most 300) and is queued again.
+- **Rate limit**: 60 deliveries per minute per webhook. Events beyond that are held and delivered later, not dropped.
+- **Ordering**: events are delivered as they are queued, but retries and rate limiting can reorder them. Use the timestamps in `data` rather than arrival order.
+- **Counters**: each webhook row shows **Deliveries** and **Last Fired**, and a health pill of **Healthy**, **Failing**, or **Idle**.
 
-func init() {
-	if webhookSecret == "" {
-		log.Fatal("TICKETCORD_WEBHOOK_SECRET environment variable not set")
-	}
-}
+## Delivery logs
 
-// verifySignature checks that a webhook request is authentic
-func verifySignature(payload []byte, timestamp int64, signature string) bool {
-	// STEP 1: Check timestamp freshness (prevent replay attacks)
-	currentTime := time.Now().Unix()
-	age := math.Abs(float64(currentTime - timestamp))
+**View Logs** on a webhook row opens the delivery history for the last 30 days, with columns **Timestamp**, **Event Type**, **Attempt**, **Status**, **Duration**, and **Error**. Filter by event, by **Success** or **Failed**, and by time window (**Last Hour**, **Last 24 Hours**, **Last 7 Days**, **Last 30 Days**), or search the error text. Retries are labelled **Retry**. Logs are read-only; there is no button to resend a specific delivery, so use **Test Fire** or trigger the event again.
 
-	if age > 300 {
-		log.Printf("[Security] Request too old: %.0f seconds", age)
-		return false
-	}
+## Limits and gotchas
 
-	// STEP 2: Compute expected signature
-	signatureBase := fmt.Sprintf("v0:%d:%s", timestamp, string(payload))
-	mac := hmac.New(sha256.New, []byte(webhookSecret))
-	mac.Write([]byte(signatureBase))
-	expectedSignature := hex.EncodeToString(mac.Sum(nil))
+- The secret is shown only once. There is no way to reveal or rotate it later; to get a new secret, delete the webhook and create it again.
+- 20 webhooks per server. At the limit, **Create Webhook** returns "Webhook limit reached".
+- `https://` only, no redirects, and no private or internal addresses. Tunnels such as ngrok work for testing because they expose a public HTTPS hostname.
+- The **Deliveries** and **Last Fired** counters and the delivery logs are visible to the bot owner only.
+- Editing the event list takes effect for new events immediately.
+- Turning **Active** off stops deliveries without losing the configuration or the secret.
+- Deleting a webhook deletes its delivery history too: "This action cannot be undone and all webhook delivery history will be lost."
 
-	// STEP 3: Compare signatures using constant-time comparison
-	return hmac.Equal([]byte(signature), []byte(expectedSignature))
-}
+## Troubleshooting
 
-func handleWebhook(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| "Webhook URL must use HTTPS protocol" | The URL starts with `http://` | Use an HTTPS endpoint |
+| "Internal/private IP addresses are not allowed" or "...resolves to an internal/private IP address" | The host is on a private network or loopback | Expose the receiver on a public hostname, or use a tunnel |
+| "Webhook name can only contain letters, numbers, spaces, hyphens, and underscores" | Disallowed characters in **Name** | Rename it |
+| "Webhook limit reached" | 20 webhooks already exist | Delete an unused one |
+| Log shows `HTTP 401` or `403` from your server | Your receiver rejected the signature or requires auth headers TicketCord does not send | Check the verification code against the six steps above; make sure you hash the raw body |
+| Log shows "Request timeout (30s)" | Your receiver did not answer within 30 seconds | Return `200` immediately and process afterwards |
+| Log shows "DNS lookup failed" or "Connection refused" | The hostname or port is wrong, or the server is down | Fix the URL and test with **Test Fire** |
+| Log shows "SSL certificate error" | The certificate is self-signed, expired, or for another hostname | Use a valid certificate |
+| Events arrive twice | A retry after a slow or failed response | Respond faster and dedupe on `event` plus `data.ticketId` plus `timestamp` |
+| Events arrive late or in bursts | The 60 per minute rate limit or a `429` pause | Raise your endpoint's own limit or spread work across two webhooks with different event sets |
+| No `sla.*`, `approval.*`, or `sentiment.negative` events | The feature that produces them is not enabled on the server | Enable SLA Management, Approvals, or Sentiment Detection |
+| Signature check fails only for some events | The body was parsed and re-serialised before hashing | Hash the raw bytes exactly as received |
+| The **URL** column reads "Visible to the bot owner only" | You are dashboard staff | Ask the bot owner |
 
-	signature := r.Header.Get("X-TicketCord-Signature")
-	timestampHeader := r.Header.Get("X-TicketCord-Timestamp")
-	eventType := r.Header.Get("X-TicketCord-Event")
+## Common questions
 
-	if signature == "" || timestampHeader == "" {
-		http.Error(w, "Missing signature headers", http.StatusUnauthorized)
-		return
-	}
+**Where do I set up webhooks?**
+In the server configuration: **Dashboard → Bots → your bot → Servers → the server → Integrations**, in the **Webhooks** section. They are per server, not per bot or account.
 
-	timestamp, err := strconv.ParseInt(timestampHeader, 10, 64)
-	if err != nil {
-		http.Error(w, "Invalid timestamp", http.StatusUnauthorized)
-		return
-	}
+**I lost my webhook secret. Can I see it again?**
+No. It is shown once at creation. Delete the webhook and create a new one to get a new secret.
 
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, "Failed to read body", http.StatusBadRequest)
-		return
-	}
-	defer r.Body.Close()
+**Do I have to verify signatures?**
+For your own receiver, yes; otherwise anyone who learns the URL can send you fake events. For Zapier, Make, or n8n catch hooks it is optional.
 
-	if !verifySignature(body, timestamp, signature) {
-		log.Printf("[Security] Invalid signature for %s event", eventType)
-		http.Error(w, "Invalid signature", http.StatusUnauthorized)
-		return
-	}
+**How is the signature computed?**
+HMAC-SHA256 over the string `v0:<timestamp>:<raw body>` using your secret, sent as lowercase hex in `X-TicketCord-Signature`. The timestamp is Unix seconds from `X-TicketCord-Timestamp`.
 
-	log.Printf("[Webhook] Verified %s event", eventType)
+**How many times will a failed delivery be retried?**
+Three times by default, after 1, 2, and 4 seconds. A `429` with `Retry-After` pauses delivery instead of using a retry. After the last failed attempt the delivery is logged as failed and not sent again.
 
-	// Process the event...
+**Can I get a Discord message instead of an HTTP request?**
+Not through this feature. Webhooks post JSON to a URL. To announce tickets in a Discord channel, point a Zapier, Make, or n8n scenario at a Discord channel webhook.
 
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]bool{"received": true})
-}
+**Can I send webhooks to more than one server?**
+Each server has its own webhooks and its own limit of 20. Set them up on each server separately.
 
-func main() {
-	http.HandleFunc("/webhooks/ticketcord", handleWebhook)
+**Which plan do I need?**
+Enterprise. On lower plans the section shows an upgrade notice and no webhooks can be created.
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "3000"
-	}
-
-	log.Printf("Secure webhook server running on port %s", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
-}
-```
-
-```php server.php
-<?php
-/**
- * TicketCord Secure Webhook Receiver
- */
-
-$webhookSecret = getenv('TICKETCORD_WEBHOOK_SECRET');
-
-if (!$webhookSecret) {
-    http_response_code(500);
-    exit('TICKETCORD_WEBHOOK_SECRET not set');
-}
-
-/**
- * Verify that a webhook request is authentic
- */
-function verifySignature(string $payload, int $timestamp, string $signature): bool {
-    global $webhookSecret;
-
-    // STEP 1: Check timestamp freshness (prevent replay attacks)
-    $age = abs(time() - $timestamp);
-    if ($age > 300) {
-        error_log("[Security] Request too old: $age seconds");
-        return false;
-    }
-
-    // STEP 2: Compute expected signature
-    $signatureBase = "v0:{$timestamp}:{$payload}";
-    $expectedSignature = hash_hmac('sha256', $signatureBase, $webhookSecret);
-
-    // STEP 3: Compare signatures using constant-time comparison
-    return hash_equals($expectedSignature, $signature);
-}
-
-header('Content-Type: application/json');
-
-$signature = $_SERVER['HTTP_X_TICKETCORD_SIGNATURE'] ?? '';
-$timestampHeader = $_SERVER['HTTP_X_TICKETCORD_TIMESTAMP'] ?? '';
-$eventType = $_SERVER['HTTP_X_TICKETCORD_EVENT'] ?? '';
-
-if (empty($signature) || empty($timestampHeader)) {
-    http_response_code(401);
-    echo json_encode(['error' => 'Missing signature headers']);
-    exit;
-}
-
-$timestamp = (int)$timestampHeader;
-if ($timestamp === 0) {
-    http_response_code(401);
-    echo json_encode(['error' => 'Invalid timestamp']);
-    exit;
-}
-
-$rawPayload = file_get_contents('php://input');
-
-if (!verifySignature($rawPayload, $timestamp, $signature)) {
-    error_log("[Security] Invalid signature for $eventType event");
-    http_response_code(401);
-    echo json_encode(['error' => 'Invalid signature']);
-    exit;
-}
-
-error_log("[Webhook] Verified $eventType event");
-
-// Process the event...
-
-http_response_code(200);
-echo json_encode(['received' => true]);
-```
-</CodeGroup>
-
-### Security Best Practices
-
-<Warning>
-  Always verify signatures in production to prevent unauthorized requests.
-</Warning>
-
-1. **Always verify signatures** - Don't trust requests without valid signatures
-2. **Check timestamps** - Reject requests older than 5 minutes to prevent replay attacks
-3. **Use HTTPS** - Your webhook endpoint should only accept HTTPS connections
-4. **Use constant-time comparison** - Prevents timing attacks when comparing signatures
-5. **Keep secrets secure** - Store your webhook secret in environment variables, never in code
-6. **Handle retries gracefully** - Your endpoint may receive the same event multiple times (use idempotency keys)
-7. **Respond quickly** - Return a 2xx response within 30 seconds to avoid timeouts
-
-### Testing Your Receiver
-
-Use the **Test Fire** button in the TicketCord dashboard to send a test delivery to your endpoint. It is sent under the first event type the webhook subscribes to (so the event header will be, for example, `ticket.created`), with a test payload:
-
-```json
-{
-  "data": {
-    "test": true,
-    "message": "This is a test webhook delivery from TicketCord",
-    "timestamp": "2026-09-21T09:00:00.000Z",
-    "botId": "...",
-    "guildId": "...",
-    "webhookId": "..."
-  }
-}
-```
-
-### Debugging
-
-Check the **View Logs** option in the dashboard to see:
-
-- Request/response details for each delivery
-- HTTP status codes returned by your endpoint
-- Error messages for failed deliveries
-- Retry attempts and timing
-
-<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support
 </Card>

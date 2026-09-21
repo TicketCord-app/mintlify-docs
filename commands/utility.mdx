@@ -1,216 +1,133 @@
 ---
 title: "Utility Commands"
-description: "Help, on-call management, and user lookup commands"
+description: "Help, on-call availability, user ticket lookup, and ticket feedback"
 ---
 
-These utility commands help with general bot usage and team coordination.
+These commands support everyday use of the bot: finding out what is available, coordinating who is on duty, looking up a member's ticket history, and rating closed tickets. `/help`, `/on-call status`, and `/feedback` are the only commands that do not need a staff role.
 
 ## /help
 
-View available commands and get help.
+Show the list of commands and who can use each one.
 
 ```
 /help
 ```
 
-**Permission:** Everyone
+**Who can run it:** everyone. Has no options.
 
-**What it shows:**
-- The list of available commands
-- A brief description of each
-
-<Info>
-  Everyone sees the same list. Whether a command actually works for you depends on your role and the server's plan; see the tables in [Commands Overview](/commands/overview).
-</Info>
+**What it shows:** every command grouped into Ticket Management, Configuration, Analytics & Info, and Utility, with a short description and a label such as *Staff, in ticket*, *Owner only*, or *Everyone*. The list is the same for all members; whether a command works for you depends on your roles and the server's plan.
 
 ---
 
 ## /on-call
 
-Manage your on-call availability status. Shows other staff who's available to handle tickets.
+Mark yourself as available to handle tickets, and see who else is.
 
 ```
 /on-call toggle
 /on-call status
 ```
 
-### Subcommands
+| Subcommand | Who can run it | What it does |
+|------------|----------------|--------------|
+| `toggle` | Staff | Switches you between on-call and off-call |
+| `status` | Everyone | Shows your own status and the active roster |
 
-| Subcommand | Permission | Description |
-|------------|------------|-------------|
-| `toggle` | Staff | Toggle your on-call status |
-| `status` | Everyone | View current on-call roster |
+**What `status` shows:** your current status, then the **Active Roster** with each on-call member and when they joined, and the time the roster was last updated. On-call status is per server; toggling in one server does not affect another.
 
-### Toggling Status
-
-```
-/on-call toggle
-```
-
-**Permission:** Staff only
-
-Toggles your availability between:
-- **On-Call** - You're available to handle tickets
-- **Off-Call** - You're not currently available
+**Errors:** TC002 (`toggle` without a staff role), TC012 (no subcommand given).
 
 <Tip>
-  Use this when going on break, ending your shift, or focusing on other tasks.
+  Toggle off when you go on break or end your shift so the roster stays accurate for the auto-reminder feature and for colleagues checking coverage.
 </Tip>
-
-### Viewing Roster
-
-```
-/on-call status
-```
-
-**Permission:** Everyone
-
-Shows:
-- Which staff members are currently on-call
-- When they went on-call
-- Total staff available
-
-**Example output:**
-```
-Currently On-Call (3 staff):
-Sarah - On-call since 2:30 PM
-Mike - On-call since 3:00 PM  
-Alex - On-call since 1:15 PM
-```
-
-### Use Cases
-
-| Scenario | Action |
-|----------|--------|
-| Starting your shift | `/on-call toggle` (to go on-call) |
-| Taking a break | `/on-call toggle` (to go off-call) |
-| Checking coverage | `/on-call status` |
-| End of day | `/on-call toggle` (to go off-call) |
-
-<Info>
-  On-call status is per-server. Your status in one server doesn't affect other servers.
-</Info>
 
 ---
 
-## Find Ticket (Context Menu)
+## Find ticket (right-click a user)
 
-Find all tickets created by a specific user. This is a **context menu command** - right-click on a user to access it.
-
-### How to Use
+Look up a member's open and closed tickets without leaving Discord. This is a context-menu command rather than a slash command.
 
 <Steps>
-  <Step title="Right-click on a user">
-    Find the user in the member list or a message
+  <Step title="Right-click the member">
+    In the member list or on one of their messages, right-click their name.
   </Step>
-  <Step title="Select 'Apps'">
-    Hover over the Apps submenu
+  <Step title="Open Apps">
+    Hover **Apps** in the menu.
   </Step>
-  <Step title="Click 'Find ticket'">
-    The command runs immediately
+  <Step title="Choose Find ticket">
+    The search runs immediately and the result is shown only to you.
   </Step>
 </Steps>
 
-**Permission:** Manage Messages (staff)
+**Who can run it:** staff. Discord also hides the entry from members without Manage Messages.
 
-### What It Shows
+**What it shows**
 
-- **Open tickets** - Active tickets from this user
-- **Closed tickets** - Previous tickets from this user
-- **Channel links** - Click to jump to each ticket
-- **Ticket status** - Current state of each ticket
+- **Open Tickets** with a link to each channel and its current claim
+- **Closed Tickets**, up to the 15 most recent
 
-**Example output:**
-```
-Tickets for @JohnDoe
+Tickets whose channels were deleted by hand do not appear, even when the ticket record still exists.
 
-Open Tickets:
-#ticket-0145 - billing-issue (claimed by @Sarah)
-#ticket-0152 - general
-
-Closed Tickets:
-#closed-0098 - refund-request
-#closed-0087 - account-help
-```
-
-<Info>
-  The closed list shows the 15 most recent closed tickets.
-</Info>
-
-### Use Cases
-
-| Scenario | Why Use It |
-|----------|-----------|
-| Repeat customer | Check their history before responding |
-| VIP identification | See if they've had issues before |
-| Issue patterns | Identify recurring problems |
-| Context gathering | Understand the customer relationship |
-
-<Tip>
-  This is faster than searching in the dashboard when you need quick access to a user's ticket history.
-</Tip>
-
-<Info>
-  Deleted ticket channels won't appear in results, even if the database record exists.
-</Info>
+**Errors:** TC002 (not staff), TC012 (no member selected), TC017 (used in a DM).
 
 ---
 
-## Command Tips
+## /feedback
 
-### Autocomplete
+Rate a closed ticket you opened. This command is for ticket creators, not staff.
 
-Many commands support autocomplete:
-- Start typing the command
-- Options appear as you type
-- Use arrow keys to navigate
-- Press Tab or Enter to select
+```
+/feedback <ticket> <rating> [staff] [comment]
+```
 
-### Ephemeral Responses
+| Option | Type | Required | Allowed values |
+|--------|------|----------|----------------|
+| `ticket` | Text (autocomplete) | Yes | One of your own closed tickets that you have not rated yet |
+| `rating` | Text (autocomplete) | Yes | `1` to `5` |
+| `staff` | Text (autocomplete) | No | The staff member who helped you |
+| `comment` | Text | No | Free text about your experience |
 
-Some command responses are **ephemeral** (only visible to you):
-- Error messages
-- Confirmation prompts
-- Sensitive information
+**Who can run it:** the creator of the ticket. Feedback must be enabled for the server in the dashboard.
 
-### Rate Limits
+**What happens:** the rating and comment are stored against the ticket and credited to the staff member who handled it (naming someone with `staff` adds them to the credit as well). You see a thank-you confirmation, and the rating appears in the dashboard's feedback and staff performance views and in the logs channel if one is configured.
 
-Discord has rate limits on certain actions:
-- Channel renaming (2 per 10 minutes)
-- Message sending (5 per 5 seconds per channel)
-- Bulk operations may be queued
+If the ticket has no autocomplete entries, you have no closed tickets waiting for a rating. Feedback is also collected automatically when a ticket closes if the server has close-DM feedback enabled, so you may have already rated it.
 
-<Warning>
-  If you see "Rate limited" errors, wait a moment before trying again.
-</Warning>
+## Command tips
 
----
+**Autocomplete.** Options marked autocomplete filter as you type. Use the arrow keys and press Enter to pick a value.
+
+**Private responses.** Errors, confirmations, statistics, AI drafts, and lookups are shown only to you. Cards posted to the ticket channel (claims, notes about added users, close requests) are visible to everyone in the channel.
+
+**Rate limits.** Discord allows two renames per channel every 10 minutes. Commands that rename channels (`/rename`, `/priority`, closing and reopening) return **TC001** when the limit is hit; wait 10 to 15 minutes.
 
 ## Troubleshooting
 
-### Command Not Appearing
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| A command is missing from the list | Discord hides commands you lack the default permission for (`/setup`, `/embed`, `/auto-close`, **Find ticket**), or the command list is stale | Check your permissions, then press Ctrl+R (Cmd+R on Mac) to reload Discord |
+| "This command can only be used in ticket channels" (TC017) | The command was run outside a ticket | Run it inside the ticket channel |
+| "Only staff members can use this command" (TC002) | Your role is not selected as a staff role | Ask an administrator to add your role under staff roles in the dashboard |
+| "requires the ... plan" (TC014) | The bot owner's plan does not include the feature | The bot owner can upgrade at [ticketcord.com/pricing](https://ticketcord.com/pricing) |
+| No TC code in the error | The reply did not come from TicketCord | Another bot or script is using the same token; see [Troubleshooting](/bot/troubleshooting#bot-is-offline) |
 
-1. **Check permissions** - You may not have access to that command
-2. **Refresh Discord** - Press Ctrl+R to refresh the command list
-3. **Check plan** - Some commands require specific plans
-4. **Bot permissions** - Ensure the bot has necessary Discord permissions
+## Common questions
 
-### Command Errors
+**Why does `/help` list a command I cannot run?**
+`/help` shows the same list to everyone. Commands still check your role, Discord permissions, and the server's plan when you run them.
 
-| Error | Solution |
-|-------|----------|
-| "Not a ticket channel" | Run the command inside a ticket channel |
-| "Missing permissions" | Check your staff role assignment |
-| "Feature not available" | Upgrade your plan or enable the feature |
-| "Rate limited" | Wait and try again |
+**Can non-staff see who is on call?**
+Yes. `/on-call status` is open to everyone; only `toggle` needs a staff role.
 
-### Getting Help
+**How do I rate a ticket that was closed last week?**
+Run `/feedback`, pick the ticket from the autocomplete list, and give a rating from 1 to 5. If it is not listed, it has already been rated or feedback is disabled on the server.
 
-<CardGroup cols={2}>
-  <Card title="Support Server" icon="discord" href="https://ticketcord.com/discord">
-    Get help from our team via DM
-  </Card>
-  <Card title="Documentation" icon="book" href="/">
-    Browse the full documentation
-  </Card>
-</CardGroup>
+**Why does Find ticket show fewer closed tickets than the dashboard?**
+The card shows the 15 most recent closed tickets and skips any whose channel was deleted. The dashboard shows the full history.
+
+**Can staff rate a ticket on behalf of a user?**
+No. Only the ticket creator can submit feedback for their ticket.
+
+<Card title="Still stuck?" icon="discord" href="https://ticketcord.com/discord">
+  Join the support Discord and ask the team
+</Card>

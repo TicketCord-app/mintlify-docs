@@ -1,21 +1,23 @@
 ---
 title: "Keyboard Shortcuts"
-description: "Navigate the dashboard faster with keyboard shortcuts"
+description: "Move around the dashboard, open the command palette, save, and send replies without touching the mouse"
 ---
 
-Press `?` anywhere in the dashboard to see this list.
+The dashboard has a small set of keyboard shortcuts: a command palette for jumping to any page, two-key navigation sequences, and editing keys for saving configuration and sending replies. They work on every dashboard page for every user and need no setup. Press `?` at any time to see the list.
 
 ## Global
 
 | Shortcut | Action |
 |----------|--------|
-| `Ctrl/Cmd + K` | Open the command palette |
-| `?` | Show the shortcuts help |
-| `Esc` | Close the palette or help, or leave the current input |
+| `Ctrl + K` (Windows, Linux) or `⌘ K` (Mac) | Open the command palette |
+| `?` | Show the **Keyboard shortcuts** help |
+| `Esc` | Close the command palette, then the help dialog, then leave the focused text field |
+
+`Ctrl` and `⌘` are interchangeable on every shortcut.
 
 ## Navigation
 
-Press the two keys one after the other, within one second.
+Press the two keys one after the other. The second key must follow within one second, otherwise the sequence resets.
 
 | Shortcut | Goes to |
 |----------|---------|
@@ -26,17 +28,78 @@ Press the two keys one after the other, within one second.
 
 ## Editing
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl/Cmd + S` | Save pending configuration changes |
-| `Ctrl/Cmd + Enter` | Send a reply from the ticket composer |
-| `Ctrl/Cmd + Z` | Undo in the embed designer |
-| `Ctrl/Cmd + Shift + Z` or `Ctrl/Cmd + Y` | Redo in the embed designer |
+| Shortcut | Where | Action |
+|----------|-------|--------|
+| `Ctrl/⌘ + S` | Any server configuration tab with unsaved changes | Saves the pending changes (the same as the **Save** button in the floating bar) and stops the browser's own Save dialog |
+| `Ctrl/⌘ + Enter` | Ticket reply box on the ticket page | Sends the reply |
+| `Ctrl/⌘ + Enter` | **Staff Notes** on the ticket page | Adds the note |
 
-## Command Palette
+There are no undo or redo shortcuts in the embed designer; use the designer's own controls.
 
-The palette jumps to dashboard pages: home, servers, bots, add bot, tickets, approvals, escalations, analytics, AI usage, MCP, billing, support, and this shortcut list. It does not search tickets.
+## Command palette
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+`Ctrl/⌘ + K` opens a search box ("Type a command or search…"). Start typing and press `Enter` to jump. Entries and their quick aliases:
+
+| Group | Entry | Alias |
+|-------|-------|-------|
+| Navigation | Dashboard | `home` |
+| Navigation | Servers | `servers` |
+| Navigation | Bots | `bots` |
+| Navigation | Add New Bot | `addbot` |
+| Navigation | Tickets | `tickets` |
+| Navigation | Approvals | `approvals` |
+| Navigation | Escalations | `escalations` |
+| Navigation | Analytics | `analytics` |
+| Navigation | AI Usage | `usage` |
+| Navigation | MCP | `mcp` |
+| Navigation | Billing | `billing` |
+| Navigation | Support | `support` |
+| Help | Keyboard shortcuts | `shortcuts` |
+
+The palette navigates to pages only. It does not search tickets, servers, or settings; use the search box on **Dashboard → Tickets** for tickets.
+
+## What happens while typing
+
+Shortcuts without a modifier (`?`, `g h`, and so on) are ignored while your cursor is in a text field, search box, dropdown, or editor, so typing `g` into a ticket search never navigates away. Shortcuts with `Ctrl` or `⌘` still work inside fields, which is what makes `Ctrl/⌘ + S` and `Ctrl/⌘ + Enter` usable. `Esc` in a field simply leaves the field.
+
+## Limits and gotchas
+
+- Sequences cannot be combined with modifiers: `Ctrl + g` then `h` does nothing.
+- The one-second window for sequences is fixed.
+- `Ctrl/⌘ + S` only saves when a configuration page has unsaved changes and its floating save bar is visible.
+- Shortcuts cannot be customised or disabled.
+- On a Mac the help dialog shows `⌘`, `⌥`, and `⇧`; elsewhere it shows `Ctrl`, `Alt`, and `Shift`.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| `g` then `t` does nothing | The cursor is in a text field, or more than a second passed between keys | Press `Esc` to leave the field, then press the two keys quickly |
+| `?` types a question mark instead of opening help | You are in a text field | Press `Esc` first |
+| `Ctrl/⌘ + S` opens the browser's Save dialog | You are on a page with no unsaved changes, so no save bar is shown | Nothing to save; the shortcut works once the floating save bar appears |
+| `Ctrl/⌘ + K` opens the browser's address bar or search | A browser extension or the browser itself claimed the key first | Click into the page and try again, or check the extension's shortcuts |
+| The palette does not find a ticket | The palette only lists pages | Go to **Tickets** (`g` then `t`) and use its search |
+
+## Common questions
+
+**How do I see all keyboard shortcuts?**
+Press `?` anywhere in the dashboard (outside a text field). The **Keyboard shortcuts** dialog lists the general and navigation keys.
+
+**Is there a shortcut to save my configuration?**
+Yes. `Ctrl + S` on Windows and Linux or `⌘ S` on a Mac saves the pending changes shown in the floating save bar.
+
+**How do I send a reply from the keyboard?**
+In the ticket reply box, press `Ctrl/⌘ + Enter`. The same combination adds a staff note in the **Notes** tab.
+
+**Can I search tickets from the command palette?**
+No. The palette jumps between pages. For tickets, press `g` then `t` and use the search box on the Tickets page.
+
+**Why does `g` then `b` sometimes not work?**
+The second key must be pressed within one second, and your cursor must not be in a text field. Press `Esc`, then try again a little faster.
+
+**Can I change or turn off the shortcuts?**
+No. The set is fixed and cannot be customised.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support
 </Card>

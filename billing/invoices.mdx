@@ -1,27 +1,123 @@
 ---
 title: "Invoices & Payment History"
-description: "View your payment history and manage billing details"
+description: "Where to find every payment, download invoices, update your card and billing details, and what to do when a payment fails"
 ---
+
+Your payment record lives in two places: **Dashboard → Billing → Payment History** lists every payment TicketCord knows about (card and crypto), and the Stripe billing portal, opened with **Manage Subscription**, holds the invoices, receipts, payment method, and billing details for card subscriptions.
+
+<Info>
+  Only the account owner sees Billing. Dashboard staff you have granted access to do not see payments or invoices.
+</Info>
 
 ## Payment History
 
-**Dashboard → Billing** lists every payment with its date, description, amount and currency, status (**paid**, **failed**, or **pending**), provider (**Stripe** or **Crypto**), and a link to the Stripe invoice when there is one.
+The **Payment History** card at the bottom of **Dashboard → Billing** shows a paged table (with **Previous** / **Next** and a "Showing 1-10 of N payments" counter). Each row has:
 
-## Invoices, Payment Methods, and Billing Details
+| Column | Content |
+|--------|---------|
+| **Description** | What was bought (plan and cycle, token package, or crypto plan and duration) and the payment method, **Stripe** or **Crypto** |
+| **Date** | When the payment was made or the checkout was created |
+| **Status** | See the tables below |
+| **Amount** | Amount and currency (EUR) |
+| **Invoice** | The invoice number and a link to open the Stripe invoice, when one exists |
 
-Click **Manage billing** to open the Stripe customer portal. There you can:
+Card payment statuses:
 
-- Download invoice PDFs
-- Update your payment method
-- Change the billing email, company name, and VAT number
-- Retry a failed payment
+| Status | Meaning |
+|--------|---------|
+| **Paid** | The charge succeeded. |
+| **Pending** | The charge is still being processed. |
+| **Failed** | The charge failed. See [Failed payments](#failed-payments). |
 
-Crypto purchases through NOWPayments are one-time entitlements and do not produce Stripe invoices; they appear in the payment history with the **Crypto** provider.
+Crypto payment statuses:
 
-## Failed Payments
+| Status | Meaning |
+|--------|---------|
+| **Waiting** | Checkout created, no funds received yet. Click the row to return to the payment page. |
+| **Confirming** | Funds received, waiting for blockchain confirmations. |
+| **Confirmed** / **Completing** | Confirmed, NOWPayments is finishing the payment. The plan is not active yet. |
+| **Paid** | Finished. The plan is active until the shown expiry date. |
+| **Underpaid** | Too little was received. The plan is not active. Contact support. |
+| **Wrong asset** | A different coin or network was received. Contact support. |
+| **Cancelled** / **Review needed** | Needs manual support review. Not a refund. |
+| **Expired** | The 7-day payment window ended without payment. |
+| **Refunded** | The payment was refunded. |
 
-Stripe retries failed card payments and emails you. If payment keeps failing, the subscription ends and the account returns to the Free plan.
+An unpaid crypto checkout has a **Remove unpaid checkout** action. Removing only hides it in TicketCord; the address at NOWPayments still exists, so do not send funds to it afterwards.
+
+## Invoices, receipts, and billing details
+
+Click **Manage Subscription** on the **Current Plan** card to open the Stripe billing portal. There you can:
+
+- View and download every invoice and receipt as PDF
+- Update the card or Link payment method
+- Change the billing email, name, address, and VAT number that appear on invoices
+- Pay an open invoice after a failed charge
+- Change plan or billing cycle, and cancel
+
+Invoices are issued by Stripe at every charge: the first payment, each renewal, a prorated upgrade, and each token package purchase. Prices are in EUR.
+
+<Note>
+  Crypto purchases through NOWPayments do not produce Stripe invoices. They appear in Payment History with the **Crypto** method and the amount you paid. If you need a receipt for a crypto purchase, email [hi@ticketcord.com](mailto:hi@ticketcord.com) with the date and amount shown in Payment History.
+</Note>
+
+## Token package purchases
+
+Extra AI tokens (10M for €4.99, 20M for €8.99, 50M for €21.99) are bought from **Dashboard → Usage → Extra Tokens** with **Buy Now**, which sends you to Stripe Checkout. They are one-time purchases, so they do not change your subscription or renewal date, and they show up in Payment History and the portal like any other card payment. Only Pro and Enterprise accounts can buy them.
+
+## Failed payments
+
+If a renewal charge fails:
+
+1. Stripe retries the charge and emails the billing address on the account.
+2. While the invoice is unpaid the subscription is past due and the account is treated as Free: extra bots stop with the status **Plan Limited** and paid features pause.
+3. Open **Manage Subscription**, update the payment method, and pay the open invoice. Access returns as soon as the payment succeeds.
+4. If every retry fails, the subscription ends and the account stays on Free until you subscribe again from **Plans & Pricing**.
+
+Your configuration, bots, tickets, and transcripts are not deleted at any point in this process.
 
 ## Refunds
 
-TicketCord provides immediate access to digital features, and EU customers waive the withdrawal right at checkout. Subscriptions are non-refundable; cancel any time to stop future charges. For billing issues, contact [hi@ticketcord.com](mailto:hi@ticketcord.com).
+TicketCord activates immediately on payment. At checkout you request immediate access and waive the 14-day EU right of withdrawal, so subscriptions and token packages are non-refundable once the service begins. Cancel at any time to stop future charges; you keep access until the end of the paid period. For a billing mistake (for example a duplicate charge), email [hi@ticketcord.com](mailto:hi@ticketcord.com) from the address on your account with the invoice number.
+
+## Billing data and exports
+
+Billing and payment records are held by Stripe and NOWPayments. They are not part of a TicketCord data export; get invoices from the portal instead. If you delete your TicketCord account, billing records are kept as required for tax and accounting and are not used for anything else. See [Data Export](/features/gdpr-export).
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| **Manage Subscription** is missing | You are on Free, on the signup trial, on a crypto purchase, or on an admin-granted plan. The portal only exists for card subscriptions. | Card subscribers: refresh the page. Others: there are no Stripe invoices to show. |
+| "Unable to load payment history" | Temporary error. | Try again later; contact support if it persists. |
+| A payment shows **Failed** but my card was charged | The charge may have been authorised and released. | Check with your bank; if the charge settles, email [hi@ticketcord.com](mailto:hi@ticketcord.com) with the invoice number. |
+| A crypto payment shows **Underpaid** | Network fees or a rate move left the received amount short. | Contact support; do not send a second payment on your own. |
+| I need a VAT invoice | Company details are missing from the invoice. | Add name, address, and VAT number in the portal. Existing invoices are not reissued automatically; ask support if you need one corrected. |
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Where do I download my invoice?">
+    Dashboard → Billing → Current Plan → **Manage Subscription**, then open the invoice in the Stripe portal. The **Invoice** column in Payment History links to the same place.
+  </Accordion>
+
+  <Accordion title="Do I get an invoice for a crypto payment?">
+    No Stripe invoice is produced for crypto. The purchase is listed in Payment History with the amount and date. Email support if you need a written receipt.
+  </Accordion>
+
+  <Accordion title="Can I change the name or VAT number on my invoices?">
+    Yes, in the Stripe portal under billing information. The change applies to invoices issued from then on.
+  </Accordion>
+
+  <Accordion title="Why was I charged before my renewal date?">
+    Upgrading to a higher plan mid-cycle creates a prorated charge for the difference, and token packages are charged when bought. Both appear as separate invoices; your renewal date does not move.
+  </Accordion>
+
+  <Accordion title="My payment failed. Have I lost my settings?">
+    No. Only the plan is affected. Pay the open invoice in the portal and everything resumes.
+  </Accordion>
+</AccordionGroup>
+
+<Card title="Billing support" icon="headset" href="https://ticketcord.com/discord">
+  Ask in the support Discord or email hi@ticketcord.com
+</Card>

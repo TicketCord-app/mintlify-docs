@@ -1,13 +1,17 @@
 ---
 title: "Staff Tools"
-description: "Commands for staff productivity - notes, tags, transcripts, and quick replies"
+description: "Staff commands for notes, tags, transcripts, canned replies, priority, statistics, claims, AI assistance, translation, and ModMail evidence"
 ---
 
-These commands help staff work efficiently and maintain ticket organization.
+These commands are for people holding a staff role selected in the dashboard. They help staff work faster inside a ticket and keep tickets organised for the dashboard.
+
+<Info>
+  All commands on this page are staff only. `/reply` and `/stats` need the Basic plan or higher; `/ai-help` and `/summary` need Pro or higher. Everything else works on every plan.
+</Info>
 
 ## /note
 
-Manage internal staff notes on a ticket. Notes are only visible to staff members.
+Keep internal notes on a ticket. Notes are visible to staff only, never to the ticket creator.
 
 ```
 /note add <content>
@@ -15,51 +19,29 @@ Manage internal staff notes on a ticket. Notes are only visible to staff members
 /note remove <number>
 ```
 
-### Subcommands
+| Subcommand | Option | Type | Required | Allowed values |
+|------------|--------|------|----------|----------------|
+| `add` | `content` | Text | Yes | Up to 1000 characters |
+| `view` | none | | | |
+| `remove` | `number` | Integer | Yes | 1 or higher; the number shown by `/note view` |
 
-| Subcommand | Description |
-|------------|-------------|
-| `add` | Add a new note to the ticket |
-| `view` | View all notes on the ticket |
-| `remove` | Remove a specific note |
+**What happens:** `add` stores the note with your name and the time. `view` lists every note on the ticket in order, numbered. `remove` deletes one note; you can only remove notes you wrote yourself.
 
-**Permission:** Staff only
-
-### Adding Notes
+**Examples**
 
 ```
-/note add content:Customer is a VIP - prioritize response
-/note add content:Waiting for billing team confirmation
-```
-
-Notes include:
-- The staff member who created it
-- Timestamp when created
-- The note content
-
-### Viewing Notes
-
-```
+/note add content:Customer is a VIP, prioritise the reply
 /note view
+/note remove number:2
 ```
 
-Displays all notes on the current ticket in chronological order.
-
-### Removing Notes
-
-```
-/note remove note_id:1
-```
-
-<Info>
-  Notes are internal and never visible to the ticket creator or other non-staff users.
-</Info>
+**Errors:** TC002 (not staff, or removing someone else's note), TC012 (note over 1000 characters, or number out of range), TC017 (not in a ticket).
 
 ---
 
 ## /tag
 
-Manage tags on the current ticket for organization and filtering.
+Label the ticket so it can be filtered in the dashboard.
 
 ```
 /tag add <name>
@@ -68,255 +50,188 @@ Manage tags on the current ticket for organization and filtering.
 /tag clear
 ```
 
-### Subcommands
+| Subcommand | Option | Type | Required | Allowed values |
+|------------|--------|------|----------|----------------|
+| `add` | `name` | Text (autocomplete) | Yes | Up to 50 characters; letters, numbers, hyphens, and underscores only |
+| `remove` | `name` | Text (autocomplete) | Yes | A tag currently on the ticket |
+| `list` | none | | | |
+| `clear` | none | | | |
 
-| Subcommand | Description |
-|------------|-------------|
-| `add` | Add a tag to the ticket |
-| `remove` | Remove a tag from the ticket |
-| `list` | List all tags on the ticket |
-| `clear` | Remove all tags from the ticket |
+Autocomplete suggests the predefined tags set in the dashboard, but you can type any valid name. A ticket holds up to 10 tags by default; a server administrator can raise this to 25 in the dashboard.
 
-**Permission:** Staff only
-
-### Adding Tags
+**Examples**
 
 ```
-/tag add tag:billing
-/tag add tag:urgent
-/tag add tag:needs-followup
-```
-
-<Tip>
-  Tags help you filter and search tickets in the dashboard. Use consistent naming for best results.
-</Tip>
-
-### Viewing Tags
-
-```
-/tag list
-```
-
-Shows all tags currently on the ticket.
-
-### Removing Tags
-
-```
-/tag remove tag:urgent
+/tag add name:billing
+/tag remove name:urgent
 /tag clear
 ```
+
+**Errors:** TC012 (empty, too long, or invalid characters), TC015 (tag already exists, or nothing to clear), TC004 (removing a tag that is not on the ticket), TC016 (tag limit reached), TC017 (not in a ticket).
 
 ---
 
 ## /transcript
 
-Generate a transcript of the ticket conversation.
+Generate an HTML transcript of the current ticket.
 
 ```
 /transcript [channel] [user] [limit] [evidence]
 ```
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `channel` | Channel | No | Send the transcript to this channel instead of the configured one (staff only) |
-| `user` | User | No | DM the transcript to a specific user (staff only) |
-| `limit` | Integer | No | Only include the most recent N messages (default: all) |
-| `evidence` | Boolean | No | Include Discord IDs and message links (staff only) |
+| Option | Type | Required | Allowed values | Default |
+|--------|------|----------|----------------|---------|
+| `channel` | Text channel | No | Any text channel (staff only) | The transcript channel from the dashboard |
+| `user` | User | No | Any member (staff only) | none |
+| `limit` | Integer | No | 1 to 1000 | All messages |
+| `evidence` | Boolean | No | `True` or `False` (staff only) | `False` |
 
-**Permission:** Ticket creator or staff. The `channel`, `user`, and `evidence` options are staff only.
+**Who can run it:** the ticket creator or staff. Only staff can use `channel`, `user`, or `evidence`.
 
 **What happens:**
-- Creates a formatted record of all messages
-- Includes timestamps, usernames, and message content
-- Attachments and embeds are referenced
-- Transcript is saved according to your settings
 
-### Transcript Formats
+1. The conversation is rendered as an HTML file with timestamps, usernames, message content, and references to attachments and embeds.
+2. The file goes to the dashboard transcript channel by default, to the channel you name with `channel`, or as a DM to the member you name with `user`.
+3. With `evidence:True` the file also includes Discord IDs and message links. Evidence transcripts can only be sent to staff members or staff-only channels.
+4. If `limit` cut the transcript short, the confirmation says how many of the total messages were included.
 
-The transcript is generated as an HTML file and delivered to:
+<Note>
+  A transcript channel must be configured in the dashboard before this command works, even when you override the destination (**TC011**).
+</Note>
 
-| Destination | When |
-|-------------|------|
-| **Transcript channel** | By default, the channel configured in the dashboard |
-| **Another channel** | When staff pass the `channel` option |
-| **A user's DMs** | When staff pass the `user` option |
-
-The command needs a transcript channel configured in the dashboard. Evidence transcripts (`evidence:True`) can only go to staff members or staff-only channels.
-
-<Info>
-  Configure transcript settings in your dashboard under **Ticket Lifecycle** → **Transcripts**.
-</Info>
+**Errors:** TC002 (non-staff used a staff-only option, or an evidence transcript targeted a non-staff recipient or channel), TC011 (no transcript channel configured), TC017 (not in a ticket).
 
 ---
 
 ## /reply
 
-Send a pre-configured canned response.
+Send a canned response by its shortcut.
 
 ```
 /reply <shortcut>
 ```
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `shortcut` | Text (autocomplete) | Yes | Shortcut of the canned response |
+| Option | Type | Required |
+|--------|------|----------|
+| `shortcut` | Text (autocomplete) | Yes |
 
-**Permission:** Staff only  
-**Plan:** Basic or higher
+**Plan:** Basic or higher. Basic and Pro can use up to 25 canned responses (the first 25 by creation date); Enterprise has no limit.
 
-**What happens:**
-- Sends the pre-configured response message
-- Can include variables like ticket number, user mention
-- Saves time on common responses
+**What happens:** the saved response is posted in the ticket. `{{user}}` is replaced with the creator's mention and `{{ticketNumber}}` with the ticket number; the older `{user}` and `{ticketNumber}` forms still work.
 
-### Setting Up Replies
+Create responses in the dashboard under **Canned Responses**, each with a shortcut and content.
 
-1. Go to your dashboard
-2. Navigate to **Quick Replies** (or **Canned Responses**)
-3. Create responses with names and content
-4. Use `/reply` to send them
-
-**Example responses:**
-
-| Name | Content |
-|------|---------|
-| `greeting` | "Thanks for contacting support! I'll be with you shortly." |
-| `resolved` | "Glad we could help! Feel free to open a new ticket if you need anything else." |
-| `escalate` | "I'm escalating this to our senior team. You'll hear back within 24 hours." |
-
-<Tip>
-  Use variables in your replies: `{{user}}` for the creator mention and `{{ticketNumber}}` for the ticket number. The older `{user}` and `{ticketNumber}` forms still work.
-</Tip>
+**Errors:** TC014 (Free plan, or the response is beyond your plan's limit), TC004 (no response with that shortcut), TC002 (not staff).
 
 ---
 
 ## /priority
 
-Set the priority level for a ticket. Adds a visual indicator to the channel name.
+Set the ticket priority. The channel name gets a coloured indicator and the dashboard shows the level.
 
 ```
 /priority <level>
 ```
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `level` | Choice | Yes | Priority level to set |
+| Option | Type | Required | Allowed values |
+|--------|------|----------|----------------|
+| `level` | Choice | Yes | `urgent` (🔴), `high` (🟠), `medium` (🟡), `low` (🟢), `none` (removes the indicator) |
 
-**Choices:**
-- `urgent` - Adds red indicator
-- `high` - Adds orange indicator
-- `medium` - Adds yellow indicator
-- `low` - Adds green indicator
-
-**Permission:** Staff only  
-**Plan:** All plans
-
-**What happens:**
-- Channel name gets priority emoji prefix
-- Ticket is flagged in the dashboard
-- Helps staff identify critical issues
-
-**Example:**
-```
-/priority level:urgent
-```
-
-Channel becomes: `🔴-ticket-0001`
+**What happens:** the channel is renamed to `🔴-ticket-0001` (or the matching emoji), any previous indicator is removed, and a notice shows the old and new level. `none` clears the indicator.
 
 <Warning>
-  Channel renaming is rate-limited by Discord. Rapid priority changes may be delayed.
+  Discord allows only two renames per channel every 10 minutes. Changing priority a third time in that window returns **TC001**; wait 10 to 15 minutes.
 </Warning>
+
+**Errors:** TC001 (rename rate limit), TC002 (not staff), TC012 (invalid level), TC017 (not in a ticket).
 
 ---
 
 ## /stats
 
-View ticket statistics for the current server.
+Show ticket statistics for this server. The response is visible only to you.
 
 ```
 /stats [period]
 ```
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `period` | Choice | No | Time period for stats |
+| Option | Type | Required | Allowed values |
+|--------|------|----------|----------------|
+| `period` | Choice | No | `7d`, `30d`, `90d`, `all` |
 
-**Choices:**
-- `7d` - Last 7 days
-- `30d` - Last 30 days
-- `90d` - Last 90 days
-- `all` - All-time statistics
+**Plan:** Basic or higher.
 
-**Permission:** Staff only  
-**Plan:** Basic or higher
+**What it shows:** total, open, and closed tickets with percentages, average first response time, average resolution time, a priority breakdown, and the top ticket creators for the period.
 
-**Statistics include:**
-- Total, open, and closed tickets
-- Average first response time and average resolution time
-- Top ticket creators
-- Priority breakdown
-- Tickets created per day
-
-**Example:**
-```
-/stats period:week
-```
+**Errors:** TC014 (Free plan), TC002 (not staff).
 
 <Info>
-  For detailed analytics, visit the **Analytics** section in your dashboard.
+  For charts and exports, open **Analytics** in the dashboard.
 </Info>
 
-<Card title="Administration Commands" icon="arrow-right" href="/commands/admin">
-  Learn about setup, embeds, and approvals
-</Card>
+---
+
+## /claims
+
+List claimed tickets, five per page, with the creator, claim time, and last activity.
+
+```
+/claims [user]
+```
+
+| Option | Type | Required | Notes |
+|--------|------|----------|-------|
+| `user` | User | No | Show another staff member's claims instead of your own |
+
+The card has controls to switch between open and closed claims, sort by oldest claim, newest claim, highest priority, or longest since last activity, and page through results. The controls only respond to the person who ran the command; anyone else gets **TC002** and must run `/claims` themselves. When the AI triage card is enabled for the server, each row also shows a one-line summary and urgency.
+
+**Errors:** TC002 (not staff, or using another member's controls), TC010 (controls from an old card; run `/claims` again).
 
 ---
 
 ## /ai-help
 
-Get an AI-generated reply suggestion for the current ticket. The suggestion is shown only to you; you can send it as is, edit it first, or discard it.
+Draft a reply with AI, based on the ticket conversation and your knowledge base. The draft is shown only to you.
 
 ```
 /ai-help
 ```
 
-**Permission:** Staff only  
-**Plan:** Pro or higher
+**Plan:** Pro or higher.
+
+**What happens:** the bot reads the ticket, searches the knowledge base, and shows a suggested reply with its sources. Choose **Send Now** to post it as is, **Edit & Send** to change it first, or **Try Again** for a new draft.
+
+**Errors:** TC014 (plan below Pro, or the trial AI token allowance is used up), TC002 (not staff), TC017 (not in a ticket).
 
 ---
 
 ## /summary
 
-Generate an AI summary of the ticket conversation, for example before handing the ticket to a colleague.
+Generate an AI summary of the ticket, for example before handing it to a colleague. Shown only to you.
 
 ```
 /summary [format]
 ```
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `format` | Choice | No | Summary style |
+| Option | Type | Required | Allowed values | Default |
+|--------|------|----------|----------------|---------|
+| `format` | Choice | No | `detailed` (full analysis), `executive` (key points), `handoff` (staff transition notes), `brief` (quick overview) | `detailed` |
 
-**Choices:**
-- `detailed` - Full analysis
-- `executive` - Key points
-- `handoff` - Staff transition notes
-- `brief` - Quick overview
+**Plan:** Pro or higher.
 
-**Permission:** Staff only  
-**Plan:** Pro or higher
+**Errors:** TC014 (plan below Pro), TC002 (not staff), TC017 (not in a ticket), TC004 (the ticket has no messages to summarise).
 
 ---
 
 ## /context
 
-Show how much of the AI conversation context this ticket is using.
+Show how much of the AI conversation context this ticket is using. Shown only to you.
 
 ```
 /context
 ```
 
-**Permission:** Staff only
+**Errors:** TC002 (not staff), TC017 (not in a ticket).
 
 ---
 
@@ -328,59 +243,57 @@ Turn AI translation on or off for the current ticket.
 /translation <enabled>
 ```
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `enabled` | Boolean | Yes | `True` to enable translation, `False` to disable |
+| Option | Type | Required | Allowed values |
+|--------|------|----------|----------------|
+| `enabled` | Boolean | Yes | `True` to enable, `False` to disable |
 
-**Permission:** Staff only. Translation must be enabled for the server in the dashboard first.
+Translation must first be enabled for the server in the dashboard. See [Translation](/ai/translation) for what gets translated.
 
----
-
-## /claims
-
-See the tickets you have claimed, or another staff member's claimed tickets.
-
-```
-/claims [user]
-```
-
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `user` | User | No | Show another staff member's claimed tickets |
-
-**Permission:** Staff only
-
----
-
-## /feedback
-
-Ask the ticket creator to rate the support they received.
-
-```
-/feedback <ticket> <rating> [staff] [comment]
-```
-
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `ticket` | Text (autocomplete) | Yes | The ticket to rate |
-| `rating` | Choice | Yes | 1 to 5 stars |
-| `staff` | Text (autocomplete) | No | The staff member who helped |
-| `comment` | Text | No | Optional comment |
+**Errors:** TC018 (translation is not enabled for the server, or it is already disabled on this ticket), TC002 (not staff), TC017 (not in a ticket).
 
 ---
 
 ## /modmail
 
-Inspect ModMail evidence for the current ticket.
+Inspect evidence for a ModMail ticket. Works only in ModMail ticket channels.
 
 ```
 /modmail message <number>
 /modmail evidence
 ```
 
-| Subcommand | Description |
-|------------|-------------|
-| `message <number>` | Look up the linked Discord IDs for a message number from the ModMail transcript |
-| `evidence` | Show a compact evidence pack for this ModMail ticket |
+| Subcommand | Option | Type | Required | Allowed values |
+|------------|--------|------|----------|----------------|
+| `message` | `number` | Integer | Yes | 1 up to the number of messages in the ModMail transcript |
+| `evidence` | none | | | |
 
-**Permission:** Staff only. Works in ModMail ticket channels only.
+`message` returns the linked Discord IDs for one message by its position in the transcript. `evidence` shows a compact evidence pack for the whole ticket.
+
+**Errors:** TC004 (message number out of range), TC002 (not staff), TC017 (not a ModMail ticket).
+
+## Common questions
+
+**Can the ticket creator see my notes?**
+No. Notes are only shown to staff through `/note view` and in the dashboard.
+
+**Why does `/reply` say a response is not available on my plan?**
+Basic and Pro include the first 25 canned responses by creation date. Delete unused ones in the dashboard or upgrade to Enterprise for an unlimited number.
+
+**Why did `/priority` fail with TC001?**
+Discord limits channel renames to two every 10 minutes and priority changes rename the channel. Wait 10 to 15 minutes and try again.
+
+**Can I send a transcript to someone who is not staff?**
+Yes, with `user:@name`, as long as `evidence` is off. Evidence transcripts only go to staff or staff-only channels.
+
+**Why does `/transcript` say no transcript channel is configured when I passed a channel?**
+The command always needs the dashboard transcript channel set, even when you override the destination. Set it under the server's transcript settings.
+
+**Where do tag suggestions come from?**
+From the predefined tags configured in the dashboard. You can still type any name made of letters, numbers, hyphens, and underscores.
+
+**Does `/ai-help` post anything automatically?**
+No. The draft is private until you press **Send Now** or **Edit & Send**.
+
+<Card title="Still stuck?" icon="discord" href="https://ticketcord.com/discord">
+  Join the support Discord and ask the team
+</Card>

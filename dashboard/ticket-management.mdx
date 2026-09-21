@@ -1,40 +1,118 @@
 ---
 title: "Ticket Management"
-description: "View, search, filter, and manage tickets in the dashboard"
+description: "Find, read, reply to, and manage tickets across all your bots from the dashboard"
 ---
 
-**Dashboard → Tickets** lists every ticket across your bots.
+**Dashboard → Tickets** is the ticket queue for every bot you own or manage as dashboard staff. You can search and filter it, save views, open a ticket to read the full conversation and internal notes, reply, claim, close, export, and act on many tickets at once. It is the place to work tickets when you are not in Discord, and the only place to see tickets from several servers side by side.
 
-## Finding Tickets
+<Info>
+  Everyone with dashboard access can use the Tickets page for the bots they own or manage. Some actions are owner-only, in particular **Purge**. Analytics are on their own page; see [Analytics](/dashboard/analytics).
+</Info>
 
-| Control | Options |
-|---------|---------|
-| **Search** | Free text, up to 100 characters |
-| **Status** | Open, closed, deleted |
-| **Priority** | None, low, medium, high, urgent |
-| **Assignment** | Mine, unassigned |
-| **Access** | Tickets from bots you own, or bots you manage as staff |
-| **Bot** | Limit to one bot |
-| **Tags** | Tickets must carry every selected tag |
-| **Sort** | Created, updated, last activity (default), or priority |
+## Finding tickets
 
-Save a combination of filters as a **view** to reuse it.
+The list updates live as tickets are created, closed, claimed, or reopened, and a **Refresh** button forces a reload with a short cooldown. Twenty tickets are shown per page.
 
-## Ticket Page
+| Control | Options | Default |
+|---------|---------|---------|
+| **Search** | Ticket number, Discord ID, subject, bot, or server; up to 100 characters | empty |
+| **Status** | All statuses, Open, Closed, Deleted | All |
+| **Priority** | All priorities, Urgent, High, Medium, Low, None | All |
+| **Assignment** | All, Assigned to Me, Unassigned | All |
+| **Access** | All, Owned Servers, Staff Access | All |
+| **Bot** | All bots, or one bot | All |
+| **Tags** | Any number of tags; a ticket must carry every selected tag | none |
+| **Sort** | Latest Activity, Oldest Activity, Newest First, Oldest First, Recently Updated, Least Updated, Highest Priority, Lowest Priority | Latest Activity |
 
-Open a ticket to read the conversation, notes, and approval pane. The toolbar offers: Claim, Unclaim, Close, Reopen, Delete, Set priority, Rename, Add user, Remove user, Send transcript, and Export.
+Tags come from the predefined tags on each server's **Tags** tab; with none defined, the filter shows "Add predefined tags in guild settings".
 
-## Bulk Actions
+### Saved views
 
-Select several tickets to close, tag, untag, set priority, export, delete, or purge them. See [Bulk Operations](/features/bulk-operations).
+The **Queues** bar above the list has built-in views (**All**, **Open**, **Mine**, **Unassigned**, **Urgent**) plus your own. Set up a filter combination, click **Save view**, and give it a name of 1 to 48 characters. You can keep up to 25 saved views, mark one as **Default** so the page opens on it, and names must be unique. Views are personal to your account.
 
-## Transcripts and Exports
+## The ticket page
 
-- Export a ticket as HTML, JSON, CSV, or PDF, in the default, compact, or detailed template. The file downloads immediately.
-- Transcript pages at `ticketcord.com/transcripts/...` require signing in with a dashboard account that has access to the ticket.
+Click a ticket to open it. The header shows the ticket's number, status, and priority. Below it are four tabs:
 
-## Deleting
+- **Timeline**: every message and system event (created, claimed, closed, first response recorded, and so on) in order.
+- **Approval**: the approval request on this ticket, with **Approve** and **Reject** buttons for members of the approver role. See [Approval Workflows](/configuration/approval-workflows).
+- **Notes**: **Staff Notes** that are internal and never shown to the customer. Each note is 1 to 1,000 characters; `Ctrl/Cmd + Enter` submits.
+- **Sentiment**: the detected customer mood over the conversation, when sentiment detection is on.
 
-**Delete** soft-deletes a ticket; it stays visible under the Deleted status. **Purge** permanently removes deleted tickets and is limited to the bot owner.
+### Replying from the dashboard
 
-See [Keyboard Shortcuts](/features/keyboard-shortcuts) for `g` then `t` and the command palette.
+At the bottom of the **Timeline** tab, open tickets have a reply box. Type up to 2,000 characters and press **Send** or `Ctrl/Cmd + Enter`. The bot posts your message in the ticket channel. Attachments cannot be sent from the dashboard, and ModMail tickets must be answered from Discord ("ModMail replies must currently be sent from Discord.").
+
+### Toolbar actions
+
+| Action | What it does | Notes |
+|--------|--------------|-------|
+| **Claim** / **Unclaim** | Assigns the ticket to you, or releases it | Same as `/claim` and `/unclaim` |
+| **Close** | Closes the ticket with an optional reason | Follows the server's close settings (transcript, deletion, feedback) |
+| **Reopen** | Reopens a closed ticket | Deleted tickets cannot be reopened |
+| **Delete** | Deletes the Discord channel and marks the ticket deleted | The ticket stays in your history until purged |
+| **Set priority** | None, Low, Medium, High, or Urgent | |
+| **Rename** | Changes the channel name, up to 100 characters | Not available for thread tickets |
+| **Add user** / **Remove user** | Grants or removes a Discord user's access to the channel | Takes a user ID; not available for thread tickets |
+| **Send transcript** | Sends the transcript to the configured destination | |
+| **Export** | Downloads the ticket as HTML, JSON, CSV, or PDF | Choose the **default**, **compact**, or **detailed** template |
+
+## Transcripts and exports
+
+- A single-ticket export downloads immediately in the chosen format and template. Metadata is included by default.
+- Transcript links of the form `ticketcord.com/transcripts/...` require signing in with a dashboard account that has access to the ticket. They are not public.
+- Exporting several tickets at once is covered under [Bulk Operations](/features/bulk-operations): up to 50 tickets per export, 10 for PDF, delivered as a zip.
+
+## Deleting and purging
+
+**Delete** is a soft delete. The Discord channel is removed (an open ticket is closed first), the ticket's status becomes **Deleted**, and it stays visible under the **Deleted** status filter with its transcript and notes. Deleted tickets cannot be reopened.
+
+**Purge** permanently erases deleted tickets from TicketCord: the ticket record, stored messages and transcript links, archived attachments, staff notes, SLA and feedback data, analytics contributions, and any knowledge base learning derived from them. Purge is available only to the bot owner and only for tickets already in the **Deleted** status. It cannot be undone.
+
+## Limits and gotchas
+
+- Twenty tickets per page; use the filters or a saved view rather than paging through hundreds.
+- Search text is limited to 100 characters and a saved view can hold at most 10 tag filters.
+- The dashboard reply box is text only. For images or files, reply in Discord.
+- Actions on the ticket page are subject to the same rules as the slash commands: for example **Reopen** works only on closed tickets, and a ticket already deleted is left unchanged by **Delete**.
+- Dashboard staff (people the owner added on the **Staff** tab) can do everything on this page except **Purge**.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| A ticket you expect is missing | A filter or saved view is hiding it, or it belongs to a bot you do not manage | Click **All** in the Queues bar and set **Bot** to All bots |
+| The reply box is not shown | The ticket is closed, is a ModMail ticket, or you are in read-only mode | Reopen the ticket, or reply from Discord for ModMail |
+| **Purge** is disabled or skipped tickets | You are dashboard staff rather than the bot owner, or the tickets are not in **Deleted** status | Ask the bot owner; delete before purging |
+| **Rename**, **Add user**, and **Remove user** are missing | The ticket is a thread rather than a channel | These actions apply to channel tickets only |
+| "You can save up to 25 ticket views." | The saved-view limit was reached | Delete a view you no longer use |
+| "A saved view with this name already exists." | Names are compared case-insensitively | Choose a different name |
+| Export of a large ticket fails | The export exceeded the size limits | Export in a lighter format such as JSON or CSV, or the **compact** template |
+| Changes made in Discord do not appear | The live update was missed | Click **Refresh** |
+
+## Common questions
+
+**Can I reply to a ticket from the dashboard?**
+Yes, for open channel tickets: use the reply box on the **Timeline** tab, up to 2,000 characters. ModMail tickets must be answered in Discord, and attachments cannot be sent from the dashboard.
+
+**Where are the tickets from my other server?**
+All servers appear in one list. Use the **Bot** filter, the **Access** filter (Owned Servers or Staff Access), or search by server name to narrow it down.
+
+**What is the difference between Delete and Purge?**
+Delete removes the Discord channel and hides the ticket under the Deleted status while keeping its data. Purge permanently erases deleted tickets and is restricted to the bot owner.
+
+**Can a deleted ticket be restored?**
+No. Deleted tickets cannot be reopened. Their transcript and notes remain readable until they are purged.
+
+**Are internal notes visible to the customer?**
+No. Notes on the **Notes** tab are only visible to dashboard users with access to the ticket.
+
+**How do I download a transcript?**
+Open the ticket and click **Export**, then pick HTML, JSON, CSV, or PDF. For many tickets at once, select them in the list and use the bulk **Export** action.
+
+**Why do transcript links ask me to sign in?**
+Transcript pages are private. Only a dashboard account with access to that ticket's bot can open them.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
+</Card>

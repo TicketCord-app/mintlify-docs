@@ -1,34 +1,135 @@
 ---
 title: "Scheduled Reports"
-description: "Automatically receive support analytics via email"
+description: "Email a daily, weekly, or monthly summary of your support metrics to the bot owner"
 ---
 
-Scheduled Reports email a summary of your support metrics to the bot owner on a schedule.
+Scheduled Reports send an HTML email summarising your server's support metrics on a schedule you choose. They are for bot owners who want the numbers from **Dashboard → Analytics** in their inbox without opening the dashboard: how many tickets came in, how fast the team answered, who resolved the most, and how satisfied users were.
 
 <Info>
-  Scheduled Reports is an **Enterprise** feature. Each server can have up to 5 reports.
+  Scheduled Reports is an **Enterprise** feature. Each server can have up to **5** reports. Reports are always sent to the **bot owner's account email**; there is no recipient list. Only the bot owner can create, edit, test, or delete reports. Dashboard staff see the tab with an **Owner only** badge and cannot change anything.
 </Info>
 
-## Creating a Report
+## Setting up a report
 
-Go to **Dashboard → Bots**, pick your bot, choose the server, and open the **Scheduled Reports** tab.
+<Steps>
+  <Step title="Open the Scheduled Reports tab">
+    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **Scheduled Reports** in the **Service Levels** group. The tab shows **Reports will be sent to:** followed by the owner email that will receive them.
+  </Step>
+  <Step title="Click Add Report">
+    The **Create Report** dialog opens. Give it a **Report Name** such as `Weekly Summary`. Names are 1 to 50 characters.
+  </Step>
+  <Step title="Choose a frequency and time">
+    Pick **Daily**, **Weekly**, or **Monthly**. Weekly reports also ask for a **Day of Week**; monthly reports ask for a **Day of Month** from 1 to 28. Set the **Time** (a whole hour, `00:00` to `23:00`) and the **Timezone** the hour should be read in.
+  </Step>
+  <Step title="Pick the metrics to include">
+    Tick at least one under **Metrics to Include**. Leaving all six unticked shows "Please select at least one metric to include".
+  </Step>
+  <Step title="Create it">
+    Leave **Enabled** on and click **Create Report**. The report appears in the list with an **Active** badge and its schedule, for example "Every Monday at 09:00".
+  </Step>
+  <Step title="Send a test">
+    Use the envelope icon (**Send test email**) on the report row. A test uses the same period and metrics as the real report and lands in the owner inbox within a minute or two. You can send one test per report every 5 minutes.
+  </Step>
+</Steps>
 
-| Setting | Options |
-|---------|---------|
-| **Name** | Up to 50 characters |
-| **Frequency** | Daily, weekly (choose the weekday), or monthly (day 1 to 28) |
-| **Time** | Hour of the day (0 to 23) in the timezone you pick |
-| **Metrics** | Ticket volume, response time, resolution time, staff performance, category breakdown, satisfaction |
+## Settings
 
-Reports are sent to the bot owner's account email as an HTML email. There is no recipient list and no attachment.
+| Setting | Allowed values | Default |
+|---------|----------------|---------|
+| **Report Name** | 1 to 50 characters | empty (required) |
+| **Enabled** | on or off | on |
+| **Frequency** | Daily, Weekly, Monthly | Weekly |
+| **Day of Week** | Sunday to Saturday (weekly only) | Monday |
+| **Day of Month** | 1 to 28 (monthly only) | 1 |
+| **Time** | `00:00` to `23:00`, whole hours | `09:00` |
+| **Timezone** | A dropdown of common zones: New York, Chicago, Denver, Los Angeles, Anchorage, Honolulu, UTC, London, Paris, Berlin, Amsterdam, Tokyo, Shanghai, Singapore, Sydney | UTC |
+| **Metrics to Include** | Ticket Volume, Response Time, Resolution Time, Staff performance, Category breakdown, Satisfaction (at least one) | all six |
 
-## Managing Reports
+<Note>
+  Days 29 to 31 are not offered for monthly reports so that every month delivers on the same day. Daylight saving changes are handled by the timezone you pick; the report keeps arriving at the same local hour.
+</Note>
 
-- Turn a report off with its **Enabled** toggle to pause it.
-- Use **Send test** to deliver one immediately (once per minute).
-- The delivery history shows each send with its status and any error; it is kept for 90 days.
-- Every email includes an unsubscribe link.
+## What each report covers
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+The period ends at the moment the report is sent and reaches back depending on the frequency:
+
+| Frequency | Period covered |
+|-----------|----------------|
+| Daily | The previous 24 hours |
+| Weekly | The previous 7 days |
+| Monthly | The previous calendar month |
+
+Within that period the metrics are counted as follows:
+
+- **Ticket Volume**: tickets created or closed in the period, shown as Created, Closed, Open, and Total.
+- **Response Time** and **Resolution Time**: tickets closed in the period, shown as Median, Average, Fastest, and Slowest. Durations under an hour display as minutes, longer ones as hours and minutes.
+- **Staff performance**: a ranked **Top performers** list with how many tickets each staff member resolved in the period.
+- **Category breakdown**: the top 5 categories of tickets created in the period, with counts and percentages.
+- **Satisfaction**: average rating out of 5, the share of positive ratings, and the number of responses. This needs [Feedback](/bot/configuration) collection to be turned on for the server.
+
+## What the email looks like
+
+The subject is `<Report Name> - <Server name>`. The email opens with a headline such as "Acme Support had 42 new tickets." and a short summary line ("30 were closed. Median first response was 12 min."), followed by a card for each selected metric. Sections with no data for the period are omitted; if nothing is available the email says "No data is available for this period." A **View analytics** button opens the dashboard, and the footer carries an **Unsubscribe from this report** link.
+
+## Managing reports
+
+- **Pause**: edit the report and turn **Enabled** off. The row shows **Paused** and nothing is sent until you turn it back on. Pausing is allowed even after a downgrade, so you can always stop email.
+- **Edit**: the pencil icon opens the same dialog with the current values.
+- **Delete**: the bin icon asks for confirmation ("Delete Report?"). Deleting is permanent.
+- **Last sent**: each row shows when the report last went out, or **Never sent**. If the last delivery failed, an **(Error)** marker appears next to it with the reason on hover.
+- **Delivery history**: the tab lists past sends with their status (success or failed), the period covered, and any error. History is kept for 90 days.
+
+## Unsubscribing and resubscribing
+
+The **Unsubscribe from this report** link in the email works without signing in and needs no confirmation. It unsubscribes the owner from **every** report on that server, not just the one that sent the email, and the tab then shows an **Unsubscribed** notice with the date. Test sends are blocked while unsubscribed. The bot owner can click **Resubscribe** on the tab to resume delivery; dashboard staff cannot.
+
+## Limits and gotchas
+
+<Warning>
+  Reports go to the bot owner's account email only. If that account has no email address, creation succeeds but every send fails with "Bot owner does not have an email address configured". Sign in to the dashboard with a Discord account that has a verified email.
+</Warning>
+
+- Up to 5 reports per server. At the cap the tab shows "You've reached the maximum of 5 reports." and **Add Report** is disabled.
+- Reports are checked once an hour, so a report set for `09:00` arrives shortly after nine, not on the exact minute.
+- If the dashboard is offline for a stretch, missed occurrences are sent afterwards, but only a limited number are caught up: about two days for daily, one week for weekly, and one month for monthly.
+- Reports need a completed server setup. Creating one on an unconfigured server shows "Guild configuration not found. Please complete the initial setup first."
+- After a downgrade from Enterprise, existing reports stop sending. You can still disable or delete them.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| "Please wait before sending another test report." | One test per report is allowed every 5 minutes | Wait five minutes and try again |
+| Report row shows **(Error)** next to Last sent | The last delivery failed; the hover text shows the reason | Fix the cause (usually a missing owner email or an invalid timezone) and send a test |
+| No emails arrive but the row says success | The message was delivered to the owner email but filtered | Check spam and any filters for mail from ticketcord.com |
+| The tab shows **Owner only** and everything is disabled | You are dashboard staff, not the bot owner | Ask the bot owner to make the change |
+| "You have unsubscribed from scheduled reports. Resubscribe to send test emails." | The unsubscribe link in a past email was clicked | Click **Resubscribe** on the tab (owner only) |
+| The tab shows an **Upgrade to Enterprise** notice | The bot owner's plan is not Enterprise | Upgrade at [ticketcord.com/pricing](https://ticketcord.com/pricing) |
+| A metric card is missing from the email | No data for that metric in the period; empty sections are hidden | Nothing to fix; widen the frequency if the period is too short to contain data |
+
+## Common questions
+
+**Can I send the report to my whole team?**
+No. Reports go to the bot owner's account email only. Forward it, or set up a mail rule that redistributes messages with the report's subject line.
+
+**What time will my report actually arrive?**
+Shortly after the hour you picked, in the timezone you picked. Delivery runs hourly, so expect it within the first few minutes past the hour.
+
+**Why can't I choose the 31st for a monthly report?**
+Only days 1 to 28 are available so that every month, including February, sends on the same day.
+
+**Does a daily report cover yesterday or the last 24 hours?**
+The 24 hours before it is sent. A report at 09:00 covers 09:00 yesterday to 09:00 today. Weekly covers the previous 7 days and monthly the previous calendar month.
+
+**I unsubscribed by accident. How do I get reports back?**
+Open the **Scheduled Reports** tab as the bot owner and click **Resubscribe**. Unsubscribing applies to all reports on that server, so one click restores all of them.
+
+**How many reports can I create?**
+Five per server on the Enterprise plan. Each can have its own frequency, time, and metric selection, so a daily volume report and a monthly satisfaction report can coexist.
+
+**Do reports include AI token usage?**
+No. Token usage lives on **Dashboard → AI Usage** and is not part of scheduled reports.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support
 </Card>

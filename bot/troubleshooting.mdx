@@ -1,246 +1,297 @@
 ---
 title: "Troubleshooting"
-description: "Error codes and solutions for common issues"
+description: "Every TC error code with the situations that produce it and the fix, plus the most common bot problems"
 ---
 
-## Error Codes
+When something goes wrong, the bot replies with a short message and a `TC` code. Find the code below: each section lists the concrete situations that produce it and what to do. If your problem has no code, jump to [Common issues](#common-issues).
 
-When something goes wrong, TicketCord displays an error code to help identify the issue. Find your error code below for solutions.
-
-**How to spot a TicketCord error.** Every error the bot sends starts with a ❌ marker and ends with a small footer line showing the code, the TicketCord name (or your custom branding), and a "Learn more" link:
+**How to spot a TicketCord error.** Every error the bot sends starts with a ❌ marker and ends with a footer line showing the code, the TicketCord name (or your custom branding), and a **Learn more** link:
 
 ```
 ❌ Only staff members can claim tickets.
 -# TC002 • TicketCord • Learn more
 ```
 
-Error cards (the red panels used for close, delete, reopen, setup, and purge failures) show the same code at the start of their footer. A message that has no `TC` code is **not** from TicketCord, even if it comes from a bot with the same name. That usually means another bot or script is running on the same token; see [Bot is offline](#bot-is-offline) below.
+Error cards (the red panels used for close, delete, reopen, setup, and purge failures) show the same code at the start of their footer. Ticket and command errors always carry a code (the only exceptions are the short private replies from `/feedback`). An error about a panel button or a ticket command that has no `TC` code is **not** from TicketCord, even if it comes from a bot with the same name. That usually means another bot or script is running on the same token; see [Bot is offline](#bot-is-offline).
+
+<Info>
+  Codes TC003, TC006, and TC007 are not in use. If you see one, the message did not come from TicketCord.
+</Info>
 
 ### TC000 - Internal Error
 
-**What it means:** Something failed on TicketCord's side (database, unexpected error) rather than because of your input or configuration.
+**What it means:** something failed on TicketCord's side rather than because of your input or configuration.
 
-**Solution:** Try the action again in a moment. If it keeps happening, [contact support](https://ticketcord.com/help) with the time and the command you used. TC000 errors are reported to our team automatically.
+**Situations that produce it:** a ticket could not be created, closed, claimed, renamed, reopened, or deleted because of a storage error; a note, tag, transcript, summary, or statistics request could not be saved or loaded; `/setup` failed part-way and lists leftover resources; an approval, feedback, or on-call update failed; ModMail could not open a ticket. The message usually says which action failed.
+
+**Fix:** try again in a moment. If it keeps happening, check the logs channel for details and [contact support](https://ticketcord.com/help) with the time and the command you used. TC000 errors are reported to the team automatically.
 
 ---
 
 ### TC001 - Rate Limited
 
-**What it means:** Discord is temporarily blocking requests because too many actions were performed too quickly.
+**What it means:** Discord is temporarily refusing requests because too many were sent too quickly.
 
-**Common causes:**
-- Closing/reopening tickets rapidly
-- Renaming many ticket channels in a short time
-- Pinning/unpinning tickets quickly
-- Discord limits channel edits to 2 per 10 minutes
+**Situations that produce it:**
+- Changing `/priority` more than twice in 10 minutes (each change renames the channel)
+- Renaming, closing, or reopening the same ticket repeatedly within 10 minutes
+- Pinning a ticket: the pin is saved but Discord could not move the channel to the top yet
+- Sending ModMail messages too quickly; the message says how many seconds to wait
 
-**Solution:** Wait 10-15 minutes and try again. This is a Discord limitation, not a TicketCord issue.
+**Fix:** wait 10 to 15 minutes and try again. This is a Discord limit, not a TicketCord one.
 
 <Tip>
-  When you hit this limit, TicketCord will still save your changes (like pinning a ticket). The visual update (channel name change) will be applied automatically once the rate limit resets.
+  When you hit this limit, TicketCord still saves your change (for example the new priority or pin). The channel name updates on its own once the limit resets.
 </Tip>
 
 ---
 
 ### TC002 - Permission Denied
 
-**What it means:** You, or the bot, lack a permission the action needs. For example, only staff can claim tickets, and only the bot owner or a server administrator can change staff roles. When the bot itself is missing a Discord permission, the causes below apply.
+**What it means:** you, or the bot, lack a permission the action needs.
 
-**Common causes:**
-- Bot role is below other roles in the hierarchy
-- Bot missing channel-specific permissions
-- Category permissions override bot permissions
+**Situations where you lack the permission:**
+- Using a staff command (`/claim`, `/note`, `/priority`, `/stats`, `/summary`, `/transcript` overrides, `/closerequest`, `/on-call toggle`, **Find ticket**, and others) without a role selected under **Staff**
+- Closing, renaming, adding, or removing on a ticket you did not create and are not staff for
+- Closing your own ticket when **Staff-only Close** is on
+- Answering a close request that was sent to someone else
+- Unclaiming a ticket you did not claim (and you are not staff)
+- Removing a staff member or supervisor from a ticket
+- Removing someone else's note
+- Approving or rejecting without the approval role
+- Running `/setup` without Administrator or Manage Channels and Manage Roles, `/config` without Administrator or a staff role, or `/purge` (or its confirmation) as anyone but the server owner
+- Being blocked by the firewall, or by ModMail account age or membership age rules
+- Using another staff member's `/claims` controls
 
-**Solution:**
-1. Go to **Server Settings → Roles**
-2. Drag the bot's role **above** the staff roles
-3. Ensure the bot has these permissions: Manage Channels, Manage Roles, Send Messages, Embed Links, Attach Files, Read Message History
+**Situations where the bot lacks the permission:**
+- Creating a ticket channel: the bot needs Manage Channels and Manage Permissions on its role, and View Channel, Manage Channels, Manage Permissions, Send Messages, and Embed Links in the ticket category
+- **Bot Cannot Access This Server**: the bot's role lost View Channel at the server level
+- `/embed`: the bot lacks View Channel, Send Messages, or Embed Links in the target channel
+- `/setup`: the bot lacks Manage Channels and Manage Roles at the server level
+- Renaming a thread ticket without Manage Threads
+- **Server 2FA Requirement**: the server requires two-factor authentication for moderation and the Discord account that owns the bot application does not have it enabled
+
+**Fix:** for your own permissions, ask an administrator to add your role under **Staff** in the dashboard. For the bot, open **Server Settings → Roles**, drag the bot's role above the staff roles, and confirm it has the permissions listed on [Installation](/bot/installation); then check the category's own permission overwrites for the bot, and run `/diagnose`. For 2FA, enable it on the Discord account that owns the application.
 
 <Warning>
-  If you invited the bot manually instead of through the dashboard, permissions may be incorrectly configured. Use the dashboard invite link to fix this.
+  If you invited the bot manually instead of through the dashboard, permissions are probably incomplete. Kick the bot and invite it again from the dashboard.
 </Warning>
 
 ---
 
 ### TC004 - Resource Not Found
 
-**What it means:** A channel, category, or role that TicketCord needs no longer exists.
+**What it means:** a channel, category, role, ticket, user, embed, or canned response that TicketCord needs no longer exists or could not be found.
 
-**Common causes:**
-- Ticket category was deleted
-- Configured log/transcript channel was deleted
-- Staff role was deleted
+**Situations that produce it:**
+- **Category Not Found**: the ticket category was deleted from Discord
+- **TicketCord isn't a member of this server**: the bot was kicked
+- `/add` or `/remove`: the user, role, or ticket ID does not exist, or the target does not have access to the ticket
+- `/embed`: no saved embed with that name, or the target channel was deleted or is inaccessible
+- `/reply`: no canned response with that shortcut
+- `/tag remove`: the tag is not on the ticket
+- `/summary`: the ticket has no messages to summarise
+- `/modmail message`: the number is beyond the transcript length
+- `/config` or setup wizard: the server has no categories or no text channels
+- ModMail: no server with ModMail enabled that you are a member of
 
-**Solution:**
-1. Go to [ticketcord.com/dashboard](https://ticketcord.com/dashboard)
-2. Select your bot and server
-3. Update the configuration to select existing channels/roles
-4. Or run `/setup` again to create new resources
+**Fix:** open `Dashboard → Bots → your bot → Servers → the server`, replace the missing category, channel, or role, and save. Run `/setup` again if you need fresh resources. For a kicked bot, invite it again from the dashboard.
 
 ---
 
 ### TC005 - Discord API Error
 
-**What it means:** Discord's servers returned an error or are temporarily unavailable.
+**What it means:** Discord returned an error while the bot was updating a channel.
 
-**Common causes:**
-- Discord is experiencing an outage
-- Temporary network issues
-- Unknown Discord API error
+**Situations that produce it:** reopening a ticket when Discord refuses the rename or move.
 
-**Solution:** Wait a few minutes and try again. If the issue persists, check [Discord Status](https://status.discord.com) for outages.
+**Fix:** wait a minute and try again. If it persists, check [Discord Status](https://status.discord.com).
 
 ---
 
 ### TC008 - Failed to Fetch Resources
 
-**What it means:** The bot couldn't retrieve the list of roles or channels from Discord.
+**What it means:** the bot could not load something from Discord or verify your permissions in time.
 
-**Common causes:**
-- Temporary Discord API issue
-- Bot missing "View Channels" permission
+**Situations that produce it:**
+- The bot could not read the server's roles, channels, or categories (setup wizard, `/config`)
+- Staff or owner verification timed out for a command (`/claim`, `/close`, `/note`, `/priority`, `/summary`, `/transcript`, `/unclaim`, `/purge`, and others)
+- The bot could not identify your Discord account, or could not check the bot owner's plan
+- **Couldn't check the bot's permissions** during `/setup`
 
-**Solution:** Try again in a few moments. If it persists, verify the bot has proper permissions in your server.
+**Fix:** try again in a few seconds. If it keeps happening, confirm the bot has View Channel at the server level and that Discord is not having an outage.
 
 ---
 
 ### TC009 - Invalid Selection
 
-**What it means:** No valid option was selected, or the selected resource doesn't meet requirements.
+**What it means:** nothing was selected, or the selection is not one of the allowed choices.
 
-**Common causes:**
-- No roles, channels, or options selected in a dropdown
-- An answer that is not one of the allowed choices in an application form
+**Situations that produce it:**
+- A dropdown, role picker, channel picker, or reason picker was submitted with nothing chosen
+- An application form answer is not one of the allowed choices
+- No server was selected in the ModMail server picker
 
-**Solution:** Make sure to select an option from the dropdown and try again.
+**Fix:** pick an option and submit again.
 
 ---
 
 ### TC010 - Unknown Action
 
-**What it means:** The bot received a button, menu, or subcommand it does not recognise.
+**What it means:** the bot received a button, menu, subcommand, or wizard step it does not recognise.
 
-**Common causes:**
-- A panel posted by an older configuration whose buttons were since removed or regenerated
-- A button that belongs to a different bot or application
-- An unknown subcommand
+**Situations that produce it:**
+- Pressing buttons on a panel posted by an older configuration whose buttons were removed or regenerated
+- Pressing a button that belongs to a different bot or application
+- Using `/claims` controls from an old card
+- A subcommand the bot does not know (for example after a partial command update)
 
-**Solution:** Ask a server administrator to post the panel again from the dashboard. If the message came from a bot with a `TC` code footer but the action still fails, [contact support](https://ticketcord.com/help).
+**Fix:** ask an administrator to post the panel again from the dashboard, or run the command again to get a fresh card. If a message with a `TC` footer still fails, [contact support](https://ticketcord.com/help).
 
 ---
 
 ### TC011 - Configuration Not Found
 
-**What it means:** The server hasn't been configured yet, or the configuration was reset.
+**What it means:** the server, or the feature you used, has not been configured yet.
 
-**Solution:**
-1. Go to [ticketcord.com/dashboard](https://ticketcord.com/dashboard)
-2. Select your bot and server
-3. Complete the configuration wizard
-4. Make sure to save your settings
+**Situations that produce it:**
+- **This server hasn't been set up yet**: the essentials were never saved in the dashboard
+- The ticket category is not configured
+- A dropdown option is not mapped to a ticket category
+- A ticket button or form refers to configuration that no longer exists
+- `/transcript`: no transcript channel is configured
+- `/embed`: no embeds have been created yet
+- `/approval`: the approval process is not configured
+- The setup wizard session expired
+
+**Fix:** open `Dashboard → Bots → your bot → Servers → the server`, complete **Staff**, **Structure**, and **Transcripts**, map every dropdown option to a category under **Panels & Embeds**, and save. See [Configuration](/bot/configuration).
 
 ---
 
 ### TC012 - Input Validation Error
 
-**What it means:** The input you provided is invalid or doesn't meet the requirements.
+**What it means:** a value you gave is missing, too long, or in the wrong format.
 
-**Common causes:**
-- Invalid time format for auto-close settings
-- Time value is too short (minimum 15 minutes) or too long (maximum 30 days)
-- Missing required parameters in a command
+**Situations that produce it:**
+- `/auto-close`: not a format like `30M`, `2H`, or `1D`; under 15 minutes; or over 30 days
+- `/close in:`: not a delay like `30m`, `2h`, or `1d`
+- `/rename`: empty, over 80 characters, or nothing valid left after removing unsupported characters
+- `/note add`: over 1000 characters; `/note remove`: number out of range
+- `/tag`: empty, over 50 characters, or characters other than letters, numbers, hyphens, and underscores
+- `/add` or `/remove`: both or neither of `user` and `role`, a bot user, or the `@everyone` role
+- `/approval reject` without a reason
+- `/config`: more than 10 staff roles selected
+- `/embed`: the embed contains an emoji the bot cannot use (deleted, or from a server the bot is not in)
+- **Find ticket** with no member selected; `/on-call` or `/tag` with no subcommand
+- A button or form that is no longer valid (**This form is no longer valid. Please open it again**)
+- An application upload that could not be read
+- A purge confirmation that is out of date
 
-**Solution:** Check the format of your input. For time values, use formats like `30M` (30 minutes), `2H` (2 hours), or `1D` (1 day).
-
-<Info>
-  Valid time range for auto-close: **15 minutes** to **30 days**
-</Info>
+**Fix:** correct the value and try again. For expired buttons and forms, start again from a fresh message.
 
 ---
 
 ### TC013 - Ticket Cooldown
 
-**What it means:** You're creating tickets too quickly. There is a short cooldown between ticket creations to prevent spam and protect system stability.
+**What it means:** a ticket for you is already being created, or you are creating tickets too quickly.
 
-**Common causes:**
-- Clicking the "Open Ticket" button multiple times rapidly
-- Submitting the ticket form more than once within a few seconds
+**Situations that produce it:**
+- Pressing **Open Ticket** or submitting a form twice within a few seconds
+- Opening tickets one after another in quick succession
 - Extending an auto-close reminder repeatedly
-- Re-opening a ModMail conversation right after closing one
+- Sending a new ModMail message right after a ModMail ticket closed; the message says how many minutes to wait
 
-**Solution:** Wait about 10 seconds and try again. This limit is per user, per server.
+**Fix:** wait about ten seconds and try again. The limit is per member, per server.
 
 <Tip>
-  If you accidentally clicked the button twice, don't worry — only the first ticket will be created. Duplicate requests are automatically ignored.
+  If you pressed the button twice, only the first ticket is created. The duplicate press is ignored.
 </Tip>
 
 ---
 
 ### TC014 - Plan Required
 
-**What it means:** The feature you tried to use needs a higher TicketCord plan than the bot owner currently has.
+**What it means:** the feature needs a higher TicketCord plan than the bot owner has.
 
-**Common causes:**
-- Application forms, AI Help, quick replies, ticket statistics, summaries, auto-close, or approval workflows on the Free plan
-- The trial AI token limit has been reached
+**Situations that produce it:**
+- Application forms, `/auto-close`, `/stats`, or `/reply` on the Free plan
+- A canned response beyond the first 25 on Basic or Pro
+- `/ai-help`, `/summary`, or AI priority detection below Pro
+- `/approval` below Enterprise
+- The trial's 1,000,000 AI token allowance has been used up
 
-**Solution:** The bot owner can upgrade at [ticketcord.com/pricing](https://ticketcord.com/pricing). Non-AI features keep working in the meantime.
+**Fix:** the bot owner can upgrade at [ticketcord.com/pricing](https://ticketcord.com/pricing). Everything that does not need the higher plan keeps working.
 
 ---
 
 ### TC015 - Ticket State Conflict
 
-**What it means:** The action does not match the ticket's current state.
+**What it means:** the action does not fit the ticket's current state.
 
-**Common causes:**
-- Closing, claiming, or renaming a ticket that is already closed
-- Claiming a ticket that someone else already claimed, or unclaiming one that is not claimed
-- Adding a tag or approval request that already exists
+**Situations that produce it:**
+- Closing, claiming, unclaiming, renaming, adding, removing, or extending a ticket that is already closed
+- Reopening a ticket that is already open
+- Claiming a ticket that is already claimed, claiming your own ticket, or unclaiming a ticket nobody claimed
+- Adding a user or role that already has access
+- Adding a tag that already exists, or clearing tags when there are none
+- Requesting an approval when one is already pending, approved, or rejected; deciding when nothing is pending; or deciding after another approver already did
+- Extending a ticket again before the next reminder
+- Deleting a ticket that is not closed
+- Escalating a ticket that was already escalated to staff
+- Undoing a knowledge base change that was already reverted or updated since
 
-**Solution:** Check the ticket's current status and try the action that applies. Reopen the ticket first if you need to change a closed one.
+**Fix:** check the ticket's status and use the matching action. Reopen a closed ticket before changing it.
 
 ---
 
 ### TC016 - Ticket Limit Reached
 
-**What it means:** A per-user or per-ticket limit has been hit.
+**What it means:** a per-member or per-ticket limit has been hit.
 
-**Common causes:**
-- The user already has the maximum number of open tickets
-- All ticket extensions for this ticket have been used
-- The ticket already has the maximum number of tags
+**Situations that produce it:**
+- The member already has the maximum number of open tickets (5 on Free; configurable from Basic under **Opening → Max Open Tickets**)
+- All auto-close extensions for the ticket have been used
+- The ticket already has the maximum number of tags (10 by default, up to 25)
 
-**Solution:** Close an existing ticket, or ask a server administrator to raise the limit in the dashboard under **Limits** (Basic plan or higher; the Free plan is fixed at 5 open tickets per user).
+**Fix:** close an existing ticket, or ask an administrator to raise the limit in the dashboard.
 
 ---
 
 ### TC017 - Wrong Context
 
-**What it means:** The command was used somewhere it does not apply.
+**What it means:** the command was used somewhere it does not apply.
 
-**Common causes:**
-- Running a ticket command outside a ticket channel
-- Running a server command in a DM
-- Using a ModMail-only option on a regular ticket
+**Situations that produce it:**
+- Running a ticket command (`/close`, `/claim`, `/note`, `/priority`, `/transcript`, and others) outside a ticket channel
+- Running `/add` or `/remove` outside a ticket without the `ticket` option
+- Running any command in a DM
+- Posting `/embed` inside a ticket channel
+- Using `/close in:` outside a ModMail ticket, or `/modmail` in a non-ModMail ticket
+- Reopening a ModMail ticket with `/reopen`
+- Using an application action on a ticket that is not an application
 
-**Solution:** Run the command inside the ticket channel or server it belongs to.
+**Fix:** run the command inside the ticket channel or server it belongs to.
 
 ---
 
 ### TC018 - Feature Unavailable
 
-**What it means:** The feature is turned off, not supported here, or not available right now.
+**What it means:** the feature is turned off, not supported here, or not available right now.
 
-**Common causes:**
-- The feature is disabled in the server configuration
-- Ticket creation is outside the configured business hours
-- The server uses ModMail mode, so button tickets are disabled
-- The setting is managed from the dashboard only
-- The bot is in maintenance mode or its ticket creation is paused
-- The ticket button belongs to a panel that was deactivated
-- Reopening a ModMail ticket with the standard controls (not supported)
+**Situations that produce it:**
+- Ticket creation outside the configured business hours
+- The server uses ModMail mode, so panel buttons are disabled; DM the bot instead
+- A panel button or form that was deactivated or whose embed was deleted
+- The approval process, or that approval type, is not enabled for the server
+- Translation is not enabled for the server, or is already disabled on the ticket
+- Adding a role to a thread ticket
+- A `/config` setting that is managed from the dashboard only
+- Combining `/close in:` with `silent`
+- The bot is in maintenance mode, or ticket creation is paused for this bot
+- Knowledge base voting or feedback is temporarily unavailable
+- ModMail is not enabled on the selected server
 
-**Solution:** Check the feature in the dashboard, or wait for business hours. For ModMail servers, send the bot a direct message instead of pressing a button.
+**Fix:** enable the feature in the dashboard or wait for business hours. For ModMail servers, send the bot a direct message instead of pressing a button.
 
 ---
 
@@ -248,70 +299,70 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 
 **What it means:** Discord's own capacity limits block the action.
 
-**Common causes:**
-- The server has reached Discord's 500 channel limit
+**Situations that produce it:**
+- The server has reached Discord's limit of 500 channels
 - Every configured ticket category already holds 50 channels
 
-**Solution:** Delete unused channels (enable auto-delete on close so closed tickets clean themselves up), enable overflow categories in the dashboard, or switch to threaded tickets.
+**Fix:** delete unused channels (turn on **Auto-Delete on Close** so closed tickets clean themselves up), add another ticket category with overflow enabled under **Structure**, or switch to thread tickets.
 
 ---
 
-## Common Issues
+## Common issues
 
 ### Bot is offline
 
-**Possible causes:**
-- Bot token was reset in Discord Developer Portal
-- Privileged Gateway Intents were turned off (Discord error 4014)
-- Bot was removed from the server
-- The same token is also running somewhere else, so another process answers instead of TicketCord
+**Causes:** the token was reset in the Developer Portal; a privileged intent was turned off (Discord error 4014); the bot was kicked; or the same token is running somewhere else, so another process answers instead of TicketCord.
 
-**Solution:**
-1. Check if the bot is still in your server
-2. If the token was reset, go to the dashboard and click **Update Credentials** to enter the new token
-3. Enable **Server Members Intent** and **Message Content Intent** in the Developer Portal, then restart the bot from the dashboard
-4. If replies arrive without a `TC` code footer, stop the other bot or script using the token, reset the token, and update it in the dashboard
+**Fix:**
+1. Check the bot is still in the server.
+2. If the token was reset, open the bot in the dashboard and click **Update Credentials**.
+3. Enable **Server Members Intent** and **Message Content Intent** on the **Bot** tab in the Developer Portal, then restart the bot from the dashboard.
+4. If replies arrive without a `TC` code footer, stop the other bot or script using the token, reset the token, and update it in the dashboard.
 
-### Tickets not creating
+### Tickets are not being created
 
-**Possible causes:**
-- No ticket embed sent to a channel
-- Bot missing permissions in the ticket category
-- Configuration not saved
+**Causes:** no panel has been posted; the configuration was never saved (TC011); the bot lacks permissions in the ticket category (TC002); the category is full (TC019).
 
-**Solution:**
-1. Verify you've created and sent a ticket embed with an Open Ticket button
-2. Check bot permissions in the ticket category
-3. Ensure configuration is saved in the dashboard
+**Fix:** run `/diagnose`, fix anything it reports, confirm the essentials are saved in the dashboard, and post the panel from **Panels & Embeds** or with `/embed`.
 
-### Staff can't see tickets
+### Staff cannot see tickets
 
-**Possible causes:**
-- Staff don't have the correct roles
-- Staff roles not configured in dashboard
-- Category permissions misconfigured
+**Causes:** their role is not selected under **Staff**; the role exists in Discord but was never saved in the dashboard; the category's permission overwrites hide it.
 
-**Solution:**
-1. Assign staff the Ticket Admin or Ticket Support role (named TicketCord Admin / TicketCord Support on the Free plan)
-2. Verify these roles are selected in dashboard configuration
-3. Check that the ticket category allows these roles to view channels
+**Fix:** select the role under **Staff** and save. Then check the ticket category allows the role to view channels.
 
-### Transcripts not generating
+### Transcripts are not generated
 
-**Possible causes:**
-- No transcript channel configured
-- Bot missing permissions in transcript channel
-- Auto-transcript disabled
+**Causes:** no transcript channel configured (TC011); the bot lacks Send Messages or Attach Files there; transcripts on close are disabled.
 
-**Solution:**
-1. Configure a transcript channel in the dashboard
-2. Ensure bot can send messages and attach files in that channel
-3. Enable auto-transcript in automation settings
+**Fix:** set **Transcript Channel** under **Transcripts**, give the bot Send Messages, Embed Links, and Attach Files in that channel, and enable transcripts on close.
 
----
+### Slash commands do not appear
 
-## Still Need Help?
+**Causes:** the invite lacked the `applications.commands` scope; Discord's command cache is stale; you lack the default permission for that command.
 
-<Card title="Contact Support" icon="headset" href="https://ticketcord.com/help">
-  Get help via private DM from our support team
+**Fix:** reload Discord with Ctrl+R (Cmd+R on Mac). If commands are still missing for everyone, kick the bot and invite it again from the dashboard.
+
+## Common questions
+
+**Where do I find the error code?**
+At the end of the error message, in the small footer line, for example `TC002`. Error cards show it at the start of their footer.
+
+**The error has no code. Is it from TicketCord?**
+Almost certainly not. Ticket and command errors from TicketCord carry a `TC` code (only `/feedback`'s short private replies do not). A panel or ticket error without one comes from another bot or script, most likely one using the same token.
+
+**Is TC001 something I can fix?**
+Not directly; it is Discord's rename limit of two per channel per 10 minutes. Avoid rapid priority changes and renames, and wait 10 to 15 minutes when it happens.
+
+**Why do I get TC002 when I have Administrator?**
+Staff commands check the roles selected under **Staff** in the dashboard, not Discord permissions. Administrator only bypasses the check for `/close` and `/config`. Add your role under **Staff**.
+
+**How do I know whether the bot's permissions are right?**
+Run `/diagnose` in the server. It checks every configured channel and category and the bot's server-level permissions, and lists errors and warnings.
+
+**A member cannot open a ticket but others can.**
+They probably have 5 tickets open already (TC016), are blocked by the firewall (TC002), or pressed the button twice (TC013). Ask them for the code in the footer.
+
+<Card title="Still stuck?" icon="discord" href="https://ticketcord.com/discord">
+  Join the support Discord and ask the team
 </Card>

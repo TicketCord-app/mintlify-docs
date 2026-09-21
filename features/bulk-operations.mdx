@@ -1,38 +1,105 @@
 ---
 title: "Bulk Operations"
-description: "Perform actions on multiple tickets at once"
+description: "Close, tag, prioritise, export, delete, or purge many tickets in one action from the dashboard"
 ---
 
-Select several tickets on **Dashboard → Tickets** and act on all of them in one go.
+Bulk operations let you select several tickets on **Dashboard → Tickets** and apply one action to all of them: close, reopen, add or remove a tag, set a priority, export, delete, or purge. They are for clearing a backlog after an incident, tagging a batch of related tickets, or exporting a week's conversations without opening each ticket.
 
-## Selecting Tickets
+<Info>
+  Anyone with dashboard access to a bot can run bulk actions on its tickets. **Purge** is the exception: only the bot owner can purge, and only tickets already in the **Deleted** status.
+</Info>
 
-Tick the checkbox on each ticket, or use the header checkbox to select every ticket visible on the page. The action bar appears at the bottom.
+## Selecting tickets
 
-## Available Actions
+<Steps>
+  <Step title="Enter select mode">
+    On **Dashboard → Tickets**, click **Select** in the toolbar. A checkbox appears on each row.
+  </Step>
+  <Step title="Pick the tickets">
+    Tick individual tickets, or use the header checkbox to select every ticket on the current page (20 tickets). Use the filters or a saved view first so the page shows exactly the tickets you mean.
+  </Step>
+  <Step title="Choose an action">
+    The action bar appears with the selection count. Pick an action; a dialog asks for any details and for confirmation before anything happens.
+  </Step>
+  <Step title="Review the result">
+    When the operation finishes, a summary lists how many tickets succeeded, failed, or were skipped, with the reason for each skip.
+  </Step>
+</Steps>
 
-| Action | Notes |
-|--------|-------|
-| **Close** | Optional close reason |
-| **Add tag** | Tag up to 50 characters |
-| **Remove tag** | |
-| **Set priority** | None, low, medium, high, or urgent |
-| **Export** | HTML, JSON, CSV, or PDF |
-| **Delete** | Soft-deletes the tickets |
-| **Purge** | Permanently removes deleted tickets; bot owner only |
+## Available actions
 
-Each action asks for confirmation in a dialog. You must own or manage every selected ticket.
+| Action | Input | Notes |
+|--------|-------|-------|
+| **Close** | Optional close reason | Follows each server's close settings (transcript, deletion, feedback) |
+| **Reopen** | none | Only closed tickets are reopened |
+| **Add tag** | Tag name, 1 to 50 characters, letters, numbers, hyphens, and underscores | Added to every selected ticket |
+| **Remove tag** | Tag name | Removed where present |
+| **Set priority** | None, Low, Medium, High, or Urgent | |
+| **Export** | Format: HTML, JSON, CSV, or PDF | Downloads a zip containing one file per ticket |
+| **Delete** | Confirmation | Removes the Discord channels and marks the tickets deleted; they stay in history with their transcripts until purged |
+| **Purge** | Confirmation | Permanently erases deleted tickets; bot owner only |
+
+Every action asks for confirmation in a dialog before running.
 
 ## Limits
 
-- Up to 100 tickets per update
-- Up to 50 tickets per export, and up to 10 for PDF
-- Tickets that could not be updated are listed with the reason after the operation
+| Limit | Value |
+|-------|-------|
+| Tickets per close, reopen, tag, priority, delete, or purge action | 100 |
+| Tickets per export | 50 |
+| Tickets per PDF export | 10 |
+| Page size when using the header checkbox | 20 |
+
+If you select more than the limit, split the selection across two runs.
+
+## What happens
+
+1. Access is checked first. You must own or manage the bot of **every** selected ticket; if any ticket fails this check the whole batch is refused rather than partially applied.
+2. Tickets are processed a few at a time. Each one succeeds, fails, or is skipped independently, so one bad ticket does not stop the rest.
+3. Skips are reported with a reason. Common ones: "Ticket is already deleted" for a delete, "Only deleted tickets can be purged from history" for a purge of a still-open or closed ticket, and "Only the bot owner can purge ticket history" for a purge run by dashboard staff.
+4. For **Delete**, open tickets are closed first and then deleted, so close-time behaviour such as transcripts still runs.
+5. For **Export**, the files are generated and delivered as a single zip download.
+
+<Warning>
+  **Purge** cannot be undone. It removes the ticket record, stored messages and compressed history, transcript links, archived attachments, staff notes, SLA and feedback data, analytics contributions, and any knowledge base learning derived from those tickets. Export first if you might need any of it.
+</Warning>
 
 <Note>
-  There is no bulk assign or move-to-category action. Claiming is done per ticket with `/claim` or the ticket toolbar.
+  There is no bulk assign, bulk claim, or move-to-category action. Claiming is done per ticket with `/claim` or the ticket toolbar.
 </Note>
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| The whole batch was refused | At least one selected ticket belongs to a bot you do not own or manage | Filter by **Bot** or **Access** so the selection only contains your tickets |
+| Some tickets were "skipped" | They were already in the target state, or the action does not apply (for example purging a non-deleted ticket) | Read the reason in the summary; nothing else is needed |
+| **Purge** skipped everything with "Only the bot owner can purge ticket history" | You are dashboard staff | Ask the bot owner to purge |
+| PDF export is refused | More than 10 tickets were selected | Select 10 or fewer, or export as HTML, JSON, or CSV (up to 50) |
+| Export fails on a large selection | The combined size or message count exceeded the export limits | Export fewer tickets per run |
+| The header checkbox did not select every matching ticket | It selects only the current page of 20 | Run the action page by page |
+| "Bulk PDF export is limited to 10 tickets per request." | Same as above | Reduce the selection |
+
+## Common questions
+
+**How many tickets can I close at once?**
+Up to 100 per action. Select them on the Tickets page, choose **Close**, add an optional reason, and confirm.
+
+**Can I export a whole week of tickets?**
+Yes, 50 at a time (10 for PDF). Filter by date order and bot, select the page, and choose **Export**. Each run downloads a zip.
+
+**Does bulk close send transcripts and feedback requests?**
+Yes. Each ticket is closed the same way as a single close, so the server's close settings apply.
+
+**Why can't I purge?**
+Purge is limited to the bot owner and to tickets that are already deleted. Dashboard staff can delete but not purge.
+
+**Can I undo a bulk delete?**
+No. Deleted tickets cannot be reopened. Their transcripts stay readable in the Deleted status until purged.
+
+**Can I bulk claim tickets or move them to another category?**
+No. Those actions are per ticket in Discord or on the ticket page.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support
 </Card>

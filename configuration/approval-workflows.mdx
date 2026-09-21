@@ -1,49 +1,95 @@
 ---
 title: "Approval Workflows"
-description: "Require sign-off from an approver role before sensitive actions"
+description: "Require sign-off from an approver role before staff carry out refunds, bans, and other sensitive actions"
 ---
 
-The Approval Process lets staff request sign-off from an approver role before taking a sensitive action such as a refund or a ban. The request lives on the ticket and is decided in Discord or on the dashboard.
+The Approval Process lets a staff member ask for a manager's sign-off inside a ticket before doing something sensitive: a refund, a ban, an exception to policy, or anything else you define. The request is recorded on the ticket, the approver role is pinged, and the decision is announced in the ticket, optionally logged to an audit channel, and optionally shared with the customer. Approvers decide with `/approval approve` or `/approval reject` in Discord, or with the **Approve** and **Reject** buttons on **Dashboard → Approvals**.
 
 <Info>
-  The Approval Process is an **Enterprise** feature. [Upgrade your plan](https://ticketcord.com/pricing) to access it.
+  The Approval Process is an **Enterprise** feature. Running `/approval` on a lower plan returns "Approval workflow management requires Enterprise plan" (code **TC014**). Only the bot owner can change approval settings on the dashboard; dashboard staff see the tab read-only. [Upgrade your plan](https://ticketcord.com/pricing) to use it.
 </Info>
 
 <Note>
-  Multi-step approval chains are not yet available. The dashboard shows them as "Coming soon", and the bot only processes the single-step mode described here.
+  Multi-step approval chains are not available yet. The **Advanced Mode** option on the tab is marked "Coming soon", and the bot only runs the single-step Simple Mode described on this page.
 </Note>
 
-## Setting Up
+## Setting up
 
-Go to **Dashboard → Bots**, pick your bot, choose the server, and open the **Approvals** tab.
+<Steps>
+  <Step title="Open the Approvals tab">
+    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **Approvals** under the **Service Levels** group. Turn on the **Approval process** card and leave **Configuration mode** on **Simple Mode**.
+  </Step>
+  <Step title="Choose the approver role">
+    Under **Approval Role**, select the Discord role whose members may approve or reject. The tab confirms "Members with the @Role role can approve requests." Staff status alone is not enough: approvers must hold this role.
+  </Step>
+  <Step title="Pick what needs approval">
+    Under **Approval Types**, tick at least one of **Refund**, **User Ban**, **Policy Exception**, **Escalation**, and **Custom**. Anything not ticked cannot be requested. For **Custom**, add up to 10 named types under **Custom Approval Types**, for example `discount` or `account merge`.
+  </Step>
+  <Step title="Set the rules">
+    Decide whether to **Require Reason** on every request, whether to **Notify Customer** of submissions and decisions, and how many hours a request may wait before it times out under **Approval Timeout**.
+  </Step>
+  <Step title="Configure the audit log">
+    Under **Audit and logging**, keep audit logging on and pick an **Audit Log Channel** the bot can post in. Choose whether **Include Decision Reasons** should copy the approver's reason into the log. A log channel is required while audit logging is on.
+  </Step>
+  <Step title="Save">
+    Click **Save** or press `Ctrl/Cmd + S`. The approval role and audit channel must belong to this server, and the bot must be able to send messages in the channel, or the save is rejected with a message naming the problem.
+  </Step>
+</Steps>
 
-| Setting | Description |
-|---------|-------------|
-| **Approver role** | The Discord role whose members can approve or reject requests |
-| **Approval types** | Which of `refund`, `ban`, `policy_exception`, `escalation`, and `custom` may be requested (at least one) |
-| **Custom types** | Up to 10 named custom types, used with `type:custom` |
-| **Require reason** | Whether requests must include a reason (default on) |
-| **Notify customer** | Whether the ticket creator is told about the decision (default on) |
-| **Timeout** | Hours before an undecided request expires: 1 to 168, default 48 |
-| **Audit log** | Optional Discord channel that receives every decision, with or without the reasons |
+## Settings
 
-## Requesting Approval
+| Setting | Allowed values | Default |
+|---------|----------------|---------|
+| **Approval process** (card switch) | on or off | off |
+| **Configuration mode** | Simple Mode (Advanced Mode is coming soon) | Simple Mode |
+| **Approval Role** | one role from this server | none (required) |
+| **Approval Types** | any of Refund, User Ban, Policy Exception, Escalation, Custom; at least one | Refund |
+| **Custom Approval Types** | up to 10 names, no duplicates | none |
+| **Require Reason** | on or off | on |
+| **Notify Customer** | on or off | on |
+| **Approval Timeout** | 1 to 168 hours | 48 |
+| **Audit logging** | on or off | on |
+| **Audit Log Channel** | a text channel the bot can post in; required while audit logging is on | none |
+| **Include Decision Reasons** | on or off | on |
 
-Staff run the command inside the ticket:
+## Requesting approval
+
+A staff member runs the command inside the ticket channel:
 
 ```
-/approval request type:<refund|ban|policy_exception|escalation|custom> [reason] [urgency] [amount] [custom_type]
+/approval request type:<Refund|User Ban|Policy Exception|Escalation|Custom> [reason] [urgency] [amount] [custom_type]
 ```
 
-- `urgency` is `low`, `medium` (default), or `high`
-- `amount` is a number, useful for refunds
-- `custom_type` names the custom type when `type:custom`
+| Option | Values | Notes |
+|--------|--------|-------|
+| `type` | Refund, User Ban, Policy Exception, Escalation, Custom | Must be one of the types enabled on the tab |
+| `reason` | free text | Required when **Require Reason** is on |
+| `urgency` | Low, Medium, High | Defaults to Medium |
+| `amount` | a number | Optional; shown on the request, useful for refunds |
+| `custom_type` | one of your custom type names | Required when `type` is Custom; matched case-insensitively |
 
-The approver role is pinged in the ticket. A ticket can hold one open request at a time.
+What happens next:
+
+1. The requester gets a private confirmation card, **Approval Request Created**, listing the request ID, type, urgency, amount if given, and reason, with the status "Request submitted and awaiting management review".
+2. A public card, **New Approval Request**, is posted in the ticket channel with a ping of the approver role, showing the ticket, type, urgency, requester, amount, and reason, and the footer "Use /approval approve or /approval reject to respond". There are no buttons on the card; decisions are made by command or on the dashboard.
+3. When **Notify Customer** is on, a plain message tells the ticket creator their request for that type "has been submitted for approval and is currently being reviewed by our management team".
+4. The ticket's approval status becomes **Pending** and an `approval.requested` webhook event is sent.
+
+A ticket holds one request at a time. Requesting again while one is pending, approved, or rejected returns a **TC015** error explaining the current state.
+
+### Worked example
+
+A support agent handling ticket `#0042` wants to refund €30 to a customer who was double charged:
+
+```
+/approval request type:Refund reason:Customer was charged twice on 3 May, second charge is invoice INV-1183 urgency:Medium amount:30
+```
+
+The `@Support Managers` role is pinged in the ticket. A manager reads the card, checks the invoice, and runs `/approval approve reason:Verified duplicate charge`. The agent sees the approval in the ticket, the customer is told the refund was approved, and `#approval-log` records the decision with the manager's name and reason.
 
 ## Deciding
 
-Approvers act in Discord or from **Dashboard → Approvals** (and the approval pane on the ticket page):
+Approvers decide in the ticket channel:
 
 ```
 /approval approve [reason]
@@ -51,19 +97,85 @@ Approvers act in Discord or from **Dashboard → Approvals** (and the approval p
 /approval status
 ```
 
-The decision is recorded on the ticket, announced in the channel, sent to the audit log channel if configured, and, when **Notify customer** is on, shared with the ticket creator.
+- Only members holding the **Approval Role** can approve or reject. Anyone else gets "You don't have permission to approve requests." (**TC002**).
+- Rejecting without a reason returns "A reason is required when rejecting an approval request." (**TC012**).
+- The first decision wins. A second approver acting on the same request sees "This approval request has already been processed by another approver." (**TC015**).
+- `/approval status` shows the ticket's current approval state to anyone in the ticket, in every mode.
+
+After a decision:
+
+1. The approver gets a private confirmation, **Request Approved** or **Request Rejected**, with the request ID, type, who decided, and the reason.
+2. When **Notify Customer** is on, the ticket creator is told "Your request for [type] has been approved" or "rejected", with the reason if one was given.
+3. When audit logging is on and a channel is set, an **Approval Decision Logged** entry is posted to the **Audit Log Channel** with the decision, approver, and response time. The reason is included only when **Include Decision Reasons** is on.
+4. An `approval.approved` or `approval.denied` webhook event is sent.
+
+### Deciding on the dashboard
+
+**Dashboard → Approvals** lists requests across your servers under the **Approval Requests** view, with counters for **Pending**, **Approved**, **Rejected**, and **Timed out**, a search box, and a status filter. Each pending card has **Open in Discord**, **View ticket**, **Approve** (optional reason), and **Reject** (reason required, sent to the customer). The same approver-role rule applies: if your Discord account does not hold the role, the dashboard shows "You don't have the required approval role." The **Configure Approvals** view on the same page opens the settings.
+
+The ticket page on **Dashboard → Tickets** also has an **Approval** tab showing the request and the same buttons.
 
 ## Statuses
 
 | Status | Meaning |
 |--------|---------|
-| **Pending** | Waiting for a decision |
+| **Pending** | Waiting for a decision from the approver role |
 | **Approved** | An approver approved it |
 | **Rejected** | An approver rejected it, with a reason |
-| **Timed out** | Nobody decided within the timeout |
+| **Timed out** | Nobody decided within **Approval Timeout** |
 
-Nothing else happens automatically on a decision or a timeout; the outcome is informational.
+<Warning>
+  A decision or a timeout is informational. TicketCord does not perform the refund, ban, or other action for you; the staff member carries it out after seeing the result. A timeout is recorded silently: no message is posted, nobody is notified, and no webhook is sent. Check **Dashboard → Approvals** for the **Timed out** count.
+</Warning>
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+## Limits and gotchas
+
+- One request per ticket, ever. After a decision the ticket keeps its approved or rejected state, and a new `/approval request` in the same ticket is refused with TC015. If the situation changes, open a new ticket for the follow-up request.
+- Requests time out after **Approval Timeout** hours counted from submission. Timeouts are checked every couple of minutes, so a request may show as pending for a moment after its deadline.
+- Custom types are limited to 10 and are matched by name; renaming a type on the tab does not update requests already made.
+- The audit log channel must be in the same server and writable by the bot. If it is later deleted, decisions stop being logged until you pick a new channel.
+- Switching **Configuration mode** to Advanced Mode saves nothing useful today: the bot answers approve, reject, and request commands with "Advanced approval actions are not available in Discord yet." (**TC018**). Stay on Simple Mode.
+
+## Troubleshooting
+
+| Symptom | Code | Cause | Fix |
+|---------|------|-------|-----|
+| "Approval workflow management requires Enterprise plan." | TC014 | The bot owner's plan is not Enterprise | Upgrade at [ticketcord.com/pricing](https://ticketcord.com/pricing) |
+| "The approval process is not enabled in this server." | TC018 | The card switch is off | Turn on **Approval process** and save |
+| "The approval process is not configured for this server." | TC011 | The tab was never saved with a role | Complete the setup steps and save |
+| "Approval type 'ban' is not enabled in this server." | TC018 | That type is not ticked under **Approval Types** | Tick it and save |
+| "Only staff members can request approvals." | TC002 | The requester has no staff role | Add the requester to a staff role on the **Staff** tab |
+| "You don't have permission to approve requests." | TC002 | The approver does not hold the **Approval Role** | Give them the role, or change the role on the tab |
+| "This ticket already has a pending approval request." | TC015 | A request is open on this ticket | Wait for the decision or the timeout |
+| "This approval request has already been processed by another approver." | TC015 | Someone else decided first | Nothing to do; run `/approval status` to see the result |
+| "A reason is required when rejecting an approval request." | TC012 | `/approval reject` was run without `reason` | Add `reason:` to the command |
+| Request accepted but no reason was required | none | **Require Reason** is off | Turn it on if reasons are mandatory for you |
+| Nothing was posted to the audit channel | none | Audit logging is off, no channel is set, or the bot cannot post there | Set **Audit Log Channel** and give the bot send permission |
+| The customer was not told about the decision | none | **Notify Customer** is off | Turn it on |
+
+## Common questions
+
+**Who can approve a request?**
+Only members of the role chosen under **Approval Role**. Being staff is not enough on its own, and the same rule applies on the dashboard.
+
+**Can approvers click a button instead of typing a command?**
+Not in Discord: the request card has no buttons, so approvers use `/approval approve` or `/approval reject`. On **Dashboard → Approvals** there are **Approve** and **Reject** buttons.
+
+**What happens when a request times out?**
+Its status becomes **Timed out** and nothing else happens. No message or notification is sent, so managers should watch the **Timed out** counter on **Dashboard → Approvals**.
+
+**Does approving a refund actually refund the customer?**
+No. Approval is a recorded sign-off. A staff member still performs the refund in your payment system.
+
+**Can I have two managers both sign off?**
+Not yet. Multi-step chains are the "Coming soon" Advanced Mode. Today the first approver's decision is final.
+
+**Can I request approval from the dashboard?**
+No. Requests are made with `/approval request` in the ticket. The dashboard is for reviewing and deciding.
+
+**Does the customer see the approver's reason?**
+When **Notify Customer** is on, the customer sees the decision and the reason if one was given. Keep reasons customer-safe, or leave the reason off approvals and use the audit log for internal notes.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support
 </Card>

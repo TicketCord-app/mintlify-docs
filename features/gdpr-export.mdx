@@ -1,38 +1,105 @@
 ---
 title: "Data Export"
-description: "Request a copy of your TicketCord data"
+description: "Request a copy of your TicketCord data, what the export contains, and how long it takes"
 ---
 
-You can ask for a copy of the personal data TicketCord holds about you. This supports the rights of access and portability under GDPR Articles 15 and 20.
+You can ask TicketCord for a copy of the personal data it holds about you. The export is a JSON file assembled by our team on request; there is no self-service download button in the dashboard. This supports the rights of access and portability under GDPR Articles 15 and 20, and the same email route also covers correction and deletion requests.
 
-## What's Included
+<Info>
+  Data exports are available to every account on every plan, including Free and trial accounts. No plan upgrade is needed.
+</Info>
 
-- Your account profile
-- Your bots (without tokens or other credentials)
-- The list of servers connected to your bots
-- On request, per server: tickets and transcripts you own
-- On request: login history
+## What the export contains
 
-Billing records are held by our payment providers and are not part of the export.
+| Section | Included | Notes |
+|---------|----------|-------|
+| **Profile** | Always | Your account ID, Discord ID, email, username and display name, current plan, and account timestamps |
+| **Bots** | Always | Each custom bot you added: name, Discord bot ID, client ID, avatar, active status, and timestamps |
+| **Servers** | Always | The Discord servers your account can reach, as last seen: server ID, name, icon, owner flag, and your permission bitfield |
+| **Tickets and transcripts** | On request | Tickets from servers you own. Say which servers you want included |
+| **Knowledge base content** | On request | Sources and entries from servers you own |
+| **Login history and IPs** | On request | Operational audit logs are kept for security; we run a specific query if you ask |
 
-## Requesting an Export
+<Note>
+  Credentials are never part of an export. Bot tokens, webhook secrets, and OAuth credentials stay encrypted on our side and are not handed over in any format.
+</Note>
+
+Billing and payment data is not in the export. Our payment provider holds those records, and you can reach its customer portal from **Dashboard → Billing** to download invoices and receipts. See [Invoices](/billing/invoices).
+
+## Requesting an export
 
 <Steps>
-  <Step title="Open Support">
-    Go to **Dashboard → Support**. Under **Your rights** you will find the rights we support and the contact details.
+  <Step title="Open the Support page">
+    Go to **Dashboard → Support** and scroll to **Your Data Rights (GDPR)**. It lists the four rights we support: access, portability, rectification, and erasure.
   </Step>
-  <Step title="Email us">
-    Send your request to [hi@ticketcord.com](mailto:hi@ticketcord.com) from the email address on your account. Mention which servers' tickets you want included, if any.
+  <Step title="Send the request by email">
+    Use the email button on that page, or write to [hi@ticketcord.com](mailto:hi@ticketcord.com) yourself. Put `GDPR` in the subject line so the request is routed quickly. Send it from the email address on your TicketCord account; that is how we confirm the request is yours.
+
+    The email button pre-fills a draft with your account email and a checklist of request types. Delete the lines that do not apply and add any detail, for example which servers' tickets you want included.
+  </Step>
+  <Step title="Wait for the reply">
+    We aim to reply within two business days, and always within the 30-day statutory window. If we need something extra to confirm your identity, we ask in the reply rather than rejecting the request.
   </Step>
   <Step title="Receive the file">
-    We aim to reply within two business days, and always within the statutory 30 days. If we need something to confirm your identity, we will ask in the reply. The export is delivered as a JSON file.
+    The export arrives as a JSON file. It is plain, machine-readable data you can keep locally or import into another tool. Repeated exports are easy to compare if you want to track what changed.
   </Step>
 </Steps>
 
-## Deleting Your Account
+## Tickets you can export yourself
 
-Account deletion is also requested by email and completed within two business days. See [Delete your account](https://ticketcord.com/help/security/delete-account) for what is removed and what is kept for legal reasons.
+If all you need is transcripts, you do not have to wait for a GDPR export. Every ticket on **Dashboard → Tickets** can be exported immediately as HTML, JSON, CSV, or PDF, and bulk export handles up to 50 tickets at once (10 for PDF). See [Ticket Management](/dashboard/ticket-management) and [Bulk Operations](/features/bulk-operations). The GDPR export is for the account-level data you cannot download from the dashboard.
 
-<Card title="Full guide" icon="book" href="https://ticketcord.com/help/security/data-export">
-  Read the help article on data exports
+## Deleting your account
+
+Deletion is also requested by email and is not self-service. Email [hi@ticketcord.com](mailto:hi@ticketcord.com) from the address on your account, say which account you want closed, and confirm in a sentence that you understand deletion is permanent. Requests are processed within two business days and you receive an email when it is done.
+
+Deletion removes your profile, plan and login data, every custom bot you own, every server configuration you own (embeds, knowledge base, settings), and the tickets and transcripts tied to those servers. Active dashboard sessions are signed out immediately. Billing records are kept for tax and accounting reasons, and operational audit logs and backups age out on their normal schedule. We do not restore a deleted account from a backup, even if asked.
+
+<Warning>
+  Export before you delete. There is no recovery window after deletion, and the export cannot be produced afterwards.
+</Warning>
+
+If the real goal is to stop paying, downgrade to Free instead. Your bots, configuration, and email address stay in place and nothing is charged. See [Manage Subscription](/billing/manage-subscription).
+
+## Limits and gotchas
+
+- One export covers one TicketCord account. If you sign in with more than one Discord account, request each separately from its own email.
+- Tickets and knowledge base content are included only for servers whose bot you own. Servers where you are dashboard staff for someone else's bot belong to that owner's export.
+- Ticket data can only be exported while it still exists. Transcripts follow the retention policy of the server (delete on close, 30, 90, 180, or 365 days, or manual), so a transcript that already aged out is not in the export.
+- Discord itself is not covered. Messages in ticket channels that were never captured by TicketCord are not in our export.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| No reply after two business days | The email came from an address that is not on your account, or the subject did not mention GDPR and it was triaged as general support | Resend from the account email with `GDPR` in the subject, or reply to your original message |
+| The export has no tickets | Ticket and knowledge base data is added only when you ask for it | Reply naming the servers whose tickets you want included |
+| You cannot find the Support page | It is a sidebar entry, not a settings tab | Open the dashboard and choose **Support** in the sidebar |
+| The export is missing your billing history | Payment data is held by the payment provider, not by TicketCord | Open **Dashboard → Billing** and use the billing portal to download invoices |
+
+## Common questions
+
+**How do I download all my TicketCord data?**
+Email [hi@ticketcord.com](mailto:hi@ticketcord.com) from the email on your account with `GDPR` in the subject. There is no download button; a member of the team assembles a JSON export and replies, normally within two business days.
+
+**Does the export include my bot tokens?**
+No. Tokens, webhook secrets, and OAuth credentials are never included in any export. If you need a bot to work elsewhere, create a new token in the Discord Developer Portal.
+
+**Can I get the tickets from a specific server only?**
+Yes. Say which servers you want in your request. Tickets and knowledge base content are only added on request, and only for servers whose bot you own.
+
+**What format is the export?**
+A single JSON file. It is machine-readable so you can import it into another tool or keep it as a record.
+
+**How long does it take?**
+We aim for two business days and never exceed the 30-day limit set by GDPR. If we need to confirm your identity we ask in the reply, which can add a round trip.
+
+**Is my billing history included?**
+No. Invoices and receipts are available any time from **Dashboard → Billing** through the billing portal.
+
+**Can I delete my account myself?**
+Not yet. Account deletion is requested by email and completed within two business days. Export first, because deletion is permanent and cannot be reversed from a backup.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support, or read the full help article at ticketcord.com/help/security/data-export
 </Card>

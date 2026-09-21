@@ -96,15 +96,7 @@
       {
         "group": "Integrations",
         "pages": [
-          "integrations/webhooks",
-          {
-            "group": "Web Chat Widget",
-            "pages": [
-              "integrations/webchat-overview",
-              "integrations/webchat-setup",
-              "integrations/webchat-developer"
-            ]
-          }
+          "integrations/webhooks"
         ]
       },
       {
@@ -129,7 +121,7 @@
     "primary": {
       "type": "button",
       "label": "Support",
-      "href": "https://ticketcord.com/support"
+      "href": "https://ticketcord.com/help"
     }
   },
   "footer": {

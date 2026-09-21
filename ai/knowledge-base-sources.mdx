@@ -1,185 +1,172 @@
 ---
 title: "Adding Sources"
-description: "How to add and manage Knowledge Base sources"
+description: "How to add web pages, Discord channels, text files, and GitHub repositories as Knowledge Base sources, and keep them fresh"
 ---
 
-Sources are the content your bot learns from. This guide walks you through adding different types of sources and managing them effectively.
+Sources are the content your bot answers from. This page walks through each source type, the fields you fill in, what the status labels mean, how refreshing works, and what to do when indexing fails. It is written for the admin who maintains the documentation.
 
-## Adding a Source
+<Info>
+  Pro allows **2** sources per server and Enterprise **15**. GitHub repository sources need **Enterprise**. Text file sources can only be added or removed by the **server owner**; dashboard staff can manage the other types.
+</Info>
+
+## Adding a source
 
 <Steps>
-  <Step title="Open Knowledge Base Settings">
-    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **AI & Knowledge** → **Knowledge Base**
+  <Step title="Open the Sources tab">
+    Go to **Dashboard → Bots**, pick your bot, open **Servers**, pick the server, then open **AI & Knowledge → Knowledge Base → Sources**.
   </Step>
   <Step title="Click Add Knowledge Source">
-    Click the **Add Knowledge Source** button in the Sources section.
+    The button is disabled with **Source limit reached** when you are at your plan's limit. Remove a source or upgrade to add more.
   </Step>
-  <Step title="Fill in the Details">
-    Enter the required information based on your source type.
+  <Step title="Choose the Source Type">
+    Pick **Web Page**, **Discord Channel**, **GitHub Repository**, or **Text File** and fill in the fields listed below.
   </Step>
-  <Step title="Save the Source">
-    Click **Save** to add the source. TicketCord automatically queues the first scan.
+  <Step title="Save">
+    The source appears in the list as **Pending** and the first index is queued automatically. A source is ready to use when its status reads **Ready**.
   </Step>
 </Steps>
 
-## Source Types Explained
+## Source types
 
-### Single Page
+### Web Page
 
-Best for individual pages with focused content.
+For a single page, or a page and the pages it links to.
 
-**Settings:**
-- **URL** - The exact page URL (e.g., `https://example.com/faq`)
-- **Title** - A name for this source (e.g., "FAQ Page")
-- **Description** - Optional notes about what this source contains
+| Field | Values | Default |
+|-------|--------|---------|
+| **Source URL** | A complete `https://` URL. Private addresses, `localhost`, and URLs with a username or password are rejected | Required |
+| **Source Title** | Any name, for example `Product Documentation` | Required |
+| **Description (Optional)** | Notes for your team | Empty |
+| **Pages to Read** | 1 page (URL only), up to 5, 10, 15, 20, 25, 50, 75, or 100 pages; **Up to 500 pages (Enterprise)** | 1 page |
+| **Auto-refresh** | Manual (no automatic refresh), Daily refresh, Weekly refresh, Monthly refresh | Manual |
 
-**Example use cases:**
-- Your FAQ page
-- A specific product guide
-- Terms of service
-- Pricing information
+With more than one page, the bot starts at your URL, follows the links it finds, and reads pages until it reaches the limit. The list shows **Discovering pages...**, then **Reading 12/40**, then **Ready: 40 pages**.
 
 <Tip>
-  Single pages index fastest and are great for content that changes rarely.
+  Point the bot at a pricing page, an FAQ, or a guide rather than your home page. Start with a small page count and raise it if answers are missing.
 </Tip>
-
-### Documentation Site
-
-Best for multi-page documentation with linked content.
-
-**Settings:**
-- **URL** - The starting page URL (usually your docs homepage)
-- **Title** - A name for this source (e.g., "Product Documentation")
-- **Pages to Read** - How many pages to scan: 1, 5, 10, 15, 20, 25, 50, 75, or 100 (up to 500 on Enterprise)
-
-**How crawling works:**
-1. The bot visits your starting URL
-2. It finds all links on that page
-3. It follows those links and scans each page
-4. This continues until it reaches your page limit (100 on Pro, 500 on Enterprise)
-
-**Example use cases:**
-- Full product documentation
-- Help center articles
-- Wiki pages
-- Guide collections
-
-<Warning>
-  Larger page limits take longer to index. Start small and increase if needed.
-</Warning>
 
 ### Discord Channel
 
-Best for using existing Discord content as a knowledge source.
+For content that already lives in your server, such as an FAQ or announcements channel.
 
-**Settings:**
-- **Channel** - Select a text channel from your server
-- **Title** - A name for this source
-- **Include Bot Messages** - Whether to learn from bot messages too
+| Field | Values | Default |
+|-------|--------|---------|
+| **Discord Channel** | A text channel the bot can see | Required |
+| **Source Title** | Any name; the placeholder suggests `#channel-name` | Required |
+| **Include Bot Messages** | On, Off | Off |
 
-**Example use cases:**
-- Announcements channel (for product updates)
-- Rules channel
-- FAQ channel with pinned messages
-- Staff resources channel
-
-<Info>
-  The bot only indexes messages it can see. Make sure the bot has access to the channel.
-</Info>
-
-## Managing Sources
-
-### Viewing Source Status
-
-Each source shows its current status:
-
-| Status | Meaning |
-|--------|---------|
-| **Pending** | Source added but not yet indexed |
-| **Preparing** | Currently reading content; documentation sites show "Reading X/Y" progress |
-| **Content saved** | Ready to use |
-| **Failed** | Something went wrong (check the error message) |
-
-### Re-indexing a Source
-
-To update a source with new content:
-
-1. Find the source in your list
-2. Click the **Refresh** icon
-3. Wait for indexing to complete
-
-<Tip>
-  Set **Auto-refresh** (daily, weekly, or monthly) if your content changes frequently. Discord channels and connected repositories can also sync in realtime.
-</Tip>
-
-### Deleting a Source
-
-To remove a source:
-
-1. Find the source in your list
-2. Click the **Trash** icon
-3. Confirm deletion
+Only the newest **20** messages are used on Pro and the newest **100** on Enterprise, and very short messages are skipped. A curated FAQ channel works far better than a busy chat channel. The list shows **Ready: 18 messages** when done, and **Last refresh** shows the last time a channel message was saved.
 
 <Warning>
-  Deleting a source removes all its indexed content. The bot will no longer use it for suggestions.
+  The bot only reads channels it has permission to view. Do not add channels that contain private information; anything indexed can be quoted in answers.
 </Warning>
 
-## Best Practices
+### Text File
 
-### Choose Quality Over Quantity
+For policies, internal notes, or a knowledge file you maintain by hand.
 
-- **Do**: Add your most helpful, accurate documentation
-- **Don't**: Add everything and hope for the best
+| Field | Values |
+|-------|--------|
+| **Text file** | A `.txt` or `.md` file under 256 KB and 50,000 characters. Only its plain text is sent; the file itself is never stored or executed, and binary or executable files are rejected |
+| **Source Title** | Any name |
 
-Quality sources with clear, well-written content work better than many sources with unclear information.
+The bot splits the file into sections at headings and uses at most 3,000 characters of each section, so:
 
-### Use Descriptive Titles
+- Put a Markdown heading before every topic (`# Title`, `## Topic`, `### Sub-topic`). Underlined titles are also recognised.
+- Keep each section under 3,000 characters and split long ones with sub-headings.
+- Use plain bullet lists rather than tables or HTML.
 
-Good titles help you manage sources later:
-- ✅ "Billing FAQ - Payments and Refunds"
-- ❌ "Page 1"
+The upload dialog shows how many sections it found and the longest section. A file longer than 3,000 characters with no headings is rejected with **Add headings before uploading**. If you have no time to reformat, use **Copy AI prompt** in the dialog, paste it into an AI chat together with your file, and upload the result.
 
-### Keep Content Updated
+Text sources cannot be edited. To change the content, remove the source and add the new file.
 
-Outdated content leads to wrong answers:
-- Set automatic updates for frequently changing content
-- Manually refresh sources after major documentation changes
-- Delete sources for deprecated features
+### GitHub Repository (Enterprise)
+
+For documentation kept as Markdown in a repository.
+
+<Steps>
+  <Step title="Connect GitHub">
+    On the **Sources** tab, find **GitHub Integration** and click **Connect GitHub**. Only the bot owner can connect or disconnect GitHub. Grant the GitHub App access to the repositories you want to use.
+  </Step>
+  <Step title="Add a repository">
+    Under **GitHub Repositories**, select a repository and click **Add**. Then set **Source Title**, **Branch**, and an optional **Path Filter** such as `docs/` to use only the Markdown files in that folder. Leave the filter empty to use every Markdown file. Click **Save All** to start the first index.
+  </Step>
+  <Step title="Let it sync">
+    The source updates automatically on every push to the chosen branch. The list shows **Ready: 24 files** and the indexed file paths.
+  </Step>
+</Steps>
+
+Use **Edit branch and path settings** on the source to change the branch or folder. Changing either clears the prepared content, so click **Refresh** afterwards. Each repository and branch pair can be added once.
+
+<Warning>
+  **Disconnect** under GitHub Integration removes every GitHub repository source on the server. If GitHub shows **GitHub App Suspended**, reinstall the app from your GitHub settings.
+</Warning>
+
+## Source statuses
+
+| Status in the list | Meaning |
+|--------------------|---------|
+| **Pending** | Added but not yet read |
+| **Discovering pages...** / **Reading 12/40** / **Preparing 30/40 pages...** | Indexing in progress |
+| **Ready: N pages / messages / files / text chunks** | Ready to answer from |
+| **Failed** | Indexing did not finish; the error is shown on the source |
+
+Each source also has an on/off switch. A switched-off source keeps its content but is not used for answers until you switch it on again.
+
+## Refreshing a source
+
+- **Refresh this source** (the refresh icon on a source) re-reads it now. You see **Refresh queued** and the source returns to the reading states. A source can be refreshed by hand once every **24 hours**.
+- **Auto-refresh** on web sources re-reads them **Daily**, **Weekly**, or **Monthly**.
+- GitHub sources refresh on every push, and Discord channel sources save new messages as they arrive.
+- If you turn on **Smarter Source Memory** on the **Answering** tab, refresh every source afterwards so the improvement applies to existing content.
+
+## Removing a source
+
+Click **Remove this source** (the trash icon) and confirm. The source and all of its saved answer content are deleted and cannot be restored. Answers already posted in tickets stay in Discord.
+
+## Limits and gotchas
+
+- Sources cost nothing to keep, but every answer costs tokens from the bot owner's allowance.
+- A web page that needs a login, or that only shows content after running scripts, may index with little or no text. Check the **Ready** count after the first index.
 
 ## Troubleshooting
 
-### "Failed to index" Error
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| **Invalid URL** when saving | The URL is missing `https://`, uses `http://`, points at a private address, or contains a username or password | Use the full public HTTPS address |
+| **Source limit reached** | Your plan's source limit is used up | Remove a source you no longer need, or upgrade |
+| The source shows **Failed** | The page requires a login, blocks automated readers, or was temporarily unavailable | Open the URL in a private browser window to confirm it loads without signing in, then click **Refresh this source** |
+| **Ready: 0 pages** or a very small count | The page has little visible text, or **Pages to Read** is set to **1 page** for a site with many pages | Choose a page with real text content, or raise **Pages to Read** |
+| **Refresh failed** | You refreshed the source within the last 24 hours | Wait for the cooldown to end |
+| **Add headings before uploading** | The text file has no headings and is longer than 3,000 characters | Add a heading before each topic or use the **Copy AI prompt** helper |
+| **Text file is too large** | The file is over 256 KB or 50,000 characters | Split it into several files, one per topic area |
+| **Owner action required** on a text or GitHub source | You are a dashboard staff member | Ask the bot owner to add or change it |
+| **Repository already added** | That repository and branch already exist as a source | Edit the existing source instead |
+| **No repositories found** | The GitHub App was not given access to the repository | Update the app's repository access in GitHub, then reload the page |
 
-**Common causes:**
-1. **Page not accessible** - The URL might be wrong or the page requires login
-2. **Page blocked crawling** - Some sites block automated access
-3. **Network issues** - Temporary connectivity problems
+## Common questions
 
-**Solutions:**
-1. Verify the URL works in your browser
-2. Make sure the page is publicly accessible (no login required)
-3. Try again after a few minutes
+**How many sources can I add?**
+2 on Pro and 15 on Enterprise, per server.
 
-### "No content found" Error
+**How do I index a whole documentation site?**
+Add it as a **Web Page** and set **Pages to Read** to the number of pages you need. Pro reads up to 100 pages per source and Enterprise up to 500.
 
-**Common causes:**
-1. **JavaScript-only content** - Some pages load content with JavaScript
-2. **Empty page** - The page has no text content
-3. **Login wall** - Content requires authentication
+**Does the bot read my whole Discord channel?**
+No. It uses the newest 20 messages on Pro and 100 on Enterprise, and skips very short ones. Keep the channel curated.
 
-**Solutions:**
-1. Check if the page content is visible without JavaScript
-2. Use a different page with actual text content
-3. Use a public-facing version of the page
+**How often is a source updated?**
+Whenever you click **Refresh this source** (once per 24 hours), on the **Auto-refresh** schedule for web pages, on every push for GitHub repositories, and as new messages arrive for Discord channels.
 
-### Source Shows 0 Chunks
+**Can I edit a text file source?**
+No. Remove it and upload the corrected file.
 
-This means no usable content was found. Check:
-1. Does the page have text content?
-2. Is the content behind a login?
-3. Is the page structure unusual?
+**Why can't I add a GitHub repository?**
+GitHub sources need an Enterprise plan, and only the bot owner can connect GitHub.
 
-Try a different page or use a Discord channel source instead.
+**Will removing a source delete answers the bot already posted?**
+No. Messages in Discord stay; only the saved content is deleted, so the bot stops using it for new answers.
 
 <Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support

@@ -1,75 +1,186 @@
 ---
 title: "Canned Responses"
-description: "Create reusable response templates for common questions"
+description: "Write reusable reply templates with variables and send them in any ticket with /reply"
 ---
 
-Canned responses (also called quick replies) are pre-written answers your staff send with `/reply`.
+Canned responses, called **Quick Replies** on the dashboard, are pre-written messages your staff send into a ticket with one command: `/reply shortcut:welcome`. Each response has a name, a short shortcut, and content that can include variables such as the ticket creator's mention or the ticket number, which the bot fills in when the reply is sent. They are for teams that answer the same questions many times a day and want consistent, fast answers without copy-pasting.
 
-## Plan Limits
+<Info>
+  Quick Replies need the **Basic** plan or higher. Basic and Pro allow **25** responses per server; Enterprise is unlimited. The limit follows the bot owner's plan, even when a dashboard staff member creates the response.
+</Info>
 
-| Plan | Canned responses |
-|------|------------------|
+## Plan limits
+
+| Plan | Canned responses per server |
+|------|-----------------------------|
 | Free | Not available |
 | Basic | 25 |
 | Pro | 25 |
 | Enterprise | Unlimited |
 
-## Creating a Response
+## Creating a response
 
-Go to **Dashboard → Bots**, pick your bot, choose the server, and open the **Quick Replies** tab.
+<Steps>
+  <Step title="Open the Quick Replies tab">
+    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **Quick Replies** under the **Messaging** group. The header shows "Using X of 25 canned responses" (or "Unlimited" on Enterprise).
+  </Step>
+  <Step title="Click New Response">
+    The **Create Canned Response** dialog opens with four fields: **Name**, **Shortcut**, **Category (optional)**, and **Message Content**.
+  </Step>
+  <Step title="Write the content">
+    Type the message. Use **Insert variable** to pick a variable from the list, or type it as `{variable}`. The dialog warns "Unknown variables:" if you type a name it does not recognise, and **Preview** shows the message with sample data.
+  </Step>
+  <Step title="Create">
+    Click **Create**. The response is available to `/reply` immediately; no bot restart is needed.
+  </Step>
+</Steps>
 
-| Field | Limit |
-|-------|-------|
-| **Name** | Up to 100 characters |
-| **Shortcut** | Up to 20 characters, stored in lowercase |
-| **Content** | Up to 2,000 characters |
-| **Category** | Optional, up to 50 characters, for grouping and filtering |
+## Fields
+
+| Field | Allowed values | Notes |
+|-------|----------------|-------|
+| **Name** | 1 to 100 characters | Shown in the `/reply` autocomplete list |
+| **Shortcut** | 1 to 20 characters | Stored and matched in lowercase. Must be unique on the server |
+| **Category (optional)** | up to 50 characters | Groups responses on the tab and prefixes the autocomplete label as `[Category] Name` |
+| **Message Content** | 1 to 2,000 characters | Discord markdown is allowed. A counter shows the length |
+
+Shortcuts are the value you type after `/reply shortcut:`. Keep them short and memorable, such as `welcome`, `refund`, or `logs`.
 
 ## Variables
 
-Write variables as `{{name}}`. The older `{name}` form also works. Unknown variables render as empty text.
+Write variables as `{name}` with single braces. Names are case-insensitive. A variable the bot does not know is replaced with nothing, so a typo produces a gap rather than visible code.
 
 | Variable | Renders as |
 |----------|-----------|
-| `{{user}}` or `{{user.mention}}` | Mention of the ticket creator |
-| `{{user.displayName}}` | Creator's display name |
-| `{{user.username}}` | Creator's username |
-| `{{user.id}}` | Creator's user ID |
-| `{{ticket.number}}` | Ticket number |
-| `{{ticket.id}}` | Ticket ID |
-| `{{ticket.category}}` | Ticket category |
-| `{{ticket.priority}}` | Ticket priority ("Normal" when none) |
-| `{{ticket.createdAt}}` | Creation time as a Discord timestamp |
-| `{{guild.name}}` | Server name |
-| `{{guild.memberCount}}` | Server member count |
-| `{{staff.displayName}}` | Display name of the staff member sending the reply |
-| `{{staff.username}}` | Username of the staff member |
-| `{{now}}` | Current date and time |
-| `{{today}}` | Today's date |
-| `{{time}}` | Current time |
+| `{user}` or `{user.mention}` | Mention of the ticket creator |
+| `{user.displayName}` | Creator's display name, or their username if they have none |
+| `{user.username}` | Creator's username |
+| `{user.id}` | Creator's user ID |
+| `{ticket.number}` or `{ticketNumber}` | Ticket number, zero-padded, for example `#0042` |
+| `{ticket.id}` | Ticket ID |
+| `{ticket.category}` | Ticket category |
+| `{ticket.priority}` | Ticket priority, capitalised; `Normal` when none is set |
+| `{ticket.createdAt}` | Creation time as a Discord timestamp |
+| `{guild.name}` | Server name |
+| `{guild.memberCount}` | Server member count with thousands separators |
+| `{staff.displayName}` | Display name of the staff member sending the reply |
+| `{staff.username}` | Username of the staff member sending the reply |
+| `{now}` | Current date and time as a Discord timestamp |
+| `{today}` | Today's date as a Discord timestamp |
+| `{time}` | Current time as a Discord timestamp |
 
-Filters can be appended, for example `{{user.username|upper}}`, `{{ticket.createdAt|relative}}`. Available filters: `upper`, `lower`, `capitalize`, `date`, `time`, `relative`.
+Discord timestamps render in each reader's own timezone.
 
-## Sending a Response
+### Filters
 
-Inside a ticket, staff run:
+Append `|filter` to change how a variable is shown, for example `{user.username|upper}`.
+
+| Filter | Effect |
+|--------|--------|
+| `upper` | Uppercase |
+| `lower` | Lowercase |
+| `capitalize` | Uppercase first letter |
+| `date` | The current date as a long Discord date; `date:short` gives the short form |
+| `time` | The current time as a short Discord time |
+| `relative` | The ticket's creation time as a relative Discord timestamp ("2 hours ago") |
+
+`date` and `time` always show the current moment regardless of which variable they follow; `relative` always refers to the ticket's creation time. Unknown filters leave the value unchanged.
+
+### Three worked examples
+
+**Shortcut `welcome`, category `general`**
+
+```
+Hi {user}, thanks for opening ticket {ticket.number} in {guild.name}. I'm {staff.displayName} and I'll be helping you today. Could you describe what happened and when it started?
+```
+
+**Shortcut `logs`, category `technical`**
+
+```
+To dig into this I need a bit more information, {user.displayName}:
+1. Your client version
+2. The exact error text
+3. A screenshot if you have one
+This ticket was opened {ticket.createdAt|relative}, so anything from around then helps.
+```
+
+**Shortcut `refund`, category `billing`**
+
+```
+{user}, I've raised your refund request with our billing team. Refunds are usually processed within 5 business days. I'll update this ticket ({ticket.number}) as soon as I hear back. Requested by {staff.username|lower} on {today}.
+```
+
+## Sending a response
+
+Inside a ticket channel, a staff member runs:
 
 ```
 /reply shortcut:refund
 ```
 
-The `shortcut` option autocompletes from your saved responses. Only staff can use it; the Free plan cannot.
+1. As you type, the `shortcut` option autocompletes from your saved responses, showing the name (with its category in brackets) and matching on both name and shortcut. Up to 25 suggestions are shown.
+2. The bot posts the rendered content into the ticket as a normal bot message. Only the ticket creator can be mentioned by it; any other mentions in the content are shown as text.
+3. The staff member gets a private confirmation: "Sent canned response: **Name**".
+4. The response's **Used** counter on the dashboard goes up by one.
+
+Only staff can use `/reply`, and only inside a ticket channel. The message appears as the bot, without the staff member's name, unless you include `{staff.displayName}` in the content.
 
 <Note>
-  There is no text trigger such as `!refund`, and responses cannot be inserted from the dashboard reply box. `/reply` is the only way to send one.
+  `/reply` is the only way to send a canned response. There is no `!shortcut` text trigger, and the dashboard reply box has no template picker.
 </Note>
 
-## Managing Responses
+## Managing responses
 
-- Edit or delete responses from the same tab; search and filter by category.
-- Each response shows how many times it has been used.
-- Responses belong to one server. To reuse them elsewhere, create them again on the other server.
+- Search and filter by category on the **Quick Replies** tab. The search matches name, shortcut, content, and category.
+- Responses are sorted by how often they have been used, most used first.
+- Edit or delete from each card. Editing takes effect immediately.
+- Responses belong to one server. **Import Settings** on **Dashboard → Servers** copies a server's canned responses to another server of yours (usage counters reset), and **Transfer configuration** on a bot moves them to another bot.
+- Dashboard staff can create, edit, and delete responses on servers they manage; the plan limit is always the bot owner's.
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+## Limits and gotchas
+
+- On Basic and Pro the first 25 responses by creation date are usable. If you have more (for example after a downgrade from Enterprise), `/reply` refuses the newer ones with "This canned response is not available on your plan" (**TC014**). Delete unused responses to bring the newer ones back into range.
+- Content is limited to 2,000 characters before variables are filled in; a very long rendered message could exceed Discord's limit and fail to send.
+- Double braces `{{user}}` do not work. Use `{user}`.
+- Variables that depend on the ticket creator (`{user.*}`) render empty if the creator's account no longer exists.
+
+## Troubleshooting
+
+| Symptom | Code | Cause | Fix |
+|---------|------|-------|-----|
+| "Only support staff can use quick replies." | TC002 | The user has no staff role | Add them to a staff role on the **Staff** tab |
+| "No canned response found with shortcut 'x'." | TC004 | The shortcut was typed wrong or the response was deleted | Pick it from the autocomplete list |
+| "This canned response is not available on your Basic plan. You can only use the first 25..." | TC014 | More responses exist than the plan allows | Delete unused responses or upgrade to Enterprise |
+| "Quick Replies Unavailable... requires a Basic, Pro, or Enterprise plan." | TC014 | The bot owner is on Free | Upgrade at [ticketcord.com/pricing](https://ticketcord.com/pricing) |
+| "Please provide a shortcut name." | TC012 | `/reply` was run without the `shortcut` option | Type a shortcut |
+| "Failed to fetch canned responses. Please try again." | TC000 | Temporary error on our side | Retry in a moment; contact support if it persists |
+| The command works but a variable is blank | none | The variable name is misspelled | Check the **Unknown variables** warning in the editor and use the exact names above |
+| Autocomplete shows nothing | none | You are not staff, or the server has no responses within its plan limit | Confirm your staff role and the count on the tab |
+| The dashboard says "Limit Reached" | none | 25 responses already exist on Basic or Pro | Delete one or upgrade |
+
+## Common questions
+
+**How do I send a canned response?**
+In the ticket channel, run `/reply` and choose the response from the `shortcut` autocomplete. It posts straight into the ticket as the bot.
+
+**Can I send one from the dashboard?**
+No. Canned responses are sent with `/reply` in Discord only. The dashboard tab is where you create and edit them.
+
+**Which variable mentions the person who opened the ticket?**
+`{user}` or `{user.mention}`. Use `{user.displayName}` if you want their name without a ping.
+
+**Why does my response show a blank where the variable was?**
+The name was not recognised. Variables use single braces and the exact names in the table above, for example `{ticket.number}`, not `{ticket_number}`.
+
+**Can the same responses be used on all my servers?**
+Each server has its own list. Use **Import Settings** on **Dashboard → Servers** to copy them from one server to another.
+
+**Does the reply show who sent it?**
+The message comes from the bot. Add `{staff.displayName}` to the content if you want the staff member's name to appear.
+
+**How many can I create?**
+25 per server on Basic and Pro, unlimited on Enterprise. Free plans cannot use Quick Replies.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support
 </Card>

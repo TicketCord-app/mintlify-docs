@@ -1,126 +1,139 @@
 ---
 title: "Configuration"
-description: "Configure your bot's ticket system and features"
+description: "Turn a freshly invited bot into a working ticket system: run /setup, save the essentials in the dashboard, post a panel, and tune automation"
 ---
 
-## Setup Flow Overview
+Configuration happens in two places. `/setup` in Discord creates the categories, channels, and roles. The dashboard then tells the bot which of those to use and how tickets should behave. The bot does not create tickets until the dashboard configuration is saved.
 
-After adding your bot and inviting it to your server, follow this process:
+<Info>
+  You need Administrator (or Manage Channels and Manage Roles) in the Discord server to run `/setup`, and you must be the bot owner, or hold a role granted dashboard access, to edit the server in the dashboard.
+</Info>
+
+## Setup flow
 
 <Steps>
   <Step title="Run /setup in Discord">
-    Creates the basic Discord infrastructure (categories and roles)
+    Creates the Discord resources listed below. No questions are asked unless matching resources already exist.
   </Step>
-  <Step title="Complete configuration on dashboard">
-    Select the created resources and configure all features
+  <Step title="Save the essentials in the dashboard">
+    Select the staff roles, categories, and channels under **Staff**, **Structure**, and **Transcripts**.
   </Step>
-  <Step title="Create ticket embeds">
-    Build embeds with buttons that users click to open tickets
+  <Step title="Post a ticket panel">
+    Design an embed with an **Open Ticket** button and post it to a public channel.
+  </Step>
+  <Step title="Tune the lifecycle">
+    Decide who can close tickets, whether transcripts are kept, and when tickets auto-close.
   </Step>
 </Steps>
 
-## Step 1: Run /setup Command
-
-In your Discord server, run the setup command:
+## Step 1: Run /setup
 
 ```
 /setup
 ```
 
-<Info>
-  You need **Administrator** permission or **Manage Channels** + **Manage Roles** permissions to run this command.
-</Info>
+| Resource | Purpose |
+|----------|---------|
+| **🎫 Tickets** category | New ticket channels open here |
+| **📁 Closed Tickets** category | Closed tickets move here |
+| **📝 Ticket Logs** category | Holds `#ticket-logs` and `#ticket-transcripts` |
+| **Ticket Admin** role | Full ticket management access (named **TicketCord Admin** on the Free plan) |
+| **Ticket Support** role | Basic ticket access (named **TicketCord Support** on the Free plan) |
 
-This command creates:
-
-| Resource | Description |
-|----------|-------------|
-| 🎫 Tickets | Category where new tickets are created |
-| 📁 Closed Tickets | Category where closed tickets are moved |
-| 📝 Ticket Logs | Category holding `#ticket-logs` and `#ticket-transcripts` |
-| Ticket Admin | Role with full ticket management access (**TicketCord Admin** on the Free plan) |
-| Ticket Support | Role with basic ticket access (**TicketCord Support** on the Free plan) |
+The bot needs Manage Channels and Manage Roles at the server level to do this (**TC002** otherwise). If it finds resources with the same names it offers **Create Anyway (New Names)**, **Use Existing (Recommended)**, or **Cancel**; the first option creates a second set with TicketCord-prefixed names. Full details are on the [/setup reference](/commands/admin#setup).
 
 <Warning>
-  The `/setup` command only creates Discord resources. You **must** complete the configuration on the dashboard for your bot to work.
+  `/setup` creates Discord resources only. Nothing is selected in the dashboard for you, and tickets will not open until you finish Step 2.
 </Warning>
 
-### Handling Existing Resources
+## Step 2: Save the essentials
 
-If `/setup` detects existing ticket categories or roles, you'll see options to:
+Open `Dashboard → Bots → your bot → Servers → the server`. The sidebar groups the settings; the essentials are in **Access & Safety**.
 
-- **Create Anyway (New Names)** - Creates a second set with TicketCord-prefixed names (🎫 TicketCord Tickets, 📁 TicketCord Closed, 📝 TicketCord Logs)
-- **Use Existing (Recommended)** - Skip creation and configure existing resources on the dashboard
-- **Cancel** - Stop setup without changing anything
+| Section | Setting | What to choose |
+|---------|---------|----------------|
+| **Staff** | **Staff Roles (Discord)** | The Ticket Admin and Ticket Support roles (or your own). Up to 10 roles. Members with these roles can use staff commands and see every ticket |
+| **Structure** | **Ticket Categories** | The 🎫 Tickets category. You can select several; each holds up to 50 channels, and **Overflow** lets the bot try the next category when one is full |
+| **Structure** | **Closed Ticket Categories** | The 📁 Closed Tickets category |
+| **Transcripts** (under Ticket Lifecycle) | **Transcript Channel** | `#ticket-transcripts`. Required for `/transcript` and automatic transcripts |
+| **Structure** | **Logs Channel** | `#ticket-logs`. Receives ticket events, feedback, and staff actions. Optional |
 
-## Step 2: Dashboard Configuration
+Save, then assign the staff roles to your team in Discord. Run `/diagnose` in the server to confirm the bot can see every selected channel and category.
 
-After running `/setup`, go to [ticketcord.com/dashboard](https://ticketcord.com/dashboard) to complete the setup:
+<Note>
+  Only the bot owner can change **Staff Roles**; anyone else with dashboard access sees the section read-only. Changing staff roles in Discord alone does nothing: the role must be selected here.
+</Note>
 
-<Steps>
-  <Step title="Select your bot and server">
-    Choose the bot and server you just set up
-  </Step>
-  <Step title="Configure Essential Settings">
-    - **Ticket Category** - Select the 🎫 Tickets category
-    - **Closed Category** - Select the 📁 Closed Tickets category
-    - **Staff Roles** - Select the Admin and Support roles created by `/setup`
-    - **Log Channel** - Choose where ticket events are logged (optional)
-    - **Transcript Channel** - Choose where transcripts are saved (optional)
-  </Step>
-  <Step title="Assign roles to your staff">
-    In Discord, give your team members the Ticket Admin or Ticket Support roles
-  </Step>
-</Steps>
+## Step 3: Post a ticket panel
 
-## Step 3: Create Ticket Embeds
+Ticket panels are embeds with buttons or a dropdown. Open **Messaging → Panels & Embeds**, create an embed, add a button with the **Open Ticket** action (or a dropdown whose options map to ticket categories), and send it to a channel such as `#support` from the dashboard or with `/embed name:<embed name> channel:#support`.
 
-Ticket embeds are messages with buttons that users click to open tickets. *(Sometimes called "panels" in other bots)*
+Each button or dropdown option can point at its own ticket category and use its own welcome message, so one panel can serve support, sales, and applications. Panels cannot be posted inside ticket channels. Embed limits by plan: 1 on Free, 5 on Basic and Pro, 15 on Enterprise.
 
-1. Go to **Embeds** in the dashboard
-2. Click **Create Embed**
-3. Design your embed using the builder
-4. Add a button with the **Open Ticket** action
-5. Send to your desired channel (e.g., #support)
+## Step 4: Tune the ticket lifecycle
 
-<Tip>
-  You can create multiple embeds for different ticket types (support, sales, applications, etc.) by using different ticket categories.
-</Tip>
+These live under **Ticket Lifecycle** in the sidebar.
 
-## Additional Settings
+| Section | Setting | Effect | Plan |
+|---------|---------|--------|------|
+| **Opening** | **Max Open Tickets** | How many tickets one member may have open at once. Free is fixed at 5; the limit is configurable from Basic | Basic+ to change |
+| **Claiming** | **Exclusive Claim Mode** | When a staff member claims a ticket, other staff lose access until it is unclaimed | All |
+| **Claiming** | **Supervisor Roles** | Members with these roles keep access to exclusively claimed tickets and cannot be removed with `/remove` | All |
+| **Closing** | **Staff-only Close** | Ticket creators cannot close their own tickets | All |
+| **Closing** | **Instant Close (Skip Confirmation)** | `/close` and the close button act immediately without a confirmation card | All |
+| **Closing** | **Enable DM on Close** | The creator receives a DM when their ticket closes | All |
+| **Closing** | **Auto-Delete on Close** | Closed tickets are deleted instead of moved to the closed category | All |
+| **Auto-Close & Reminders** | **Auto-Close Tickets** | Close tickets after a period with no messages. 15 minutes to 30 days; also settable with `/auto-close` | Basic+ |
+| **Auto-Close & Reminders** | **Auto-Reminder** | Post a reminder in quiet tickets before they auto-close, optionally pinging the creator | All |
+| **Auto-Close & Reminders** | **Auto-Close on User Leave** | Close a member's open tickets when they leave the server | All |
+| **Feedback** | **Enable Feedback Collection** | Ask creators for a 1 to 5 rating when tickets close and via `/feedback` | All |
+| **Tags** | Predefined tags and the per-ticket limit | Suggestions for `/tag add`; limit 10 by default, up to 25 | All |
+| **Transcripts** | **Transcript Channel** and retention | Where transcripts are posted, whether they are generated on close, and how long ticket data is retained | All |
 
-### Automation
+Other groups cover **Messaging** (welcome messages, quick replies), **AI & Knowledge**, **Service Levels** (business hours, SLA, approvals, scheduled reports; Enterprise), and **Platform** (integrations, language).
 
-Configure automatic ticket management in the dashboard:
+## What happens once configured
 
-| Setting | Description |
-|---------|-------------|
-| Auto-close | Close tickets after inactivity period |
-| Auto-delete | Delete tickets after closing |
-| Auto-transcript | Generate transcripts when tickets close |
-| Auto-reminder | Post a reminder in tickets that have gone quiet, optionally tagging the creator |
+1. A member presses the panel button (or picks a dropdown option, or fills in the form if one is attached).
+2. The bot checks the firewall, business hours, and the member's open ticket count, then creates `ticket-XXXX` in the ticket category with permissions for the creator, staff roles, and the bot.
+3. The welcome message is posted, staff are pinged if configured, and the logs channel records the event.
+4. Staff work the ticket with the [commands](/commands/overview). When it closes, the channel is renamed `closed-XXXX` and moved (or deleted), the transcript is posted, the creator is DMed, and feedback is requested if enabled.
 
-### AI Features
+## Quick changes from Discord
 
-<Info>AI features require a Pro or Enterprise plan.</Info>
+`/config` opens a panel where administrators and staff can change staff roles, the transcript and logs channels, and ticket categories, and toggle auto-close, DM on close, and auto-delete without opening the dashboard. Everything else is dashboard-only.
 
-- **Knowledge Base** - Auto-suggest answers from your documentation
-- **Smart Routing** - Automatically assign tickets to the right team
-- **Priority Detection** - AI-powered ticket prioritization
+## Troubleshooting
 
-## Slash Commands
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| "This server hasn't been set up yet" (TC011) | The essentials were never saved | Save Staff, Ticket Categories, and Closed Ticket Categories in the dashboard |
+| Button pressed, no ticket, TC002 | The bot lacks View Channel, Manage Channels, Manage Permissions, Send Messages, or Embed Links in the ticket category | Fix the category permission overwrites for the bot's role, then run `/diagnose` |
+| "The ticket category was deleted" (TC004) | A selected category no longer exists | Select another under **Structure** |
+| "All configured ticket categories are full" (TC019) | Every selected category holds 50 channels | Enable **Auto-Delete on Close**, add another category, or enable overflow |
+| Staff cannot see tickets | Their role is not selected under **Staff** | Select it and save; the change applies to new and existing tickets |
+| `/transcript` says no transcript channel is configured (TC011) | **Transcript Channel** is empty | Select `#ticket-transcripts` under **Transcripts** |
 
-Your bot includes these commands for managing tickets:
+## Common questions
 
-| Command | Description |
-|---------|-------------|
-| `/setup` | Create ticket categories and roles |
-| `/close` | Close the current ticket |
-| `/claim` | Claim a ticket |
-| `/transcript` | Generate a transcript |
-| `/add user:@user` | Add user to ticket |
-| `/remove user:@user` | Remove user from ticket |
+**Do I have to use the roles and categories `/setup` created?**
+No. Any category or role works. `/setup` just saves you creating them; select whatever you want under **Staff** and **Structure**.
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
-  Join our Discord server for support
+**Can I have separate categories for support and sales tickets?**
+Yes. Select several ticket categories under **Structure**, then point each panel button or dropdown option at the category it should use.
+
+**Why can members open only five tickets?**
+Five open tickets per member is the Free plan limit. From Basic you can change **Max Open Tickets** under **Opening**.
+
+**Where do I set who is allowed to close tickets?**
+**Closing → Staff-only Close**. When it is on, creators can still request closure through staff, and staff can send a close request with `/closerequest`.
+
+**Does changing a setting affect tickets that are already open?**
+Yes for permissions and staff roles. Auto-close and reminders apply to open tickets from the next inactivity check onward.
+
+**How do I move the bot to a different transcript channel later?**
+Change **Transcript Channel** under **Transcripts** or press **Change** next to the transcript channel in `/config`. Existing transcripts stay where they were posted.
+
+<Card title="Still stuck?" icon="discord" href="https://ticketcord.com/discord">
+  Join the support Discord and ask the team
 </Card>

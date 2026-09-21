@@ -1,76 +1,169 @@
 ---
 title: "Translation"
-description: "Automatically translate messages between customers and staff"
+description: "Set up AI Translation so customers and staff can talk in different languages inside tickets and ModMail"
 ---
 
-Translation uses AI to translate ticket messages between your staff language and the customer's language, so your team can support people worldwide.
+AI Translation translates ticket messages between the customer's language and your staff language, so a Spanish-speaking customer and an English-speaking helper can work through a ticket without either of them switching language. This page is for the admin who runs a multilingual community.
 
 <Info>
-  Ticket translation is an **Enterprise** feature. ModMail translation is available on **Pro** and higher. [Upgrade your plan](https://ticketcord.com/pricing) to access it.
+  Translation inside tickets is an **Enterprise** feature and needs **Enable AI Features** on the **General** tab. ModMail translation and staff reply cleanup are available on **Pro** and higher and are configured separately (see [ModMail](#modmail-translation)). [Upgrade your plan](https://ticketcord.com/pricing)
 </Info>
 
-## How It Works
+## Setup
 
-1. A message arrives in a ticket
-2. The AI detects its language (when detection confidence is above the threshold, default 80%)
-3. After the translation delay, the translation is posted according to the display mode
-4. Staff replies are translated back when the mode allows it
+<Steps>
+  <Step title="Open the AI Translation tab">
+    Go to **Dashboard → Bots → your bot → Servers → the server → AI & Knowledge → AI Features → AI Translation**.
+  </Step>
+  <Step title="Enable it">
+    Click **Edit** and switch on **Enable Translation**.
+  </Step>
+  <Step title="Set your staff language">
+    Under **Basic Settings**, choose the **Staff Language** your team writes in and a **Translation Mode**.
+  </Step>
+  <Step title="Choose the languages you support">
+    Under **Language Settings**, tick every language your customers write in. Mark the common ones as priority with **Make priority** for better detection.
+  </Step>
+  <Step title="Save">
+    Review **Quality & Performance** and **Message Filtering**, then click **Save All**.
+  </Step>
+</Steps>
 
 ## Settings
 
-Open **Dashboard → Bots → your bot → Servers → the server → AI Features → Translation**.
+### Basic Settings
 
-### Mode
-
-| Mode | Behaviour |
-|------|-----------|
-| **Auto-detect** (default) | Translate whatever is not in the staff language |
-| **Customer to staff** | Only translate customer messages |
-| **Staff to customer** | Only translate staff messages |
-| **Bidirectional** | Translate both directions |
-
-### Display
+| Setting | Values | Default | What it does |
+|---------|--------|---------|--------------|
+| **Enable Translation** | On, Off | Off | Master switch for ticket translation |
+| **Staff Language** | One of the 20 supported languages | English | The language staff read and write |
+| **Translation Mode** | Auto-detect, Customer → Staff, Staff → Customer, Bidirectional | Auto-detect | Whose messages are translated (see below) |
+| **Display Mode** | Replace with rich embed (text-only messages), Reply with translation (preserves attachments), Smart mode (embed for text, reply for attachments) | Smart mode | How the translation appears in the channel |
+| **Translation Delay** | 5 to 60 seconds | 5 | How long to wait before translating, so quickly edited or deleted messages are not translated |
 
 | Mode | Behaviour |
 |------|-----------|
-| **Embed replace** | A "🌐 Message Translation" card shows the original and the translation with language flags |
-| **Reply preserve** | The bot replies with the translation; the original stays visible |
-| **Smart auto** (default) | Embed for text-only messages, reply for messages with attachments |
+| **Auto-detect** | Translates any message not written in the staff language, from anyone |
+| **Customer → Staff** | Translates only customer messages into the staff language |
+| **Staff → Customer** | Translates only staff messages into the customer's most recent language |
+| **Bidirectional** | Translates both directions |
 
-The cards show the language codes and the text; no confidence score is displayed.
+### Language Settings
 
-### Languages
+**Supported Languages**: Arabic, Chinese, Czech, Danish, Dutch, English, Finnish, French, German, Hindi, Italian, Japanese, Korean, Norwegian, Polish, Portuguese, Russian, Spanish, Swedish, and Turkish. Ten are ticked by default: English, Spanish, French, German, Portuguese, Italian, Russian, Japanese, Korean, and Chinese. A message in a language that is not ticked is not translated. Use **Make priority** on the languages you see most; priority languages get better detection.
 
-Choose up to 20 languages: Arabic, Czech, Danish, Dutch, English, Finnish, French, German, Hindi, Italian, Japanese, Korean, Norwegian, Polish, Portuguese, Russian, Spanish, Swedish, Turkish, and Chinese. Ten are enabled by default: English, Spanish, French, German, Portuguese, Italian, Russian, Japanese, Korean, and Chinese. Set your **staff language** and a **fallback language**.
+### Quality & Performance
 
-### Filters
+| Setting | Values | Default | What it does |
+|---------|--------|---------|--------------|
+| **Confidence Threshold** | 10% to 100% in steps of 5 | 65% | Translations below this confidence are not posted. Lower translates more aggressively; higher is more conservative |
+| **Max Message Length** | 500, 1,000, 2,000 characters | 2,000 | Longer messages are not translated |
 
-Skip messages that do not need translating. All filters are on by default:
+### Message Filtering
 
-- Short messages (minimum length 5, 10 (default), 20, or 50 characters)
-- Code blocks
-- Commands
-- Emoji-only messages
-- Link-only messages
-- Repeated phrases
-- Custom patterns you define
+All filters are on by default and save tokens by skipping messages that do not need translating.
 
-### Timing and Quality
+| Filter | What it skips |
+|--------|---------------|
+| **Skip short messages** | Messages under the **Minimum message length**: 5, 10 (default), 20, or 50 characters |
+| **Skip code blocks** | Messages that are entirely code |
+| **Skip commands** | Messages that start with a bot command prefix |
+| **Skip emoji-only** | Messages containing only emoji |
+| **Custom Skip Patterns (regex)** | Any message matching a pattern you add |
 
-| Setting | Options |
-|---------|---------|
-| **Translation delay** | 5 to 60 seconds, default 5 |
-| **Confidence threshold** | Default 65%; below it a low-confidence notification is sent instead |
-| **Review threshold** | Default 40%; translations below it are flagged for staff review |
-| **Max message length** | 500, 1,000, or 2,000 characters (default and maximum 2,000); longer messages are not translated |
+### Usage Tracking
 
-### Notifications
+| Setting | Values | Default |
+|---------|--------|---------|
+| **Monthly Translation Limit** | 5K, 10K, 25K, 50K, 100K, 250K, or 1M characters per month | 10K |
 
-Notify on each translation, on detection failure, or on low confidence, optionally in a dedicated channel.
+**Current Month Usage** shows how much of the limit is used and warns with **Approaching monthly limit**. Translations also draw AI tokens from the bot owner's monthly allowance.
 
-## Staff Commands
+## What happens
 
-Staff can turn translation on or off for one ticket with `/translation enabled:<True|False>`.
+1. A message arrives in a ticket and passes the filters and the **Max Message Length**.
+2. The bot detects its language. Messages already in the staff language, or in a language you have not ticked, are left alone. The **Translation Mode** decides whether messages from that sender are translated at all.
+3. After the **Translation Delay**, the translation is produced. If its confidence is below the **Confidence Threshold**, nothing is posted.
+4. The translation is posted according to the **Display Mode**:
+   - **Replace with rich embed**: a **🌐 Message Translation** card shows the author and time, then the original text under its language flag and code (for example 🇪🇸 **ES**), then the translation under the staff language flag and code.
+   - **Reply with translation**: the bot replies to the original message with the translation, so attachments stay visible.
+   - **Smart mode**: the card for text-only messages, a reply for messages with attachments.
+5. In **Staff → Customer** or **Bidirectional** mode, staff replies are translated into the language the customer most recently wrote in.
+
+The cards show language codes and text only; no confidence score is displayed to users.
+
+## Per-ticket control
+
+Staff can pause or resume translation in one ticket with `/translation enabled:<True|False>`. The command only works inside a ticket channel, only for staff, and only when translation is enabled for the server.
+
+## ModMail translation
+
+ModMail has its own translation settings, available from **Pro**, under **Dashboard → Bots → your bot → Servers → the server → Channels → ModMail → AI Translation & Cleanup**:
+
+| Setting | Values | Default | What it does |
+|---------|--------|---------|--------------|
+| **Translate customer messages for staff** | On, Off | On when translation is enabled | Shows AI translations in the ModMail ticket channel when customers write in another language |
+| **Translate staff replies for customers** | On, Off | Off | Translates staff replies before the customer DM when a recent customer language is known |
+| **Staff reply cleanup** | None, Light, Medium, High | None | None sends exactly what staff wrote. Light fixes grammar, punctuation, and filler words. Medium edits for clarity and conciseness. High rewrites for brevity and polish. The original text is preserved in the message metadata |
+
+## Worked example: a bilingual community
+
+A German gaming community has English-speaking moderators and a large Spanish-speaking player base.
+
+- **Staff Language**: English
+- **Translation Mode**: Bidirectional, so moderators' replies reach Spanish speakers in Spanish
+- **Supported Languages**: English, Spanish, German; mark Spanish and German as priority
+- **Display Mode**: Smart mode, because players often attach screenshots
+- **Confidence Threshold**: 65%
+- **Minimum message length**: 10, so `ok` and `gracias` are not translated
+- **Monthly Translation Limit**: 50K characters
+
+A player writes `no puedo entrar al servidor desde la actualización`. Five seconds later a **🌐 Message Translation** card shows the Spanish original and `I can't join the server since the update`. The moderator replies in English, and the bot posts the Spanish translation for the player.
+
+## Limits and gotchas
+
+<Warning>
+  Translation is billed twice: characters against the **Monthly Translation Limit** and tokens against the owner's AI allowance. Keep **Skip short messages** on and tick only the languages you need.
+</Warning>
+
+- Messages longer than **Max Message Length** (at most 2,000 characters) are never translated.
+- **Replace with rich embed** does not support attachments; use **Smart mode** if customers send images.
+- Untick a language and its speakers stop being translated.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| Nothing is translated | The feature or the AI master switch is off, the owner's plan is not Enterprise, or the monthly limit is used up | Check both switches, the plan, and **Current Month Usage** |
+| A customer's language is ignored | The language is not ticked under **Supported Languages** | Tick it and mark it as priority |
+| Short replies are not translated | **Skip short messages** with a minimum of 10 characters | Lower the minimum to 5, or accept that `ok` needs no translation |
+| Staff replies are not translated | **Translation Mode** is Auto-detect or Customer → Staff | Choose Bidirectional or Staff → Customer |
+| Translations are sometimes missing | Confidence fell below the **Confidence Threshold** | Lower the threshold in steps of 5 |
+| Screenshots disappear from translated messages | **Display Mode** is Replace with rich embed | Switch to Smart mode |
+| `/translation` replies with **TC017** | It was used outside a ticket channel | Run it inside the ticket |
+| `/translation` replies with **TC002** | The user is not staff | Give them a configured staff role |
+| `/translation` replies with **TC018** | Translation is not enabled for the server, or it is already off for that ticket | Enable it on the AI Translation tab first |
+| `/translation` replies with **TC012** | The `enabled` option was left out | Run `/translation enabled:True` or `enabled:False` |
+
+## Common questions
+
+**Which plan do I need?**
+Enterprise for translation in tickets. ModMail translation and staff reply cleanup start at Pro.
+
+**Which languages are supported?**
+Twenty: Arabic, Chinese, Czech, Danish, Dutch, English, Finnish, French, German, Hindi, Italian, Japanese, Korean, Norwegian, Polish, Portuguese, Russian, Spanish, Swedish, and Turkish.
+
+**Does the customer see the translation?**
+Yes. Translations are posted in the ticket channel, as a card or a reply, where both the customer and staff can read them.
+
+**Can staff turn it off for one ticket?**
+Yes, with `/translation enabled:False`, and back on with `/translation enabled:True`.
+
+**Does it translate my bot's own messages?**
+The bot's interface language is a separate setting. Translation handles what customers and staff write.
+
+**Can it clean up staff replies without translating them?**
+In ModMail, yes: set **Staff reply cleanup** to Light, Medium, or High and leave the translation switches off.
 
 <Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support

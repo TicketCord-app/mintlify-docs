@@ -1,154 +1,214 @@
 ---
 title: "Plans & Pricing"
-description: "Compare TicketCord plans and find the right one for your community"
+description: "Every TicketCord plan, every limit and feature gate, what it costs, and what changes when you move between plans"
 ---
-TicketCord offers flexible pricing to fit communities of all sizes, from small Discord servers to large enterprise organizations.
 
-## Plan Comparison
+TicketCord has four plans: Free, Basic, Pro, and Enterprise. A plan belongs to your TicketCord account (the Discord account you sign in with) and applies to every bot and every server you own. This page is the complete reference for what each plan includes, what it costs, and what happens when you upgrade, downgrade, or let a plan end.
+
+<Info>
+  Every new account starts on a 14-day Enterprise trial with no card required. See [Free Trial](/billing/trials). Prices are in EUR. The [pricing page](https://ticketcord.com/pricing) is always the source of truth if anything here disagrees with it.
+</Info>
+
+## Plans at a glance
 
 <CardGroup cols={2}>
   <Card title="Free" icon="gift">
-    Perfect for small communities getting started with ticket management.
-    - 1 custom bot
-    - Unlimited ticket volume (max 5 open tickets per user)
-    - 30 Discord commands
-    - Web dashboard access
-    - Community support
+    €0, forever. 1 bot, unlimited ticket volume (5 open tickets per user), all ticket commands, dashboard, transcripts. TicketCord branding required. No AI.
   </Card>
   <Card title="Basic" icon="star">
-    All Pro features without AI - great for communities that don't need AI.
-    - 3 custom bots
-    - Remove branding
-    - Priority support
-    - Analytics dashboard
-    - 5 custom embeds
+    €3.50/month or €34.99/year. Everything in Pro except AI: 3 bots, branding removed, custom bot status, analytics, auto-close, quick replies, application forms, extended retention.
   </Card>
   <Card title="Pro" icon="rocket">
-    Best for growing communities with AI-powered support.
-    - 3 custom bots
-    - AI-powered features
-    - Knowledge base (2 sources)
-    - Atlas AI assistant
-    - Priority & duplicate detection
+    €6.99/month or €68.99/year. Basic plus AI: 10M AI tokens per month, knowledge base (2 sources), Atlas AI, AI Help, priority, duplicate, and tone detection.
   </Card>
   <Card title="Enterprise" icon="building">
-    Full access for large organizations with advanced needs.
-    - 6 custom bots
-    - 15 knowledge base sources
-    - Webhooks (20 per guild)
-    - SLA management
-    - Custom footer/branding
+    €12.99/month or €128.99/year. Pro plus 6 bots, 30M AI tokens, 15 knowledge base sources, webhooks, business hours, SLA management, approvals, scheduled reports, auto-routing, translation, custom footer text.
   </Card>
 </CardGroup>
-## Detailed Feature Matrix
-| Feature | Free | Basic | Pro | Enterprise |
-|---------|------|-------|-----|------------|
-| **Bots & Tickets** |
-| Custom Discord bots | 1 | 3 | 3 | 6 |
-| Tickets per month | Unlimited (max 5 open per user) | Unlimited | Unlimited | Unlimited |
-| Closed-ticket content retention | Delete on close, 30, or 90 days (default 90) | Delete on close, 30/90/180/365 days, or manual (default 365) | Delete on close, 30/90/180/365 days, or manual (default 365) | Delete on close, 30/90/180/365 days, or manual (default 365) |
-| **Branding** |
-| TicketCord footer | Required | Removed | Removed | Custom |
-| Custom bot status | No | Yes | Yes | Yes |
-| Custom footer text/icon | No | No | No | Yes |
-| **Embeds & Templates** |
-| Custom embeds | 1 | 5 | 5 | 15 |
-| Canned responses | 0 | 25 | 25 | Unlimited |
-| **AI Features** |
-| AI tokens/month | 0 | 0 | 10M | 30M |
-| Atlas AI assistant | No | No | Yes | Yes |
+
+## Prices
+
+| Plan | Monthly | Yearly | You save per year |
+|------|---------|--------|-------------------|
+| Free | €0 | €0 | |
+| Basic | €3.50 | €34.99 | €7.01 (about 17%) |
+| Pro | €6.99 | €68.99 | €14.89 (about 17%) |
+| Enterprise | €12.99 | €128.99 | €26.89 (about 17%) |
+
+- Yearly plans are billed up front for the full year. Monthly plans are billed every month.
+- Both renew automatically until you cancel. Cancelling stops the next charge; you keep the plan until the period you already paid for ends.
+- Card and Link payments go through Stripe. Cryptocurrency payments go through NOWPayments as one-time purchases for 3, 6, or 12 months and never renew. See [Manage Subscription](/billing/manage-subscription).
+- Extra AI token packages are separate one-time purchases (see [AI tokens](#ai-tokens)).
+
+## Complete feature matrix
+
+Every value below is the limit enforced by the product. "Unlimited" means there is no cap.
+
+### Bots and tickets
+
+| | Free | Basic | Pro | Enterprise |
+|---|---|---|---|---|
+| Custom bots | 1 | 3 | 3 | 6 |
+| Ticket volume | Unlimited | Unlimited | Unlimited | Unlimited |
+| Open tickets per user | 5 (fixed) | Configurable | Configurable | Configurable |
+| Closed-ticket content retention options | Delete after close, 30 days, 90 days | Adds 180 days, 365 days, keep until manually deleted | Same as Basic | Same as Basic |
+| Default retention for new servers | 90 days | 365 days | 365 days | 365 days |
+| Ticket transcripts and exports (HTML, JSON, CSV, PDF) | Yes | Yes | Yes | Yes |
+| ModMail (DM-based tickets) | Yes | Yes | Yes | Yes |
+| ModMail staff and user reminders | No | Yes | Yes | Yes |
+| Auto-close inactive tickets | No | Yes | Yes | Yes |
+| Analytics dashboard and `/stats` | No | Yes | Yes | Yes |
+
+On Free the open-ticket limit is always 5 per user, whatever the server configuration says. On Basic and higher you set it yourself under **Opening → Ticket Limits Per User** in the server configuration. Existing Free accounts that had auto-close before it moved to Basic keep it.
+
+### Branding and appearance
+
+| | Free | Basic | Pro | Enterprise |
+|---|---|---|---|---|
+| "Powered by TicketCord.com" footer on bot messages | Required | Removed | Removed | Removed or replaced |
+| Custom footer text | No | No | No | Yes |
+| Bot status (presence) | "Powered by TicketCord.com" | Custom | Custom | Custom |
+| Custom close messages (design-based close notice and close DM) | No | Yes | Yes | Yes |
+| DM new members when they join | No | Yes | Yes | Yes |
+
+### Messaging and panels
+
+| | Free | Basic | Pro | Enterprise |
+|---|---|---|---|---|
+| Saved custom embeds (ticket panels) | 1 | 5 | 5 | 15 |
+| Multi-step application forms on panels | No | Yes | Yes | Yes |
+| Per-button staff role restrictions | No | Yes | Yes | Yes |
+| Quick replies (canned responses, `/reply`) | 0 | 25 | 25 | Unlimited |
+| Quick replies dropdown in welcome messages | No | Yes | Yes | Yes |
+
+### AI features
+
+| | Free | Basic | Pro | Enterprise |
+|---|---|---|---|---|
+| AI access | No | No | Yes | Yes |
+| AI tokens per month | 0 | 0 | 10,000,000 | 30,000,000 |
+| Extra token packages (10M, 20M, 50M) | No | No | Yes | Yes |
 | Knowledge base sources | 0 | 0 | 2 | 15 |
-| Smart auto-routing | No | No | No | Yes |
+| Pages crawled per website source | 0 | 0 | 100 | 500 |
+| Atlas AI assistant (dashboard) | No | No | Yes | Yes |
+| AI Help for staff (`/ai-help`) and AI summaries (`/summary`) | No | No | Yes | Yes |
 | Priority detection | No | No | Yes | Yes |
 | Duplicate detection | No | No | Yes | Yes |
-| Translation | No | No | No | Yes |
-| Sentiment detection | No | No | No | Yes |
-| **Integrations** |
-| Webhooks per guild | 0 | 0 | 0 | 20 |
-| Webhook rate limit/min | - | - | - | 60 |
-| **Enterprise Features** |
+| Tone detection | No | No | Yes | Yes |
+| General-knowledge fallback answers | No | No | Yes | Yes |
+| Ticket translation | No | No | No | Yes |
+| Smart auto-routing | No | No | No | Yes |
+| Sentiment journey (per-ticket mood over time) | No | No | No | Yes |
+
+### Service levels and workflow
+
+| | Free | Basic | Pro | Enterprise |
+|---|---|---|---|---|
 | Business hours | No | No | No | Yes |
 | SLA management | No | No | No | Yes |
-| Multi-stage approvals | No | No | No | Yes |
+| Approval workflows (`/approval`) | No | No | No | Yes |
 | Scheduled reports | No | No | No | Yes |
-| **Support** |
-| Support type | Community | Priority | Priority | Priority |
-## Billing Options
-### Monthly vs Yearly
-Save **17%** when you choose yearly billing:
-| Plan | Monthly | Yearly | Yearly saving |
-|------|---------|--------|---------------|
-| Basic | €3.50 | €34.99 | €7.01 (17%) |
-| Pro | €6.99 | €68.99 | €14.89 (17%) |
-| Enterprise | €12.99 | €128.99 | €26.89 (17%) |
 
-Prices are in EUR. The [pricing page](https://ticketcord.com/pricing) is always the source of truth.
-<Tip>
-  Yearly plans are billed upfront for the full year and automatically renew unless cancelled.
-</Tip>
-## Free Trial
-Every new account automatically starts on a **14-day Enterprise trial**. There is nothing to activate and no card is required:
-- Enterprise features during the trial, limited to 1 bot, 2 knowledge base sources, and 100 crawled pages per source
-- AI usage during the trial is capped at 1M tokens for the whole trial (instead of the plan's monthly allocation)
-- When the trial ends the account returns to the Free plan; nothing is charged
+### Integrations
+
+| | Free | Basic | Pro | Enterprise |
+|---|---|---|---|---|
+| Outgoing webhooks per server | 0 | 0 | 0 | 20 |
+| Webhook deliveries per minute | | | | 60 |
+| Status page integrations (Better Stack, Statuspage) | No | No | Yes | Yes |
+
+### Support
+
+| | Free | Basic | Pro | Enterprise |
+|---|---|---|---|---|
+| Support channel | Community Discord | Priority | Priority | Priority |
+| Target first response | Best effort | 24 hours | 24 hours | 12 hours |
+
+Support is at [ticketcord.com/discord](https://ticketcord.com/discord) or [ticketcord.com/help](https://ticketcord.com/help).
+
+## AI tokens
+
+AI features consume tokens. Your plan gives you a monthly allocation (Pro 10M, Enterprise 30M) that resets at the start of each billing cycle and does not roll over. You can watch usage in **Dashboard → Usage**, which shows tokens used, the reset date, a daily average, and a projection to the end of the period.
+
+When you run low:
+
+- **Dashboard → Usage → Extra Tokens** sells one-time packages to Pro and Enterprise accounts: 10M for €4.99, 20M for €8.99, and 50M for €21.99. Extra tokens never expire, carry over between billing cycles, and are only spent after the monthly allocation is used up.
+- Enterprise triples the monthly allocation compared with Pro.
+
+When tokens run out, AI features pause until the next reset or until you add tokens. Everything that does not use AI keeps working: ticket creation, staff tools, transcripts, automation. In a ticket the bot hands the conversation to staff ("I'm connecting you with a team member who can continue helping you") and staff see a notice that the AI token quota has been reached. On the signup trial the same happens when the 1,000,000-token trial allowance is used up.
 
 <Note>
-  Paid checkout bills immediately. Subscribing during the trial replaces the trial with your paid plan.
+  Basic includes no AI tokens and cannot buy token packages. If you want AI, choose Pro or Enterprise.
 </Note>
 
-## What Happens When You Upgrade?
+## Free trial
 
-<Steps>
-  <Step title="Instant Access">
-    All new features are available immediately after payment
-  </Step>
-  <Step title="Prorated Billing">
-    If upgrading mid-cycle, you only pay the difference for remaining days
-  </Step>
-  <Step title="Keep Your Data">
-    All your existing tickets, embeds, and settings are preserved
-  </Step>
-</Steps>
+Every new account automatically gets 14 days of Enterprise. No card is collected, nothing is charged, and the account returns to Free when the trial ends. During the trial you are limited to 1 bot, 2 knowledge base sources, 100 crawled pages per source, and 1,000,000 AI tokens for the whole trial. Full details on the [Free Trial](/billing/trials) page.
 
-## What Happens When You Downgrade?
+## What happens when you upgrade
 
-- Features above your new plan limit become read-only
-- Extra bots beyond your limit are automatically stopped
-- Existing tickets and transcripts remain accessible, subject to your plan's retention policy
-- On a downgrade to Free, closed-ticket content retention resets to the Free policy (up to 90 days) for tickets going forward
-- AI tokens reset to new plan allocation at next billing cycle
-## Frequently Asked Questions
+1. Open **Dashboard → Billing**, choose **Card** or **Crypto**, choose a billing cycle (or a crypto duration), and click **Upgrade to Basic / Pro / Enterprise**.
+2. Accept the purchase consent (two separate checkboxes; see [Manage Subscription](/billing/manage-subscription)).
+3. Pay. With a card you are sent to Stripe Checkout; with crypto you get a payment address.
+4. The plan is active as soon as payment completes. Bots that were stopped for exceeding the old limit can be started again. If you subscribe after the signup trial ended, features that were on during the trial are switched back on automatically; after any other downgrade, re-enable them yourself in the server configuration.
+
+If you already have a card subscription and move to a higher plan, the change is applied to the existing subscription immediately: you get credit for the unused part of the current plan and pay the difference, and your billing date does not move.
+
+## What happens when you downgrade or a plan ends
+
+The same rules apply whether you downgrade, cancel and reach the end of the period, let a crypto purchase expire, or finish the trial without subscribing.
+
+- **Bots above the new limit stop.** TicketCord keeps the oldest bots running, up to the new plan's limit, and stops the rest. Stopped bots show the status **Plan Limited** in the dashboard with the note "Bot is disabled due to plan limits. Upgrade your plan to activate it." Nothing is deleted; upgrade and start them again.
+- **Paid features are switched off, not erased.** Toggles the new plan does not cover are turned off on every server you own, and the rest of the configuration is kept so you can turn them back on after upgrading. This covers: business hours, SLA management, approvals, scheduled reports, AI features (including auto-routing, translation, sentiment, and AI Help), ModMail reminders, DM on join, the status page integrations, and every outgoing webhook (deactivated, not deleted). When the signup trial ends, TicketCord remembers which of these were on and turns them back on when you subscribe. After any other downgrade, turn them back on yourself after upgrading.
+- **Auto-close and reminder timers** keep their configured values but do not run on Free.
+- **Branding returns** on Free: the "Powered by TicketCord.com" footer and bot status are enforced again.
+- **Ticket limits**: on Free every user is limited to 5 open tickets, regardless of the saved setting.
+- **Retention**: a server whose retention policy is not allowed on the new plan (180 days, 365 days, or manual on Free) is treated as 90 days for tickets created from then on. Tickets created before the change keep the policy they were created under.
+- **Embeds, quick replies, knowledge base sources** above the new limit are kept but cannot be used or added to until you are back within the limit.
+- **AI tokens**: the monthly allocation becomes the new plan's allocation. Purchased extra tokens stay on the account.
+- **Tickets, transcripts, settings, and your account** are untouched. Nothing is deleted when a plan ends.
+
+## Common questions
+
 <AccordionGroup>
-  <Accordion title="Can I change plans anytime?">
-    Yes. Upgrades take effect immediately with prorated billing. Downgrades are made through the billing portal from **Manage Subscription**.
+  <Accordion title="Does the plan apply per bot, per server, or per account?">
+    Per account. Your plan covers every bot you own and every server those bots are in. The bot limit counts bots, not servers: one bot can be in as many servers as you like.
   </Accordion>
 
-  <Accordion title="What payment methods do you accept?">
-    Cards and Link through Stripe, and cryptocurrency through NOWPayments. Crypto purchases are one-time entitlements for a fixed period; they do not renew automatically.
+  <Accordion title="What is the difference between Basic and Pro?">
+    Pro is Basic plus AI. Basic has the same bot limit (3), branding removal, custom status, analytics, auto-close, quick replies, application forms, and retention options. Pro adds 10M AI tokens per month, the knowledge base (2 sources), Atlas AI, AI Help and summaries, priority, duplicate, and tone detection, and the ability to buy extra tokens.
   </Accordion>
 
-  <Accordion title="Is there a refund policy?">
-    TicketCord provides immediate access to premium features upon purchase. During checkout, EU customers are asked to waive their 14-day withdrawal right as required by EU law, since digital services begin immediately. Once your paid subscription begins, subscriptions are non-refundable. You can cancel anytime to prevent future charges. See our [Terms of Service](https://ticketcord.com/terms) for full details.
-  </Accordion>
-
-  <Accordion title="What counts as a 'bot'?">
-    Each custom Discord bot you create counts as one bot. A bot can be connected to multiple Discord servers (guilds).
+  <Accordion title="Is there a ticket limit?">
+    No plan limits how many tickets you can create. Free limits each user to 5 open tickets at a time; on Basic and higher you set that number yourself under Opening → Ticket Limits Per User.
   </Accordion>
 
   <Accordion title="Do unused AI tokens roll over?">
-    Monthly plan tokens reset at the beginning of each billing cycle and do not roll over. Purchased token packages (10M, 20M, 50M) are one-time and never expire.
+    Monthly plan tokens do not roll over; they reset at the start of each billing cycle. Purchased token packages (10M, 20M, 50M) never expire and are only used after the monthly allocation is gone.
+  </Accordion>
+
+  <Accordion title="Can I pay with crypto?">
+    Yes. Choose Crypto in Dashboard → Billing, pick 3, 6, or 12 months, and pay through NOWPayments. Crypto purchases are one-time and never renew; when the period ends the account returns to Free unless you buy again or subscribe by card.
+  </Accordion>
+
+  <Accordion title="Is there a refund policy?">
+    TicketCord activates immediately on payment, so at checkout you are asked to request immediate access and waive the 14-day EU right of withdrawal. Once your paid plan begins, subscriptions are non-refundable. You can cancel any time to stop future charges. See the [Terms of Service](https://ticketcord.com/terms) and contact [hi@ticketcord.com](mailto:hi@ticketcord.com) for billing problems.
+  </Accordion>
+
+  <Accordion title="What happens to my bots if I downgrade from Enterprise (6 bots) to Pro (3 bots)?">
+    The three oldest bots keep running. The rest stop and show Plan Limited in the dashboard. They are not deleted; upgrade again and start them.
   </Accordion>
 
   <Accordion title="Can I get a custom plan?">
-    For organizations with special requirements, contact us at hi@ticketcord.com to discuss custom enterprise pricing.
+    For organisations with requirements beyond Enterprise, email [hi@ticketcord.com](mailto:hi@ticketcord.com).
   </Accordion>
 </AccordionGroup>
-## Ready to Get Started?
+
 <CardGroup cols={2}>
-  <Card title="Get Started" icon="play" href="https://ticketcord.com/dashboard">
-    Sign in to start your 14-day Enterprise trial
+  <Card title="Manage Subscription" icon="credit-card" href="/billing/manage-subscription">
+    Upgrade, downgrade, cancel, and pay with crypto
   </Card>
-  <Card title="Contact Sales" icon="envelope" href="mailto:hi@ticketcord.com">
-    Questions about Enterprise? Let's talk
+  <Card title="Support Discord" icon="discord" href="https://ticketcord.com/discord">
+    Ask a billing question
   </Card>
 </CardGroup>
