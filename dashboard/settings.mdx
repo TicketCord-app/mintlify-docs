@@ -1,34 +1,95 @@
 ---
 title: "Account Settings"
-description: "Appearance, language, billing, and your data rights"
+description: "Where to change the dashboard theme and language, manage billing, and exercise your data rights"
 ---
 
-TicketCord has no separate settings page. Account options live in the sidebar account menu and the top bar.
+TicketCord has no separate settings page. Account-level options live in three places: the account menu at the bottom of the sidebar (theme, billing, sign out), the language switcher in the top bar, and the **Support** page for your data rights. Everything about a bot or a server is configured elsewhere; see [Dashboard Overview](/dashboard/overview). This page is for anyone who signs in to the dashboard.
 
 ## Appearance
 
-Open the account menu at the bottom of the sidebar and choose **Light**, **Dark**, or **System**.
+Open the account menu (your name at the bottom of the sidebar) and pick one of the three options under **Appearance**:
+
+| Option | Behaviour |
+|--------|-----------|
+| **Light** | Always light |
+| **Dark** | Always dark |
+| **System** | Follows your operating system setting |
+
+The active option is marked with a dot. The choice is saved in your browser, so set it again on another device.
 
 ## Language
 
-Use the language switcher in the top bar. The dashboard is available in 12 languages: English, Čeština, Deutsch, Nederlands, Español, Français, Italiano, 日本語, Polski, Português, Русский, and Türkçe.
+Use the language switcher in the top bar. The dashboard is available in 12 languages: English, Čeština, Deutsch, Nederlands, Español, Français, Italiano, 日本語, Polski, Português, Русский, and Türkçe. The choice is remembered in your browser and cookie, and applies only to the dashboard.
 
-Bot messages in Discord are configured per server under **Language** and support 19 languages: Arabic, Chinese (Simplified and Traditional), Czech, Dutch, English, French, German, Hindi, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish, and Vietnamese.
+The language your bot uses in Discord is a per-server setting on the **Language** tab of the server configuration and supports 19 languages: Arabic, Chinese (Simplified and Traditional), Czech, Dutch, English, French, German, Hindi, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish, and Vietnamese. Changing the dashboard language does not change the bot's language, and vice versa.
 
 ## Profile
 
-Your name and avatar are taken from your Discord account and cannot be edited in TicketCord.
+Your name, avatar, and email come from your Discord account. They are shown in the account menu and cannot be edited in TicketCord; change them in Discord and sign in again.
 
 ## Billing
 
-**Billing** in the sidebar shows your plan and payment history and opens the Stripe billing portal. See [Manage Subscription](/billing/manage-subscription).
+**Billing** in the sidebar (also in the account menu) shows your current plan, payment history, and a link to the billing portal where you change plans, update the payment method, and download invoices. See [Manage Subscription](/billing/manage-subscription) and [Invoices](/billing/invoices).
 
-## Your Data
+## Notifications
 
-- **Export**: email [hi@ticketcord.com](mailto:hi@ticketcord.com); see [Data Export](/features/gdpr-export).
-- **Delete account**: email us; deletion is completed within two business days. See [Delete your account](https://ticketcord.com/help/security/delete-account).
+The bell in the top bar collects dashboard notifications. There are no per-user notification preferences to configure.
+
+## Your data
+
+**Support** in the sidebar has a **Your Data Rights (GDPR)** section listing the rights of access, portability, rectification, and erasure, with an email button that pre-fills a request.
+
+- **Export**: email [hi@ticketcord.com](mailto:hi@ticketcord.com) with `GDPR` in the subject. See [Data Export](/features/gdpr-export).
+- **Delete account**: also by email; completed within two business days and permanent. See [Delete your account](https://ticketcord.com/help/security/delete-account).
 - **Privacy policy**: [ticketcord.com/privacy](https://ticketcord.com/privacy).
 
-## Getting Help
+## Signing out
 
-**Support** in the sidebar has the contact email and the Discord invite. Sign out from the account menu.
+Choose **Sign out** in the account menu and click **Confirm sign out**. This ends the dashboard session in that browser only; bots keep running.
+
+## Getting help
+
+**Support** in the sidebar has **Email us** (a pre-filled message with your account email and plan) and **Join Discord**. Email response targets shown on the page are best effort on Free, within 24 hours on Basic and Pro, and within 12 hours on Enterprise.
+
+## Limits and gotchas
+
+- Theme and dashboard language are stored per browser, not on your account.
+- There is no password to change; sign-in is always through Discord.
+- Account deletion and data export are handled by email, not by a button.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| The theme resets on another computer | Appearance is saved per browser | Set it again there |
+| The dashboard language changed after clearing cookies | Language is stored in the browser | Pick it again in the top bar |
+| Your name or avatar is outdated | TicketCord reads them from Discord at sign-in | Update them in Discord, sign out, and sign in again |
+| The bot speaks the wrong language in Discord | Bot language is per server | Open the server configuration and change the **Language** tab |
+| You cannot find where to delete your account | Deletion is by email | Write to hi@ticketcord.com from your account email |
+
+## Common questions
+
+**How do I switch to dark mode?**
+Open the account menu at the bottom of the sidebar and choose **Dark** under **Appearance**, or **System** to follow your OS.
+
+**How do I change the dashboard language?**
+Use the language switcher in the top bar. Twelve languages are available.
+
+**How do I change the language my bot uses in Discord?**
+That is a per-server setting: **Dashboard → Bots → your bot → Servers → the server → Language**. Nineteen languages are available.
+
+**Can I change my display name or email?**
+Not in TicketCord. They come from Discord. Update them there and sign in again.
+
+**Where do I cancel my subscription?**
+**Dashboard → Billing**, then the billing portal. See [Manage Subscription](/billing/manage-subscription).
+
+**How do I delete my account?**
+Email [hi@ticketcord.com](mailto:hi@ticketcord.com) from the address on your account. Deletion is permanent and completed within two business days; export your data first.
+
+**Does signing out stop my bots?**
+No. Bots run on TicketCord's servers regardless of whether you are signed in.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
+</Card>

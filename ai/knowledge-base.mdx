@@ -1,257 +1,152 @@
 ---
 title: "Knowledge Base"
-description: "Teach your bot to automatically answer questions from your documentation"
+description: "Set up the Knowledge Base so your bot answers tickets from your own documentation and learns from your staff"
 ---
 
-The Knowledge Base lets you connect your documentation, FAQs, or website to your bot. When users open tickets, your bot automatically suggests relevant answers based on what you've taught it.
+The Knowledge Base connects your documentation, Discord channels, text files, and GitHub repositories to your bot. When a customer asks a question in a ticket, the bot answers from that content, shows where the answer came from, and hands the ticket to staff when it does not know. It also learns new answers from tickets your staff close. This page is for the admin setting it up for the first time.
 
 <Info>
-  Knowledge Base is available on **Pro** and **Enterprise**. [Upgrade your plan](https://ticketcord.com/pricing) to access it.
+  The Knowledge Base is available on **Pro** (2 sources) and **Enterprise** (15 sources). GitHub repository sources are Enterprise only. Turning the AI answers on and off is a dashboard setting; there is no slash command for it. [Upgrade your plan](https://ticketcord.com/pricing)
 </Info>
 
-## How It Works
+## How it works
 
-1. **Add Sources** - Connect your website, documentation, or FAQ pages
-2. **Bot Learns** - We scan and understand your content automatically
-3. **Auto-Suggest** - When users ask questions, your bot suggests answers from your sources
+1. **Add sources**: web pages, Discord channels, text files, or GitHub repositories.
+2. **The bot reads them**: each source is indexed when you add it and again on the schedule you choose.
+3. **The bot answers**: when a ticket message looks like a question, the bot waits a few seconds for follow-ups, searches your sources, and posts an answer with a source line and a match score.
+4. **Staff stay in control**: staff replies pause the bot, customers can press **Talk to Staff**, and when the bot has no answer it escalates.
+5. **The bot learns**: when a ticket closes, the staff answers in it become question-and-answer entries. Confident ones go live immediately; the rest wait in **Staff Q&A** for review.
 
-Your support team doesn't need to type the same answers repeatedly. The bot handles common questions while staff focus on complex issues.
-
-## Getting Started
+## Getting started
 
 <Steps>
-  <Step title="Enable Knowledge Base">
-    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **AI & Knowledge** → **Knowledge Base**
-
-    Toggle the switch to enable it.
+  <Step title="Open the Knowledge Base page">
+    Go to **Dashboard → Bots**, pick your bot, open **Servers**, pick the server, and open **AI & Knowledge → Knowledge Base**. The page has six tabs: **Sources**, **Answering**, **Auto support**, **Learning**, **Staff Q&A**, and **Analytics**.
   </Step>
-  <Step title="Add a Source">
-    Click **Add Knowledge Source** and enter:
-    - **URL** - Link to your documentation page
-    - **Title** - A name to identify this source
-    - **Type** - Single page, documentation site, Discord channel, pasted text, or a GitHub repository (Enterprise)
-
-    Click **Save**. TicketCord automatically queues the first scan.
+  <Step title="Enable it">
+    Click **Edit**, switch on **Enable Knowledge Base**, and click **Save Changes**. The master switch on **AI Features → General** must also be on.
   </Step>
-  <Step title="Test It">
-    Open a test ticket and ask a question that your documentation answers.
-
-    Your bot should suggest an answer within a few seconds.
+  <Step title="Add your first source">
+    On **Sources**, click **Add Knowledge Source**, choose **Web Page**, **Discord Channel**, **GitHub Repository**, or **Text File**, fill in the fields, and save. The first index is queued automatically. Wait until the source shows **Ready**.
+  </Step>
+  <Step title="Describe your community">
+    On **Answering**, fill in **Product Profile & Custom Instructions**: your community name, what you support, your product names, and any topics the bot must leave to staff. This is what stops the bot answering questions that are not yours to answer.
+  </Step>
+  <Step title="Test it">
+    Open a test ticket and ask a question that your documentation answers. Within about 10 seconds the bot posts an answer with 👍 and 👎 buttons under it.
   </Step>
 </Steps>
 
 <Card title="Connect Claude Code or Codex" icon="plug" href="/ai/mcp">
-  Manage your tickets and Knowledge Base from an AI tool using a secure MCP connection.
+  Manage sources, entries, and settings from an AI tool instead of the dashboard.
 </Card>
 
-## Source Types
+## Source types
 
-You can add different types of content sources:
-
-| Type | Best For | How It Works |
-|------|----------|--------------|
-| **Single Page** | FAQ pages, specific guides | Scans one page only |
-| **Documentation Site** | Full documentation | Crawls multiple pages (up to 100 on Pro, 500 on Enterprise) |
-| **Discord Channel** | Announcements, rules | Indexes messages from a channel |
-| **Text** | Internal notes, policies | Indexes content you paste (up to 50,000 characters) |
-| **GitHub Repository** | Code and docs in a repo (Enterprise) | Syncs files from a connected repository |
-
-### Single Page
-
-Use this for standalone pages like:
-- FAQ pages
-- Pricing pages
-- Individual guides or tutorials
-
-The bot scans just that one page and learns from its content.
-
-### Documentation Site
-
-Use this for complete documentation sites. The bot will:
-1. Start from your main page
-2. Follow links to discover more pages
-3. Scan up to 100 pages automatically (500 on Enterprise)
+| Type | What it reads | Limits |
+|------|---------------|--------|
+| **Web Page** | One page, or a page plus the pages it links to (set **Pages to Read**) | Up to 100 pages per source on Pro, 500 on Enterprise. HTTPS only. |
+| **Discord Channel** | Messages from a text channel the bot can see | The newest 20 messages on Pro, 100 on Enterprise. Very short messages are skipped. **Include Bot Messages** is off by default. |
+| **Text File** | A `.txt` or `.md` file you upload; only its text is sent | Under 256 KB and 50,000 characters. Only the server owner can add or remove text sources. Files cannot be edited after upload; remove and re-add to replace. |
+| **GitHub Repository** (Enterprise) | Markdown files from a connected repository, optionally limited to a branch and folder | Connect GitHub first from the **Sources** tab. Re-syncs automatically on each push to the chosen branch. |
 
 <Tip>
-  **Pages to Read** sets how many pages are scanned (1, 5, 10, 15, 20, 25, 50, 75, or 100; up to 500 on Enterprise). 1 means the start page only.
+  Use specific pages such as pricing, guides, or an FAQ instead of a broad landing page. Focused pages give cleaner answers. For a text file, start every topic with a Markdown heading and keep each section under 3,000 characters; the upload dialog warns you when a file has no headings.
 </Tip>
 
-### Discord Channel
+Full details for each type, refresh schedules, and source statuses are on [Adding Sources](/ai/knowledge-base-sources).
 
-Use this to teach your bot from existing Discord content:
-- Announcement channels
-- Rules channels
-- FAQ channels
+## Worked example: a game server
 
-The bot reads messages from the channel and learns from them.
+A community running a survival game server wants the bot to answer the same questions it gets every day.
 
-<Warning>
-  Only use public channels. The bot respects Discord permissions and won't access private channels.
-</Warning>
+1. **Sources**: add the server's rules page as a **Web Page** with **Pages to Read** set to **1 page**, add the `#faq` channel as a **Discord Channel**, and upload a `.md` **Text File** with headings such as `## How do I join`, `## Ranks and perks`, and `## Refunds`.
+2. **Product Profile**: Company/Community Name `Ember Survival`, Support Scope `We help with joining the server, ranks, store purchases, and in-game bugs`, Product Names `Ember Survival`, `VIP rank`, `Legend rank`, Forbidden Topics `ban appeals`, `staff applications`.
+3. **Custom Instructions**: `Be friendly and brief. Always give the server IP as play.example.com. For purchase problems, ask for the order number before anything else.`
+4. **Answering**: leave **Match Strictness** at 50% and **Respect Staff Presence** on so the bot steps back whenever a moderator is already replying.
+5. **Learning**: leave **Autonomous Ticket Learning** on so that once a moderator has explained how rank transfers work in a ticket, the bot answers the next person itself.
 
-## Source Settings
+After a week, open **Analytics** to see which sources get 👍 votes and **Staff Q&A** to approve the pending entries.
 
-Each source has settings you can customize:
+## What the customer sees
 
-### Auto-refresh
+An answer is a normal message from the bot in the ticket, replying to the customer's question:
 
-How often the bot checks for changes:
+- The answer text, in the style you chose (**Concise**, **Balanced**, or **Helpful**).
+- A line `Source: <source title>` when **Show Source Information** is on.
+- A small grey footer: `Confidence: 78% • Generated by AI. Staff can verify important details.` The match score appears when **Show Match Score** is on; the AI notice is always shown and cannot be turned off.
+- 👍 and 👎 buttons when **Enable Vote Buttons** is on. 👎 asks for a reason and, optionally, the correct answer.
 
-| Frequency | When to Use |
-|-----------|-------------|
-| **Manual** | Content rarely changes |
-| **Realtime** | Discord channels and connected repositories that should stay in sync |
-| **Daily** | Active documentation with frequent updates |
-| **Weekly** | Moderate update frequency |
-| **Monthly** | Stable content that rarely changes |
+When the bot has nothing relevant it says `I don't have enough knowledge base information to answer that. Use the button below to request staff help.` with a **🙋 Talk to Staff** button. Pressing it posts a **Staff Assistance Requested** card and confirms `A staff member has been notified and will be with you shortly!` Only the ticket creator or staff can press it, and it is only sent once per ticket.
 
-<Info>
-  You can always re-index a source by clicking **Refresh**. A source can be refreshed once every 24 hours.
-</Info>
+If **Auto-Escalate to Staff** is on, the bot also posts a **🤖 AI Escalation** card in the ticket with the customer's question under **User Question** and the note `Escalated due to insufficient knowledge`. With **Ping Staff on Escalation** on, the card mentions your staff roles (or the button's own ping role when one is configured). After an escalation the bot stays quiet in that ticket for the **Ticket Escalation Duration** (7 days by default; **Permanent** keeps it out for good).
 
-## AI Settings
+## Learning from closed tickets
 
-Customize how your bot responds to questions.
+Learning is on for newly configured knowledge bases and runs with no command. The settings live on the **Learning** tab under **Ticket Learning**.
 
-### Response Style
+1. A ticket closes (by staff, by inactivity auto-close, or because the user left). Tickets with fewer than 3 messages are skipped.
+2. The bot extracts question-and-answer pairs where staff gave the answer, redacts personal data, and scores each pair.
+3. Pairs at or above the **Auto-Approve Confidence Threshold** (50% to 100%, default 70%) go live at once and are searchable in the next ticket. With **Notify on Auto-Approve** on, an **Auto-Learned from Ticket #123** card lands in the logs channel showing the confidence, category, question, and answer, with an **Undo** button that removes the entry.
+4. Pairs below the threshold wait in **Staff Q&A** as **Pending**. A **Pending Review** card for the ticket with **Approve**, **Edit**, and **Reject** buttons is posted to the logs channel so staff can act from Discord.
+5. **Max Auto-Approvals Per Day** (1 to 200, default 50) caps how many pairs go live per day; pairs over the cap wait as Pending even when they scored above the threshold.
+6. With **Smart Merge & Dedup** on, a new pair that overlaps an existing entry is treated as a duplicate, an enrichment (a new detail added to the existing answer), or a supersession (a newer fact replaces the old one) instead of becoming a near-duplicate. **Auto-Apply Merges** applies enrichments and corrections only to entries the system learned itself and nobody edited, capped by **Max Auto-Merges Per Day** (1 to 100, default 20), and posts a **KB Entry Updated** or **KB Entry Superseded** card with **Undo**. Everything else becomes a review proposal in **Staff Q&A** showing the proposed updated answer or added detail.
+7. **Periodic Consolidation** (off by default; Weekly, Every 2 weeks, or Monthly) merges existing duplicate entries into one and archives stale unused ones, then posts a **Knowledge Base Consolidated** summary.
 
-Choose how detailed AI suggestions should be:
+### Reviewing what was learned
 
-| Style | Description |
-|-------|-------------|
-| **Concise** | Short answers that get straight to the point |
-| **Balanced** | Mix of context and actionable steps (recommended) |
-| **Helpful** | Detailed explanations with extra context |
+Open the **Staff Q&A** tab. The tab badge shows the pending count. Filter by **All**, **Pending**, **Approved**, **Auto-approved**, or **Rejected**, search, and use **Approve**, **Edit** (edit and approve in one step), **Ignore**, or **Delete** on each entry. **Create Q&A** adds a hand-written entry that is available immediately. **Purge Pending** deletes every pending entry at once and cannot be undone. Deleting an approved entry also removes it from search.
 
-### Match Strictness
+## Limits by plan
 
-The minimum confidence (10-100%) required before showing a suggestion:
+| | Pro | Enterprise |
+|--|-----|------------|
+| Sources per server | 2 | 15 |
+| Pages per web source | 100 | 500 |
+| Discord messages per channel source | 20 newest | 100 newest |
+| GitHub repository sources | No | Yes |
+| AI tokens per month | 10M | 30M |
+| Refresh a source by hand | Once every 24 hours | Once every 24 hours |
 
-- **70%+** - Only shows suggestions the AI is confident about
-- **50-70%** - Shows more suggestions, but some may be less accurate (the default is 50%)
-- **Below 50%** - Not recommended, may show irrelevant suggestions
-
-<Tip>
-  Start with the default of 50% and adjust based on your results. Raise it if suggestions are often wrong, lower it if the bot rarely answers.
-</Tip>
-
-## Behavior Settings
-
-Control when and how the bot provides suggestions.
-
-### Stop on Staff Response
-
-When enabled (off by default), the bot stops suggesting answers once a staff member replies. This prevents the AI from interrupting staff conversations.
-
-### Respect Staff Presence
-
-When enabled, the bot backs off if staff members are actively responding to a ticket. It waits 5 minutes after the last staff message before suggesting again.
-
-### Outside Business Hours Only
-
-Only provide AI suggestions when no staff are available (outside your configured business hours). Useful if you want humans to handle tickets during work hours.
-
-## Feedback System
-
-The feedback system helps your bot learn and improve over time.
-
-### How It Works
-
-When your bot suggests an answer, users see thumbs up/down buttons:
-- 👍 **Helpful** - The answer was useful
-- 👎 **Not Helpful** - The answer wasn't relevant or correct
-
-The bot uses this feedback to improve future suggestions.
-
-### Settings
-
-| Setting | Description |
-|---------|-------------|
-| **Enable Feedback** | Show vote buttons on suggestions |
-| **Staff Only Voting** | Only count votes from staff members |
-| **Self-Learning** | Automatically adjust content ranking based on votes |
-
-### Self-Learning
-
-When enabled, the bot automatically:
-- **Boosts** content that gets positive feedback (shown more often)
-- **Penalizes** content that gets negative feedback (shown less often)
-
-This happens after a minimum number of votes (default: 3) to avoid acting on outliers.
-
-## Escalation
-
-When the AI doesn't have a good answer, it can automatically escalate to your team.
-
-### Auto-Escalation
-
-When enabled, the bot will:
-1. Detect when it can't find a confident answer
-2. Notify your staff team
-3. Let users know a human will help them
-
-### Human Assistance Detection
-
-The bot understands when users want to talk to a human. Phrases like:
-- "I want to speak to someone"
-- "Can I talk to a real person?"
-- "Human please"
-
-Will trigger immediate escalation to your team.
-
-## Learning from Closed Tickets
-
-The bot learns from your own support conversations automatically. There is no command to run.
-
-### How It Works
-
-1. When a ticket closes, the bot reviews the conversation
-2. Answers that staff gave are extracted as question-and-answer pairs
-3. Pairs above your confidence threshold are added to the Knowledge Base
-4. Pairs below the threshold wait for approval in the **Q&A** tab of the Knowledge Base
-
-<Info>
-  Learning is available on Pro and Enterprise plans and is on by default for newly configured knowledge bases. Manage it under **Knowledge Base** → **Learning**: the auto-approve threshold (default 70%), the daily cap on auto-approved entries (default 50), notifications with an **Undo** button, and automatic merging of near-duplicate entries.
-</Info>
-
-### Reviewing What Was Learned
-
-Open the Knowledge Base **Q&A** tab to approve, edit, or reject suggested pairs. Auto-approved pairs can be undone from the notification the bot posts.
-
-## Limits by Plan
-
-| Feature | Pro | Enterprise |
-|---------|-----|------------|
-| Knowledge Base Sources | 2 | 15 |
-| AI Tokens/Month | 10M | 30M |
-| Auto-Updates | ✅ | ✅ |
-| Feedback Analytics | ✅ | ✅ |
-
-<Card title="Upgrade Your Plan" icon="rocket" href="https://ticketcord.com/pricing">
-  Get more sources and AI tokens with Enterprise
-</Card>
+<Note>
+  Answers cost tokens from the bot owner's monthly allowance. **Ticket History to Use**, **Help Content to Review**, **Best Match Boost**, and **Wider Understanding** on the Answering tab all trade accuracy for tokens; the tab shows an estimate of how many answers your plan's allowance covers with the current settings.
+</Note>
 
 ## Troubleshooting
 
-### Bot Not Suggesting Answers
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| The bot never answers | **Enable Knowledge Base** or the **Enable AI Features** master switch is off, or no source is **Ready** | Turn both switches on and wait for at least one source to finish indexing |
+| The bot answers some people but not the ticket creator | The creator is on the **AI User Blacklist**, hit a **User Token Limit**, or wrote fewer characters than **Minimum Message Length** | Check the blacklist on **Answering**, reset the user under **AI Features → General**, or lower the minimum |
+| The bot stops answering once a staff member types | **Stop on Staff Response** or **Respect Staff Presence** is on | Both are deliberate. Turn them off on **Answering** if you want the bot to keep helping alongside staff |
+| Answers say "I don't have enough knowledge base information" for questions your docs cover | **Match Strictness** is too high, or the relevant page was not read (see **Pages to Read**) | Lower Match Strictness toward 50%, and open the source to check its page or message count |
+| The bot invents details | **Source Safety** was turned off | Turn **Source Safety** back on; it checks every answer against your sources |
+| A learned entry is wrong | The staff answer in the closed ticket was wrong or incomplete | Press **Undo** on the card in the logs channel, or **Edit** or **Delete** it in **Staff Q&A** |
+| No Auto-Learned or Pending Review cards appear | No logs channel is configured, or **Notify on Auto-Approve** is off | Set a logs channel with `/setup`; pending entries still appear in **Staff Q&A** |
+| Voting or feedback fails with **TC018** | Voting is unavailable for that message (for example the feature was turned off after the answer was posted) | See [TC018](/bot/troubleshooting#tc018-feature-unavailable) |
 
-1. **Check if enabled** - Make sure Knowledge Base is toggled on
-2. **Check sources** - At least one source should be indexed (green status)
-3. **Lower confidence** - Try lowering the confidence threshold to 50%
-4. **Check triggers** - Make sure the minimum message length is not filtering out real questions
+## Common questions
 
-### Indexing Failed
+**How long does the bot wait before answering?**
+10 seconds by default (**Response Delay**, 5 to 60 seconds). It waits so that a question typed across several messages is answered once.
 
-1. **Check the URL** - Make sure the page is publicly accessible
-2. **Try again** - Sometimes pages are temporarily unavailable
-3. **Check page size** - Very large pages (50,000+ characters) may be trimmed
+**Can I stop the bot answering during working hours?**
+Yes, on Enterprise: turn on **Respond Outside Business Hours Only** on the **Answering** tab and configure business hours. On other plans use **Wait for Staff Before AI Responds**, which holds the answer for 10 to 300 seconds and cancels it when a staff member replies.
 
-### Wrong Answers
+**Does the bot learn from every closed ticket?**
+It tries when **Autonomous Ticket Learning** is on, the ticket has at least 3 messages, and staff answered in it. Personal data is redacted, weak pairs go to **Staff Q&A** for review, and at most **Max Auto-Approvals Per Day** entries go live per day.
 
-1. **Check source content** - Make sure your documentation is accurate
-2. **Add better sources** - More specific documentation helps
-3. **Use categories** - Limit which tickets can use each source
-4. **Enable feedback** - Let users vote to improve suggestions
+**How do I teach the bot something it got wrong?**
+Press 👎 on the answer, choose a reason, pick **Other Issue** to open the form, and fill in **Correct Answer (helps AI learn)**. The bot confirms with **Correction Learned!** and uses it for future answers. You can also add the answer directly with **Create Q&A** on the **Staff Q&A** tab.
+
+**Can the bot answer general questions that are not in my docs?**
+Only if you turn on **General-Knowledge Fallback** (Pro and higher) on the **Answering** tab. It then answers generic technical questions such as browser or networking basics with the note `General AI knowledge, not from this server's knowledge base`. Billing, account, security, and legal topics still go to staff.
+
+**Why did the bot close a ticket by itself?**
+**AI Auto-Close** on the **Answering** tab was on and the customer explicitly asked to close the ticket. Turn it off if you want staff to close every ticket.
+
+**Can I keep the AI away from one user?**
+Yes. Add their Discord user ID to the **AI User Blacklist** on the **Answering** tab. Staff still see their tickets as normal.
 
 <Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support

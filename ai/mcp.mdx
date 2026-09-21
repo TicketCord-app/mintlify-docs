@@ -1,11 +1,9 @@
 ---
 title: "Connect Claude Code or Codex"
-description: "Securely manage your TicketCord tickets and Knowledge Base from an AI tool using MCP"
+description: "Connect Claude Code, Codex, or another MCP-capable AI tool to manage your TicketCord tickets and Knowledge Base, with the permissions, the full tool list, and troubleshooting"
 ---
 
-MCP lets Claude Code or Codex work with your TicketCord tickets and Knowledge Base after you sign in and approve access. Think of it as a secure bridge between your AI tool and TicketCord.
-
-You can ask questions in everyday language, triage and reply to support tickets, review what the tool finds, and tell it to update your knowledge without clicking through every dashboard screen.
+MCP lets Claude Code or Codex work with your TicketCord tickets and Knowledge Base after you sign in and approve access. Think of it as a secure bridge between your AI tool and TicketCord: you ask in everyday language, the tool reads your tickets and knowledge, shows you what it found, and changes things only when you tell it to. This page is for the bot owner setting up the connection.
 
 <button
   id="copy-mcp-prompt-btn"
@@ -18,11 +16,11 @@ You can ask questions in everyday language, triage and reply to support tickets,
 Paste the copied prompt into Claude Code, Codex, or another MCP-capable agent and it will install the connection, walk you through authorization, and learn how to use TicketCord correctly. The [full prompt](#fastest-setup-copy-one-prompt) is shown below, and the rest of this page covers the same steps manually.
 
 <Info>
-  You must be the TicketCord account owner, and MCP requires an active paid plan. Ticket tools work on every paid plan; Knowledge Base tools additionally require a plan that includes Knowledge Base access. Dashboard staff cannot create an MCP connection.
+  You must be the **TicketCord account owner** with an **active paid plan**. Ticket tools work on every paid plan; Knowledge Base tools additionally require a plan that includes Knowledge Base access (Pro or Enterprise). Dashboard staff accounts cannot create an MCP connection.
 </Info>
 
 <Warning>
-  One MCP connection covers every TicketCord bot you own now and every bot you add later. Every action still targets one bot and server explicitly. TicketCord checks your ownership and plan before every request.
+  One MCP connection covers every TicketCord bot you own now and every bot you add later. Every action still targets one bot and one server explicitly, and TicketCord checks your ownership and plan on every request.
 </Warning>
 
 ## Fastest Setup: Copy One Prompt
@@ -90,18 +88,18 @@ Once the connection is verified, ask me what I want to do first and suggest thes
 - "List pending entries and recommend approve or reject for each one. Do not change anything yet."
 ````
 
-## What You Need
+## What you need
 
 - A TicketCord account that owns at least one bot
 - An active paid plan (Knowledge Base tools additionally require Knowledge Base access)
-- [Claude Code](https://code.claude.com/docs/en/installation) or the [Codex CLI](https://learn.chatgpt.com/docs/codex/cli)
-- Access to a browser so you can sign in and approve the connection
+- [Claude Code](https://code.claude.com/docs/en/installation) or the [Codex CLI](https://learn.chatgpt.com/docs/codex/cli), or any tool that supports remote HTTP MCP servers with OAuth
+- A browser on the same machine so you can sign in and approve the connection
 
-## Connect Your AI Tool
+## Connect your AI tool
 
 <Steps>
   <Step title="Open the MCP page">
-    In the TicketCord dashboard, open **Dashboard → MCP** (in the Intelligence section of the sidebar). The **Connect AI tools** card shows the setup commands and your active connections.
+    In the TicketCord dashboard, open **Intelligence → MCP** in the sidebar (or go to **Dashboard → MCP**). The **Connect AI tools** card shows the setup commands with a **Copy command** button and lists your **Active connections**.
   </Step>
 
   <Step title="Add TicketCord to your AI tool">
@@ -123,22 +121,17 @@ Once the connection is verified, ask me what I want to do first and suggest thes
   </Step>
 
   <Step title="Approve access in your browser">
-    TicketCord opens in your browser. Sign in and review:
+    The login command opens the **Authorize TicketCord access** page. Sign in as the account owner and review:
 
-    - The warning that the connection covers your entire account
-    - Read tickets permission for viewing ticket lists, conversations, details, and internal staff notes
-    - Manage tickets permission for replying, closing or reopening, and updating claims, priority, tags, and internal notes
-    - Read knowledge bases permission for viewing and searching knowledge
-    - Manage knowledge bases permission for changing settings, sources, and entries
-    - Delete knowledge permission for permanently removing sources and entries
+    - The client name that wants to connect. A dynamically registered client is marked **unverified**; continue only if you started this connection yourself.
+    - The **This connection is account-wide** notice: it can access every current and future server you own, though every operation must still name a specific bot and server.
+    - The **Requested permissions**: **Read tickets**, **Manage tickets**, **Read knowledge bases**, **Manage knowledge bases**, and **Delete knowledge** (see [Permissions](#permissions-and-safety)).
 
-    Select **Allow access** to continue or **Deny** to cancel.
+    Select **Allow access** to continue or **Deny** to cancel. The page then shows **Access approved** and returns you to your AI tool.
   </Step>
 
   <Step title="Return to your AI tool">
-    When the page says **Authentication complete**, close the browser tab and return to Claude Code or Codex.
-
-    Start with:
+    When your tool reports that authentication is complete, close the browser tab and start with:
 
     ```text
     List my open TicketCord tickets.
@@ -146,19 +139,19 @@ Once the connection is verified, ask me what I want to do first and suggest thes
   </Step>
 </Steps>
 
-## What You Can Do
+## What you can do
 
-### Triage Tickets
+### Triage tickets
 
-List tickets across your servers with filters for status, priority, assignment, tags, and text search, then read the full conversation of any ticket.
+List tickets across your servers with filters for status, priority, assignment, tags, and text search (up to 50 per page), then read the full conversation of any ticket (the most recent 50 messages by default, up to 100).
 
 ```text
 List my open tickets sorted by priority and summarize the urgent ones.
 ```
 
-### Reply and Resolve
+### Reply and resolve
 
-Send staff replies straight into the ticket channel on Discord, close resolved tickets (with the full close pipeline: transcript, feedback request, logs, and webhooks), and reopen them if the conversation needs to continue.
+Send staff replies straight into the ticket channel on Discord (up to 2,000 characters), close resolved tickets with an optional reason (the full close pipeline runs: transcript, feedback request, logs, and webhooks), and reopen them if the conversation needs to continue.
 
 ```text
 Draft a reply for ticket 123 explaining our refund timeline. Show it to me before sending.
@@ -168,23 +161,23 @@ Draft a reply for ticket 123 explaining our refund timeline. Show it to me befor
   Replies are visible to the customer immediately. Ask your AI tool to show you the exact message before it sends anything.
 </Warning>
 
-### Organize Your Queue
+### Organize your queue
 
-Claim or release tickets, set priority, add or remove tags, and keep internal staff notes that customers never see.
+Claim or release tickets, set priority from none to urgent, add or remove tags (letters, numbers, hyphens, and underscores), and keep internal staff notes (up to 1,000 characters) that customers never see.
 
 ```text
 Claim ticket 123, set it to high priority, and add a note summarizing what I still need to check.
 ```
 
-### Find Answers
+### Find answers
 
-Ask Claude Code or Codex to search your Knowledge Base by meaning. TicketCord returns short matching passages with source names and confidence, then your AI tool uses those passages to answer.
+Ask your tool to search a Knowledge Base by meaning. TicketCord returns up to 10 short matching passages (5 by default) with source names and confidence, and the tool answers from those passages.
 
 ```text
 Search our refund policy and summarize it with source names.
 ```
 
-### Check Knowledge Base Health
+### Check Knowledge Base health
 
 List your Knowledge Bases and inspect their settings, sources, indexing status, and entries.
 
@@ -192,15 +185,9 @@ List your Knowledge Bases and inspect their settings, sources, indexing status, 
 List my knowledge bases and show which ones have no ready sources.
 ```
 
-### Manage Sources
+### Manage sources
 
-Create, edit, enable, disable, reindex, or delete:
-
-- Web pages
-- Discord channels
-- GitHub repositories that are already connected to TicketCord
-
-Creating a source automatically queues its first index. Ask for a reindex after the source content changes.
+Create, edit, enable, disable, reindex, or delete web page, Discord channel, and connected GitHub repository sources. Creating a source automatically queues its first index; ask for a reindex after the content changes. Text file sources can only be added in the dashboard.
 
 ```text
 Add https://docs.example.com as a documentation source and start indexing it.
@@ -210,76 +197,73 @@ Add https://docs.example.com as a documentation source and start indexing it.
   Connecting or disconnecting your GitHub account still happens only in the TicketCord dashboard.
 </Info>
 
-### Manage Entries
+### Manage entries
 
-List, create, edit, review, approve, reject, or delete Knowledge Base entries.
+List, create, edit, review (approve or reject), or delete Knowledge Base question-and-answer entries, including the entries the bot learned from closed tickets.
 
 ```text
 Show pending entries and recommend whether I should approve or reject each one. Do not change anything yet.
 ```
 
-### Change Settings
+### Change settings
 
-Update the same Knowledge Base settings that are editable in the dashboard, including:
+Update the same Knowledge Base settings that are editable in the dashboard: the enabled state, product profile, triggers, display, answer quality, behavior, feedback and escalation, ticket learning, and Auto Support. Usage counters and plan limits are read-only.
 
-- Enabled state and product information
-- Triggers and display options
-- Answer quality and update behavior
-- Feedback and ticket learning
-- Auto Support
+## Complete action list
 
-Usage counters, plan limits, and internal settings remain read-only.
-
-## Complete Action List
+All 28 tools, grouped by the permission they need.
 
 <AccordionGroup>
-  <Accordion title="Tickets: read">
-    - List your bots and their servers: `list_ticket_bots`
-    - List and filter tickets: `list_tickets`
-    - View one ticket with its recent conversation: `get_ticket`
-    - List internal staff notes: `get_ticket_notes`
+  <Accordion title="Tickets: read (Read tickets)">
+    - `list_ticket_bots`: list your bots and their servers
+    - `list_tickets`: list and filter tickets across owned servers
+    - `get_ticket`: view one ticket with its recent conversation
+    - `get_ticket_notes`: list internal staff notes for a ticket
   </Accordion>
 
-  <Accordion title="Tickets: manage">
-    - Send a staff reply the customer sees: `reply_to_ticket`
-    - Close (resolve) a ticket: `close_ticket`
-    - Reopen a closed ticket: `reopen_ticket`
-    - Claim a ticket for your account: `claim_ticket`
-    - Release your claim: `unclaim_ticket`
-    - Set priority (none to urgent): `set_ticket_priority`
-    - Add a tag: `add_ticket_tag`
-    - Remove a tag: `remove_ticket_tag`
-    - Add an internal staff note: `add_ticket_note`
+  <Accordion title="Tickets: manage (Manage tickets)">
+    - `reply_to_ticket`: send a staff reply the customer sees
+    - `close_ticket`: close (resolve) a ticket with an optional reason
+    - `reopen_ticket`: reopen a closed ticket
+    - `claim_ticket`: claim a ticket for your account
+    - `unclaim_ticket`: release your claim
+    - `set_ticket_priority`: set priority (none to urgent)
+    - `add_ticket_tag`: add a tag
+    - `remove_ticket_tag`: remove a tag
+    - `add_ticket_note`: add an internal staff note
   </Accordion>
 
-  <Accordion title="Knowledge Base: read and search">
-    - List Knowledge Bases: `list_knowledge_bases`
-    - View one Knowledge Base: `get_knowledge_base`
-    - Search for relevant passages: `search_knowledge_base`
-    - List available source choices: `list_knowledge_source_options`
-    - List Knowledge Base entries: `list_knowledge_entries`
-    - List Knowledge Base cleanup candidates: `list_knowledge_cleanup_inventory`
+  <Accordion title="Knowledge Base: read and search (Read knowledge bases)">
+    - `list_knowledge_bases`: list every Knowledge Base you own
+    - `get_knowledge_base`: view one Knowledge Base's settings and source status
+    - `search_knowledge_base`: search for relevant passages
+    - `list_knowledge_source_options`: list the Discord channels and connected GitHub repositories available for new sources
+    - `list_knowledge_entries`: list Knowledge Base entries
+    - `list_knowledge_cleanup_inventory`: list source and entry identifiers for cleanup (also available with **Delete knowledge** alone)
   </Accordion>
 
-  <Accordion title="Knowledge Base: settings and sources">
-    - Change Knowledge Base settings: `update_knowledge_base_settings`
-    - Add a source: `create_knowledge_source`
-    - Edit, enable, or disable a source: `update_knowledge_source`
-    - Reindex a source: `index_knowledge_source`
-    - Delete a source: `delete_knowledge_source`
+  <Accordion title="Knowledge Base: settings and sources (Manage knowledge bases)">
+    - `update_knowledge_base_settings`: change Knowledge Base settings
+    - `create_knowledge_source`: add a web page, Discord channel, or connected GitHub repository source and queue its first index
+    - `update_knowledge_source`: edit, enable, or disable a source without reindexing it
+    - `index_knowledge_source`: queue indexing or reindexing for a source
   </Accordion>
 
-  <Accordion title="Knowledge Base: entries">
-    - Create an entry: `create_knowledge_entry`
-    - Edit an approved entry: `update_knowledge_entry`
-    - Approve or reject a pending entry: `review_knowledge_entry`
-    - Delete an entry: `delete_knowledge_entry`
+  <Accordion title="Knowledge Base: entries (Manage knowledge bases)">
+    - `create_knowledge_entry`: create an approved entry that is available immediately
+    - `update_knowledge_entry`: edit an active entry
+    - `review_knowledge_entry`: approve or reject a pending entry
+  </Accordion>
+
+  <Accordion title="Knowledge Base: delete (Delete knowledge)">
+    - `delete_knowledge_source`: delete one source and its saved content
+    - `delete_knowledge_entry`: delete one entry
   </Accordion>
 </AccordionGroup>
 
-## Useful Prompts
+## Useful prompts
 
-### Work Through Your Ticket Queue
+### Work through your ticket queue
 
 ```text
 List open tickets that nobody has claimed, oldest first, and summarize each one in one line.
@@ -293,7 +277,7 @@ Show the full conversation in ticket 123, then draft a reply for my approval. Do
 Find open tickets that mention billing, tag them with billing, and set any refund requests to high priority.
 ```
 
-### Review Before Changing Anything
+### Review before changing anything
 
 ```text
 Find entries that mention our old pricing. Show them first and do not change anything.
@@ -303,7 +287,7 @@ Find entries that mention our old pricing. Show them first and do not change any
 Show me the current password reset answer, explain what is outdated, and wait for my approval before editing it.
 ```
 
-### Keep Documentation Current
+### Keep documentation current
 
 ```text
 Show all webpage sources that have not been indexed recently. Do not reindex them yet.
@@ -313,27 +297,27 @@ Show all webpage sources that have not been indexed recently. Do not reindex the
 Reindex the source named Product Documentation and tell me whether it completed successfully.
 ```
 
-### Review Learned Answers
+### Review learned answers
 
 ```text
 List pending entries, group similar questions together, and recommend approve or reject for each one.
 ```
 
-### Compare Your Servers
+### Compare your servers
 
 ```text
 List my TicketCord knowledge bases and summarize which servers have Knowledge Base disabled or no ready sources.
 ```
 
-## Permissions and Safety
+## Permissions and safety
 
-| Permission | What It Allows |
-|------------|----------------|
-| **Read tickets** (`tickets:read`) | View ticket lists, conversations, details, and internal staff notes |
-| **Manage tickets** (`tickets:write`) | Reply to tickets, close or reopen them, and update claims, priority, tags, and internal notes |
-| **Read knowledge bases** (`kb:read`) | View targets, settings, sources, search results, and entries |
-| **Manage knowledge bases** (`kb:write`) | Change settings, manage sources and indexing, and create, edit, or review entries |
-| **Delete knowledge** (`kb:delete`) | Permanently delete sources and entries |
+| Permission | Scope | What it allows |
+|------------|-------|----------------|
+| **Read tickets** | `tickets:read` | View ticket lists, conversations, details, and internal staff notes |
+| **Manage tickets** | `tickets:write` | Reply to tickets, close or reopen them, and update claims, priority, tags, and internal notes |
+| **Read knowledge bases** | `kb:read` | View Knowledge Bases, settings, sources, entries, and bounded search results |
+| **Manage knowledge bases** | `kb:write` | Change settings, create or reindex sources, and create, edit, or review entries |
+| **Delete knowledge** | `kb:delete` | Permanently delete sources and entries |
 
 <Warning>
   Ticket replies reach the customer immediately, and deleting a source or entry is permanent. For risky changes, ask the AI tool to show what it found and explain its planned action before it changes anything.
@@ -341,61 +325,70 @@ List my TicketCord knowledge bases and summarize which servers have Knowledge Ba
 
 TicketCord applies these protections on every request:
 
-- Ownership and plan access are checked again, even after authorization
-- Every action must name its bot and server, and ticket actions only work on bots you own
-- Ticket conversations are bounded and sanitized: message windows are limited, long text is capped, and attachment links and avatars are excluded
-- Search results are limited and exclude internal IDs, secrets, and private backend details
-- Ticket messages and Knowledge Base text are treated as content, not as instructions for the AI tool
-- Write and delete actions are recorded in TicketCord's audit trail, including the affected ticket, without storing prompts or Knowledge Base content
+- Ownership and plan access are checked again on every call, even after authorization.
+- Every action must name its bot and server, and ticket actions only work on bots you own.
+- Ticket conversations are bounded and sanitized: message windows are limited, long text is capped, and attachment links and avatars are excluded.
+- Search results are limited and exclude internal identifiers and private details.
+- Ticket messages and Knowledge Base text are handed to the AI tool as content, not as instructions.
+- Write and delete actions are recorded in TicketCord's audit trail, including the affected ticket, without storing prompts or Knowledge Base content.
+- Access tokens last one hour and are refreshed automatically; refresh access expires after 30 days, after which the tool must log in again.
 
 Never store passwords, API keys, secrets, or customer data in your Knowledge Base.
 
-## Revoke a Connection
+## Revoke a connection
 
 1. Open the TicketCord dashboard.
-2. Go to **Dashboard → MCP**.
-3. Find the connection under **Active connections** in the **Connect AI tools** card.
-4. Select **Revoke** and confirm.
+2. Go to **Intelligence → MCP**.
+3. Find the connection under **Active connections** in the **Connect AI tools** card. Each row shows its permissions and the date it was connected.
+4. Select **Revoke** and confirm. The card reports **Connection revoked**.
 
 Revocation takes effect immediately. The AI tool must complete authorization again before it can access TicketCord.
 
-## Plan Changes
+## Plan changes
 
-MCP requires an active paid plan. If your plan expires, TicketCord pauses MCP access on the next request and marks the connection as **Paused by plan** on the MCP page. If your plan no longer includes Knowledge Base access, the Knowledge Base tools pause while ticket tools keep working. Access resumes after you upgrade to an eligible plan, unless you revoked the connection or its refresh access expired.
+MCP requires an active paid plan. If your plan expires, TicketCord pauses MCP access on the next request and marks the connection **Paused by plan** on the MCP page. If your plan no longer includes Knowledge Base access, the Knowledge Base tools pause while ticket tools keep working. Access resumes after you upgrade to an eligible plan, unless you revoked the connection or its refresh access expired.
 
 ## Troubleshooting
 
-### The browser did not open
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| The browser did not open | The tool could not launch a browser | Run `claude mcp login ticketcord` or `codex mcp login ticketcord` again and open the authorization link printed in the terminal |
+| **This authorization request is invalid or no longer available** | The consent page expired or was already used; it is single-use and short-lived | Close the tab and run the login command again. Do not resubmit the old page |
+| Authentication completed, but the tool is still waiting | The tool has not finished the exchange | Give it a moment; if it does not complete, cancel the login command and run it again with a fresh browser tab |
+| **Your current plan does not include the requested MCP access** | The account has no active paid plan, or Knowledge Base permissions were requested without Knowledge Base access | Upgrade, then run the login command again |
+| **Missing required scope** on a call | The connection was approved without the permission that tool needs | Revoke the connection on **Intelligence → MCP** and log in again, approving all requested permissions |
+| **Paused by plan** on the MCP page | The plan expired or lost Knowledge Base access | Upgrade to an eligible plan; access resumes automatically |
+| Access denied on a specific bot or server | You no longer own that bot, or the connection was revoked | Check **Dashboard → Bots** and **Active connections** |
+| The tool says it cannot see my Knowledge Base | The plan is paid but below Pro | Ticket tools work; Knowledge Base tools need Pro or Enterprise |
+| Login works but calls fail after a month of inactivity | Refresh access expired after 30 days | Run the login command again |
 
-Run the login command again. Your terminal should display an authorization link that you can open manually.
+## Common questions
 
-```bash
-claude mcp login ticketcord
-```
+**Who can set up an MCP connection?**
+Only the TicketCord account owner with an active paid plan. Dashboard staff cannot authorize one.
 
-or
+**Does one connection cover all my bots?**
+Yes, every bot you own now and every one you add later. Each action still names one bot and one server.
 
-```bash
-codex mcp login ticketcord
-```
+**Can the AI tool send messages to customers?**
+Yes, `reply_to_ticket` posts a staff reply the customer sees immediately, and `close_ticket` closes the ticket with the full close pipeline. Tell your tool to show you the text and wait for approval first.
 
-### The consent request expired
+**Can it delete things?**
+Only if you approved **Delete knowledge**. Source and entry deletions are permanent. Tickets cannot be deleted through MCP, only closed and reopened.
 
-The authorization page is temporary and can only be used once. Close the old tab and run the login command again to receive a new request. Do not submit the expired page again.
+**Which tools do I get on Basic?**
+The 13 ticket tools. The 15 Knowledge Base tools need Pro or Enterprise.
 
-### Authentication completed, but the tool is still waiting
+**How do I disconnect a tool?**
+**Intelligence → MCP → Active connections → Revoke**. It takes effect at once.
 
-Return to your terminal and give the client a moment to finish. If it does not complete, cancel the login command and run it again. Do not reuse the previous browser tab.
-
-### Access was denied
-
-Check that:
-
-1. You are signed in as the TicketCord account owner.
-2. Your current plan is an active paid plan (Knowledge Base tools also require Knowledge Base access).
-3. You still own the bot and server named in the request.
-4. The connection has not been revoked.
+**Is my data used to train anything?**
+TicketCord hands ticket and Knowledge Base text to your AI tool as content for the request you make. Prompts and Knowledge Base content are not stored in TicketCord's audit trail.
 
 <Card title="Knowledge Base Sources" icon="book" href="/ai/knowledge-base-sources">
   Learn how to prepare and maintain high-quality sources.
+</Card>
+
+<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
 </Card>

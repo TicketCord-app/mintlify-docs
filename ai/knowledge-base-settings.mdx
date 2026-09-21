@@ -1,232 +1,157 @@
 ---
 title: "Settings & Customization"
-description: "Fine-tune how your Knowledge Base responds to questions"
+description: "Every setting on the Knowledge Base Answering tab: product profile, answer quality, timing, display, and when the bot should stay quiet"
 ---
 
-Customize your Knowledge Base settings to match your support style and workflow.
-
-## AI Response Settings
-
-### Response Style
-
-Control how detailed AI suggestions should be:
-
-<AccordionGroup>
-  <Accordion title="Concise">
-    Short, to-the-point answers. Best for:
-    - Simple yes/no questions
-    - Quick reference information
-    - Experienced users who want fast answers
-
-    **Example:**
-    > "Yes, you can cancel anytime from Settings → Subscription → Cancel."
-  </Accordion>
-  <Accordion title="Balanced (Recommended)">
-    Mix of context and actionable steps. Best for:
-    - Most support scenarios
-    - When users need guidance but not hand-holding
-    - General-purpose support
-
-    **Example:**
-    > "You can cancel your subscription at any time. Go to Settings → Subscription → Cancel. Your access continues until the end of your billing period."
-  </Accordion>
-  <Accordion title="Helpful">
-    Detailed explanations with extra context. Best for:
-    - Complex features
-    - New users who need more guidance
-    - When detailed steps are important
-
-    **Example:**
-    > "You can cancel your subscription at any time without penalty. Here's how:
-    > 1. Click the gear icon to open Settings
-    > 2. Select 'Subscription' from the menu
-    > 3. Click 'Cancel Subscription'
-    > 4. You'll keep access until your billing period ends on [date]
-    >
-    > If you change your mind, you can resubscribe anytime."
-  </Accordion>
-</AccordionGroup>
-
-### Match Strictness
-
-The minimum confidence level before showing a suggestion.
-
-| Threshold | What Happens |
-|-----------|--------------|
-| **High (70%+)** | Only shows answers the AI is very confident about. Fewer suggestions, but more accurate. |
-| **Medium (50-70%)** | Shows more suggestions. Some may be less accurate. |
-| **Low (below 50%)** | Shows many suggestions. Higher chance of irrelevant answers. |
-
-<Tip>
-  The default is 50%. Lower it if users aren't getting suggestions, raise it if suggestions are often wrong.
-</Tip>
-
-### Max Response Tokens
-
-Limits how long AI responses can be. The default (2000 tokens) allows for complete, detailed answers.
-
-- **Lower values** (500-1000): Shorter, more concise answers
-- **Higher values** (up to 3000): Longer, more detailed answers
-
-The allowed range is 200 to 3000 tokens.
+The **Answering** tab controls what the bot knows about your community, how carefully it builds each answer, how long it waits, what the answer looks like, and when it should leave the ticket to staff. This page lists every setting with its range and default so you can tune the bot without guessing.
 
 <Info>
-  1 token ≈ 4 characters. 2000 tokens ≈ 1500 words maximum.
+  Open **Dashboard → Bots → your bot → Servers → the server → AI & Knowledge → Knowledge Base → Answering**. Click **Edit** to change settings and **Save Changes** to apply them; unsaved changes are lost when you leave the page. Status page integrations on this tab can only be changed by the bot owner.
 </Info>
 
-## Trigger Settings
+## Product Profile & Custom Instructions
 
-Control when the bot provides suggestions.
+This section tells the bot who it works for. Fill it in before tuning anything else; it has the biggest effect on answer quality.
 
-### Delay Before Suggestion
+| Setting | Limit | What it does |
+|---------|-------|--------------|
+| **Company/Community Name** | 100 characters | The bot presents itself as the support assistant for this name |
+| **Support Scope** | 500 characters | What your team supports, for example `We support our game launcher, accounts, and billing`. Helps the bot decide which questions belong in support |
+| **Product/Service Names** | Up to 50 names, 100 characters each | Product names the bot should recognise and use correctly |
+| **Forbidden Topics (Optional)** | Up to 20 topics | Topics the bot must not answer. It politely declines and sends the customer to staff |
+| **Official Links (Optional)** | A label and an HTTPS URL per link | Important pages the bot may mention without reading them as a source. Sources already include their own URLs |
+| **Custom Instructions** | 2,000 characters | Plain-language rules for tone and policy, for example `For billing questions, always mention our 30-day refund policy` |
 
-Wait time (in seconds) before the bot sends a suggestion. Default is 10 seconds; the allowed range is 5 to 60 seconds.
+## Suggestion Settings
 
-**Why use a delay:**
-- Gives users time to send follow-up messages
-- Prevents spam-like rapid responses
-- Allows message batching for multi-message questions
+| Setting | Values | Default | What it does |
+|---------|--------|---------|--------------|
+| **Match Strictness** | 10% to 100% | 50% | How closely help content must match the question before the bot uses it. Higher is stricter |
+| **Response Style** | Concise, Balanced, Helpful | Balanced | Concise gives short, next-step answers. Helpful adds more detail from your content |
+| **Help Content to Review** | 5 to 20 | 10 | How many pieces of saved content the bot may read before replying. Higher improves coverage and uses more tokens |
+| **Max Reply Length** | 200 to 3,000 tokens | 2,000 | The longest answer the bot may write. 2,000 tokens is roughly 1,500 words |
+| **Ticket History to Use** | 20 messages (low cost), 50 (balanced), 100 (high quality), All messages | 20 | How much of the ticket the bot re-reads for each answer |
+| **Minimum Message Length** | 1 to 100 characters | 10 | Messages shorter than this never trigger an answer, so `hi` is ignored but `What is X?` is not |
+| **Response Delay** | 5 to 60 seconds | 10 | How long the bot waits after the customer's last message, so a question split across messages gets one answer |
+| **Show Source Information** | On, Off | On | Adds a `Source:` line with the source title under each answer |
+| **Show Match Score** | On, Off | On | Adds `Confidence: 78%` to the footer. The displayed score is scaled for readability and is not the raw Match Strictness value |
 
-**Settings:**
-- **5 seconds** - Fastest response (may interrupt users who are still typing)
-- **10 seconds** - The default, recommended for most setups
-- **20+ seconds** - For slower-paced support
+The tab shows an estimate such as **1,200 responses with your Pro plan** so you can see how the settings affect your monthly allowance.
 
-### Minimum Message Length
+### Answer Quality
 
-Only trigger on messages with at least this many characters. Default is 10.
+These switches decide how carefully the bot prepares and checks a reply.
 
-**Why use this:**
-- Ignores greetings like "hi" or "hello"
-- Focuses on actual questions
-- Reduces unnecessary AI calls
-
-**Recommended settings:**
-- **10 characters** - Captures "What is X?" style questions
-- **20+ characters** - Only triggers on detailed questions
+| Setting | Default | What it does |
+|---------|---------|--------------|
+| **Wider Understanding** | Off | Helps with unclear or indirect questions. Slightly slower and uses more tokens |
+| **Focus Long Sources** | On | Keeps replies centred on the parts of long content that matter |
+| **Source Safety** | On | Checks every answer against your approved content so the bot cannot invent information. Turning it off risks made-up answers reaching customers |
+| **Smarter Source Memory** | Off | Improves how the bot remembers source details. Refresh every source after enabling it |
+| **Best Match Boost** | On | Adds an extra pass to pick the strongest content. Uses more tokens |
+| **Skip when already confident** | 85% (50% to 100%) | Skips the extra pass when the best match is already this strong |
+| **Skip when one match stands out** | 25% (10% to 50%) | Skips the extra pass when the best match leads the runner-up by this margin |
 
 ## Behavior Settings
 
-### Stop on Staff Response
+| Setting | Values | Default | What it does |
+|---------|--------|---------|--------------|
+| **Stop on Staff Response** | On, Off | Off | Once a staff member replies in the ticket, the bot stops answering there |
+| **Respond Outside Business Hours Only** | On, Off | Off | The bot only answers outside your configured business hours (Enterprise) |
+| **Respect Staff Presence** | On, Off | On | The bot stays quiet while a staff member has replied within the last 5 minutes or is typing |
+| **Show User Roles to AI** | On, Off | Off | Lets the bot see the customer's server roles, so a `Premium` member gets premium-specific answers |
+| **Wait for Staff Before AI Responds** | On, Off | Off | Holds the answer to give staff first chance |
+| **Wait Time** | 10 to 300 seconds | 45 | How long to hold when the setting above is on |
+| **Cancel if Staff Responds** | On, Off | On | Drops the held answer if any staff message arrives during the wait |
+| **AI Auto-Close** | On, Off | Off | Closes the ticket when the customer explicitly asks, for example `you can close this ticket` |
+| **General-Knowledge Fallback** | On, Off | Off | When your content has no answer, lets the bot answer generic technical questions (browser, networking, operating system basics) with a clear disclaimer. Billing, account, security, and legal topics still go to staff. Pro and higher |
 
-When enabled, the bot stops suggesting answers once a staff member replies.
+## AI User Blacklist
 
-**When to use:**
-- Staff prefers to handle tickets without AI help
-- To prevent AI from contradicting staff
-- For complex issues that need human judgment
+**Manage** opens a list of Discord user IDs (up to 500) who never receive AI answers in tickets they create. Use it for people who abuse the bot or prefer a human. Staff still see their tickets normally.
 
-**When to disable:**
-- AI should continue helping during long conversations
-- Staff uses AI as a tool to find information
+## Status Page Integration
 
-### Respect Staff Presence
+Connect **Better Stack** or **Atlassian Statuspage** so the bot can mention a known outage when a customer asks whether something is down. Choose the **Status Page Provider**, enable the integration, and paste the generated **Webhook URL** (and the one-time secret) into your status page's webhook settings. The bot owner is the only one who can enable, switch, or regenerate it. Incident-based answers do not show a `Source:` line.
 
-When enabled, the bot backs off for 5 minutes after staff sends a message.
+## What happens
 
-**How it works:**
-1. Staff sends a message
-2. Bot pauses suggestions for 5 minutes
-3. If user asks again after 5 minutes, bot can suggest
+1. A customer sends a message of at least **Minimum Message Length** characters in a ticket.
+2. The bot waits **Response Delay** seconds. If **Wait for Staff Before AI Responds** is on, it waits **Wait Time** instead and cancels if staff reply.
+3. If **Respect Staff Presence** finds a staff reply in the last 5 minutes or staff typing, or **Stop on Staff Response** finds any staff reply, nothing is posted.
+4. The bot searches your sources, keeps content above **Match Strictness**, reviews up to **Help Content to Review** pieces, and writes an answer in your **Response Style**, no longer than **Max Reply Length**, checked by **Source Safety**.
+5. The answer is posted with the source line, the match score, the AI notice, and vote buttons according to your display and feedback settings.
 
-**When to use:**
-- Staff is actively helping and doesn't want interruption
-- AI should only help when staff is idle
+## Recommended configurations
 
-### Outside Business Hours Only
-
-When enabled, AI only suggests answers outside your configured business hours.
-
-**When to use:**
-- Human-first support during work hours
-- AI coverage for after-hours tickets
-- Weekend/holiday coverage
-
-<Info>
-  Configure your business hours in the **Business Hours** tab of the server configuration (Enterprise).
-</Info>
-
-## Display Settings
-
-### Show Source Info
-
-When enabled, suggestions include:
-- The source title (e.g., "From: FAQ Page")
-- A link to the original page
-
-**When to enable:**
-- Users want to read more details
-- Transparency is important
-- You want users to explore documentation
-
-**When to disable:**
-- Cleaner, simpler suggestions
-- You prefer users to stay in Discord
-
-### Show Match Score
-
-When enabled, suggestions show the AI's confidence percentage.
-
-**Example with confidence:**
-> 💡 **Suggestion** (87% confident)
-> You can cancel anytime from Settings...
-
-**When to enable:**
-- Users should know how reliable the answer is
-- Training staff to recognize AI limitations
-- Debugging suggestion quality
-
-**When to disable:**
-- Cleaner appearance
-- Users don't need technical details
-
-## Saving Your Settings
-
-After making changes:
-
-1. Click **Edit** to enter edit mode
-2. Make your changes
-3. Click **Save** to apply
-
-<Warning>
-  Changes don't apply until you click Save. If you navigate away, unsaved changes are lost.
-</Warning>
-
-## Recommended Configurations
-
-### Quick Support Team
-
-For teams that want fast, minimal AI assistance:
+### Quick answers, staff first
 
 | Setting | Value |
 |---------|-------|
 | Response Style | Concise |
-| Match Strictness | 80% |
-| Delay | 5 seconds |
-| Stop on Staff Response | ✅ Enabled |
-
-### Comprehensive Support
-
-For teams that want detailed AI assistance:
-
-| Setting | Value |
-|---------|-------|
-| Response Style | Helpful |
-| Match Strictness | 60% |
-| Delay | 10 seconds |
-| Stop on Staff Response | ❌ Disabled |
-| Show Source Info | ✅ Enabled |
-
-### After-Hours Coverage
-
-For AI-only support outside business hours:
-
-| Setting | Value |
-|---------|-------|
-| Response Style | Helpful |
 | Match Strictness | 70% |
-| Outside Business Hours Only | ✅ Enabled |
-| Auto-Escalate to Staff | ✅ Enabled |
+| Wait for Staff Before AI Responds | On, 45 seconds |
+| Stop on Staff Response | On |
+
+### Full self-service
+
+| Setting | Value |
+|---------|-------|
+| Response Style | Helpful |
+| Match Strictness | 50% |
+| Ticket History to Use | 50 messages |
+| Show Source Information | On |
+| Stop on Staff Response | Off |
+
+### After-hours cover (Enterprise)
+
+| Setting | Value |
+|---------|-------|
+| Respond Outside Business Hours Only | On |
+| Response Style | Balanced |
+| Auto-Escalate to Staff (Learning tab) | On |
+
+## Limits and gotchas
+
+<Warning>
+  Do not turn off **Source Safety** to get more answers. Lower **Match Strictness** instead. Source Safety is the check that keeps invented details out of customer replies.
+</Warning>
+
+- **Match Strictness** and **Show Match Score** use different scales. The footer score is presented in a readable range; compare answers against each other, not against the strictness slider.
+- **Respond Outside Business Hours Only** does nothing until business hours are configured, which needs Enterprise.
+- Raising **Ticket History to Use**, **Help Content to Review**, or **Max Reply Length** raises the token cost of every answer.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| The bot answers questions it should leave to staff | **Forbidden Topics** or **Support Scope** are empty | Fill in the product profile; list the topics that must go to staff |
+| The bot uses the wrong product name | **Product/Service Names** is empty | Add every product name customers use |
+| Answers are cut off | **Max Reply Length** is low | Raise it toward 2,000 |
+| The bot answers greetings | **Minimum Message Length** is very low | Set it back to 10 |
+| The bot replies while a moderator is mid-conversation | **Respect Staff Presence** is off | Turn it on, or turn on **Stop on Staff Response** |
+| The bot never answers a Premium member's question correctly | It cannot see roles | Turn on **Show User Roles to AI** |
+| Changes do not take effect | You left the page without **Save Changes** | Edit again and save |
+
+## Common questions
+
+**Which single setting matters most?**
+The **Product Profile**. Tell the bot your community name, what you support, your product names, and forbidden topics before touching the sliders.
+
+**What Match Strictness should I use?**
+Start at 50%. Raise it if answers are often off-topic; lower it if the bot says it does not know about things your docs cover.
+
+**How do I make the bot wait for a human first?**
+Turn on **Wait for Staff Before AI Responds** and set **Wait Time** (10 to 300 seconds, 45 recommended). Leave **Cancel if Staff Responds** on so a staff reply drops the pending answer.
+
+**Can the bot translate for customers who write in another language?**
+Not from this tab. Message translation between customers and staff is a separate feature with its own settings; see [Translation](/ai/translation).
+
+**Does Show Match Score reveal the Match Strictness number?**
+No. The footer shows a scaled confidence for readability. Match Strictness is the internal cut-off for which content is used.
+
+**Why is the Answering tab greyed out?**
+The Knowledge Base or the **Enable AI Features** master switch is off, or the bot owner's plan is below Pro.
 
 <Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support

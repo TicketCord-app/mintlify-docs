@@ -1,57 +1,111 @@
 ---
 title: "Priority Detection"
-description: "Automatically set ticket priority based on content and urgency"
+description: "Set up Priority Detection so new tickets get a Low, Medium, High, or Urgent priority and a priority emoji in the channel name"
 ---
 
-Priority Detection uses AI to analyze ticket content and assign a priority. Urgent issues get flagged early; routine questions stay at normal priority.
+Priority Detection reads the first messages of a ticket and assigns a priority based on urgency, business impact, and how the customer is expressing themselves. Urgent problems are flagged in the channel name and reported to your logs channel; routine questions stay at a normal priority. This page is for the admin who wants staff to see the important tickets first.
 
 <Info>
-  Priority Detection is a **Pro** feature (Pro and Enterprise). [Upgrade your plan](https://ticketcord.com/pricing) to access it.
+  Priority Detection is available on **Pro** and **Enterprise**. It needs **Enable AI Features** on the **General** tab. The dashboard estimates about 700 tokens per analysis. [Upgrade your plan](https://ticketcord.com/pricing)
 </Info>
 
-## How It Works
+## Setup
 
-1. A user opens a ticket or sends a message
-2. After the analysis delay, the AI reads the conversation for urgency signals
-3. If its confidence is above your threshold, it assigns Low, Medium, High, or Urgent
-4. The channel name gets a priority emoji and, for High and Urgent, a card is posted to your logs channel
-
-| Priority | Emoji | Typical content |
-|----------|-------|-----------------|
-| **Low** | 🟢 | General questions, no urgency |
-| **Medium** | 🟡 | Standard issues |
-| **High** | 🟠 | Significant impact or frustration |
-| **Urgent** | 🔴 | Time-sensitive, major impact (the AI calls this "critical" in its analysis) |
-
-Channel names become `🔴-ticket-0001` and so on. Renaming is best effort: Discord allows two channel renames per 10 minutes, so the rename can be skipped while the priority is still recorded.
+<Steps>
+  <Step title="Open the Conversation tab">
+    Go to **Dashboard → Bots → your bot → Servers → the server → AI & Knowledge → AI Features → Conversation** and find **Smart Priority Detection**.
+  </Step>
+  <Step title="Enable it">
+    Click **Edit** and switch on **Enable Priority Detection**.
+  </Step>
+  <Step title="Choose timing and confidence">
+    Pick a **Timing Mode**, an **Analysis Delay**, and a **Confidence Threshold**. The defaults (Smart Detection, 30 seconds, 70%) suit most servers.
+  </Step>
+  <Step title="Choose the automatic actions">
+    Leave **Update Channel Name** and **Log Priority Alerts** on. Turn on **Override Manual Priorities** only if you want the AI to replace priorities staff set by hand.
+  </Step>
+  <Step title="Save">
+    Click **Save All**.
+  </Step>
+</Steps>
 
 ## Settings
 
-Open **Dashboard → Bots → your bot → Servers → the server → AI Features → Conversation**.
+| Setting | Values | Default | What it does |
+|---------|--------|---------|--------------|
+| **Enable Priority Detection** | On, Off | Off | Master switch for this feature |
+| **Timing Mode** | First Message, First Three Messages, Smart Detection (Recommended) | Smart Detection | First Message analyses right after the first customer message. First Three Messages waits for up to three messages or the timeout. Smart Detection picks its moment from urgency keywords and how much has been written |
+| **Analysis Delay** | Immediate to 5 minutes (0 to 300 seconds, in steps of 15) | 30 seconds | How long to wait after the last message before analysing. The bot always waits at least 30 seconds so rapid follow-ups are included |
+| **Confidence Threshold** | Liberal (10%) to Conservative (100%) | 70% | Minimum confidence before a priority is set. Higher is more conservative |
+| **Update Channel Name** | On, Off | On | Adds the priority emoji to the ticket channel name |
+| **Log Priority Alerts** | On, Off | On | Posts the detection card to the logs channel for High and Urgent tickets. No one is pinged |
+| **Override Manual Priorities** | On, Off | Off | Lets the AI change a priority a staff member set with `/priority` |
 
-| Setting | Options |
-|---------|---------|
-| **Analysis mode** | First message, first three messages, or smart detection (default) |
-| **Delay before analysis** | Default 30 seconds. The bot always waits at least 30 seconds so rapid follow-up messages are included |
-| **Confidence threshold** | 10% to 100%, default 70% |
-| **Update channel name** | Add the emoji to the channel name (default on) |
-| **Notify staff** | Post a detection card to the logs channel for High and Urgent tickets (default on; needs a logs channel) |
-| **Override existing** | Replace a priority staff already set (default off) |
-| **Auto-escalate high priority** | Raise an escalation for High and Urgent tickets |
+## Priority levels
 
-## Working with Staff
+| Priority | Emoji | What the AI puts here |
+|----------|-------|-----------------------|
+| **Urgent** | 🔴 | System outages, security issues, revenue-affecting problems. The AI calls this level "Critical" in its analysis |
+| **High** | 🟠 | Blocking issues preventing work, important feature failures |
+| **Medium** | 🟡 | Non-blocking bugs, feature requests with workarounds |
+| **Low** | 🟢 | General questions, minor issues, documentation requests |
 
-Staff can always set priority by hand with `/priority level:<urgent|high|medium|low>`. With **Override existing** off, the AI never changes a priority a staff member set.
+## What happens
+
+1. A customer opens a ticket or sends a message.
+2. The bot waits for the **Analysis Delay** (at least 30 seconds) and gathers the messages allowed by the **Timing Mode**.
+3. The AI assigns a priority with a confidence score. Below the **Confidence Threshold**, nothing changes.
+4. With **Update Channel Name** on, the channel is renamed with the emoji, for example `🔴-ticket-0001`. Renaming is best effort: Discord allows two renames per channel every 10 minutes, so the rename can be skipped while the priority is still recorded.
+5. For **High** and **Urgent** only, and with **Log Priority Alerts** on, a **🤖 AI Priority Detection** card is posted to the logs channel showing the ticket, **Priority**, **Confidence**, **User**, **AI Analysis** (the reasoning), and **Urgency Indicators** when any were found. Nobody is pinged.
+6. The priority is stored on the ticket and shows in the dashboard, the same as a priority set with `/priority`.
+
+## Working with staff
+
+- Staff set or change priority at any time with `/priority level:<urgent|high|medium|low|none>`.
+- With **Override Manual Priorities** off (the default), the AI only sets a priority on tickets that have none. A priority set by staff is never changed.
+- With it on, the AI can replace a staff-set priority when a later analysis is confident enough.
+- Priority Detection does not move tickets or ping roles. Combine it with [Auto-Route](/ai/auto-routing) for routing and [Tone Detection](/ai/sentiment-detection) for alerts.
+
+## Limits and gotchas
+
+<Note>
+  The **Analysis Delay** slider goes down to **Immediate**, but the bot still waits 30 seconds before analysing so that a customer who types three short messages in a row is judged on all of them.
+</Note>
+
+- The logs card only appears for **High** and **Urgent**. Medium and Low priorities are recorded silently.
+- Channel renames count against Discord's limit of two renames per 10 minutes per channel.
 
 ## Troubleshooting
 
-### Priority is never set
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| No priority is ever set | The feature or the AI master switch is off, the bot owner's plan is below Pro, or the **Confidence Threshold** is high | Check both switches, the plan, and lower the threshold toward 50% |
+| Priority is recorded but the channel name does not change | **Update Channel Name** is off, or the rename was skipped because of Discord's rename limit | Turn the setting on; the emoji appears at the next rename opportunity |
+| No card in the logs channel | The priority was Medium or Low, **Log Priority Alerts** is off, or no logs channel is configured | Only High and Urgent are posted. Turn the setting on and run `/setup` to set a logs channel |
+| The AI overwrote a priority staff chose | **Override Manual Priorities** is on | Turn it off |
+| Everything is marked Urgent | The **Confidence Threshold** is too low for your traffic | Raise it toward 80% |
+| `/priority` replies with **TC002** | The user is not staff | Give them a configured staff role |
+| `/priority` replies with **TC017** | The command was used outside a ticket channel | Run it inside the ticket |
 
-Check the feature is enabled, the owner's plan is Pro or higher, and lower the confidence threshold.
+## Common questions
 
-### No notification arrives
+**Which plan do I need?**
+Pro or Enterprise. On lower plans the card shows a **Pro+** pill and cannot be edited.
 
-Notifications go to the logs channel configured for the server; set one under **Structure**.
+**Does the AI ping anyone?**
+No. **Log Priority Alerts** posts a card to the logs channel without mentions. Use [Tone Detection](/ai/sentiment-detection) to ping a role when a customer is upset.
+
+**Why is the AI's "Critical" shown as Urgent?**
+The AI's four analysis levels are Critical, High, Medium, and Low. Critical is stored as the ticket priority **Urgent** so it matches `/priority`.
+
+**Can I make the AI wait for more of the conversation?**
+Yes. Choose **First Three Messages** or raise the **Analysis Delay** up to 5 minutes.
+
+**Will it change the priority again later in the ticket?**
+Only when **Override Manual Priorities** is on. Otherwise a ticket that already has a priority is left alone.
+
+**Where do I see the detected priority?**
+On the ticket in the dashboard and, with **Update Channel Name** on, as the emoji at the start of the ticket channel name in Discord.
 
 <Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support

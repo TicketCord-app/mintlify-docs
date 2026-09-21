@@ -1,37 +1,151 @@
 ---
 title: "Dashboard Overview"
-description: "Navigate and use the TicketCord web dashboard"
+description: "Find your way around the TicketCord dashboard, from the sidebar to every server configuration tab"
 ---
 
-The dashboard at [ticketcord.com/dashboard](https://ticketcord.com/dashboard) is where you add bots, configure servers, and work with tickets. Sign in with Discord.
+The dashboard at [ticketcord.com/dashboard](https://ticketcord.com/dashboard) is where you add bots, connect them to servers, configure how tickets work, and handle tickets outside Discord. Sign in with your Discord account; there is no separate TicketCord password. This page explains the layout, what each sidebar entry does, and which server configuration tab holds which setting, so you can jump straight to the right place.
+
+<Info>
+  Anyone with a Discord account can sign in. You see the bots you own and the servers where a bot owner added you as dashboard staff on the **Staff** tab. Some pages and tabs are plan-gated and show a lock badge; the plan that counts is always the bot owner's.
+</Info>
 
 ## Layout
 
-- **Sidebar**: the main navigation, grouped into General, Intelligence, Operations, and Account. Your account menu sits at the bottom of the sidebar.
-- **Top bar**: breadcrumbs for the page you are on and the language switcher.
+- **Sidebar** (left): the main navigation in four groups, a **Getting started** checklist while you are setting up, and your account menu at the bottom.
+- **Top bar**: breadcrumbs for the current page, the language switcher, the notification bell, and, on some pages, a primary action such as **Add New Bot**.
+- **Content**: the page itself. Configuration pages show a floating **Save** bar when you have unsaved changes; press `Ctrl/⌘ + S` or click **Save**.
 
-## Sidebar Sections
+Press `Ctrl/⌘ + K` for the command palette and `?` for the shortcut list. See [Keyboard Shortcuts](/features/keyboard-shortcuts).
 
-| Section | What it does |
-|---------|--------------|
-| **Dashboard** | Total tickets, new today, active tickets, average response time, a ticket graph, and recent tickets |
-| **Bots** | Your custom bots: status, servers, credentials, restart, delete |
-| **Servers** | Every server your bots are in; opens that server's configuration |
-| **Tickets** | Search, filter, and manage tickets across your bots |
-| **Analytics** | Support performance for the last 7, 30, or 90 days |
-| **AI Usage** | Token usage for AI features |
-| **MCP** | Connect AI assistants such as Claude Code to your TicketCord data |
-| **Approvals** | Pending and decided approval requests |
-| **Escalations** | Tickets escalated to humans |
-| **Billing** | Plan, payment history, and the Stripe billing portal |
-| **Support** | Contact options and your data rights |
+## Sidebar
 
-## Server Configuration
+| Group | Entry | What it does |
+|-------|-------|--------------|
+| General | **Dashboard** | Home: **Total tickets**, **New today**, **Active tickets**, **Avg response** across your bots for the last 30 days, a ticket graph, the six most recently active tickets, and quick links |
+| General | **Bots** | Your custom bots. Add, configure, restart, update credentials, transfer configuration, delete. See [Bot Management](/dashboard/bot-management) |
+| General | **Servers** | Every server your bots are in, split into **Owned Servers** and **Staff Access**, with open and total ticket counts, **Configure** or **Set up**, **Import Settings**, and **Sync servers** (once every 5 minutes) |
+| General | **Tickets** | The ticket queue across all bots. See [Ticket Management](/dashboard/ticket-management) |
+| Intelligence | **Analytics** | Support performance: response and resolution times, staff, categories, busiest hours, SLA misses. See [Analytics](/dashboard/analytics) |
+| Intelligence | **AI Usage** | Monthly AI token allowance, usage, and top-ups |
+| Intelligence | **MCP** | Connect AI assistants to your TicketCord data. See [MCP](/ai/mcp) |
+| Operations | **Approvals** | Pending and decided approval requests, and the approval settings. See [Approval Workflows](/configuration/approval-workflows) |
+| Operations | **Escalations** | Tickets escalated to a human. See [Escalations](/configuration/escalation-rules) |
+| Account | **Billing** | Your plan, payment history, and the billing portal. See [Manage Subscription](/billing/manage-subscription) |
+| Account | **Support** | Email and Discord contact, self-service links, and your GDPR data rights. See [Data Export](/features/gdpr-export) |
 
-Everything about how a bot behaves in one server (staff roles, panels and embeds, welcome messages, closing, auto-close, transcripts, quick replies, AI and Knowledge Base, business hours, SLA, approvals, scheduled reports, webhooks, language) is configured per server: **Bots → your bot → Servers → the server**.
+### Account menu
 
-## Account Menu
+Click your name at the bottom of the sidebar. The menu shows your name, email, and plan, then **Billing**, an **Appearance** picker with **Light**, **Dark**, and **System**, and **Sign out** (which asks you to click **Confirm sign out**). Your name and avatar come from Discord and cannot be edited in TicketCord. See [Account Settings](/dashboard/settings).
 
-At the bottom of the sidebar: **Billing**, **Replay onboarding**, **Appearance** (light, dark, or system), and **Sign out**. Your name and avatar come from Discord.
+## Server configuration
 
-See [Keyboard Shortcuts](/features/keyboard-shortcuts) for the palette and navigation keys.
+Everything about how a bot behaves in one server is configured per server: **Dashboard → Bots → your bot → Servers → the server**, or **Dashboard → Servers → Configure**. The configuration page has a tab list on the left, grouped as below. Tabs with a lock badge need a higher plan; the **Staff** tab is editable by the bot owner only.
+
+### Access & Safety
+
+| Tab | What lives there |
+|-----|------------------|
+| **Staff** | Staff roles that can work tickets, and dashboard access for people who may manage this server on the dashboard (owner only) |
+| **Structure** | Ticket categories where new tickets are created, closed categories, and the logs channel |
+| **Firewall** | Firewall rules that block ticket creation, plus a separate ModMail firewall |
+
+### Ticket Lifecycle
+
+| Tab | What lives there |
+|-----|------------------|
+| **Opening** | A temporary role granted on ticket open, per-user limits (max open and max total tickets), and threaded tickets with their on-call roster |
+| **Claiming** | Exclusive claim mode and the supervisor roles that can still see claimed tickets |
+| **Closing** | Closure and notification settings: staff-only close, instant close, auto-delete on close, sending the transcript, and DM on close |
+| **Auto-Close & Reminders** | Inactivity auto-close (15 minutes to 30 days), reminder messages, and **Auto-close on User Leave**. See [Auto-Close on User Leave](/features/user-leave-closure) |
+| **Feedback** | Feedback collection: the feedback channel and role, collection delay, and reminders |
+| **Tags** | Predefined tags staff apply with `/tag`, and the maximum tags per ticket |
+| **Transcripts** | The transcript channel and the data retention policy |
+
+### Channels
+
+| Tab | What lives there |
+|-----|------------------|
+| **ModMail** | DM-based tickets: enable ModMail, account age requirements, reminders for users and staff, and ModMail AI options |
+
+### Messaging
+
+| Tab | What lives there |
+|-----|------------------|
+| **Panels & Embeds** | The ticket panels users click on, with their buttons, dropdowns, and forms, plus custom embeds for `/embed` |
+| **Messages** | The **DM Users on Join** card, close messages, and the welcome message designs posted in new tickets. See [DM on Join](/features/dm-welcome) |
+| **Quick Replies** | Canned responses sent with `/reply`. See [Canned Responses](/configuration/canned-responses) |
+
+### AI & Knowledge
+
+| Tab | What lives there |
+|-----|------------------|
+| **AI Features** | Priority detection, duplicate detection, sentiment, translation, AI help and summaries, auto-routing, and AI behaviour such as **Respond Outside Business Hours Only**. See [AI Overview](/ai/overview) |
+| **Knowledge Base** | Sources the AI answers from, quality thresholds, and the **Learning** tab with escalation settings. See [Knowledge Base](/ai/knowledge-base) |
+
+### Service Levels
+
+| Tab | What lives there |
+|-----|------------------|
+| **Business Hours** | Weekly schedule, timezone, holidays, and off-hours behaviour. See [Business Hours](/configuration/business-hours) |
+| **SLA Management** | First-response and resolution targets, alerts, and escalation thresholds. See [SLA Management](/configuration/sla-management) |
+| **Approvals** | Approver role, approval types, timeout, and audit log. See [Approval Workflows](/configuration/approval-workflows) |
+| **Scheduled Reports** | Emailed analytics reports. See [Scheduled Reports](/features/scheduled-reports) |
+
+### Platform
+
+| Tab | What lives there |
+|-----|------------------|
+| **Integrations** | Webhooks and other third-party connections. See [Webhooks](/integrations/webhooks) |
+| **Language** | The language the bot uses in this server, one of 19 |
+
+## What happens when you save
+
+1. Edit any field. The floating save bar appears with the number of pending changes.
+2. Click **Save** or press `Ctrl/⌘ + S`. Only the fields you changed are sent.
+3. The bot picks up the new configuration for its next action; no restart is needed.
+4. If a value is invalid (for example a channel that belongs to another server), the save is rejected and the message names the field.
+
+## Limits and gotchas
+
+- Configuration is per server. Two servers using the same bot have separate settings; use **Import Settings** on the **Servers** page to copy one server's configuration to another.
+- Dashboard staff can edit every tab except **Staff**, and cannot manage webhooks, scheduled reports, or approval settings, which are owner-only.
+- Server data shown on the **Servers** page is a snapshot; click **Sync servers** after inviting a bot to a new server. Sync is limited to once every 5 minutes.
+- The plan that unlocks locked tabs is the bot owner's, so upgrading your own account does not unlock a server owned by someone else.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| A server is missing from **Servers** | The bot was invited after the last sync, or the bot is offline | Click **Sync servers**, and check the bot status on **Bots** |
+| A tab shows a lock | The bot owner's plan does not include it | See [Plans](/billing/plans) and upgrade the owner's account |
+| The **Staff** tab is read-only | You are dashboard staff, not the owner | Ask the bot owner |
+| **Save** is greyed out | Nothing has changed, or a field is invalid | Look for a red field message |
+| You cannot see the dashboard for a server you moderate | Discord staff roles do not grant dashboard access | Ask the bot owner to add you as dashboard staff on the **Staff** tab |
+| The dashboard is in the wrong language | The language switcher applies to the dashboard only | Use the switcher in the top bar; bot language is set per server on the **Language** tab |
+
+## Common questions
+
+**Where do I configure my bot for a server?**
+**Dashboard → Bots → your bot → Servers → the server**, or **Dashboard → Servers → Configure**. All per-server settings are on that page's tabs.
+
+**Where is the setting for X?**
+Use the tab tables above. Ticket flow is under **Ticket Lifecycle**, panels and canned responses under **Messaging**, AI under **AI & Knowledge**, SLAs, hours, approvals, and reports under **Service Levels**, and webhooks under **Platform → Integrations**.
+
+**Why can I not edit some tabs?**
+Either the tab is plan-gated (lock badge; the bot owner's plan counts) or it is owner-only, such as **Staff**, webhooks, scheduled reports, and approval settings.
+
+**How do my moderators get dashboard access?**
+The bot owner adds them on the **Staff** tab of that server's configuration. Discord roles alone do not grant dashboard access.
+
+**Do I need to restart the bot after saving?**
+No. Saved settings apply to the bot's next action.
+
+**Can I copy settings from one server to another?**
+Yes. On **Dashboard → Servers**, open the server's menu and choose **Import Settings** to pull configuration and canned responses from another of your servers.
+
+**Where do I change the dashboard language or theme?**
+Language is the switcher in the top bar; theme is **Appearance** in the account menu. See [Account Settings](/dashboard/settings).
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
+</Card>

@@ -1,69 +1,117 @@
 ---
 title: "Free Trial"
-description: "Every new account starts with a 14-day Enterprise trial, no card required"
+description: "Every new account starts with 14 days of Enterprise, no card required: what is included, what is capped, and what happens when it ends"
 ---
 
-## How the Trial Works
+The signup trial gives every new TicketCord account the Enterprise plan for 14 days so you can set up bots, try the AI features, and decide which plan fits. There is nothing to activate and no payment method is collected. When the trial ends, the account returns to Free and nothing is charged.
+
+<Info>
+  The trial starts the moment you sign in to the dashboard for the first time and is granted once per account. It cannot be restarted or extended from the dashboard.
+</Info>
+
+## How the trial works
 
 <CardGroup cols={3}>
-  <Card title="14 Days" icon="calendar">
-    Two weeks of Enterprise features, starting the moment you sign in for the first time
+  <Card title="14 days" icon="calendar">
+    Starts on first sign-in. The dashboard shows "Your Enterprise trial is active", the end date, and a day counter.
   </Card>
   <Card title="Automatic" icon="user-check">
-    Granted to every new account. There is nothing to activate.
+    Granted to every new account. No activation, no code.
   </Card>
-  <Card title="No Card" icon="credit-card">
-    No payment method is collected and nothing is charged when the trial ends
+  <Card title="No card" icon="credit-card">
+    No payment method is asked for. The Billing page shows "No automatic charges."
   </Card>
 </CardGroup>
 
-## What's Included
+## What is included and what is capped
 
-During the trial you get the Enterprise plan with these limits:
+You get the Enterprise feature set with reduced limits:
 
-| Limit | During the trial |
-|-------|------------------|
-| Custom bots | 1 |
-| Knowledge base sources | 2 |
-| Crawled pages per source | 100 |
-| AI tokens | 1M for the whole trial (not per month) |
+| Limit | During the trial | Paid Enterprise |
+|-------|------------------|-----------------|
+| Custom bots | 1 | 6 |
+| Knowledge base sources | 2 | 15 |
+| Pages crawled per website source | 100 | 500 |
+| AI tokens | 1,000,000 for the whole trial (not per month) | 30,000,000 per month |
 
-Everything else follows the Enterprise plan: webhooks, SLA management, business hours, approvals, and the AI features.
+Everything else follows Enterprise: unlimited ticket volume, configurable open-ticket limits, branding removed, custom footer text and bot status, 15 custom embeds, unlimited quick replies, application forms, auto-close, analytics, webhooks (20 per server), business hours, SLA management, approvals, scheduled reports, Atlas AI, AI Help, priority, duplicate, and tone detection, translation, auto-routing, and all retention options.
 
-<Info>
-  If you use up the 1M trial tokens, AI features pause until you subscribe. Everything that does not use AI keeps working.
-</Info>
+<Note>
+  The AI allowance is a single pool of 1,000,000 tokens for the 14 days. It does not reset and cannot be topped up: extra token packages are only sold to paid Pro and Enterprise accounts. **Dashboard → Usage** shows "Trial allocation - 1,000,000 tokens. AI features pause when exhausted." and how many are left.
+</Note>
 
-## During Your Trial
+## What you see in the dashboard
 
-<AccordionGroup>
-  <Accordion title="Can I switch the trial to a different plan?">
-    No. The trial is always Enterprise. You can subscribe to any paid plan at any time; paid checkout bills immediately and replaces the trial.
-  </Accordion>
+- **Billing → Current Plan**: the Enterprise pill, a banner "Your Enterprise trial is active. Trial ends on [date]. No automatic charges.", and a **Trial Ends** tile with the date. There is no **Manage Subscription** button because there is no subscription.
+- **Plans & Pricing**: all three paid plans show **Upgrade to …**. The trial does not count as a paid plan, so you can subscribe to any of them.
+- **Usage**: the trial token balance and a **Choose a paid plan** link.
 
-  <Accordion title="Will I be charged automatically?">
-    No. No payment method is collected for the trial. When it ends, your account returns to the Free plan.
-  </Accordion>
+## When the 1,000,000 trial tokens run out
 
-  <Accordion title="What happens to my data after the trial?">
-    Your tickets, transcripts, and settings are preserved; only access to paid features is restricted. On the Free plan, closed-ticket content retention is up to 90 days for tickets going forward, and bots beyond the Free limit of 1 are stopped. See [Plans & Pricing](/billing/plans).
-  </Accordion>
-</AccordionGroup>
+AI features pause; everything else keeps working. In a ticket the bot tells the user "I'm connecting you with a team member who can continue helping you" and staff see that the AI token quota has been reached, so a human takes over. Knowledge base answers, AI Help, summaries, priority and duplicate detection, tone detection, translation, and auto-routing stay paused until you subscribe to Pro or Enterprise. Ticket creation, staff commands, transcripts, auto-close, webhooks, and every other non-AI feature are unaffected.
 
-## Subscribing
+## When the 14 days end
+
+1. The account returns to the Free plan. Nothing is charged and no card was ever collected.
+2. Everything you built is kept: bots, server configurations, embeds, knowledge base content, tickets, and transcripts. The dashboard shows "Trial ended. Your setup is saved. Upgrade to resume paid features."
+3. Free limits apply from then on: 1 bot (the trial already limited you to 1, so no bot is stopped), 5 open tickets per user, 1 custom embed, no quick replies, TicketCord footer and status, no AI, no analytics.
+4. Paid-only toggles you switched on during the trial (business hours, SLA, approvals, scheduled reports, AI features, auto-routing, translation, sentiment, AI Help, ModMail reminders, DM on join, status page integrations, webhooks) are switched off, but TicketCord remembers which ones were on. If you later subscribe, they are turned back on automatically.
+5. Closed-ticket content for tickets created after the trial follows the Free retention rules (delete after close, 30 days, or 90 days; default 90 days). Tickets created during the trial keep the policy they were created under.
+6. Knowledge base sources beyond the Free limit (0) stay saved but are not used until you subscribe to Pro or Enterprise.
+
+## Subscribing during or after the trial
 
 <Steps>
   <Step title="Open Billing">
-    Go to [ticketcord.com/dashboard](https://ticketcord.com/dashboard) and open **Billing**
+    Go to [ticketcord.com/dashboard](https://ticketcord.com/dashboard) and open **Billing**.
   </Step>
-  <Step title="Choose a Plan and Cycle">
-    Pick Basic, Pro, or Enterprise, monthly or yearly (yearly saves 17%)
+  <Step title="Choose a plan and how to pay">
+    Pick Basic, Pro, or Enterprise. With **Card** choose **Monthly** or **Yearly** (yearly saves about 17%); with **Crypto** choose 3, 6, or 12 months of prepaid access.
   </Step>
-  <Step title="Complete Checkout">
-    Pay by card or Link through Stripe, or with cryptocurrency. Your paid plan starts immediately.
+  <Step title="Complete checkout">
+    Accept the two-checkbox purchase consent, then pay. Your paid plan starts immediately and replaces the trial. Paid checkout bills right away; there is no second trial.
   </Step>
 </Steps>
 
-<Card title="Compare Plans" icon="table" href="/billing/plans">
-  See what each plan includes
-</Card>
+The trial is always Enterprise; you cannot switch the trial itself to Basic or Pro. If you subscribe to Basic or Pro, the paid plan's limits apply from that moment (for example Pro's monthly 10M tokens replace the trial pool, and Basic has no AI).
+
+## Partner gift-card trials
+
+Some partners hand out TicketCord gift cards. Redeem the 16-character code under **Billing → Redeem a Gift Card**. A gift card can carry a trial of its own ("Gift card redeemed - enjoy your free 30-day trial courtesy of [partner]"), which is a card subscription with a trial period: the consent dialog explains "You will not be charged today. Your gift covers the first N months. After that, your subscription renews at €X per month/year unless you cancel." While that trial runs, your plan is locked ("Your plan is locked during your gift-card trial") and you cancel it through **Manage Subscription** if you do not want it to renew.
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Will I be charged when the trial ends?">
+    No. No payment method is collected for the signup trial, so nothing can be charged. The account simply returns to Free.
+  </Accordion>
+
+  <Accordion title="Can I get another trial with a new account?">
+    The trial is granted once per TicketCord account. Your account is tied to the Discord account you sign in with.
+  </Accordion>
+
+  <Accordion title="Why can I only add one bot during the trial?">
+    The trial caps bots at 1, knowledge base sources at 2, crawled pages at 100 per source, and AI at 1,000,000 tokens total. Subscribing lifts these to the plan's normal limits.
+  </Accordion>
+
+  <Accordion title="I used all my trial tokens. Can I buy more?">
+    Not on the trial. Token packages are sold to paid Pro and Enterprise accounts only. Subscribe to Pro (10M tokens per month) or Enterprise (30M) and the monthly allocation replaces the trial pool immediately.
+  </Accordion>
+
+  <Accordion title="What happens to my knowledge base after the trial?">
+    The content stays saved but is not used on Free, which has no AI. Subscribe to Pro (2 sources) or Enterprise (15 sources) to use it again.
+  </Accordion>
+
+  <Accordion title="Do I lose my settings when the trial ends?">
+    No. Your bots, server configurations, embeds, tickets, and transcripts are kept. Only paid features are switched off, and the ones you had on are restored automatically when you subscribe.
+  </Accordion>
+</AccordionGroup>
+
+<CardGroup cols={2}>
+  <Card title="Compare Plans" icon="table" href="/billing/plans">
+    Every limit and feature per plan
+  </Card>
+  <Card title="Support Discord" icon="discord" href="https://ticketcord.com/discord">
+    Ask about the trial
+  </Card>
+</CardGroup>

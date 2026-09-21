@@ -1,31 +1,95 @@
 ---
 title: "Auto-Close on User Leave"
-description: "Automatically close tickets when the user leaves your server"
+description: "Close a member's open tickets automatically when they leave, are kicked, or are banned"
 ---
 
-When a member leaves, is kicked, or is banned, TicketCord can close the tickets they created so staff do not keep working on conversations nobody can answer.
+When a member leaves your server, is kicked, or is banned, TicketCord can close every open ticket they created. Staff stop spending time on conversations that can no longer be answered, and the tickets go through your normal close flow (transcript, closed category, channel deletion) instead of sitting open forever. It is a single switch on the **Auto-Close & Reminders** tab, separate from the inactivity timer.
 
 <Info>
-  Auto-Close on User Leave is available on **Basic** and higher (and to accounts with grandfathered auto-close access).
+  Auto-Close on User Leave needs the **Basic** plan or higher. Accounts that configured auto-close before it became a paid feature keep it under **Grandfathered** access. Enabling it on Free returns "Auto-close requires a Basic, Pro, or Enterprise plan."
 </Info>
 
-## Enabling It
+## Setting up
 
-Go to **Dashboard → Bots**, pick your bot, choose the server, open the **Auto-close** tab, and turn on **Auto-close on User Leave**. It is off by default.
+<Steps>
+  <Step title="Open the Auto-Close & Reminders tab">
+    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **Auto-Close & Reminders** under the **Ticket Lifecycle** group.
+  </Step>
+  <Step title="Turn on the switch">
+    In the **Auto-Close Tickets** card, enable **Auto-close on User Leave** ("Automatically close all of a user's tickets when they leave, get kicked, or get banned from the server (independent of inactivity timer)").
+  </Step>
+  <Step title="Save">
+    Click **Save** or press `Ctrl/⌘ + S`. It applies to the next member who leaves.
+  </Step>
+</Steps>
 
-## What Happens
+## Settings
+
+| Setting | Allowed values | Default |
+|---------|----------------|---------|
+| **Auto-close on User Leave** | on or off | off |
+
+There is no delay, grace period, or per-category option. The inactivity auto-close timer on the same card (15 minutes to 30 days) is independent and can be on or off regardless.
+
+## What happens
 
 1. The member leaves, is kicked, or is banned.
-2. After a short internal delay (about 1.5 seconds, used to tell a ban apart from a leave), every open ticket **created by that member** is closed.
-3. A system notice is posted in each ticket stating why it was closed: left (gray), kicked (orange), or banned (red).
-4. Channel deletion and transcripts follow your normal close settings (**Auto-delete on close** and **Auto-transcript on close**).
+2. The bot waits about 1.5 seconds. Discord reports a kick and a voluntary leave identically, and a ban arrives as a separate event; the short wait lets the bot tell a ban apart from a leave so the notice is accurate.
+3. Every **open ticket created by that member** on that server is closed. The closer is recorded as the system, not a staff member, so nobody gets resolution credit for it in analytics.
+4. A system card is posted in each ticket stating why it was closed, with the member's display name (no ping) and the ticket number:
+   - **Left**: grey, "user left" notice
+   - **Banned**: red, "user banned" notice
+5. The member's access to the channel is removed and the ticket is moved to your closed category, if you have one.
+6. Your close settings run as usual: a transcript is generated when **Auto-transcript on close** is on, and the channel is deleted when **Auto-delete on close** is on. Pinned tickets are never auto-deleted; the notice says so.
 
-## What Does Not Happen
+## Limits and gotchas
 
-- Tickets the member only participated in, or claimed as staff, are not touched.
-- There is no configurable delay, and a member rejoining does not reopen the tickets.
-- Discord does not tell bots the difference between leaving and being kicked, so a kick is reported as "left" unless a ban follows.
+- Only tickets **created by** the departing member close. Tickets they were added to, or that they claimed as staff, are not touched.
+- A kick is reported as **left**. Discord does not tell bots the difference, so the orange "kicked" notice is only used when the bot can tell a kick apart, which today it cannot. Expect grey for kicks.
+- ModMail tickets created by the member are included, since they are open tickets with that creator.
+- Rejoining does not reopen anything. Staff can `/reopen` a ticket by hand if the member comes back and the channel still exists.
+- The plan is checked on the bot owner at the moment of the event. If the check fails, the tickets stay open rather than being closed by mistake.
+- If the bot is offline when the member leaves, the event is missed and the tickets remain open. Use the inactivity timer as a safety net.
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+<Note>
+  The wait before closing is fixed at roughly 1.5 seconds and cannot be extended. If you want departing members to have a chance to come back before their tickets close, leave this switch off and rely on the inactivity timer instead.
+</Note>
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| Tickets stayed open after a member left | The switch is off, the owner's plan is Free without grandfathered access, or the bot was offline at the time | Check the switch and plan; close the tickets by hand or wait for the inactivity timer |
+| Only some of the member's tickets closed | The others were already closed, or the member was a participant rather than the creator | Expected; participant tickets are not affected |
+| The notice says "left" but the member was kicked | Discord reports kicks and leaves the same way | Expected; check your server's audit log for the real reason |
+| The channel was not deleted | **Auto-delete on close** is off, or the ticket is pinned | Turn auto-delete on, or unpin and delete manually |
+| No transcript was saved | **Auto-transcript on close** is off | Turn it on in the **Transcripts** tab |
+| "Auto-close requires a Basic, Pro, or Enterprise plan." | Free plan without grandfathered access | Upgrade at [ticketcord.com/pricing](https://ticketcord.com/pricing) |
+| A staff member's tickets closed when they left | They had created tickets of their own | Expected; the rule is based on the ticket creator |
+
+## Common questions
+
+**Which tickets close when someone leaves?**
+Every open ticket that the departing member created on that server. Tickets they merely took part in are left alone.
+
+**Is there a grace period in case they rejoin?**
+No. Tickets close about 1.5 seconds after the leave event. If the member comes back, staff can `/reopen` a ticket whose channel still exists.
+
+**Does it work for bans?**
+Yes. A ban closes the member's tickets with a red "banned" notice instead of the grey "left" notice.
+
+**Why does a kicked member show as "left"?**
+Discord sends the same event for kicks and voluntary leaves, so the bot cannot distinguish them. Only bans are reported separately.
+
+**Does it save a transcript first?**
+Only if **Auto-transcript on close** is enabled on the **Transcripts** tab. The close runs your normal close settings.
+
+**Do I need auto-close timers on for this to work?**
+No. The user-leave switch is independent of the inactivity timer; either can be on without the other.
+
+**Which plan do I need?**
+Basic or higher, or grandfathered auto-close access from before it became a paid feature.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support
 </Card>

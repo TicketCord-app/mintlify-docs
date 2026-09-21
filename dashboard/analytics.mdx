@@ -1,38 +1,126 @@
 ---
 title: "Analytics & Reports"
-description: "Understand your support performance with analytics and reports"
+description: "Read the analytics page: what each number measures, how it is calculated, and where to find staff, SLA, and sentiment views"
 ---
 
-**Dashboard → Analytics** shows how your support is performing.
+**Dashboard → Analytics** shows how your support is performing across every bot you own or manage: how many tickets are waiting, how quickly staff answer and resolve, who handles the most, which categories and hours are busiest, and which users come back. It is for owners and team leads who want to spot bottlenecks and fair staff numbers without counting tickets by hand.
 
 <Info>
-  Analytics is available on **Basic** and higher.
+  Analytics is included from the **Basic** plan up. The SLA cards need **Enterprise** ([SLA Management](/configuration/sla-management)), and the sentiment and AI sections only appear when those features have produced data on your servers.
 </Info>
 
-## Time Range
+## Time range
 
-Choose the last **7**, **30**, or **90 days**.
+The main page (KPIs, staff cards, and patterns) covers the **last 30 days**. The **Missed response SLAs**, **Sentiment**, and **AI resolution** cards each have their own selector with **7**, **30**, or **90 days**. The team page has a period selector with recent ranges and calendar months.
 
-## What You See
+Numbers are cached for a few minutes, so a ticket closed a moment ago may take a short while to show. Busiest hours are shown in your browser's timezone.
 
-| Section | Contents |
-|---------|----------|
-| **Overview** | Total tickets, open tickets, closed tickets, tickets today and yesterday, average first response time, average resolution time |
-| **Staff performance** | Tickets handled, tickets closed, messages, average response and resolution time, ratings, SLA misses, recent tickets |
-| **Top resolvers** | Staff who closed the most tickets |
-| **Category breakdown** | Tickets per category |
-| **Busiest hours** | When tickets are opened |
-| **Repeat users** | Users who open many tickets |
-| **Daily stats** | Tickets created per day |
-| **SLA** | Breach warnings and staff SLA misses (Enterprise) |
-| **Sentiment** | Customer mood over time (Enterprise) |
+## The main page
 
-AI token usage is on its own page, **Dashboard → AI Usage**.
+### KPI cards
 
-## Scheduled Reports
+| Card | What it measures |
+|------|------------------|
+| **Awaiting response** | Open tickets that have not yet had a staff reply. The badge reads **Needs Attention** when there are any, **All Responded** when there are none |
+| **Avg Response** | Mean time from ticket creation to the first staff message, over tickets that received one (responses slower than 7 days are excluded as outliers) |
+| **Avg resolution** | Mean time from creation to closure for closed tickets (over 365 days excluded) |
+| **Total tickets** | All tickets across your bots, all time |
 
-Enterprise servers can email these metrics on a schedule. See [Scheduled Reports](/features/scheduled-reports).
+### Staff cards
+
+Three tabs: **Fastest** (**Fastest Responders**, lowest average first-response time), **Top Resolvers** (staff who closed the most tickets; a user closing their own ticket does not count), and **Most Active** (**Most Active Staff**, the five staff who handled the most tickets in the last 30 days).
+
+### Missed response SLAs
+
+Claimed tickets that missed their first-response target, with a count, the recent affected tickets, and a date range selector. Only breaches recorded since staff attribution was enabled are included. Above it, when SLA tracking is on, a banner lists open tickets that have used 80% or more of a target, broken down by Critical, High, Medium, and Low.
+
+### Sentiment and AI resolution
+
+When [Sentiment Detection](/ai/sentiment-detection) is on, a **Sentiment** section shows customer mood over the chosen range. When the AI has resolved tickets, an **AI resolution** section shows how many it handled without staff.
+
+### Patterns
+
+| Card | What it shows |
+|------|---------------|
+| **Category breakdown** | Ticket volume per category (tickets with no category are left out) |
+| **Resolution time by category** | Average time to resolve per category |
+| **Busiest Hours** | The six hours of the day with the most ticket creation, in your timezone. Needs at least 20 tickets; below that the card says how many more are needed |
+| **Repeat Users** | Users who created two or more tickets, with their counts |
+
+## The team page
+
+Click **View full team** under the staff cards to open the team page, a full table with a **Bot** selector (or **All bots**) and a period selector. Click a staff member's row for their individual view.
+
+| Column | Meaning |
+|--------|---------|
+| **Staff member** | Discord display name |
+| **Tickets** | Tickets attributed to them in the period |
+| **Share of tickets** | Their share of all staff-handled tickets |
+| **Closed** | Tickets they closed |
+| **Avg first response** | Mean time to their first reply |
+| **Avg resolution** | Mean time to close |
+| **Rating** | Average customer feedback rating and count |
+| **SLA misses** | SLA breaches on their tickets |
+| **Messages** | Messages they sent in tickets |
+
+Attribution rule, as shown on the page: a ticket counts for every staff member who claimed, answered, or closed it, in the period it was opened. Replies after the first response count once the ticket closes. Ratings come from customer feedback on those tickets, and SLA misses count when the breach happened. Each figure is compared with the previous period, and the table lists the staff with the most tickets.
+
+**Export CSV** on the team page downloads the table with columns for staff member, Discord ID, tickets, previous-period tickets, share, average first response and resolution in minutes, average rating, and rating count. This is the only analytics export; the main page has none.
+
+## Related pages
+
+- **Dashboard → AI Usage**: AI token usage per month, separate from analytics.
+- **Scheduled Reports**: email these metrics daily, weekly, or monthly on Enterprise. See [Scheduled Reports](/features/scheduled-reports).
+- `/stats` in Discord shows a compact version for one server. See [Staff Tools](/commands/staff-tools).
 
 <Note>
-  There is no custom report builder, widget layout, or analytics export. Ticket exports are available from the Tickets page.
+  There is no custom report builder, widget layout, or per-server filter on the main page. Ticket exports are on the Tickets page; see [Ticket Management](/dashboard/ticket-management).
 </Note>
+
+## Limits and gotchas
+
+- The main page is fixed at 30 days and aggregates all your bots. For one bot, use the team page's **Bot** selector or `/stats` in that server.
+- **Avg Response** only counts tickets that received a staff reply. Tickets still waiting are in **Awaiting response** instead, so a slow team can show a good average while the queue grows.
+- Staff numbers depend on staff roles being configured on each server's **Staff** tab. Replies from people without a staff role count as user messages.
+- Category cards need categories: tickets created from a panel without a category are not shown there.
+- **Busiest Hours** needs 20 tickets before it renders.
+- Deleted tickets still count as closed in resolution and daily figures until they are purged.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| The page shows "No connected bots found" | You own no bot and manage no server | Add a bot on **Dashboard → Bots** or ask an owner to add you as dashboard staff |
+| Everything is zero | No tickets in the last 30 days, or the bot was added recently | Wait for tickets; **Total tickets** is all time and fills first |
+| A staff member is missing from the staff cards | They have no staff role, or they had no first response in the period | Add them on the **Staff** tab; check the team page, which lists everyone with attributed tickets |
+| **Busiest Hours** says "Need N more tickets" | Fewer than 20 tickets exist | Nothing to fix; it appears at 20 |
+| The SLA banner says "Enterprise plan required" | SLA tracking was used on Enterprise and the plan changed | Existing tracked tickets stay visible; upgrade to track new ones |
+| Response times look too good | Only answered tickets are averaged | Check **Awaiting response** for the unanswered backlog |
+| Numbers differ from `/stats` | `/stats` covers one server and its own period; the page covers all bots for 30 days | Compare like with like on the team page with the **Bot** selector |
+
+## Common questions
+
+**How is average response time calculated?**
+From ticket creation to the first message from a staff member, averaged over tickets that received one in the period. Responses slower than 7 days are treated as outliers and excluded.
+
+**Can I see analytics for one server only?**
+Not on the main page. Use the team page's **Bot** selector for one bot, or run `/stats` in the server for a server-level summary.
+
+**Why is a staff member's ticket count higher than the tickets they closed?**
+A ticket counts for everyone who claimed, answered, or closed it. **Closed** counts only the person who closed it.
+
+**Can I export analytics?**
+Only the team table, with **Export CSV** on the team page. For ticket data, export from the Tickets page.
+
+**Why does it say I need 20 tickets for busiest hours?**
+With fewer tickets the hourly pattern is noise, so the card waits until 20 tickets exist.
+
+**Do closed tickets from deleted channels still count?**
+Yes, until they are purged from the Tickets page.
+
+**Where do I see AI token usage?**
+On **Dashboard → AI Usage**, not on Analytics.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
+</Card>

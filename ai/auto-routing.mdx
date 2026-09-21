@@ -1,67 +1,142 @@
 ---
 title: "Auto-Route"
-description: "Automatically route tickets to the right category or team"
+description: "Set up Auto-Route so new tickets are moved to the right category from routing rules written in plain language"
 ---
 
-Auto-Route uses AI to read a new ticket and move it to the right category, notify the right staff, and tag it, based on rules you write in plain language.
+Auto-Route reads a new ticket and moves it to the category that matches one of your routing rules, optionally pinging a role and adding tags. You write each rule as a sentence describing which tickets belong there, and the bot understands it in every language your customers write in. This page is for the admin who organises ticket categories.
 
 <Info>
-  Auto-Route is an **Enterprise** feature. [Upgrade your plan](https://ticketcord.com/pricing) to access it.
+  Auto-Route is an **Enterprise** feature. It needs **Enable AI Features** on the **General** tab and at least one Discord category to move tickets into. [Upgrade your plan](https://ticketcord.com/pricing)
 </Info>
 
-## How It Works
+## Setup
 
-1. A ticket is created
-2. After the analysis delay, the AI reads the conversation
-3. It picks the routing rule whose **instruction** best matches, if its confidence is above that rule's threshold
-4. The rule's action runs: move the ticket, add tags, notify a role
-5. If no rule matches, the fallback behaviour applies
+<Steps>
+  <Step title="Open the Auto-Route tab">
+    Go to **Dashboard → Bots → your bot → Servers → the server → AI & Knowledge → AI Features → Auto-Route**.
+  </Step>
+  <Step title="Enable it">
+    Click **Edit** and switch on **Enable Auto-Route**.
+  </Step>
+  <Step title="Start from a template or add a rule">
+    **Use Template** offers **E-commerce Store**, **SaaS Platform**, **Gaming Community**, and **General Support**, each with three or four pre-written rules. **Add Rule** starts from a blank rule. After applying a template you must pick a **Target Category** for each rule; a rule without a category cannot be enabled.
+  </Step>
+  <Step title="Write the routing instruction">
+    For each rule, fill in **Rule Name**, **Routing Instruction**, **Priority**, **Target Category**, and **Confidence Threshold**. Optionally turn on **Notify Staff** with a **Staff Role to Notify** and add tags.
+  </Step>
+  <Step title="Choose the fallback and save">
+    Set **Fallback Behavior** for tickets that match no rule, then click **Save All**.
+  </Step>
+</Steps>
 
-## Settings
+## Analysis Configuration
 
-Open **Dashboard → Bots → your bot → Servers → the server → AI Features → Auto-Route**.
+| Setting | Values | Default | What it does |
+|---------|--------|---------|--------------|
+| **Analysis Mode** | First Message Only, First 3 Messages, First 5 Messages, Custom Message Count, Smart Detection | Smart Detection | How many customer messages the bot reads before deciding |
+| **Custom Message Count** | 1 to 20 | 3 | Used with Custom Message Count |
+| **Delay Before Analysis (seconds)** | 0 to 300 | 30 | How long to wait after the last message so follow-ups are included |
+| **Staff notification confidence (%)** | 5% to 100% in steps of 5 | 80% | The rule's staff role is only pinged when the bot's confidence is at least this high |
+| **Fallback Behavior** | No Action, Move to Default Category, Notify Staff | No Action | What happens when no rule matches |
+| **Default Category** | A Discord category | None | Where tickets go with **Move to Default Category** |
+| **Global Routing Guidance** | Free text | Empty | Guidance applied to every decision, for example `Our company sells software. Prioritize urgent bug reports.` |
 
-| Setting | Options |
-|---------|---------|
-| **Analysis mode** | First message, first three, first five, a custom count, or smart detection (default) |
-| **Delay before analysis** | Default 30 seconds |
-| **Fallback** | No action, move to a default category, or notify staff |
-| **Staff notification threshold** | Confidence needed before staff are notified about a routing decision (default 80%) |
-| **Custom instruction** | Extra guidance the AI applies to every decision |
+## Routing rules
 
-## Routing Rules
+Each rule has these fields:
 
-Each rule has:
-
-| Field | Description |
-|-------|-------------|
-| **Name** | For your reference |
-| **Routing instruction** | A sentence describing which tickets belong here, for example "Questions about refunds, invoices, or failed payments". The AI understands it in every supported language |
-| **Priority** | 1 to 100; tells the AI which rule to prefer when several could apply |
-| **Confidence** | Minimum confidence for this rule to fire |
-| **Action** | Move to a category, or add to a queue |
-| **Notify staff** | Optionally mention a staff role |
-| **Add tags** | Tags to apply |
-| **Allowed staff roles** | Restrict who can see the routed ticket |
+| Field | Values | What it does |
+|-------|--------|--------------|
+| **Rule Name** | Text | Shown on the card in your logs channel as **Matched Rule** |
+| **Priority (1-100)** | 1 to 100 | Tells the bot which rule to prefer when several could apply; higher wins |
+| **Description (Optional)** | Text | Notes for your team |
+| **Routing Instruction** | A sentence or two | Which tickets belong here. The bot understands it in every supported language |
+| **Target Category** | A Discord category | Where matching tickets are moved. Required before the rule can be enabled |
+| **Confidence Threshold** | 10% to 100% | Minimum confidence for this rule to fire |
+| **Notify Staff** | On, Off | Ping a role when the rule fires (subject to **Staff notification confidence**) |
+| **Staff Role to Notify** | A role | The role to ping |
+| **Add Tags (Optional)** | Tag names | Tags applied to the ticket |
 
 <Note>
-  Older rules may still use keyword, topic, sentiment, urgency, or language triggers. They keep working, but add an instruction to upgrade them.
+  Rules created before instructions existed may still use **Keywords**, **Topic Categories**, **Sentiment**, **Urgency Level**, or **Language** triggers. They keep working, and the dashboard shows **This rule uses legacy keyword triggers. Add an instruction above to upgrade it.** Once an instruction is present it overrides the legacy triggers.
 </Note>
+
+## Worked example: a good routing instruction
+
+A rule works best when it reads like a briefing for a new team member: what belongs, what does not, and what to do with borderline cases.
+
+- **Rule Name**: `Payment & Billing`
+- **Priority**: `80`
+- **Routing Instruction**: `Route tickets about charges, invoices, failed or double payments, refund requests, and subscription changes. Do not route tickets that only mention a price while asking a product question. If the customer is angry about a charge, this rule still applies.`
+- **Target Category**: `Billing`
+- **Confidence Threshold**: `70%`
+- **Notify Staff**: on, **Staff Role to Notify**: `@Billing Team`
+- **Add Tags**: `billing`
+
+Compare a weak instruction such as `billing stuff`: the bot has to guess where a refund request or a pricing question goes. Spell out both the positive and the negative cases.
+
+Give the most specific rules the highest **Priority**. For example `Refund requests` at priority 90 above `Payment & Billing` at 80, so a refund ticket lands in the refund category even though both rules match.
+
+## What happens
+
+1. A ticket is created, or the customer keeps writing during the delay.
+2. After **Delay Before Analysis**, the bot reads the messages allowed by **Analysis Mode**.
+3. It picks the rule whose instruction fits best, preferring higher **Priority** when several fit, and only if its confidence is at or above that rule's **Confidence Threshold**.
+4. The ticket is moved to the rule's **Target Category**, tags are added, and the role is pinged when **Notify Staff** is on and the confidence reaches **Staff notification confidence**.
+5. A **🤖 Ticket Auto-Routed** card is posted to your logs channel showing the ticket, **Matched Rule**, **Confidence**, **User**, **AI Reasoning**, and, when relevant, **Notify Role** and **Restricted to Roles**.
+6. If no rule matches: **No Action** leaves the ticket where it is; **Move to Default Category** moves it to the **Default Category**; **Notify Staff** posts a **⚠️ Ticket Requires Manual Routing** card to the logs channel with the user, the note `No routing rules matched`, and the detected sentiment and urgency.
 
 ## Templates
 
-Start from a template and adjust the categories:
+| Template | Rules |
+|----------|-------|
+| **E-commerce Store** | Order & Shipping Issues, Payment & Billing, Product Questions, Returns & Cancellations |
+| **SaaS Platform** | Critical Bugs, Login & Account Issues, Feature Requests, General Tech Support |
+| **Gaming Community** | Player Reports, Ban Appeals, Technical Issues, General Questions |
+| **General Support** | Urgent Issues, Technical Problems, General Questions |
 
-- **E-commerce Store**: order and shipping issues, payment and billing, product questions, returns
-- **SaaS Platform**: bugs, feature requests, technical issues
-- **Gaming Community**: general inquiries, reports, applications
-- **General Support**: a neutral starting point
+Templates set their own delay and confidence values; adjust them after applying.
 
-## Tips
+## Limits and gotchas
 
-- Write instructions the way you would brief a new team member.
-- Give the most specific rules the highest priority.
-- Use the fallback to catch tickets that match nothing.
+<Warning>
+  Moving a ticket changes its Discord category. Make sure the bot has **Manage Channels** on every target category and that the category has room; Discord caps a category at 50 channels.
+</Warning>
+
+- A rule with no **Target Category** stays disabled; the dashboard shows **Cannot enable rule: Please select a target category first**.
+- Auto-Route decides during the analysis window at the start of the ticket. It does not re-route a ticket later in the conversation.
+- The logs channel card is informational and never pings the customer.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| Tickets never move | Auto-Route or the AI master switch is off, no rule is enabled, or every rule lacks a category | Check both switches and give each rule a **Target Category** |
+| The right rule exists but rarely fires | Its **Confidence Threshold** is high, or the instruction is vague | Lower the threshold toward 60% to 70% and rewrite the instruction with examples |
+| Two rules compete and the wrong one wins | Both fit and the wrong one has the higher **Priority** | Raise the priority of the more specific rule |
+| Staff are not pinged | **Notify Staff** is off, or the confidence was below **Staff notification confidence** | Turn it on and lower the notification threshold |
+| No card in the logs channel | No logs channel is configured | Run `/setup` and choose a logs channel |
+| A rule matches but the ticket stays in place | The target category is full (50 channels) or the bot lacks **Manage Channels** on it | Create a second category or clean up closed tickets, and fix the category permissions |
+
+## Common questions
+
+**Which plan do I need?**
+Enterprise. Pro and lower see the Auto-Route tab locked with an **Enterprise** pill.
+
+**Does the bot understand other languages?**
+Yes. Write the instruction in your language; the bot applies it to tickets written in any language.
+
+**Can a rule route to a person instead of a category?**
+No. Rules move tickets between categories and ping a role. Use category permissions to control which staff see the routed tickets.
+
+**What if several rules match?**
+The rule with the higher **Priority (1-100)** wins, as long as its confidence clears its own threshold.
+
+**Can I test my rules?**
+Open a test ticket that describes the case and watch the **🤖 Ticket Auto-Routed** card in the logs channel. The **AI Reasoning** line tells you why the rule was chosen.
+
+**Does Auto-Route change priority or tags?**
+It adds the tags from **Add Tags**. Priority is set separately by [Priority Detection](/ai/priority-detection).
 
 <Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support

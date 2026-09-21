@@ -1,71 +1,151 @@
 ---
 title: "Bot Management"
-description: "Create, configure, and manage your Discord bots"
+description: "Add your Discord bots to TicketCord, keep them online, customise their status and footer, and remove them safely"
 ---
 
-**Dashboard → Bots** lists your custom bots.
+**Dashboard → Bots** lists the custom Discord bots you have connected to TicketCord. Each bot is your own Discord application, running under TicketCord's management, and can serve several servers. From here you add a bot with its token, watch its status, restart it, update a revoked token, set its activity status and embed footer, move its configuration to another bot, and delete it. It is for bot owners; dashboard staff work with servers and tickets, not bots.
 
-## Plan Limits
+<Info>
+  The number of bots you can run depends on your plan: **Free 1, Basic 3, Pro 3, Enterprise 6**. The 14-day signup trial allows 1 bot. Bots above the limit are stopped with the **Plan Limited** status until you upgrade or delete a bot.
+</Info>
 
-| Plan | Custom bots |
-|------|-------------|
-| Free | 1 |
-| Basic | 3 |
-| Pro | 3 |
-| Enterprise | 6 |
+## Adding a bot
 
-## Adding a Bot
+<Steps>
+  <Step title="Create the application in Discord">
+    In the Discord Developer Portal, create an application, add a bot, and copy its token. Enable the **Server Members Intent** and **Message Content Intent**; TicketCord tries to enable them for you during validation, and blocks creation if it cannot. See [Installation](/bot/installation).
+  </Step>
+  <Step title="Click Add New Bot">
+    On **Dashboard → Bots** (or the top bar), click **Add New Bot**. Step 1 of 2, **Enter bot credentials**, asks only for the **Bot Token**. Tokens are up to 200 characters.
+  </Step>
+  <Step title="Validate">
+    TicketCord checks the token with Discord and reads the bot's name, ID, and client ID; you never type those. A bad token returns "Invalid Discord bot token format" or a validation failure.
+  </Step>
+  <Step title="Confirm">
+    Step 2, **Confirm setup**, shows the bot's name and IDs. Confirm to create it. The token is encrypted before it is stored and is never shown again.
+  </Step>
+  <Step title="Invite it to a server">
+    Open the bot and use **Discord Servers** to invite it to a server where you have Administrator permission. The invite link requests the ticket-related permissions the bot needs (channels, threads, roles, pins, webhooks) and excludes Administrator, Manage Server, and moderation permissions.
+  </Step>
+</Steps>
 
-Click **Add Bot** and paste the bot token from the Discord Developer Portal. TicketCord validates it and reads the application ID and name from Discord. See [Installation](/bot/installation).
+If creation succeeds but Discord does not let the bot start, the success screen says "**Bot name** needs attention": the credentials are saved and you can retry from the bot page.
 
-## Bot Status
+## Bot status
 
-| Status | Meaning |
-|--------|---------|
-| **Online** | Connected to Discord |
-| **Connecting** | Starting up |
-| **Offline** | Stopped |
-| **Error** | Failed to start; see the error shown on the bot |
-| **Token invalid** | Discord rejected the token; update credentials |
-| **Plan limited** | Stopped because it exceeds your plan's bot limit |
-| **Banned** | Disabled by TicketCord |
-| **Deletion pending** | Being removed |
+The status pill on each bot means:
 
-Each bot shows how many servers it is in and its gateway ping.
+| Status | Meaning | What to do |
+|--------|---------|------------|
+| **Online** | Connected to Discord | Nothing |
+| **Connecting** | Starting up | Wait a moment |
+| **Offline** | Stopped | Use **Start Bot** from the bot's menu |
+| **Error** | Failed to start; the reason is shown on the card | Fix the cause (often intents or a revoked token) and **Restart** |
+| **Token Invalid** | Discord rejected the token | **Update Credentials** |
+| **Plan Limited** | Stopped because you have more bots than your plan allows | Upgrade or delete a bot |
+| **Banned** | Disabled by TicketCord | Contact support |
+| **Deletion incomplete** | A delete did not finish | Click **Delete again** |
+
+The **Bots** list shows each bot's name and Discord ID. Open a bot to see how many servers it is in and its gateway ping, and to reach the **Discord Servers** and **Bot Settings** tabs.
 
 ## Bot Settings
 
-| Setting | Plan |
-|---------|------|
-| Custom status (playing, watching, listening, competing) | Basic+ |
-| Remove the TicketCord footer | Basic+ |
-| Custom footer text and icon | Enterprise |
+Open a bot and choose the **Bot Settings** tab.
 
-## Updating the Token
+| Setting | Allowed values | Default | Plan |
+|---------|----------------|---------|------|
+| **Activity status** type | Playing, Watching, Listening to, Competing in | Playing | Basic+ |
+| **Activity status** message | up to 128 characters | `Powered by TicketCord.com` | Basic+ |
+| **Custom footer** | up to 2,048 characters of footer text | none | Enterprise |
 
-Open the bot and choose **Update Credentials**. TicketCord generates a temporary update link where you paste the new token; the bot restarts with it.
+Notes on branding:
 
-## Restarting
+- **Free** bots always show the activity `Playing Powered by TicketCord.com` and the TicketCord footer on embeds.
+- **Basic and Pro** can set their own activity and remove the TicketCord footer (embeds then have no footer unless a custom one is allowed by the plan).
+- **Enterprise** can also set custom footer text.
 
-Use **Restart** on the bot page. Bots start automatically after credential updates and plan changes.
+Changes apply live without a restart. You can update each setting up to 4 times per 2 minutes; beyond that the dashboard reports "Rate limit exceeded" and tells you when to retry. Saving with nothing changed returns "Settings have not changed."
 
-## Transferring Configuration
+## Keeping a bot online
 
-**Transfer configuration** copies server configurations, canned responses, and bot settings from one of your bots to another.
+- **Restart**: from the bot's menu on the **Bots** list or the bot page. Bots also restart automatically after credential updates and plan changes.
+- **Start Bot**: appears for an **Offline** bot.
+- **Update Credentials**: shown when a bot is **Token Invalid**. TicketCord generates a temporary link (valid for 10 minutes) where you paste the new token, then restarts the bot with it. The option is only available when the current token is actually invalid; otherwise the dashboard says "This bot already has valid credentials and doesn't need an update."
 
-## Deleting a Bot
+## Transferring configuration
 
-From the Bots list choose **Delete**, type the bot name to confirm, and optionally leave all servers first. This permanently removes the bot and all associated data, including tickets, knowledge base, analytics, embeds, and server configurations.
+**Transfer configuration** moves everything from one of your bots to another: every server configuration, every canned response, and the bot settings (status and footer). It is a move, not a copy: the source bot is left with no configuration, and any existing settings on the target bot are overwritten. Both bots must be yours and neither may be banned. The dialog reports how many server configurations and canned responses were moved. Use it when you replace a bot application but want to keep your setup.
 
-## Error Codes
+## Deleting a bot
 
-If your bot encounters issues, you may see error codes:
+<Steps>
+  <Step title="Choose Delete">
+    From the bot's menu on **Dashboard → Bots**, choose **Delete**.
+  </Step>
+  <Step title="Type the bot's name">
+    The dialog **Delete BotName** warns that the action cannot be undone. Type the bot name exactly to confirm; a mismatch returns "Bot name confirmation does not match".
+  </Step>
+  <Step title="Decide whether to leave servers">
+    **Leave all Discord servers before deletion (recommended)** is ticked by default so the bot is removed from every server. Untick it only if you plan to reuse the application elsewhere.
+  </Step>
+  <Step title="Delete">
+    Click **Delete Bot**. This permanently removes the bot and everything attached to it: tickets, knowledge base, analytics, embeds, and server configurations.
+  </Step>
+</Steps>
 
-| Code | Meaning | Solution |
-|------|---------|----------|
-| TC001 | Rate limited by Discord | Wait a few minutes and retry |
-| TC002 | Permission denied | Grant the bot or user the required permissions |
-| TC004 | Resource not found | Recreate the missing channel, category, or role |
-| TC011 | Configuration not found | Complete setup in the dashboard |
+<Warning>
+  Deleting a bot deletes its data, not just its connection. Export any tickets you need first from **Dashboard → Tickets**, and use **Transfer configuration** if you want to keep the setup on another bot.
+</Warning>
 
-See [Troubleshooting](/bot/troubleshooting) for the full error code reference.
+## Limits and gotchas
+
+- A Discord bot can be registered with one TicketCord account at a time. Adding a bot that another account already registered fails with "This bot cannot be registered with TicketCord."; the other account must delete it first.
+- Tokens are never displayed after creation. If you lose a token, reset it in the Discord Developer Portal and use **Update Credentials** once the bot shows **Token Invalid**.
+- The privileged intents are required. Without **Server Members Intent** and **Message Content Intent** the bot fails to connect (Discord gateway error 4014) and shows **Error**.
+- Plan limits count all bots, online or not. Downgrading below your bot count marks the extra bots **Plan Limited** until you delete some.
+- **Transfer configuration** overwrites the target completely; there is no merge.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| "Invalid Discord bot token format" | The pasted value is not a bot token (for example a client secret) | Copy the token from **Bot → Reset Token** in the Developer Portal |
+| "Bot creation is blocked until intents are enabled" | TicketCord could not enable the privileged intents | Enable **Server Members Intent** and **Message Content Intent** in the Developer Portal and retry |
+| "Bot Limit Reached - Upgrade Required" | You are at your plan's bot limit | Delete a bot or upgrade at [ticketcord.com/pricing](https://ticketcord.com/pricing) |
+| Status stuck on **Error** with a gateway 4014 message | Privileged intents are off | Turn them on and **Restart** |
+| **Token Invalid** after you reset the token in Discord | The old token was revoked | **Update Credentials** and paste the new token |
+| **Update Credentials** is missing | The current token still works | Nothing to update; restart instead |
+| The update link says "This update link is invalid or has expired" | Links last 10 minutes | Generate a new one |
+| "Rate limit exceeded. You can update each bot setting 4 times every 2 minutes." | Too many status or footer saves | Wait and retry |
+| "Settings have not changed. No update needed." | You saved without changing anything | Change a value first |
+| Custom status reverts to `Playing Powered by TicketCord.com` | The plan is Free | Custom status needs Basic or higher |
+| Custom footer text is cleared on save | The plan is not Enterprise | Custom footer text needs Enterprise; Basic and Pro can only remove the footer |
+| **Deletion incomplete** on a bot | A delete was interrupted | Click **Delete again** |
+| Invite says "Detection timed out" | Discord took too long to report the join | Refresh the page; the server appears once the bot is in it |
+
+## Common questions
+
+**How many bots can I add?**
+1 on Free, 3 on Basic and Pro, 6 on Enterprise, and 1 during the signup trial.
+
+**Can I see my bot token again?**
+No. It is encrypted at creation and never shown. Reset it in the Discord Developer Portal if you need a new one, then use **Update Credentials**.
+
+**What does Plan Limited mean?**
+You have more bots than your plan allows, so the extra ones are stopped. Delete a bot or upgrade, and the bot starts again.
+
+**Do I have to restart the bot after changing settings?**
+No for bot status, footer, and server configuration; they apply live. Restart only when a bot is in **Error** or after fixing intents.
+
+**Can I change the bot's name or avatar in TicketCord?**
+Change them in the Discord Developer Portal. TicketCord reads the name and avatar from Discord.
+
+**How do I move my setup to a new bot application?**
+Add the new bot, then use **Transfer configuration** from the old bot to the new one. Server configurations, canned responses, and bot settings move across; the old bot is left empty and can be deleted.
+
+**Does deleting a bot delete my tickets?**
+Yes. Tickets, transcripts, knowledge base, analytics, embeds, and server configurations are all removed. Export first.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
+</Card>

@@ -1,74 +1,163 @@
 ---
 title: "SLA Management"
-description: "Define and track Service Level Agreements for your support"
+description: "Set first-response and resolution targets per priority, get warned before they slip, and see whether each ticket met them"
 ---
 
-SLA Management sets first-response and resolution targets per priority, warns staff before targets are missed, and records whether each ticket met its SLA.
+SLA Management gives every ticket two timers: one for the first staff reply and one for resolution. Targets depend on the ticket's priority. As a timer approaches its target the bot warns your team in a notification channel, and when it passes the target the breach is recorded on the ticket, announced, and turned into an escalation. It is built for teams that promise response times and need to know when they are about to miss one.
 
 <Info>
-  SLA Management is an **Enterprise** feature. [Upgrade your plan](https://ticketcord.com/pricing) to access it.
+  SLA Management is an **Enterprise** feature. The tab is visible on lower plans with a lock badge, and the bot does not start SLA timers unless the bot owner's plan is Enterprise. [Upgrade your plan](https://ticketcord.com/pricing) to use it.
 </Info>
 
-## Setting Up
+## Setting up
 
 <Steps>
-  <Step title="Open the SLA tab">
-    Go to **Dashboard → Bots**, pick your bot, choose the server, and open the **SLA** tab. Turn **SLA Management** on.
+  <Step title="Open the SLA Management tab">
+    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **SLA Management** under the **Service Levels** group. The page is one card titled **SLA tracking**.
   </Step>
-  <Step title="Set targets per priority">
-    Each priority has a **first response** target (1 to 1,440 minutes) and a **resolution** target (1 to 10,080 minutes).
+  <Step title="Turn SLA tracking on">
+    Enable the card's main switch. Nothing is tracked until this is on, and only tickets created after you save get timers.
   </Step>
-  <Step title="Choose notifications">
-    Pick a notification channel, and whether to notify the staff role and the first responder. Optionally move the ticket to the top of its category on warning, and notify when a target is met.
+  <Step title="Set targets by priority">
+    Under **Targets by priority**, enter a **First response target** and a **Resolution target** in minutes for **Low**, **Medium**, **High**, and **Critical**. The resolution target must be at least as long as the first-response target; the form re-orders the pair if you enter them the other way round.
+  </Step>
+  <Step title="Choose the SLA notification channel">
+    Pick a channel under **SLA notification channel**. Every warning, breach, escalation alert, and target-met message goes here and nowhere else. Use a dedicated channel such as `#sla-logs`; the picker warns you if you select a ticket channel.
+  </Step>
+  <Step title="Choose who gets mentioned">
+    Under **Notification targets**, decide whether alerts mention the **Staff role** (all configured staff roles) and the **Ticket claimer** (whoever currently has the ticket claimed).
+  </Step>
+  <Step title="Tune the advanced rules">
+    Under **Advanced timing rules** and **Escalation thresholds**, keep the defaults unless you have a reason to change them. The sections below explain each option.
+  </Step>
+  <Step title="Save">
+    Click **Save** (or press `Ctrl/Cmd + S`). New tickets pick up the new settings immediately; tickets that already have timers keep the targets they started with.
   </Step>
 </Steps>
 
-### Default Targets
+## Settings
+
+| Setting | Allowed values | Default |
+|---------|----------------|---------|
+| **SLA tracking** (main switch) | on or off | off |
+| **Business hours only** | on or off | on |
+| **Move ticket to category top on warning** | on or off | off |
+| **Notify when targets are met** | on or off | off |
+| **First response target** (per priority) | 1 to 1,440 minutes | Low 240, Medium 120, High 60, Critical 15 |
+| **Resolution target** (per priority) | 1 to 10,080 minutes, at least the first-response target | Low 2,880, Medium 1,440, High 480, Critical 120 |
+| **SLA notification channel** | any text channel the bot can post in | none |
+| **Notification targets → Staff role** | on or off | on |
+| **Notification targets → Ticket claimer** | on or off | off |
+| **Early warning** | on or off | on |
+| **Include ticket details** | on or off | on |
+| **Include customer info** | on or off | on |
+| **Include performance context** | on or off | off |
+| **Auto-escalation** | on or off | on |
+| **Maximum escalation level** | 1 to 10 | 3 |
+| **Delay between escalations** | 5 to 1,440 minutes | 30 |
+| **Warning alert** threshold | 50% to 99%, below the critical value | 75% |
+| **Critical alert** threshold | 51% to 99%, above the warning value | 90% |
+
+### Worked example: a three-person team
+
+A small team that promises "we reply within the hour to anything urgent, within the day to everything else" could use:
 
 | Priority | First response | Resolution |
 |----------|----------------|------------|
-| Low | 240 min | 2,880 min (48 h) |
-| Medium | 120 min | 1,440 min (24 h) |
+| Low | 480 min (8 h) | 4,320 min (3 days) |
+| Medium | 240 min (4 h) | 1,440 min (24 h) |
 | High | 60 min | 480 min (8 h) |
-| Critical | 15 min | 120 min (2 h) |
+| Critical | 30 min | 240 min (4 h) |
 
-<Note>
-  SLA priorities are Low, Medium, High, and Critical. A ticket set to **Urgent** with `/priority` uses the Critical targets.
-</Note>
+With **Business hours only** on and a Monday to Friday 09:00 to 18:00 schedule in [Business Hours](/configuration/business-hours), a High ticket opened at 17:30 on Friday has 30 minutes of its first-response budget left when Monday morning starts. Keep **Warning alert** at 75% and **Critical alert** at 90%, set **Delay between escalations** to 60, and point **SLA notification channel** at a private `#sla-alerts` channel that only the three of you can see.
 
-## Escalation Rules
+## What happens
 
-Two built-in rules fire as a target approaches:
+1. **Timers start when the ticket is created.** The ticket's priority at that moment selects the targets. A ticket with no priority is tracked as Medium.
+2. **First response is met by the first staff message** in the ticket. Claiming alone does not stop the timer; a staff member has to write something.
+3. **Resolution is met when the ticket is closed**, whether by `/close`, the dashboard, a close request, or a scheduled or automatic close.
+4. **Warnings** are posted to the notification channel when a timer reaches 75% and again at 90% of its target, as long as **Early warning** is on. The message reads "Ticket 42 is approaching SLA deadline (first_response at 75%)" and includes the ticket link, priority, and server, plus the targets when **Include ticket details** is on, the customer's name and ID when **Include customer info** is on, and workload context when **Include performance context** is on.
+5. **Escalation alerts** fire when the **Warning alert** and **Critical alert** percentages are crossed. Each alert is posted to the notification channel and mentions the configured targets. With **Auto-escalation** on, the alert repeats after **Delay between escalations** until **Maximum escalation level** is reached, so a ticket nobody picks up keeps resurfacing.
+6. **Move ticket to category top on warning** does two things when the first warning fires: it moves the ticket channel to the top of its category and appends `-🆘` to the channel name so it stands out in the channel list.
+7. **Breach** is posted when a timer passes 100%: "SLA Breach: Ticket 42 resolution target missed by 12.0 minutes". The ticket's SLA status is set, an `sla.breach` webhook is sent, and an escalation with reason **SLA Breach** appears on **Dashboard → Escalations**.
+8. **Target met** posts a green confirmation for each timer that finishes within target, only if **Notify when targets are met** is on.
 
-| Rule | Default trigger | Adjustable range |
-|------|-----------------|------------------|
-| **Warning** | 75% of the target elapsed | 50% to 99% |
-| **Critical** | 90% of the target elapsed | 50% to 99% (always above Warning) |
+Mentions in every alert follow **Notification targets**: the staff roles when **Staff role** is on, and the user who currently has the ticket claimed when **Ticket claimer** is on. If neither is on the message is posted without a ping.
 
-For each rule choose who to notify (roles and users), an optional delay in minutes, and one or more actions:
+### SLA statuses
 
-| Action | What it does |
-|--------|--------------|
-| **Ping** | Mentions the chosen roles and users in the ticket |
-| **DM** | Sends them a direct message |
-| **Channel alert** | Posts to the notification channel |
-| **Reassign** | Reassigns the ticket |
+Each ticket ends with one of four statuses, recorded on the ticket and used by analytics:
 
-**Auto-escalation** can repeat the escalation up to a maximum level (1 to 10) with a delay between levels (1 to 1,440 minutes).
+| Status | Meaning |
+|--------|---------|
+| **Active** | The ticket is open and at least one timer is still running |
+| **Met** | Both the first-response and resolution targets were met |
+| **Partial breach** | One target was met and the other was missed |
+| **Breached** | Both targets were missed |
 
-**Breach notifications** are sent when a target is missed; you can include ticket details, customer info, and performance context.
+## Business hours and pausing
 
-## Business Hours
+With **Business hours only** on (the default), SLA timers pause whenever your [Business Hours](/configuration/business-hours) schedule says you are closed, including holidays, and resume when you reopen. The paused time is subtracted from the elapsed time, so a ticket opened Friday evening does not breach over the weekend. This only works when Business Hours is configured and enabled for the server; with no schedule, timers run around the clock even if the switch is on. There is no manual pause.
 
-Enable **Business hours only** to pause SLA timers outside your configured [Business Hours](/configuration/business-hours). This is the only way timers pause; there is no manual pause.
+## Where to see the results
 
-## Tracking and Reports
+- **Ticket timeline**: the ticket page on **Dashboard → Tickets** logs the moment the first-response target was met as a timeline event.
+- **Dashboard → Analytics**: an SLA card lists open tickets that have used 80% or more of a target, broken down by priority, and the staff performance table counts each staff member's SLA misses.
+- **Dashboard → Escalations**: every breach creates an escalation with reason **SLA Breach**; it is resolved automatically when the ticket closes.
+- **Webhooks**: `sla.warning` and `sla.breach` events carry the ticket, priority, timer type, target and elapsed minutes, and percentage used. See [Webhooks](/integrations/webhooks).
 
-- Each ticket records an SLA status: **met**, **breached**, **partial breach**, or **active**.
-- **Dashboard → Analytics** shows SLA breach warnings and staff SLA misses.
-- **Dashboard → Escalations** lists escalations raised for SLA breaches.
-- SLA analytics can be filtered by date range, priority, and status.
+## Limits and gotchas
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+<Warning>
+  If **SLA notification channel** is empty, no warning, breach, escalation, or target-met message is sent anywhere. Timers still run and statuses are still recorded, but nobody is told. Always set the channel.
+</Warning>
+
+- SLA priorities are Low, Medium, High, and Critical. The `/priority` command and priority detection use `urgent` as their top level, which does not match any SLA priority: an `urgent` ticket (or one set to `none`) is tracked with a built-in fallback of 120 minutes first response and 1,440 minutes resolution, not your Critical targets. Set `high` when you want your High targets to apply.
+- The 75% and 90% warning points are fixed. The **Warning alert** and **Critical alert** fields change when escalation alerts fire, not when the plain warnings are posted.
+- Targets are locked in when the ticket is created. Changing the settings later affects new tickets only.
+- **Move ticket to category top on warning** only works for text and announcement channels inside a category; it does nothing for thread tickets.
+- Channel renames are rate limited by Discord, so the `-🆘` suffix can lag by a few minutes on a busy server.
+- If the notification channel is deleted or the bot loses permission to post in it, SLA notifications for that channel stop until you pick a working channel.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| No SLA alerts at all | No **SLA notification channel** set, or SLA tracking is off | Set the channel and confirm the main switch is on, then save |
+| Alerts arrive but nobody is pinged | Both **Notification targets** are off, or no staff role is configured on the **Staff** tab | Turn on **Staff role** or **Ticket claimer** |
+| An urgent ticket is using the wrong targets | `urgent` is not an SLA priority | Use `/priority level:high` for tickets that must follow your High targets, or accept the 120/1,440 fallback |
+| Timers do not pause overnight | **Business hours only** is on but Business Hours is not configured or enabled | Set up a schedule on the **Business Hours** tab |
+| Timers never pause even with a schedule | **Business hours only** is off | Turn it on; it is the only way to pause a timer |
+| A ticket breached even though staff replied quickly | The reply came from someone who is not staff, or was a claim without a message | Only messages from members with a staff role count as a first response |
+| The `-🆘` suffix stays after the ticket is handled | Discord rename rate limits delay the change, and the suffix is not removed automatically | Rename the channel with `/rename` if it bothers you; closing the ticket removes the channel anyway |
+| Changing targets did not affect an open ticket | Targets are fixed at creation | Only new tickets use the new targets |
+
+## Common questions
+
+**Does claiming a ticket stop the first-response timer?**
+No. The first-response timer stops at the first message from a staff member in the ticket. Claim and then reply.
+
+**Where do SLA warnings appear?**
+Only in the **SLA notification channel** you choose on the SLA Management tab. Nothing is posted inside the ticket itself, so users never see SLA chatter.
+
+**Why did my urgent ticket not get the Critical targets?**
+SLA priorities are Low, Medium, High, and Critical, while `/priority` sets `urgent`. An `urgent` ticket does not match any SLA priority and is tracked with a fallback of 120 minutes for first response and 1,440 minutes for resolution.
+
+**Can I pause the SLA on one ticket while I wait for the customer?**
+No. The only pause is **Business hours only**, which pauses every timer outside your schedule. There is no per-ticket pause.
+
+**What counts as resolved?**
+Closing the ticket by any method: `/close`, the dashboard, an accepted close request, a scheduled close, or auto-close.
+
+**How many escalation alerts will I get for one ticket?**
+Up to **Maximum escalation level** (default 3) per timer, spaced by **Delay between escalations** (default 30 minutes), as long as **Auto-escalation** is on and the ticket stays open.
+
+**Do SLA timers respect holidays?**
+Yes, when **Business hours only** is on. Holidays on the Business Hours tab count as closed days and pause the timers for the whole day.
+
+**Is the SLA status visible to the user who opened the ticket?**
+No. SLA alerts go to your notification channel and SLA results appear in dashboard analytics only; nothing is posted inside the ticket.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support
 </Card>

@@ -1,114 +1,177 @@
 ---
 title: "Administration"
-description: "Commands for server setup, custom embeds, approvals, and bulk operations"
+description: "Commands for server setup, posting ticket panels, in-Discord configuration, diagnostics, auto-close, approvals, and bulk deletion"
 ---
 
-These commands are for server administrators and require elevated permissions.
+These commands change how the ticket system works for the whole server. Most require Discord permissions such as Administrator, Manage Channels, or Manage Messages rather than a staff role; each command lists who can run it.
 
 ## /setup
 
-Create the Discord infrastructure needed for your ticket system.
+Create the Discord categories, channels, and roles the ticket system needs. Has no options and asks no questions unless it finds existing resources.
 
 ```
 /setup
 ```
 
-**Permission:** Administrator, or Manage Channels + Manage Roles
+**Who can run it:** members with Administrator, or with both Manage Channels and Manage Roles. The command is hidden from everyone else in Discord's command list.
 
-**What it creates:**
+**What the bot needs:** Manage Channels and Manage Roles at the server level (or Administrator). Without them the command stops with **TC002** before creating anything.
 
-| Resource | Description |
-|----------|-------------|
-| **🎫 Tickets** category | Where new tickets are created |
-| **📁 Closed Tickets** category | Where closed tickets are moved |
-| **📝 Ticket Logs** category | Holds `#ticket-logs` and `#ticket-transcripts` |
-| **Ticket Admin** role | Full ticket management access (named **TicketCord Admin** on the Free plan) |
-| **Ticket Support** role | Basic ticket access (named **TicketCord Support** on the Free plan) |
+**What it creates**
+
+| Resource | Type | Purpose |
+|----------|------|---------|
+| **🎫 Tickets** | Category | New ticket channels are created here |
+| **📁 Closed Tickets** | Category | Closed tickets are moved here |
+| **📝 Ticket Logs** | Category | Holds the two channels below |
+| `#ticket-logs` | Text channel | Ticket events, feedback, and staff actions |
+| `#ticket-transcripts` | Text channel | Transcripts posted when tickets close |
+| **Ticket Admin** | Role | Full ticket management access. Named **TicketCord Admin** on the Free plan |
+| **Ticket Support** | Role | Basic ticket access. Named **TicketCord Support** on the Free plan |
+
+The categories and channels are created with permission overwrites so that the two roles and the bot can see them and `@everyone` cannot. If Discord will not let the bot place the new roles below its own role, the confirmation shows a **Role Position Warning**; move the bot's role above the new roles in **Server Settings → Roles**.
+
+**If resources already exist**
+
+When `/setup` finds categories, channels, or roles with the same names, it shows **Existing Setup Detected** with three buttons:
+
+| Button | Result |
+|--------|--------|
+| **Create Anyway (New Names)** | Creates a second set named **🎫 TicketCord Tickets**, **📁 TicketCord Closed**, **📝 TicketCord Logs**, `#ticketcord-logs`, and `#ticketcord-transcripts` |
+| **Use Existing (Recommended)** | Creates nothing; select your existing resources in the dashboard |
+| **Cancel** | Makes no changes |
 
 <Warning>
-  The `/setup` command only creates Discord resources. You **must** complete configuration on the [dashboard](https://ticketcord.com/dashboard) for your bot to work.
+  `/setup` only creates Discord resources. The bot does not handle tickets until you select those resources and save the configuration in the dashboard. See [Configuration](/bot/configuration).
 </Warning>
 
-### Handling Existing Resources
-
-If `/setup` detects existing ticket categories or roles, you'll see options:
-
-| Option | Description |
-|--------|-------------|
-| **Create Anyway** | Creates new resources with unique names |
-| **Use Existing** | Skip creation - configure existing resources on dashboard |
-| **Cancel** | Abort setup |
-
-### After Running Setup
-
-<Steps>
-  <Step title="Go to the dashboard">
-    Visit [ticketcord.com/dashboard](https://ticketcord.com/dashboard)
-  </Step>
-  <Step title="Select resources">
-    Choose the categories and roles created by `/setup`
-  </Step>
-  <Step title="Configure settings">
-    Set up automation, AI features, and other options
-  </Step>
-  <Step title="Create embeds">
-    Build ticket embeds with buttons for users to open tickets
-  </Step>
-</Steps>
+**Errors:** TC002 (you lack the permissions, or the bot lacks Manage Channels and Manage Roles), TC008 (the bot could not read the server's roles or channels; try again), TC000 (creation failed part-way; the message lists any leftover resources to delete before retrying).
 
 ---
 
 ## /embed
 
-Send a custom embed message to a channel.
+Post a saved embed (a ticket panel or any other designed message) into a channel.
 
 ```
 /embed <name> [channel]
 ```
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `name` | Choice | Yes | Name of the saved embed |
-| `channel` | Channel | No | Target channel (defaults to current) |
+| Option | Type | Required | Allowed values | Default |
+|--------|------|----------|----------------|---------|
+| `name` | Text (autocomplete) | Yes | The name of an embed saved in the dashboard | none |
+| `channel` | Text channel | No | Any text channel that is not a ticket | The current channel |
 
-**Permission:** Manage Messages
+**Who can run it:** members with Manage Messages. Autocomplete only lists embeds to people with that permission.
 
-**What happens:**
-- Sends the pre-designed embed to the channel
-- Includes any configured buttons (like "Open Ticket")
-- Embeds are created in the dashboard
+**What happens:** the embed is sent to the channel with its buttons or dropdown. Ticket buttons on it are live immediately.
 
-### Creating Embeds
+**Example**
 
-1. Go to your dashboard
-2. Navigate to **Embeds**
-3. Click **Create Embed**
-4. Design using the visual builder
-5. Save with a name
-
-### Embed Features
-
-| Feature | Description |
-|---------|-------------|
-| **Rich formatting** | Title, description, fields, images, footer |
-| **Custom colors** | Match your server's branding |
-| **Buttons** | Add interactive buttons (Open Ticket, Link, etc.) |
-| **Dropdown menus** | Let users select ticket categories |
-
-**Example:**
 ```
-/embed embed_name:support-panel channel:#get-help
+/embed name:support-panel channel:#get-help
 ```
 
-<Tip>
-  Create different embeds for different support types: general support, sales inquiries, bug reports, etc.
-</Tip>
+Design embeds under **Embeds** in the dashboard. Set an embed's description there and it appears next to the name in autocomplete.
+
+**Errors**
+
+| Code | When |
+|------|------|
+| TC002 | You lack Manage Messages, or the bot lacks View Channel, Send Messages, or Embed Links in the target channel |
+| TC004 | No embed with that name, or the channel no longer exists or the bot cannot access it |
+| TC011 | The server is not configured, or no embeds have been created yet |
+| TC012 | The embed uses an emoji the bot cannot use (deleted, or from a server the bot is not in) |
+| TC017 | The target channel is a ticket channel |
+
+---
+
+## /config
+
+Open an interactive settings panel for the server inside Discord.
+
+```
+/config
+```
+
+**Who can run it:** server administrators and staff.
+
+**What it shows**
+
+| Section | Control |
+|---------|---------|
+| Staff roles | **Change** button; select up to 10 roles |
+| Transcript channel | **Change** button |
+| Logs channel | **Change** button, or remove the channel |
+| Auto-close | **ON**/**OFF** toggle and the current time |
+| DM on close | **ON**/**OFF** toggle |
+| Auto-delete | **ON**/**OFF** toggle |
+| Ticket categories | Dropdown to select categories |
+| **Refresh** | Reloads the panel with the saved values |
+
+Some settings are managed from the dashboard only; the panel says so when you press a control that is not available in Discord (**TC018**).
+
+**Errors:** TC002 (not an administrator or staff), TC012 (more than 10 staff roles selected), TC017 (run in a DM).
+
+---
+
+## /diagnose
+
+Check the bot's permissions and the server configuration, and list what is wrong.
+
+```
+/diagnose
+```
+
+**Who can run it:** staff, or the server owner.
+
+**What it checks**
+
+| Category | Check |
+|----------|-------|
+| Logs Channel | Exists, and the bot can view it and send messages |
+| Transcript Channel | Exists, and the bot can view it and send messages |
+| Ticket Category | Each configured open-ticket category exists and the bot has permissions in it |
+| Closed Category | Each configured closed-ticket category exists and the bot has permissions in it |
+| Staff Roles | Every configured staff role still exists |
+| Bot Permissions | The bot has Manage Channels, Send Messages, View Channel, Manage Messages, Embed Links, Attach Files, and Read Message History at the server level (or Administrator) |
+
+The result groups findings into **Errors**, **Warnings**, and **All Checks Passed**, each with a short explanation. Run it first whenever tickets stop being created.
+
+---
+
+## /auto-close
+
+Set how long a ticket may stay inactive before it is closed automatically.
+
+```
+/auto-close <time>
+```
+
+| Option | Type | Required | Allowed values |
+|--------|------|----------|----------------|
+| `time` | Text | Yes | A duration such as `30M`, `2H`, or `1D`, or `off` to disable. Minimum 15 minutes, maximum 30 days |
+
+**Who can run it:** server administrators.
+
+**Plan:** Basic or higher.
+
+**What happens:** open tickets with no messages for the configured time are closed automatically. Closed tickets are not affected. The confirmation shows the new time, or **Auto-Close Disabled** when you pass `off`. The same setting is available in the dashboard, where you can also enable reminders before the close.
+
+**Examples**
+
+```
+/auto-close time:2D
+/auto-close time:off
+```
+
+**Errors:** TC012 (unrecognised format, under 15 minutes, or over 30 days), TC014 (Free plan), TC017 (run in a DM), TC002 (not an administrator).
 
 ---
 
 ## /approval
 
-Manage approval workflows for sensitive actions. Staff can request approval from senior staff before taking certain actions.
+Request, decide, and check approvals for sensitive actions such as refunds. Run inside the ticket the request belongs to.
 
 ```
 /approval request <type> [reason] [urgency] [amount] [custom_type]
@@ -117,168 +180,108 @@ Manage approval workflows for sensitive actions. Staff can request approval from
 /approval status
 ```
 
-**Permission:** Staff  
-**Plan:** Enterprise only
+**Plan:** Enterprise only. The approval process must also be enabled and configured in the dashboard under **Approvals** (approver role, enabled request types, timeout, and an optional audit channel).
 
-### Subcommands
+**`request` options**
 
-| Subcommand | Description |
-|------------|-------------|
-| `request` | Submit an approval request |
-| `approve` | Approve a pending request |
-| `reject` | Reject a pending request |
-| `status` | View current approval status |
+| Option | Type | Required | Allowed values |
+|--------|------|----------|----------------|
+| `type` | Choice | Yes | `refund`, `ban`, `policy_exception`, `escalation`, `custom` |
+| `reason` | Text | No | Free text |
+| `urgency` | Choice | No | `low`, `medium`, `high` |
+| `amount` | Number | No | Any number; meant for refunds and other financial requests |
+| `custom_type` | Text | No | Required when `type` is `custom` |
 
-### Request Options
+**`approve`** takes an optional `reason`. **`reject`** requires a `reason`. **`status`** has no options.
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `type` | Choice | Yes | Type of approval |
-| `reason` | Text | No | Detailed reason for request |
-| `urgency` | Choice | No | How urgent is this |
-| `amount` | Number | No | Amount involved (for refunds) |
-| `custom_type` | Text | No | Custom type name |
+**Who can run it:** staff can `request` and view `status`. Only members holding the configured approval role can `approve` or `reject`.
 
-**Type choices:**
-- `refund` - Refund request
-- `ban` - Ban request
-- `policy_exception` - Policy exception
-- `escalation` - Escalation request
-- `custom` - Custom type
-
-### Requesting Approval
-
-```
-/approval request type:refund reason:Customer received damaged product amount:49.99 urgency:high
-```
-
-### Approving/Rejecting
-
-Only users with approval authority can approve or reject:
-
-```
-/approval approve reason:Verified damage in photos
-/approval reject reason:Outside return window - policy doesn't allow
-```
-
-### Approval Workflow
+**What happens**
 
 <Steps>
-  <Step title="Staff submits request">
-    Uses `/approval request` with details
+  <Step title="Staff submit a request">
+    A card with the request ID, type, urgency, amount, and reason is posted in the ticket, and the customer sees a note that their request is under review.
   </Step>
-  <Step title="Notification sent">
-    Approvers receive notification in configured channel
+  <Step title="Approvers are notified">
+    The approval role is pinged with the request details. If a timeout is configured, the request expires after that many hours.
   </Step>
-  <Step title="Review and decide">
-    Approver uses `/approval approve` or `/approval reject`
+  <Step title="An approver decides">
+    `/approval approve` or `/approval reject` records the decision, names the approver, and notifies the customer of the outcome.
   </Step>
-  <Step title="Action taken">
-    Original staff member is notified of decision
+  <Step title="The decision is logged">
+    When an audit channel is configured, the decision, approver, and response time are posted there.
   </Step>
 </Steps>
 
-<Info>
-  Configure approval roles and notification channels in your dashboard under **Approvals**.
-</Info>
+**Errors**
+
+| Code | When |
+|------|------|
+| TC014 | The bot owner is not on Enterprise |
+| TC018 | The approval process is not enabled, or the request type is not enabled for this server |
+| TC011 | Approvals are not configured for this server |
+| TC002 | Non-staff tried to request, or someone without the approval role tried to approve or reject |
+| TC012 | `reject` without a reason |
+| TC015 | The ticket already has a pending, approved, or rejected request; or there is no pending request to decide; or another approver already decided |
 
 ---
 
 ## /purge
 
-Bulk delete tickets from your server. **Use with caution.**
+Delete ticket channels in bulk. This cannot be undone.
 
 ```
 /purge [type]
 ```
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `type` | Choice | No | What to purge (defaults to `all`) |
+| Option | Type | Required | Allowed values | Default |
+|--------|------|----------|----------------|---------|
+| `type` | Choice | No | `all`, `open`, `closed` | `all` |
 
-**Type choices:**
-- `all` - Delete all tickets
-- `open` - Delete open tickets only
-- `closed` - Delete closed tickets only
+**Who can run it:** the server owner only. Nobody else can run the command or press its confirmation button.
 
-**Permission:** Server Owner only
+**What happens**
 
-<Warning>
-  This action is **irreversible**. Deleted tickets cannot be recovered. Transcripts should be generated before purging.
-</Warning>
+1. The bot counts the matching tickets and shows a warning with the number of channels to delete, the scope, and a reminder that transcripts not already exported are lost.
+2. Press **Confirm Purge** to continue or **Cancel** to stop.
+3. Every matching ticket channel is deleted and each ticket is marked deleted, so it no longer counts toward open ticket limits. Ticket records stay in the dashboard for analytics.
+4. A results card lists how many tickets and channels were deleted and how many channel deletions failed (usually channels that were already gone).
 
-### Safety Measures
+**Example**
 
-- Only the server owner can use this command
-- A confirmation dialog is shown before deletion
-
-**Example:**
 ```
-/purge type:closed older_than:30
+/purge type:closed
 ```
-
-This deletes all closed tickets older than 30 days.
 
 <Tip>
-  Set up **auto-delete** in your dashboard for automatic cleanup instead of manual purging.
+  For routine cleanup, enable auto-delete in the dashboard so closed tickets remove themselves, instead of purging by hand.
 </Tip>
 
-<Card title="Utility Commands" icon="arrow-right" href="/commands/utility">
-  Learn about help, on-call, and user lookups
+**Errors:** TC002 (not the server owner), TC012 (an outdated confirmation button).
+
+## Common questions
+
+**I ran `/setup` but the bot still says the server is not set up.**
+`/setup` only creates Discord resources. Open the dashboard, pick the categories, roles, and channels it created, and save. Tickets work only after the configuration is saved.
+
+**Can I run `/setup` again?**
+Yes. It detects the existing resources and offers to create a second set with TicketCord-prefixed names, use the existing ones, or cancel. Nothing is deleted.
+
+**Why is `/setup` not in my command list?**
+Discord hides it unless you have Administrator, or Manage Channels and Manage Roles.
+
+**`/embed` says the embed contains an invalid emoji.**
+The embed uses a custom emoji that was deleted or belongs to a server the bot is not in. Edit the embed in the dashboard, replace the emoji, and post it again.
+
+**Can `/auto-close` warn people before closing?**
+The command only sets the time. Reminders before the close are configured in the dashboard under automation.
+
+**Who can approve an approval request?**
+Only members with the approval role selected under **Approvals** in the dashboard. Staff without that role can request and check status but cannot decide.
+
+**Does `/purge` delete transcripts?**
+It deletes the ticket channels. Transcripts already posted to the transcript channel stay there; anything not yet exported is lost.
+
+<Card title="Still stuck?" icon="discord" href="https://ticketcord.com/discord">
+  Join the support Discord and ask the team
 </Card>
-
----
-
-## /auto-close
-
-Configure automatic closure of inactive tickets.
-
-```
-/auto-close <time>
-```
-
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `time` | Text | Yes | Inactivity period such as `30M`, `2H`, or `1D`, or `off` to disable |
-
-**Permission:** Administrator  
-**Plan:** Basic or higher
-
-**Limits:** minimum 15 minutes, maximum 30 days.
-
-**Example:**
-```
-/auto-close time:2D
-/auto-close time:off
-```
-
----
-
-## /config
-
-Open an interactive configuration panel for the ticket system inside Discord.
-
-```
-/config
-```
-
-**Permission:** Administrator
-
-The panel lets you review and toggle core settings without leaving Discord. Some settings are managed from the dashboard only; the panel tells you when that is the case.
-
----
-
-## /diagnose
-
-Check the bot's permissions and configuration for the current server.
-
-```
-/diagnose
-```
-
-**Permission:** Staff only
-
-**What it checks:**
-- Whether the bot has the permissions it needs (View Channel, Send Messages, Manage Channels, and more)
-- Whether the ticket categories and staff roles in your configuration still exist
-- Common setup problems, with suggested fixes

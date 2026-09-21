@@ -1,52 +1,95 @@
 ---
 title: "Bot Overview"
-description: "Understanding your TicketCord bot and its capabilities"
+description: "What a TicketCord bot is, how a ticket flows from panel to transcript, and what each plan includes"
 ---
 
-## What is TicketCord?
+TicketCord runs a Discord ticket bot under your own application, so members see your name and avatar rather than a shared bot. Each bot you create is independent: its own branding, its own configuration per server, and its own ticket history. You configure it from the web dashboard and staff work tickets in Discord with slash commands.
 
-TicketCord is a white-label Discord ticket bot that lets you run your own fully customized support system. Each bot you create is completely independent with its own:
+## How a ticket flows
 
-- Name and avatar
-- Embed colors and branding
-- Configuration and settings
-- Ticket data and transcripts
+<Steps>
+  <Step title="A member opens a ticket">
+    They press a button on a panel you posted, pick a dropdown option, fill in a form, or (in ModMail mode) DM the bot. The bot checks the firewall, business hours, and the member's open ticket count first.
+  </Step>
+  <Step title="A private channel is created">
+    `ticket-0001` appears in your ticket category, visible only to the creator, staff roles, and the bot, with your welcome message and any staff ping you configured.
+  </Step>
+  <Step title="Staff handle it">
+    Staff claim it, reply (by hand, with `/reply`, or from an `/ai-help` draft), add colleagues, set priority and tags, and keep internal notes. Every action is logged to the logs channel.
+  </Step>
+  <Step title="It closes">
+    The creator or staff close it. The channel becomes `closed-0001` and moves to the closed category (or is deleted), the transcript is posted, the creator is DMed and asked for a rating, and auto-close handles tickets that go quiet.
+  </Step>
+</Steps>
 
-## Key Features
+## What the bot does
 
-### Ticket Management
+| Area | Capabilities |
+|------|--------------|
+| **Ticket panels** | Embeds with buttons or dropdowns, each mapped to its own category and welcome message; optional application forms before the ticket opens |
+| **Ticket channels** | Channel or thread tickets, per-user open limits, priority indicators, tags, claims (optionally exclusive), internal notes, close requests, transcripts |
+| **ModMail** | Members DM the bot and staff answer from a ticket channel, with evidence tools for moderation |
+| **Automation** | Auto-close after inactivity, reminders before closing, auto-close when a member leaves, auto-delete on close, DM on close, feedback collection |
+| **AI** | Auto Support answers from your knowledge base, AI reply drafts, ticket summaries, priority detection, translation, auto-routing, tone detection |
+| **Enterprise workflows** | Business hours, SLA targets, approval requests, scheduled reports, webhooks |
+| **Languages** | The bot's own messages are available in 19 languages, chosen per server under **Platform → Language** |
 
-- **Custom panels** - Create ticket panels with buttons or dropdown menus
-- **Multiple categories** - Organize tickets by type (support, sales, etc.)
-- **Claiming system** - Staff can claim tickets to avoid duplicated effort
-- **Auto-close** - Automatically close inactive tickets
+## Plans at a glance
 
-### AI Features
+Plan gates apply to the account that owns the bot. Every new account starts with a 14-day Enterprise trial, no card required.
 
-<Info>AI features require a Pro or Enterprise plan.</Info>
-
-- **Atlas AI** - Dashboard assistant for analytics and insights
-- **Knowledge Base** - Auto-suggest answers from your documentation
-- **Smart Routing** - Automatically assign tickets to the right team
-- **Priority Detection** - AI-powered ticket prioritization
-
-### Customization
-
-- **Custom embeds** - Design ticket panels with the embed builder
-- **Application forms** - Collect information before ticket creation
-- **Custom footer** - Remove or customize the bot's footer text
-- **White-label** - Full branding control on Enterprise plan
-
-## Plan Comparison
-
-| Feature | Free | Basic | Pro | Enterprise |
-|---------|------|-------|-----|------------|
-| Custom bots | 1 | 3 | 3 | 6 |
-| Tickets | Unlimited (5 open per user) | Unlimited | Unlimited | Unlimited |
-| AI Tokens | - | - | 10M/month | 30M/month |
+| | Free | Basic | Pro | Enterprise |
+|---|---|---|---|---|
+| Bots | 1 | 3 | 3 | 6 |
+| Tickets | Unlimited, 5 open per member | Unlimited, configurable per-member limit | Unlimited, configurable per-member limit | Unlimited, configurable per-member limit |
+| Custom embeds per server | 1 | 5 | 5 | 15 |
+| Canned responses | 0 | 25 | 25 | Unlimited |
 | Branding | TicketCord footer | Footer removed | Footer removed | Custom footer text |
-| Knowledge base | - | - | 2 sources | 15 sources |
+| Auto-close | No | Yes | Yes | Yes |
+| Application forms, DM on join | No | Yes | Yes | Yes |
+| AI features and monthly AI tokens | No | No | 10M tokens | 30M tokens |
+| Knowledge base sources | 0 | 0 | 2 | 15 |
+| Analytics | No | Yes | Yes | Yes |
+| Webhooks | No | No | No | 20 per server |
+| Business hours, SLA, approvals | No | No | No | Yes |
 
-<Card title="Get Started" icon="rocket" href="/quickstart">
-  Set up your first bot in minutes
+Prices and the full comparison are on [Plans](/billing/plans).
+
+## Where things live
+
+| Task | Where |
+|------|-------|
+| Create or update a bot, update its token | `Dashboard → Bots` |
+| Configure a server | `Dashboard → Bots → your bot → Servers → the server` |
+| Design panels and embeds | The server's **Panels & Embeds** section |
+| Work tickets | Discord slash commands, or `Dashboard → Tickets` |
+| Read transcripts | The server's transcript channel, or the ticket in the dashboard |
+| Analytics and reports | `Dashboard → Analytics` |
+
+## Common questions
+
+**Is TicketCord one shared bot or my own?**
+Your own. You create the application in Discord's Developer Portal and TicketCord runs it. Members never see the TicketCord name unless you keep the default footer on the Free plan.
+
+**Does the bot need Administrator?**
+No. The dashboard invite requests only the permissions the bot uses (channel, role, thread, message, and webhook management). See [Installation](/bot/installation) for the exact list.
+
+**Can I run different settings in different servers with the same bot?**
+Yes. Every server has its own configuration, staff roles, categories, panels, and automation.
+
+**What happens when my trial ends?**
+The account moves to the Free plan. Configuration and tickets are kept; features above Free stop working until you upgrade, and the bot keeps handling tickets within Free limits.
+
+**Do members need to install anything?**
+No. They open tickets by pressing a button or sending the bot a DM, inside Discord.
+
+**Which languages can the bot speak?**
+The bot's messages are available in 19 languages: Arabic, Chinese (Simplified and Traditional), Czech, Dutch, English, French, German, Hindi, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish, and Vietnamese. Ticket translation between members and staff is a separate Pro feature.
+
+<Card title="Get started" icon="rocket" href="/quickstart">
+  Set up your first bot in about ten minutes
+</Card>
+
+<Card title="Still stuck?" icon="discord" href="https://ticketcord.com/discord">
+  Join the support Discord and ask the team
 </Card>

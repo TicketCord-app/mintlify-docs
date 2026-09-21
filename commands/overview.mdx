@@ -1,90 +1,112 @@
 ---
 title: "Commands Overview"
-description: "Complete reference for all TicketCord slash commands"
+description: "Every TicketCord slash command with who can run it, the plan it needs, and where to find its full reference"
 ---
 
-TicketCord provides a comprehensive set of slash commands for managing your ticket system. Commands are organized by function and have specific permission requirements.
-
-## Quick Reference
-
-| Command | Permission | Plan | Description |
-|---------|------------|------|-------------|
-| `/help` | Everyone | All | View available commands |
-| `/close` | Creator/Staff/Admin | All | Close the current ticket |
-| `/reopen` | Creator/Staff | All | Reopen a closed ticket |
-| `/claim` | Staff | All | Claim a ticket |
-| `/unclaim` | Claimer/Staff | All | Release a claimed ticket |
-| `/add` | Creator/Staff | All | Add user or role to ticket |
-| `/remove` | Creator/Staff | All | Remove user or role from ticket |
-| `/rename` | Creator/Staff | All | Rename a ticket channel |
-| `/closerequest` | Staff | All | Request ticket closure from creator |
-| `/transcript` | Creator/Staff | All | Generate ticket transcript |
-| `/note` | Staff | All | Manage internal staff notes |
-| `/tag` | Staff | All | Manage ticket tags |
-| `/embed` | Manage Messages | All | Send custom embed message |
-| `/setup` | Administrator, or Manage Channels + Manage Roles | All | Create ticket infrastructure |
-| `/on-call` | Staff (toggle) / Everyone (status) | All | Manage on-call status |
-| `/reply` | Staff | Basic+ | Send canned response |
-| `/priority` | Staff | All | Set ticket priority |
-| `/stats` | Staff | Basic+ | View ticket statistics |
-| `/claims` | Staff | All | List claimed tickets |
-| `/feedback` | Staff | All | Ask the creator to rate a ticket |
-| `/translation` | Staff | All | Toggle AI translation for a ticket |
-| `/ai-help` | Staff | Pro+ | AI reply suggestion |
-| `/summary` | Staff | Pro+ | AI conversation summary |
-| `/context` | Staff | All | AI context usage for a ticket |
-| `/modmail` | Staff | All | Inspect ModMail evidence |
-| `/approval` | Staff | Enterprise | Manage approval workflow |
-| `/auto-close` | Administrator | Basic+ | Configure auto-close time |
-| `/config` | Administrator | All | Interactive settings panel |
-| `/diagnose` | Staff | All | Check bot permissions and setup |
-| `/purge` | Server Owner | All | Bulk delete tickets |
-| `Find ticket` | Staff | All | Context menu: find user's tickets |
-
-## Permission Levels
+TicketCord registers 30 slash commands and one right-click (context menu) command in every server the bot joins. Most run inside a ticket channel and check your role at the moment you run them, so a role change in the dashboard takes effect immediately.
 
 <Info>
-  Commands check permissions in real-time. If staff roles change, permissions update immediately.
+  Commands appear in Discord's command list for everyone except where a Discord permission hides them: `/setup` (Manage Channels and Manage Roles), `/embed` (Manage Messages), `/auto-close` (Administrator), and **Find ticket** (Manage Messages). Every other command checks your staff role or ticket role when you run it and replies with a `TC` error code when you may not use it.
 </Info>
 
-| Level | Who |
-|-------|-----|
-| **Everyone** | Any user in the server |
-| **Creator** | The user who opened the ticket |
-| **Staff** | Users with configured staff roles |
-| **Claimer** | Staff member who claimed the ticket |
-| **Manage Messages** | Users with Discord's Manage Messages permission |
-| **Administrator** | Users with Discord's Administrator permission |
-| **Server Owner** | The server owner only |
+## Quick reference
 
-## Plan Requirements
+| Command | Who can run it | Plan | What it does |
+|---------|----------------|------|--------------|
+| `/help` | Everyone | All | List commands and who can use them |
+| `/close` | Creator, staff, administrators, bot owner | All | Close the ticket, optionally silently or on a ModMail delay |
+| `/reopen` | Creator or staff | All | Reopen a closed ticket |
+| `/claim` | Staff | All | Claim the ticket |
+| `/unclaim` | Claimer or staff | All | Release a claim |
+| `/claims` | Staff | All | List claimed tickets, five per page |
+| `/add` | Creator or staff | All | Add a user or role to a ticket |
+| `/remove` | Creator or staff | All | Remove a user or role from a ticket |
+| `/rename` | Creator or staff | All | Rename the ticket channel |
+| `/closerequest` | Staff | All | Ask the creator to close the ticket |
+| `/transcript` | Creator or staff (options are staff only) | All | Generate an HTML transcript |
+| `/note` | Staff | All | Internal staff notes |
+| `/tag` | Staff | All | Tag the ticket for filtering |
+| `/priority` | Staff | All | Set the priority indicator |
+| `/reply` | Staff | Basic+ | Send a canned response |
+| `/stats` | Staff | Basic+ | Ticket statistics for the server |
+| `/ai-help` | Staff | Pro+ | AI reply draft |
+| `/summary` | Staff | Pro+ | AI ticket summary |
+| `/context` | Staff | All | AI context usage for the ticket |
+| `/translation` | Staff | All | Toggle translation for the ticket |
+| `/modmail` | Staff | All | ModMail evidence lookup |
+| `/feedback` | Ticket creator | All | Rate one of your closed tickets |
+| `/on-call` | Staff (`toggle`), everyone (`status`) | All | On-call roster |
+| `/setup` | Administrator, or Manage Channels + Manage Roles | All | Create categories, channels, and roles |
+| `/embed` | Manage Messages | All | Post a saved embed or ticket panel |
+| `/config` | Administrators and staff | All | Interactive settings panel |
+| `/diagnose` | Staff or server owner | All | Check permissions and configuration |
+| `/auto-close` | Administrator | Basic+ | Set the inactivity auto-close time |
+| `/approval` | Staff (approvers decide) | Enterprise | Approval requests for sensitive actions |
+| `/purge` | Server owner | All | Bulk delete ticket channels |
+| **Find ticket** | Staff (hidden without Manage Messages) | All | Right-click a user to list their tickets |
 
-Some commands require specific subscription plans:
+## Who counts as what
 
-| Plan | Features |
-|------|----------|
-| **Free** | Basic ticket management commands |
-| **Basic** | + Canned responses (`/reply`), statistics (`/stats`), auto-close (`/auto-close`) |
-| **Pro** | + AI reply suggestions (`/ai-help`), AI summaries (`/summary`) |
-| **Enterprise** | + Approval workflow (`/approval`) |
+| Term | Meaning |
+|------|---------|
+| **Everyone** | Any member of the server |
+| **Creator** | The member who opened the ticket |
+| **Staff** | Members holding a role selected under **Staff** in the dashboard (`Dashboard → Bots → your bot → Servers → the server → Staff`) |
+| **Claimer** | The staff member who claimed the ticket |
+| **Approver** | Members holding the approval role selected under **Approvals** |
+| **Administrator** | Members with Discord's Administrator permission |
+| **Bot owner** | The TicketCord account that added the bot |
+| **Server owner** | The Discord server owner |
 
-<Tip>
-  Most ticket management commands work on all plans. AI-powered features require Pro or higher.
-</Tip>
+Plan gates apply to the plan of the bot owner's TicketCord account, not to individual staff members. When a command needs a higher plan you see **TC014** with the plan required.
 
-## Command Categories
+## Plan requirements
+
+| Plan | Commands unlocked |
+|------|-------------------|
+| **Free** | Everything not listed below |
+| **Basic** | `/reply`, `/stats`, `/auto-close` |
+| **Pro** | `/ai-help`, `/summary` (plus all Basic commands) |
+| **Enterprise** | `/approval` (plus all Pro commands) |
+
+## Command groups
 
 <CardGroup cols={2}>
   <Card title="Ticket Management" icon="ticket" href="/commands/ticket-management">
-    Open, close, claim, and manage tickets
+    Close, reopen, claim, add and remove members, rename, close requests
   </Card>
   <Card title="Staff Tools" icon="wrench" href="/commands/staff-tools">
-    Notes, tags, transcripts, and quick replies
+    Notes, tags, transcripts, canned replies, priority, statistics, claims, AI drafts and summaries, translation, ModMail evidence
   </Card>
   <Card title="Administration" icon="gear" href="/commands/admin">
-    Setup, embeds, approvals, and bulk operations
+    Setup, embeds, in-Discord config, diagnostics, auto-close, approvals, purge
   </Card>
   <Card title="Utility" icon="circle-info" href="/commands/utility">
-    Help, on-call status, and user lookups
+    Help, on-call roster, Find ticket, feedback
   </Card>
 </CardGroup>
+
+## Reading an error
+
+Every error the bot sends starts with a ❌ marker and ends with a footer that shows a `TC` code and a **Learn more** link to the matching section on [Troubleshooting](/bot/troubleshooting). The command pages list which codes each command can return and why.
+
+## Common questions
+
+**Why is a command missing from my slash command list?**
+Either Discord hides it because you lack its default permission (`/setup`, `/embed`, `/auto-close`, **Find ticket**), or your client has a stale list. Press Ctrl+R (Cmd+R on Mac) to reload Discord.
+
+**I have the Ticket Support role but the bot says I am not staff.**
+The role must be selected under **Staff** in the dashboard for that server. `/setup` creates the roles but does not select them; an administrator has to save them in the dashboard.
+
+**Do staff need Discord permissions like Manage Channels?**
+No. Staff commands check the staff role only. Discord permissions matter for `/setup`, `/embed`, `/auto-close`, `/config` (Administrator also works), `/purge` (server owner), and **Find ticket**.
+
+**Which commands work in DMs?**
+None. All commands are server-only; running one in a DM returns **TC017**.
+
+**Can I rename a command or hide one from members?**
+Command names are fixed. You can restrict any command per role or channel in **Server Settings → Integrations → your bot** in Discord.
+
+<Card title="Still stuck?" icon="discord" href="https://ticketcord.com/discord">
+  Join the support Discord and ask the team
+</Card>

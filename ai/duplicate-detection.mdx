@@ -1,47 +1,107 @@
 ---
 title: "Duplicate Detection"
-description: "Find tickets about the same issue"
+description: "Set up Duplicate Detection so staff are told when a new ticket repeats or relates to a recent one"
 ---
 
-Duplicate Detection uses AI to spot new tickets that repeat or relate to recent ones, so your team can give consistent answers and avoid double work.
+Duplicate Detection compares a new ticket with recent tickets in the same server and tells your staff when it finds one that looks like the same issue. Staff get a card in the logs channel with links to the matching tickets, so they can give one consistent answer instead of solving the same problem twice. This page is for the admin who wants fewer repeated tickets.
 
 <Info>
-  Duplicate Detection is a **Pro** feature (Pro and Enterprise). [Upgrade your plan](https://ticketcord.com/pricing) to access it.
+  Duplicate Detection is available on **Pro** and **Enterprise**. It needs **Enable AI Features** on the **General** tab and a logs channel to post its results. [Upgrade your plan](https://ticketcord.com/pricing)
 </Info>
 
-## How It Works
+## Setup
 
-1. A ticket is created, or its creator sends a message
-2. The AI compares it with recent tickets in the same server (up to 1,000)
-3. Matches are recorded on the ticket with a confidence score and the AI's reasoning
-4. A card listing up to five matches is posted to your logs channel, each with a "Jump to ticket" link
-
-Matches are labelled **repeat** (🔁, the same creator opened the same issue again) or **related** (🔗, a different creator with the same issue).
-
-## Confidence Levels
-
-| Level | Default threshold | Adjustable range |
-|-------|-------------------|------------------|
-| **Very high** | 90% | 85% to 100% |
-| **High** | 75% | 65% to 95% |
-| **Medium** | 60% | 45% to 85% |
-| **Low** | 45% | 30% to 75% |
+<Steps>
+  <Step title="Open the Conversation tab">
+    Go to **Dashboard → Bots → your bot → Servers → the server → AI & Knowledge → AI Features → Conversation** and find **Duplicate Detection**.
+  </Step>
+  <Step title="Enable it">
+    Click **Edit** and switch on **Enable Duplicate Detection**.
+  </Step>
+  <Step title="Choose how far back to look">
+    Set the **Lookback Period** and, if you want, the **Maximum Tickets to Scan**.
+  </Step>
+  <Step title="Adjust the confidence levels if needed">
+    The four thresholds decide how a match is labelled. The defaults work for most servers.
+  </Step>
+  <Step title="Save">
+    Click **Save All**. Make sure a logs channel is configured with `/setup`; without one, matches are recorded on the ticket but no card is posted.
+  </Step>
+</Steps>
 
 ## Settings
 
-Open **Dashboard → Bots → your bot → Servers → the server → AI Features → Conversation**.
+| Setting | Values | Default | What it does |
+|---------|--------|---------|--------------|
+| **Enable Duplicate Detection** | On, Off | Off | Master switch for this feature |
+| **Lookback Period** | 7 days, 14 days, 30 days, 60 days, 90 days | 30 days | How far back to look for similar tickets |
+| **Maximum Tickets to Scan** | 100, 500, 1,000, 2,500, 5,000 tickets | 1,000 | Caps how many recent tickets are considered. TicketCord then shortlists a small set of candidates for the AI comparison |
+| **Very High Confidence** | 85% to 100% | 90% | Very likely duplicate; immediate attention |
+| **High Confidence** | 65% to 95% | 75% | Likely duplicate; shown prominently for review |
+| **Medium Confidence** | 45% to 85% | 60% | Possibly related; shown as a suggestion |
+| **Low Confidence** | 30% to 75% | 45% | Potentially related; minimal display. Anything below this is not shown |
 
-| Setting | Options |
-|---------|---------|
-| **Lookback period** | 7, 14, 30 (default), 60, or 90 days |
-| **Confidence thresholds** | The four levels above |
+Each threshold must stay below the one above it; the dashboard enforces the order.
 
-## What Staff See
+## What happens
 
-- The **logs channel card** with the matches and links
-- The **dashboard ticket view**, which shows related tickets and, for strong matches, a "duplicate of" link
+1. A ticket is created, or its creator sends a message.
+2. TicketCord finds candidate tickets from the same server within the **Lookback Period**, up to the **Maximum Tickets to Scan**, and shortlists the closest ones.
+3. The AI compares the customer's message with each candidate's subject and the welcome or form context, and gives each match a confidence score and a one-line reason.
+4. Matches are recorded on the ticket. Each is labelled **repeat** (🔁, the same person opened the same issue again) or **related** (🔗, a different person with the same issue).
+5. A **Potential Ticket Matches** card is posted to the logs channel. It opens with `AI found tickets that may be repeats or related reports: 3`, then lists each match with its 🔁 or 🔗 label, the confidence, the reason, the ticket's **Open** or **Closed** status, a **Preview**, and a **Jump to ticket** link. The footer reads `AI compared the customer message, subject, and welcome or form context. Staff should verify the results.`
+6. In the dashboard, the ticket view shows the related tickets and, for strong matches, a "duplicate of" relationship.
 
-There are no link or dismiss buttons and no feedback loop; staff decide how to handle the tickets.
+## What staff should do
+
+The card is advice, not an action. There are no link, merge, or dismiss buttons and no feedback loop. Typical responses:
+
+- **Repeat from the same person**: open the older ticket, check whether it was resolved, and either continue there or explain in the new ticket that the answer has not changed.
+- **Related from a different person**: reuse the answer that worked, and consider adding it to the [Knowledge Base](/ai/knowledge-base) so the bot answers the next one.
+- **Several related tickets in a short time**: this often means an outage or a broken feature. Post an announcement and, if you use a status page, connect it on the Knowledge Base **Answering** tab so the bot mentions the incident.
+
+## Worked example
+
+A customer opens `ticket-0412` saying `My rank purchase from yesterday still hasn't been applied`. Within the 30-day lookback the bot finds `ticket-0398` from the same customer (`bought VIP, nothing happened`) and `ticket-0405` from someone else (`store purchase not delivered`). The logs channel card lists `🔁 88%: same customer, same undelivered rank purchase` and `🔗 72%: different customer, same store delivery problem`. Staff open `ticket-0398`, see it was closed with a manual rank grant, apply the same fix, and add a Q&A entry about delayed store deliveries so the bot handles the next report.
+
+## Limits and gotchas
+
+<Note>
+  Every comparison costs tokens from the bot owner's allowance. The dashboard shows **AI duplicate detection is active and uses tokens when it compares candidate tickets** while the feature is on. Larger lookback periods and scan limits mean more candidates to compare.
+</Note>
+
+- Detection looks at tickets in the same server only.
+- Thresholds only change how a match is labelled; they do not stop the card. A card is posted whenever at least one match reaches the **Low Confidence** threshold.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| No cards ever appear | The feature or the AI master switch is off, the owner's plan is below Pro, or no logs channel is configured | Check both switches and the plan, and run `/setup` to set a logs channel |
+| Cards appear for unrelated tickets | The **Low Confidence** threshold is low | Raise it toward 55% to 60% |
+| Obvious duplicates are missed | The **Lookback Period** is shorter than the gap between the tickets, or the older ticket is outside the scan limit | Extend the lookback and raise **Maximum Tickets to Scan** |
+| The card links to a closed ticket | Closed tickets within the lookback are included on purpose | Reopen it with `/reopen` if the conversation should continue there |
+| Staff cannot open the linked ticket | They lack access to that ticket's channel | Adjust category permissions |
+
+## Common questions
+
+**Does the bot close or merge duplicate tickets automatically?**
+No. It only reports them. Staff decide what to do with each ticket.
+
+**Where do the results go?**
+To the logs channel as a **Potential Ticket Matches** card, and onto the ticket in the dashboard.
+
+**Are closed tickets included?**
+Yes, within the **Lookback Period**. The card shows whether each match is **Open** or **Closed**.
+
+**Does it work across my servers?**
+No. Only tickets in the same server are compared.
+
+**Does the customer see anything?**
+No. The card is posted to the logs channel, which customers cannot see.
+
+**How much does it cost in tokens?**
+Only the shortlisted candidates are compared by the AI, so cost depends on how many similar tickets exist. Check **Analytics → AI Usage** after a few days.
 
 <Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support

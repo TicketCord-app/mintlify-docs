@@ -1,128 +1,148 @@
 ---
 title: "Installation"
-description: "Create your Discord bot and connect it to TicketCord"
+description: "Create a Discord application, enable the required intents, connect the token to TicketCord, and invite the bot with the right permissions"
 ---
 
-## Prerequisites
+TicketCord runs your own Discord bot: you create the application in Discord's Developer Portal, and TicketCord runs it under your name and avatar. This page walks through every step, from an empty Developer Portal to a bot that is online in your server.
 
-Before you begin, you'll need:
+<Info>
+  You need a Discord account, and Administrator (or ownership) on the server you want to add the bot to. Discord itself also requires Manage Server to add any bot to a server.
+</Info>
 
-- A Discord account
-- **Administrator** permission on your target server (or be the server owner)
-- A Discord bot application (we'll create this below)
-
-## Create a Discord Application
+## Step 1: Create the Discord application
 
 <Steps>
-  <Step title="Go to Discord Developer Portal">
-    Visit [discord.dev](https://discord.dev) and sign in.
+  <Step title="Open the Developer Portal">
+    Go to [discord.dev](https://discord.dev) and sign in with the Discord account that should own the bot.
   </Step>
 
-  <Step title="Create New Application">
-    Click **New Application**, enter a name, and click **Create**.
+  <Step title="Create a new application">
+    Click **New Application**, enter the name you want your bot to have, accept the terms, and click **Create**. You can change the name and avatar later; TicketCord reads both from Discord.
 
     <Frame>
       <img src="/images/CreateBot.png" alt="Create new Discord application" />
     </Frame>
   </Step>
 
-  <Step title="Create Bot User">
-    Go to the **Bot** tab and click **Add Bot**.
-  </Step>
-
-  <Step title="Disable Public Bot">
-    In the **Bot** tab, find **Public Bot** and **turn it OFF** (toggle should be gray, not blue). This prevents others from adding your bot to their servers.
-
-    <Warning>
-      Make sure the toggle is **disabled** (gray). The image below shows where to find it - click the toggle to turn it off.
-    </Warning>
+  <Step title="Turn off Public Bot">
+    Open the **Bot** tab. Find **Public Bot** and switch it **off** (the toggle turns grey). This stops strangers from adding your bot to their servers.
 
     <Frame>
       <img src="/images/PublicBot.png" alt="Disable public bot setting" />
     </Frame>
   </Step>
 
-  <Step title="Enable Privileged Gateway Intents">
-    In the Discord Developer Portal, open your application's **Bot** page and enable these under **Privileged Gateway Intents**:
+  <Step title="Enable the two privileged intents">
+    Still on the **Bot** tab, under **Privileged Gateway Intents**, enable:
 
     - **Server Members Intent**
     - **Message Content Intent**
 
-    Enable these yourself in the Developer Portal. If they are off, Discord rejects the connection with a "disallowed intent" error (code 4014). TicketCord makes one automatic attempt to enable them for you when that happens; if the bot still cannot connect, turn them on manually and restart the bot from the dashboard.
+    TicketCord needs these to see who joins or leaves, verify staff roles, and read ticket messages for transcripts, ModMail, and AI features. If they are off, Discord rejects the connection with a "disallowed intent" error (code 4014). TicketCord makes one automatic attempt to enable them for you when that happens; if the bot still cannot connect, turn them on manually and restart the bot from the dashboard.
 
     <Warning>
-      Don't disable these later. Turning them off will break your bot until they're re-enabled.
+      Do not turn these off later. The bot goes offline until they are enabled again.
     </Warning>
   </Step>
 
-  <Step title="Copy Bot Token">
-    Click **Reset Token** and copy the token. You'll need this for TicketCord.
+  <Step title="Copy the bot token">
+    Click **Reset Token**, confirm, and copy the token. This is the only credential TicketCord needs; the application ID is read from it. You do not need the Client ID or Client Secret.
 
     <Warning>
-      Keep your token secret! Anyone with your token has full control of your bot.
+      Treat the token like a password. Anyone who has it controls your bot. Discord shows it only once; if you lose it, reset it again.
     </Warning>
-
-    <Info>
-      If you reset your token after adding the bot to TicketCord, your bot will go offline. To fix this, go to your bot in the dashboard and click **Update Credentials** to enter the new token. The bot will automatically restart once updated.
-    </Info>
   </Step>
 </Steps>
 
-## Connect to TicketCord
+## Step 2: Connect the bot to TicketCord
 
 <Steps>
-  <Step title="Sign in to Dashboard">
-    Go to [ticketcord.com/dashboard](https://ticketcord.com/dashboard) and sign in with Discord.
+  <Step title="Sign in to the dashboard">
+    Open [ticketcord.com/dashboard](https://ticketcord.com/dashboard) and sign in with Discord.
   </Step>
 
-  <Step title="Add Custom Bot">
-    Click **Add Bot** and paste your **Bot Token** (the token you copied earlier). TicketCord reads the application ID from the token; no Client ID or Client Secret is needed.
-
-    <Info>
-      Validation checks your credentials and connection. If it fails with a "disallowed intent" (4014) error, go back to the Developer Portal and enable the two Privileged Gateway Intents, then validate again.
-    </Info>
+  <Step title="Add the bot">
+    Click **Add Bot** and paste the token.
   </Step>
 
-  <Step title="Validate & Create">
-    Click **Validate & Continue**. TicketCord will verify your credentials and display your bot's information. Review and click **Create Bot** to finish.
+  <Step title="Validate and create">
+    Click **Validate & Continue**. TicketCord checks the token, connects to Discord once, and shows the bot's name and avatar. If validation fails with a "disallowed intent" (4014) error, go back to the Developer Portal, enable both intents, and validate again. Click **Create Bot** to finish. The bot starts within a few moments and shows as online in the dashboard.
   </Step>
 
-  <Step title="Invite to Server">
-    From your bot's dashboard, click **Invite** and select your server. This ensures all required permissions are configured correctly.
+  <Step title="Invite the bot to your server">
+    On the bot's page, click **Invite** and choose your server. The invite link requests exactly the permissions listed below plus the `applications.commands` scope that registers the slash commands.
   </Step>
 </Steps>
 
-## Required Permissions
+<Note>
+  Every new TicketCord account starts a 14-day Enterprise trial with no card required, so every feature is available while you set up. When the trial ends, the account moves to the Free plan; nothing you configured is deleted.
+</Note>
 
-TicketCord bots need these permissions to function properly:
+## Permissions the invite requests
 
-| Permission | Reason |
-|------------|--------|
-| View Channel | See the channels it works in |
+| Permission | Why the bot needs it |
+|------------|----------------------|
+| View Channel | See the channels and categories it works in |
 | Manage Channels | Create, rename, move, and delete ticket channels |
-| Manage Roles | Manage ticket access permissions |
+| Manage Roles | Set per-ticket permission overwrites for the creator and staff |
 | Manage Webhooks | Deliver logs and transcripts |
-| Send Messages | Send ticket messages and responses |
+| Send Messages | Post ticket messages, panels, and replies |
 | Send Messages in Threads | Reply in thread-style tickets |
-| Create Public / Private Threads | Open thread-style tickets |
+| Create Public Threads | Open thread-style tickets |
+| Create Private Threads | Open private thread-style tickets |
 | Manage Threads | Archive and rename thread tickets |
 | Manage Messages | Pin panels and clean up ticket messages |
 | Pin Messages | Pin the welcome message in tickets |
-| Embed Links | Send rich embed messages |
+| Embed Links | Send rich embeds and panels |
 | Attach Files | Send transcripts and attachments |
-| Read Message History | Read ticket conversations |
+| Read Message History | Read ticket conversations for transcripts and AI |
 | Add Reactions | Add reactions to messages |
 | Mention Everyone | Ping staff roles when a ticket opens |
 | Use Application Commands | Register and run slash commands |
 
-<Info>
-  When you invite your bot through the TicketCord dashboard, all required permissions are **automatically configured** for you.
-</Info>
+The invite does not ask for Administrator, Manage Server, or any moderation permission such as Kick, Ban, or Timeout.
 
 <Warning>
-  **Do not invite your bot manually** through Discord's developer portal. Manual invites may result in incorrect permissions, causing features like ticket creation, transcripts, or role management to fail.
+  Do not build your own invite link in the Developer Portal. A manual invite usually misses permissions or the `applications.commands` scope, which shows up later as tickets that will not open, transcripts that never arrive, or commands that do not appear. If that already happened, kick the bot and invite it again from the dashboard; the token stays valid.
 </Warning>
 
-<Card title="Next: Configuration" icon="gear" href="/bot/configuration">
-  Configure your bot's ticket system
+## After the invite
+
+- Discord places the bot's role at the bottom of the role list. Drag it above your staff roles in **Server Settings → Roles** so it can manage permissions for them.
+- Run `/setup` in the server, then finish the configuration in the dashboard. See [Configuration](/bot/configuration).
+- Run `/diagnose` to confirm the bot can see every channel and category it will use.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| Validation fails with 4014 / disallowed intent | Server Members Intent or Message Content Intent is off | Enable both on the **Bot** tab, then validate again |
+| Bot shows offline after you reset the token | The old token no longer works | Open the bot in the dashboard, click **Update Credentials**, paste the new token. The bot restarts on its own |
+| Bot is online but slash commands do not appear | The invite lacked the `applications.commands` scope | Kick the bot and invite it again from the dashboard, then reload Discord (Ctrl+R / Cmd+R) |
+| Replies arrive without a `TC` code footer | Something else is running the same token | Stop the other program, reset the token, and update it in the dashboard |
+| "Bot Cannot Access This Server" (TC002) | The bot's role lost View Channel at the server level | Restore the permission on the bot's role under **Server Settings → Roles** |
+| "TicketCord isn't a member of this server" (TC004) | The bot was kicked | Invite it again from the dashboard |
+
+## Common questions
+
+**Can I use an existing bot application?**
+Yes. Paste its token. Make sure Public Bot is off and both privileged intents are on, and invite it from the dashboard so the permissions are right.
+
+**Do I need to keep anything running on my computer?**
+No. TicketCord hosts and runs the bot for you. You only supply the token.
+
+**Can one bot be in several servers?**
+Yes. Invite it from the dashboard to each server and configure each server separately. The number of bots you can create depends on your plan: 1 on Free, 3 on Basic and Pro, 6 on Enterprise.
+
+**I changed the bot's name and avatar in the Developer Portal. When does the dashboard update?**
+Automatically. The bot picks up the new name and avatar from Discord while it is online, and checks again each time it starts. If the dashboard still shows the old values, restart the bot from the dashboard.
+
+**Does TicketCord store my token?**
+Yes, encrypted, so that it can run the bot. Resetting the token in the Developer Portal invalidates the stored copy; update it with **Update Credentials**.
+
+**Why does the invite ask for Manage Roles and Mention Everyone?**
+Manage Roles lets the bot set per-ticket permission overwrites so only the creator and staff can see a ticket. Mention Everyone lets it ping staff roles when a ticket opens even when those roles are not otherwise mentionable.
+
+<Card title="Still stuck?" icon="discord" href="https://ticketcord.com/discord">
+  Join the support Discord and ask the team
 </Card>

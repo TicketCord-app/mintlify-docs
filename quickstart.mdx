@@ -1,46 +1,84 @@
 ---
 title: "Quick Start"
-description: "Get your TicketCord bot running in about 10 minutes"
+description: "From an empty Developer Portal to a working ticket panel in about ten minutes"
 ---
 
-## Step 1: Sign In
-
-Go to the [TicketCord Dashboard](https://ticketcord.com/dashboard) and sign in with your Discord account.
+This is the shortest path to a bot that opens tickets. Each step links to the page with the full details.
 
 <Info>
-  You'll need **Administrator** permission (or be the owner) on the Discord server where you want to add the bot. Discord also requires **Manage Server** to invite any bot.
+  You need Administrator (or ownership) on the Discord server, and Discord requires Manage Server to add any bot. Every new TicketCord account starts a 14-day Enterprise trial with no card required, so every feature is available while you set up.
 </Info>
 
-## Step 2: Create Your Bot
+<Steps>
+  <Step title="Create the Discord application">
+    Go to [discord.dev](https://discord.dev), click **New Application**, and name it. On the **Bot** tab: turn **Public Bot** off, enable **Server Members Intent** and **Message Content Intent** under Privileged Gateway Intents, then click **Reset Token** and copy the token.
 
-1. Click **Add Bot** in the dashboard
-2. Paste your Discord bot token from the [Discord Developer Portal](https://discord.dev)
-3. TicketCord validates the token and reads the bot's name and avatar from Discord
+    <Warning>
+      Never share the token. Anyone who has it controls your bot.
+    </Warning>
+  </Step>
 
-<Warning>
-  Never share your bot token with anyone. It gives full access to your bot.
-</Warning>
+  <Step title="Add the bot to TicketCord">
+    Sign in at [ticketcord.com/dashboard](https://ticketcord.com/dashboard) with Discord, click **Add Bot**, paste the token, and click **Validate & Continue**. TicketCord reads the bot's name and avatar from Discord. Click **Create Bot**.
 
-## Step 3: Invite to Server
+    If validation reports a "disallowed intent" (4014) error, the two intents from step 1 are still off.
+  </Step>
 
-1. Click **Invite Bot** on your bot's page
-2. Select the server you want to add it to
-3. Authorize the required permissions
+  <Step title="Invite it to your server">
+    On the bot's page click **Invite**, pick the server, and authorise. The link requests exactly the permissions the bot needs plus the slash command scope. Do not build your own invite link; see [Installation](/bot/installation#permissions-the-invite-requests) for why.
+  </Step>
 
-## Step 4: Run Setup
+  <Step title="Run /setup in Discord">
+    In the server, run `/setup`. With no prompts it creates:
 
-In your Discord server, run the `/setup` command. It creates the Discord resources for you, with no prompts:
+    - the **🎫 Tickets** and **📁 Closed Tickets** categories
+    - the **📝 Ticket Logs** category with `#ticket-logs` and `#ticket-transcripts`
+    - the **Ticket Admin** and **Ticket Support** roles (named **TicketCord Admin** and **TicketCord Support** on the Free plan)
 
-- The **🎫 Tickets** and **📁 Closed Tickets** categories
-- The **📝 Ticket Logs** category with `#ticket-logs` and `#ticket-transcripts`
-- The **Ticket Admin** and **Ticket Support** roles
+    If matching resources already exist it asks whether to create a second set, use the existing ones, or cancel.
+  </Step>
 
-Then finish the configuration (which roles count as staff, panels, automation) on the [dashboard](https://ticketcord.com/dashboard). Use `/config` in Discord for an interactive settings panel.
+  <Step title="Save the essentials in the dashboard">
+    Open `Dashboard → Bots → your bot → Servers → the server`. Under **Staff** select the two roles; under **Structure** select the Tickets and Closed Tickets categories and the logs channel; under **Transcripts** select `#ticket-transcripts`. Save, then give the roles to your team in Discord.
 
-## You're Done!
+    <Note>
+      `/setup` only creates the Discord resources. Tickets do not open until this step is saved.
+    </Note>
+  </Step>
 
-Your bot is now ready to handle tickets. Users can open tickets using the panel you create in the dashboard.
+  <Step title="Post a ticket panel">
+    Under **Panels & Embeds**, create an embed, add a button with the **Open Ticket** action, and send it to a channel such as `#support` (or run `/embed name:<embed name> channel:#support`). Press the button to open your first ticket, then close it with `/close`.
+  </Step>
+</Steps>
 
-<Card title="Next: Configure Your Bot" icon="gear" href="/bot/configuration">
-  Learn how to customize ticket panels, embeds, and automation
+## Check it worked
+
+- The bot shows online in the dashboard and in your member list.
+- `/diagnose` in the server reports **All Checks Passed**.
+- Pressing the panel button creates `ticket-0001` that only you, staff, and the bot can see.
+- `/close` renames it to `closed-0001`, moves it to the closed category, and posts a transcript in `#ticket-transcripts`.
+
+## Common questions
+
+**The bot is online but `/setup` is not in my command list.**
+Discord hides `/setup` unless you have Administrator, or Manage Channels and Manage Roles. Reload Discord with Ctrl+R (Cmd+R on Mac) if you just invited the bot.
+
+**I ran `/setup` but the button says the server is not set up (TC011).**
+Complete step 5: select the roles, categories, and channels in the dashboard and save.
+
+**Pressing the button does nothing, or shows TC002.**
+The bot is missing permissions in the ticket category. Run `/diagnose`, then fix the category's permission overwrites for the bot's role.
+
+**Can I skip `/setup` and use my existing categories and roles?**
+Yes. Select them in the dashboard instead. `/setup` is a convenience, not a requirement.
+
+**What should I do after the first ticket works?**
+Decide who may close tickets, enable auto-close and transcripts, and write a welcome message. [Configuration](/bot/configuration) walks through each setting.
+
+<Card title="Next: Configuration" icon="gear" href="/bot/configuration">
+  Tune who can close tickets, transcripts, auto-close, and panels
+</Card>
+
+<Card title="Still stuck?" icon="discord" href="https://ticketcord.com/discord">
+  Join the support Discord and ask the team
 </Card>

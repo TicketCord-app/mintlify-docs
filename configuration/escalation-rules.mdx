@@ -1,48 +1,126 @@
 ---
 title: "Escalations"
-description: "How tickets are escalated to humans and where to review them"
+description: "How tickets get escalated to a human, what the bot does when it happens, and how to work the Escalations queue"
 ---
 
-Escalations are raised automatically when the AI or the SLA monitor decides a ticket needs a human, or when a user presses **Talk to Staff**. They are collected in a queue at **Dashboard → Escalations**.
+An escalation is TicketCord's way of saying "a person needs to look at this ticket". It is raised when the AI cannot answer confidently, when a user asks for a human or presses **Talk to Staff**, or when an SLA target is missed. Each escalation appears in a queue at **Dashboard → Escalations**, where a staff member claims it, handles the ticket, and resolves it. This page covers the triggers, the settings that control them, and the queue. Escalations are for servers using the AI features or SLA Management; a server with neither never sees one.
 
-## What Triggers an Escalation
+<Info>
+  AI-driven escalations (low confidence and human requests) need the **Pro** plan or higher, because they come from the knowledge base and ModMail AI. SLA breach escalations need **Enterprise**. The **Escalations** page itself is visible on every plan.
+</Info>
 
-| Trigger | When |
-|---------|------|
-| **Low confidence** | The Knowledge Base could not answer confidently (see auto-escalation below) |
-| **Explicit request** | The user asked for a human, or pressed **Talk to Staff** |
-| **SLA breach** | An SLA target was missed |
-| **Sentiment** | Negative tone such as anger or frustration was detected |
-| **Priority** | A high or critical priority ticket |
-| **No response** | Staff have not responded in time |
-| **Sensitive topic** | Billing, account access, security, or legal topics |
+## What triggers an escalation
 
-## Settings That Control It
+| Trigger | Shown in the queue as | When it fires |
+|---------|-----------------------|---------------|
+| Low confidence | **Low Confidence** | The knowledge-base AI (in a ticket or a ModMail DM) could not find a good answer and **Auto-Escalate to Staff** is on |
+| Explicit request | **Human Requested** | The user pressed the **Talk to Staff** button under an AI reply, the AI detected the user asking for a person, or a staff member escalated on the user's behalf |
+| SLA breach | **SLA Breach** | A first-response or resolution target from [SLA Management](/configuration/sla-management) was missed |
 
-These live in the server configuration:
+The queue's **Reason** filter also lists **Negative Sentiment**, **High Priority**, and **No Response**. Those reasons exist as categories but no escalations are currently created with them; sentiment and priority detection annotate the ticket instead. See [Sentiment Detection](/ai/sentiment-detection) and [Priority Detection](/ai/priority-detection).
 
-- **Knowledge Base → Auto-escalate on low confidence**: raise an escalation when the AI cannot find a good answer.
-- **Knowledge Base → Ping staff on escalation**: mention the staff role in the ticket.
-- **Knowledge Base → Escalation duration**: how many days the AI stays out of an escalated ticket (0 to 30, default 7; 0 means permanently).
-- **SLA → Escalation rules**: the Warning and Critical rules with ping, DM, channel alert, and reassign actions. See [SLA Management](/configuration/sla-management).
+## What happens in the ticket
 
-<Note>
-  Sentiment-based escalation needs the **Enterprise** plan; the other AI triggers need **Pro** or higher.
-</Note>
+1. The bot posts a card in the ticket: **Staff Assistance Requested** when the user or the AI escalated, or **Escalated by Staff** when a staff member did. Depending on the ping setting below, the staff role is mentioned.
+2. The AI stops replying in that ticket so staff and the user are not talking over an assistant. It stays out for the **Ticket Escalation Duration** you configure, and also resumes earlier if it later answers a question successfully from the knowledge base.
+3. The escalation is added to **Dashboard → Escalations** with status **Pending**.
+4. When the ticket is closed, its escalation is resolved automatically.
 
-## The Escalation Queue
+Pressing **Talk to Staff** a second time returns "This ticket has already been escalated to staff." (**TC015**). Only the ticket creator or a staff member can press it; anyone else gets "Only the ticket creator or staff members can escalate." (**TC002**).
 
-**Dashboard → Escalations** lists every escalation with its trigger reason and status, and can be filtered by status and reason or searched.
+## Settings that control escalation
+
+### AI escalation (Knowledge Base tab)
+
+Go to **Dashboard → Bots**, pick your bot, choose the server, open **Knowledge Base** under **AI & Knowledge**, and switch to the **Learning** tab. The relevant settings live under **Feedback & Learning Settings**:
+
+| Setting | Allowed values | Default | What it does |
+|---------|----------------|---------|--------------|
+| **Auto-Escalate to Staff** | on or off | on | Raise a **Low Confidence** escalation when the AI has insufficient knowledge to answer |
+| **Ping Staff on Escalation** | on or off | off | Mention staff when escalating. If the ticket's button has its own ping role, only that role is pinged; otherwise all staff roles from the **Staff** tab. Off means the card is posted without a mention |
+| **Ticket Escalation Duration** | Permanent, 1, 3, 7, 14, or 30 days | 7 days | How long the AI stays silent in an escalated ticket before it resumes if staff have not answered. **Permanent** means the AI never resumes in that ticket |
+| **Human Request Detection** | 10% to 100% | recommended value shown on the slider | For ModMail: how confident the AI must be that the user is asking for a person before it escalates immediately. Higher values mean fewer false escalations |
+
+### SLA escalation (SLA Management tab)
+
+SLA breaches always create an escalation when SLA tracking is on. The **Warning alert** and **Critical alert** thresholds, **Auto-escalation**, and the notification channel on the SLA tab control the alerts your team receives before the breach. See [SLA Management](/configuration/sla-management).
+
+## The Escalations queue
+
+**Dashboard → Escalations** lists every escalation across the bots you own or manage. The header shows how many are **pending** and **assigned**, and a **Refresh** button with a short cooldown.
+
+**Filters**: a search box ("Search by reason, source, question, or status..."), **Status** (All statuses, Pending, Assigned, In Progress, Resolved), **Bot**, **Reason**, and **Sort** (Latest First, Oldest First, Recently Updated, Least Updated). Up to 100 characters of search text are accepted.
+
+Each card shows when it was escalated, who it is assigned to, the user's **Original Question**, the **AI Attempt** with its confidence percentage and the number of knowledge-base sources it used, the priority, an **SLA Breach** marker when relevant, and two buttons: **Claim Ticket** and **View Details**.
 
 | Status | Meaning |
 |--------|---------|
 | **Pending** | Nobody has picked it up |
-| **Assigned** | A staff member is assigned |
-| **In progress** | Being handled |
-| **Resolved** | Closed out |
+| **Assigned** | A staff member claimed it |
+| **In Progress** | Being handled |
+| **Resolved** | Closed out, either by hand or because the ticket was closed |
 
-Queue statistics and analytics are available for the last 24 hours, 7 days, or 30 days.
+### Working an escalation
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+<Steps>
+  <Step title="Claim it">
+    Click **Claim Ticket** on the card, or **Claim Escalation** on the details page. Only a **Pending** escalation can be claimed; a second person sees "Escalation has already been claimed". Claiming assigns it to you.
+  </Step>
+  <Step title="Handle the ticket">
+    Use **Open Ticket** on the details page to jump to the ticket on **Dashboard → Tickets**, or answer in Discord. The details page shows the **Original Context**, the bot and server, the **Trigger Source**, the **SLA Target** when there is one, and a **Timeline**.
+  </Step>
+  <Step title="Resolve it">
+    Click **Resolve Escalation** as the assigned person and say whether the escalation was **Correct**, a **False Positive** (the AI could have handled it), or a **False Negative**, with an optional comment of up to 1,000 characters. Closing the ticket resolves the escalation automatically too.
+  </Step>
+</Steps>
+
+The accuracy answer you give when resolving feeds the escalation accuracy metrics for your server, so it is worth answering honestly rather than always picking **Correct**.
+
+## Limits and gotchas
+
+- One escalation per ticket at a time. Once escalated, further AI failures in the same ticket do not create more entries.
+- An escalation can only be claimed once and only resolved by the person it is assigned to. If that person is unavailable, close the ticket to resolve it, or ask the bot owner.
+- The AI pause applies to the ticket where the escalation happened, not to the user's other tickets.
+- **Ping Staff on Escalation** needs at least one staff role on the **Staff** tab; with none configured the card is posted without a mention even when the switch is on.
+- The queue shows escalations from bots you own and bots where you are dashboard staff. Server members who are staff only in Discord cannot see it.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| No escalations ever appear | **Auto-Escalate to Staff** is off, the plan is below Pro, or the knowledge base is empty so the AI never runs | Turn the switch on, check the plan, and add knowledge base sources |
+| Staff are not pinged when the AI escalates | **Ping Staff on Escalation** is off, or no staff role is configured | Turn it on and set a staff role on the **Staff** tab |
+| The AI keeps answering after an escalation | The **Ticket Escalation Duration** elapsed, or the AI answered a later question successfully | Choose a longer duration or **Permanent** |
+| The AI never comes back to an escalated ticket | **Ticket Escalation Duration** is set to **Permanent** | Pick a number of days instead |
+| "This ticket has already been escalated to staff." (TC015) | **Talk to Staff** was pressed on a ticket that is already escalated | Nothing to do; staff have been asked |
+| "Only the ticket creator or staff members can escalate." (TC002) | Someone else in the ticket pressed the button | Have the ticket creator or a staff member press it |
+| "Escalation has already been claimed" | A colleague claimed it first | Coordinate with them; only the assignee can resolve |
+| "Only the assigned agent can resolve this escalation" | You are not the assignee | Ask the assignee to resolve it, or close the ticket |
+| The queue is empty but tickets are clearly unanswered | The triggers are AI and SLA based, not inactivity based | Use [SLA Management](/configuration/sla-management) for time-based alerts, or auto-close reminders on the **Auto-Close & Reminders** tab |
+
+## Common questions
+
+**How does a user ask for a human?**
+By pressing **Talk to Staff** under an AI answer, or by simply asking for a person in a ModMail conversation, which the AI detects. Both create a **Human Requested** escalation and stop the AI in that ticket.
+
+**Does an escalation notify staff in Discord?**
+A card is posted in the ticket. Staff are mentioned only when **Ping Staff on Escalation** is on. SLA breach alerts go to the SLA notification channel instead.
+
+**Can I turn AI escalation off?**
+Yes. Turn off **Auto-Escalate to Staff** on the Knowledge Base **Learning** tab. Users can still press **Talk to Staff** under an AI reply.
+
+**When does the AI start answering again after an escalation?**
+After **Ticket Escalation Duration** (default 7 days) if staff have not responded, or as soon as it successfully answers a later question from the knowledge base. Set the duration to **Permanent** to keep it out of that ticket for good.
+
+**Why does an escalation disappear from Pending when I close the ticket?**
+Closing a ticket resolves its escalation automatically. You do not need to resolve it separately.
+
+**What do Correct, False Positive, and False Negative mean when resolving?**
+Correct: a human really was needed. False Positive: the AI could have handled it and escalated unnecessarily. False Negative: it should have escalated sooner. Your answers are kept as accuracy metrics for your server.
+
+**Do sentiment or priority create escalations?**
+Not at the moment. Those reasons appear in the filter, but sentiment and priority detection mark the ticket rather than raising an escalation. Only low confidence, human requests, and SLA breaches create queue entries.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support
 </Card>

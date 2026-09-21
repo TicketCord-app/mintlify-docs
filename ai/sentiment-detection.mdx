@@ -1,51 +1,125 @@
 ---
 title: "Tone Detection"
-description: "Detect customer mood and alert staff to frustrated users"
+description: "Set up Tone Detection so a role is pinged when a customer sounds angry, frustrated, upset, or confused, and understand the Enterprise sentiment journey"
 ---
 
-Tone Detection uses AI to read the emotional tone of customer messages and alert a role when a customer is angry, frustrated, or upset.
+Tone Detection reads the emotional tone of a customer's messages in a ticket and, for the tones you choose, pings a role with a **🎭 Tone Alert** card in your logs channel. It runs until a staff member replies, then stops. This page is for the admin who wants the team warned before a conversation goes wrong. The related **Sentiment Analysis** feature, which records how a customer's mood changed over a whole ticket, is covered at the end.
 
 <Info>
-  Tone Detection is a **Pro** feature (Pro and Enterprise). The **sentiment journey** shown on the dashboard ticket view and in Analytics is a separate **Enterprise** feature. [Upgrade your plan](https://ticketcord.com/pricing) to access them.
+  Tone Detection is available on **Pro** and **Enterprise** and needs **Enable AI Features** on the **General** tab plus a logs channel. The **Customer Sentiment Journey** is a separate **Enterprise** feature. [Upgrade your plan](https://ticketcord.com/pricing)
 </Info>
 
-## How It Works
+## Setup
 
-1. A customer sends a message
-2. After the analysis delay, the AI classifies the tone
-3. If the tone has an action configured, the bot posts a **🎭 Tone Alert** card to your logs channel that mentions the chosen role and shows the detected tone, the confidence, the user, and the AI's analysis
+<Steps>
+  <Step title="Open the Conversation tab">
+    Go to **Dashboard → Bots → your bot → Servers → the server → AI & Knowledge → AI Features → Conversation** and find **Tone Detection**.
+  </Step>
+  <Step title="Enable it">
+    Click **Edit** and switch on **Enable Tone Detection**.
+  </Step>
+  <Step title="Add tone actions">
+    Click **Add Action**, choose a tone, choose **Ping Role**, and select the role. Repeat for each tone you want alerts for. Tones without an action are ignored.
+  </Step>
+  <Step title="Set timing and save">
+    Choose an **Analysis Mode** and a **Delay Before Analysis**, then click **Save All**.
+  </Step>
+</Steps>
 
-## Detected Tones
+## Settings
+
+| Setting | Values | Default | What it does |
+|---------|--------|---------|--------------|
+| **Enable Tone Detection** | On, Off | Off | Master switch for this feature |
+| **Analysis Mode** | First Message Only, First 5 Messages, Smart Detection | Smart Detection | First Message Only analyses the first customer message at once. First 5 Messages waits for up to five messages and judges the overall tone. Smart Detection picks its moment and waits if staff reply quickly |
+| **Delay Before Analysis (seconds)** | 30 to 300 | 30 | The context window: the bot waits this long after the customer's last message, and the timer resets when they send another |
+| **Tone Actions** | One row per tone: **Ping Role** with a role, or **Do Nothing** | None | What to do when each tone is detected |
+
+### Tones
 
 | Tone | Typical signs |
 |------|---------------|
-| **Angry** | Capitals, profanity, threats |
+| **Angry** | Capital letters, profanity, threats |
 | **Frustrated** | Repeated complaints, impatience |
 | **Upset** | Disappointment, sadness |
 | **Confused** | Uncertainty, repeated questions |
 | **Happy** | Thanks, positive words |
 | **Neutral** | Plain factual messages |
 
-## Settings
+## What happens
 
-Open **Dashboard → Bots → your bot → Servers → the server → AI Features → Conversation**.
+1. A customer sends a message in a ticket.
+2. The bot waits **Delay Before Analysis** seconds after their last message and reads the messages allowed by the **Analysis Mode**.
+3. The AI classifies the tone.
+4. If that tone has a **Ping Role** action, a **🎭 Tone Alert** card is posted to the logs channel. It mentions the role and shows `AI detected Frustrated tone in ticket #ticket-0412`, then **Detected Tone**, **Confidence**, **User**, and **AI Analysis** with the reasoning.
+5. Once a staff member replies in the ticket, analysis stops for that ticket to respect the customer's privacy.
 
-| Setting | Options |
-|---------|---------|
-| **Analysis mode** | First message, first five messages, or smart detection (default) |
-| **Delay before analysis** | Default 30 seconds |
-| **Tone actions** | For each tone: **Ping role** (choose the role) or **Do nothing** |
-| **Auto-escalate on negative tone** | Also raise an escalation for angry or frustrated customers |
+The customer sees nothing. The card goes to the logs channel only.
 
-Alerts need a logs channel configured under **Structure**.
+## Worked example
 
-## Sentiment Journey (Enterprise)
+A moderation team wants to know about angry customers immediately and about confused ones so a patient helper can step in.
 
-With **Sentiment analysis** enabled, TicketCord stores how each customer's mood changed over a ticket and shows it in the dashboard ticket view and the Analytics sentiment section. This history is stored on the ticket and follows your ticket retention policy.
+| Tone | Action |
+|------|--------|
+| Angry | Ping Role: `@Senior Support` |
+| Frustrated | Ping Role: `@Senior Support` |
+| Confused | Ping Role: `@Helpers` |
+| Upset, Happy, Neutral | No action |
 
-## Privacy Note
+With **Smart Detection** and a 45-second delay, a customer who writes `this is the THIRD time I've asked` followed 20 seconds later by `nobody answers here` is analysed once, 45 seconds after the second message, and `@Senior Support` is pinged with a Frustrated alert.
 
-Message content is analyzed only to classify tone. Data is not shared with third parties or used for anything other than detection and, on Enterprise, the sentiment journey.
+## Sentiment journey (Enterprise)
+
+On Enterprise, the **Conversation** tab also shows a **Sentiment Analysis** card. It is on by default and records how the customer's mood changed across the ticket.
+
+- The analysis runs automatically when a ticket is closed and needs at least 3 customer messages.
+- Open the ticket in the dashboard and choose the **Sentiment** tab to see the **Customer Sentiment Journey**. A ticket that is still open shows `Sentiment analysis runs automatically when a ticket is closed`; a short ticket shows how many customer messages it has and the minimum required.
+- The history is stored on the ticket and follows your ticket retention policy.
+
+## Limits and gotchas
+
+<Note>
+  Alerts need a logs channel. Without one the analysis still runs but no alert is posted; run `/setup` to choose a logs channel.
+</Note>
+
+- The minimum delay is 30 seconds. Entering a lower value is rounded up when you save.
+- A tone with **Do Nothing** produces no card, so add **Ping Role** actions only for the tones you want to hear about.
+- Tone Detection alerts staff; it does not change priority or escalate the ticket. Use [Priority Detection](/ai/priority-detection) for priority.
+
+## Privacy
+
+Message content is analysed only to classify tone and, on Enterprise, to build the sentiment journey. Analysis stops once staff reply. Data is not shared with third parties or used for anything else.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| No alerts at all | The feature or the AI master switch is off, no tone has a **Ping Role** action, or no logs channel is configured | Check both switches, add actions, and set a logs channel with `/setup` |
+| The alert shows **Unknown Role** in the dashboard | The role was deleted in Discord | Edit the action and pick a current role |
+| Alerts arrive after staff already replied | The analysis started before the reply | Shorten **Delay Before Analysis** or use **First Message Only** |
+| Too many alerts | Neutral or Happy have a **Ping Role** action, or the delay is short | Remove those actions and use **Smart Detection** |
+| No sentiment journey on a ticket | The ticket is still open, has fewer than 3 customer messages, or the owner's plan is not Enterprise | Wait for the close, or check the plan |
+
+## Common questions
+
+**Which plan do I need?**
+Pro or Enterprise for Tone Detection. The sentiment journey on the ticket page needs Enterprise.
+
+**Does the customer see the alert?**
+No. Alerts go to the logs channel, which customers cannot see.
+
+**Can I alert different roles for different tones?**
+Yes. Add one action per tone, each with its own role.
+
+**Why did the alerts stop mid-ticket?**
+Analysis stops once a staff member replies in the ticket. That is by design.
+
+**Can it escalate or change priority?**
+No. It only pings. Pair it with [Priority Detection](/ai/priority-detection) or [Auto-Route](/ai/auto-routing) for those actions.
+
+**Where is the sentiment journey?**
+Open the ticket in the dashboard and choose the **Sentiment** tab. It fills in after the ticket closes.
 
 <Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support

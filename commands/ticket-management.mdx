@@ -1,229 +1,326 @@
 ---
 title: "Ticket Management"
-description: "Commands for managing ticket lifecycle - opening, closing, claiming, and access control"
+description: "Commands for the ticket lifecycle: closing, reopening, claiming, access control, and renaming"
 ---
 
-These commands control the core ticket lifecycle and are available on all plans.
+These commands run inside a ticket channel and control what happens to that ticket. They are available on every plan. Unless a command says otherwise, the ticket creator and staff can both use it; staff means anyone holding one of the staff roles selected in the dashboard.
+
+<Info>
+  Every command on this page must be run inside a ticket channel (`/add` and `/remove` can also target a ticket by ID from anywhere in the server). Running one elsewhere returns **TC017**.
+</Info>
 
 ## /close
 
-Close the current ticket channel.
+Close the current ticket.
 
 ```
 /close [reason] [in] [silent]
 ```
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `reason` | Text | No | Reason for closing the ticket |
-| `in` | Text | No | ModMail tickets only: schedule the close after a delay, for example `30m`, `2h`, or `1d` |
-| `silent` | Boolean | No | Close without notifying the user (no DM is sent) |
+| Option | Type | Required | Allowed values | Default |
+|--------|------|----------|----------------|---------|
+| `reason` | Text | No | Up to 1000 characters | none |
+| `in` | Text | No | A delay such as `30m`, `2h`, or `1d` (up to 32 characters). ModMail tickets only | close now |
+| `silent` | Boolean | No | `True` or `False` | `False` (the creator is notified) |
 
-**Permission:** Ticket creator, staff, server administrators, or the bot owner. If **Staff-only close** is enabled in the dashboard, the creator cannot close their own ticket. `in` and `silent` cannot be combined.
+**Who can run it:** the ticket creator, staff, server administrators, and the bot owner.
 
-**What happens:**
-- Channel is renamed from `ticket-XXXX` to `closed-XXXX`
-- Ticket is moved to the closed tickets category
-- Creator loses access to send messages
-- Ticket messages are compressed for storage
-- Transcript is generated (if auto-transcript is enabled)
+- If **Staff-only close** is enabled in the dashboard, the creator cannot close their own ticket unless they are also staff or an administrator (**TC002**).
+- `in` and `silent` cannot be combined (**TC018**).
+- `in` only works in ModMail tickets (**TC017**). Any new message from the customer or staff cancels the scheduled close.
 
-<Info>
-  If **Skip Close Confirmation** is enabled in your dashboard settings, the ticket closes immediately. Otherwise, you'll see a confirmation dialog.
-</Info>
+**What happens, in order:**
 
-**Example:**
+1. Unless **Skip Close Confirmation** is enabled, you see a confirmation card showing the ticket number, the reason, and whether silent mode is on. Confirm to continue.
+2. The ticket is marked closed and the creator loses the ability to send messages.
+3. The channel is renamed from `ticket-XXXX` to `closed-XXXX` and moved to the closed tickets category (or deleted straight away if auto-delete is enabled).
+4. The creator receives a DM with the close notice, unless `silent:True` was used.
+5. A transcript is generated and posted to the transcript channel if transcripts are enabled, the ticket log channel receives an entry, and any configured webhooks fire.
+
+**Examples**
+
 ```
 /close reason:Issue resolved
 /close silent:True
+/close in:2h reason:Closing if we hear nothing more
 ```
+
+**Errors you can see**
+
+| Code | When |
+|------|------|
+| TC002 | You are not the creator, staff, an administrator, or the bot owner; or staff-only close is enabled and you are the creator |
+| TC015 | The ticket is already closed |
+| TC017 | The channel is not a ticket, or `in` was used outside a ModMail ticket |
+| TC012 | The `in` delay is not a valid format like `30m`, `2h`, or `1d` |
+| TC018 | `in` and `silent` were combined |
 
 ---
 
 ## /reopen
 
-Reopen a closed ticket.
+Reopen a closed ticket. Has no options.
 
 ```
 /reopen
 ```
 
-**Permission:** Ticket creator or staff
+**Who can run it:** the ticket creator or staff. ModMail tickets cannot be reopened this way; continue the conversation in the ModMail channel instead.
 
 **What happens:**
-- Channel is renamed from `closed-XXXX` back to `ticket-XXXX`
-- Ticket is moved back to the open tickets category
-- Creator regains full access
-- Status changes from "closed" to "open"
+
+1. The ticket status returns to open.
+2. The channel is renamed from `closed-XXXX` back to `ticket-XXXX` and moved to the open tickets category.
+3. The creator regains permission to send messages.
 
 <Tip>
-  Reopening preserves the full conversation history - nothing is lost.
+  Reopening keeps the full conversation history. Nothing is deleted when a ticket is closed and reopened.
 </Tip>
+
+**Errors you can see**
+
+| Code | When |
+|------|------|
+| TC002 | You are not the creator or staff |
+| TC015 | The ticket is already open |
+| TC017 | The channel is not a ticket, or the ticket is a ModMail ticket |
+| TC005 | Discord refused to rename or move the channel; try again |
 
 ---
 
 ## /claim
 
-Claim ownership of a ticket.
+Claim the current ticket so other staff can see who is handling it. Has no options.
 
 ```
 /claim
 ```
 
-**Permission:** Staff only
+**Who can run it:** staff only. You cannot claim a ticket you created yourself.
 
 **What happens:**
-- Your name is displayed as the ticket handler
-- Other staff can see who's working on it
-- Prevents duplicate effort on the same ticket
-- Claim information shows in the ticket channel
+
+1. Your name is recorded as the handler and a claim card is posted in the channel.
+2. The ticket shows as claimed in the dashboard and in `/claims`.
+3. If exclusive claims are enabled for the server, other staff lose access to the channel until it is unclaimed; the confirmation tells you when this applies.
 
 <Warning>
-  Only one staff member can claim a ticket at a time. Use `/unclaim` to release it.
+  A ticket can only be claimed by one staff member at a time. Use `/unclaim` to release it first.
 </Warning>
+
+**Errors you can see**
+
+| Code | When |
+|------|------|
+| TC002 | You are not staff |
+| TC015 | The ticket is already claimed (by you or someone else), you are the ticket creator, or the ticket is closed |
+| TC017 | The channel is not a ticket |
 
 ---
 
 ## /unclaim
 
-Release your claim on a ticket.
+Release the claim on the current ticket. Has no options.
 
 ```
 /unclaim
 ```
 
-**Permission:** The claimer or any staff member
+**Who can run it:** the staff member who claimed it, or any other staff member.
 
-**What happens:**
-- Removes the claim from the ticket
-- Other staff can now claim it
-- Claim message is deleted from channel
+**What happens:** the claim is removed, the channel shows an unclaimed notice, and if exclusive claims were in effect the other staff members regain access.
 
-<Info>
-  Staff members can unclaim tickets claimed by others to help redistribute workload.
-</Info>
+**Errors you can see**
+
+| Code | When |
+|------|------|
+| TC002 | You are neither the claimer nor staff |
+| TC015 | The ticket is not claimed, or it is closed |
+| TC017 | The channel is not a ticket |
 
 ---
 
 ## /add
 
-Add a user or role to the current ticket.
+Give a user or a role access to a ticket.
 
 ```
 /add [user] [role] [ticket]
 ```
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `user` | User | No | The user to add |
+| Option | Type | Required | Notes |
+|--------|------|----------|-------|
+| `user` | User (autocomplete) | No | The member to add |
 | `role` | Role | No | The role to add |
-| `ticket` | Text (autocomplete) | No | Ticket to add them to when running the command outside the ticket channel |
+| `ticket` | Ticket (autocomplete) | No | The ticket to add them to. Defaults to the current channel when run inside a ticket |
 
 Provide exactly one of `user` or `role`.
 
-**Permission:** Ticket creator or staff
+**Who can run it:** the ticket creator or staff.
 
-**What happens:**
-- User/role gains access to view and send messages in the ticket
-- A notification is sent to the channel
-- Added users can participate in the conversation
+**What happens:** the user or role receives view and send permissions on the ticket channel, and a notice is posted in the channel.
 
-**Example:**
+**Rules**
+
+- Bots and the `@everyone` role cannot be added.
+- Users or roles cannot be added to a closed ticket.
+- Roles cannot be added to thread-style tickets; add individual users instead.
+
+**Examples**
+
 ```
 /add user:@JohnDoe
-/add role:@Support Team
+/add role:@Billing Team
+/add user:@JohnDoe ticket:0042
 ```
+
+**Errors you can see**
+
+| Code | When |
+|------|------|
+| TC012 | Neither or both of `user` and `role` were given, or you tried to add a bot or `@everyone` |
+| TC002 | You are not the creator or staff |
+| TC004 | The user, role, or ticket was not found |
+| TC015 | The ticket is closed, or the target already has access |
+| TC017 | Run outside a ticket channel without the `ticket` option |
+| TC018 | A role was added to a thread ticket |
 
 ---
 
 ## /remove
 
-Remove a user or role from the current ticket.
+Remove a user or a role from a ticket.
 
 ```
 /remove [user] [role] [ticket]
 ```
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `user` | User | No | The user to remove |
+| Option | Type | Required | Notes |
+|--------|------|----------|-------|
+| `user` | User (autocomplete) | No | The member to remove |
 | `role` | Role | No | The role to remove |
-| `ticket` | Text (autocomplete) | No | Ticket to remove them from when running the command outside the ticket channel |
+| `ticket` | Ticket (autocomplete) | No | The ticket to remove them from. Defaults to the current channel when run inside a ticket |
 
 Provide exactly one of `user` or `role`.
 
-**Permission:** Ticket creator or staff
+**Who can run it:** the ticket creator or staff.
 
-**What happens:**
-- User/role loses access to the ticket channel
-- They can no longer view or send messages
-- A notification is sent to the channel
+**What happens:** the user or role loses view and send permissions on the channel, and a notice is posted.
 
-<Warning>
-  Removing the ticket creator asks for a double confirmation. Members holding a configured supervisor role cannot be removed.
-</Warning>
+**Rules**
+
+- Staff members cannot be removed; staff always keep access to every ticket.
+- Members holding a supervisor role (configured in the dashboard) cannot be removed.
+- The `@everyone` role cannot be removed.
+- Removing the ticket creator asks for a second confirmation.
+
+**Errors you can see**
+
+| Code | When |
+|------|------|
+| TC012 | Neither or both of `user` and `role` were given, or `@everyone` was targeted |
+| TC002 | You are not the creator or staff, or the target is staff or a supervisor |
+| TC004 | The user, role, or ticket was not found, or the target does not have access to this ticket |
+| TC015 | The ticket is closed |
+| TC017 | Run outside a ticket channel without the `ticket` option |
 
 ---
 
 ## /rename
 
-Rename the current ticket channel.
+Rename the current ticket channel while keeping its number.
 
 ```
 /rename <name>
 ```
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `name` | Text | Yes | New name for the ticket |
+| Option | Type | Required | Allowed values |
+|--------|------|----------|----------------|
+| `name` | Text | Yes | Up to 80 characters. Converted to lowercase; anything other than letters, digits, and hyphens is removed |
 
-**Permission:** Ticket creator or staff
+**Who can run it:** the ticket creator or staff.
 
-**What happens:**
-- Channel name changes to `newname-XXXX` (your name followed by the ticket number)
-- Original ticket number is preserved
-- Helps identify tickets by topic
+**What happens:** the channel becomes `name-XXXX`, where `XXXX` is the original ticket number.
 
-**Example:**
+**Examples**
+
 ```
 /rename billing-issue
 /rename vip-support
 ```
 
-<Info>
-  Channel names follow Discord's naming rules - lowercase, no spaces. The name you provide can be up to 80 characters; the ticket number is appended automatically.
-</Info>
+<Note>
+  Discord allows only two channel renames per channel every 10 minutes. A third rename within that window waits until the limit resets (**TC001**).
+</Note>
+
+**Errors you can see**
+
+| Code | When |
+|------|------|
+| TC012 | The name is empty, longer than 80 characters, or has no valid characters left after cleanup |
+| TC002 | You are not the creator or staff, or the bot lacks Manage Threads for a thread ticket |
+| TC015 | The ticket is closed |
+| TC017 | The channel is not a ticket |
 
 ---
 
 ## /closerequest
 
-Request that the ticket creator close their ticket.
+Ask the ticket creator to confirm their issue is resolved and close the ticket themselves.
 
 ```
 /closerequest [reason]
 ```
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `reason` | Text | No | Reason for requesting closure |
+| Option | Type | Required | Allowed values |
+|--------|------|----------|----------------|
+| `reason` | Text | No | Up to 1000 characters |
 
-**Permission:** Staff only
+**Who can run it:** staff only.
 
 **What happens:**
-- Creator receives a message asking if their issue is resolved
-- They can choose to close the ticket or keep it open
-- Useful when staff believe the issue is resolved
 
-**Example:**
+1. A card is posted in the ticket asking the creator whether the issue is resolved, with your reason if you gave one.
+2. Only the creator can answer. They can close the ticket or keep it open.
+3. If they close it, the normal close flow runs (rename, move, transcript, DM).
+
+**Example**
+
 ```
-/closerequest reason:Your issue appears to be resolved. Please confirm!
+/closerequest reason:Your issue looks resolved. Please confirm.
 ```
 
-<Tip>
-  This is more polite than closing directly - it gives the user a chance to ask follow-up questions.
-</Tip>
+**Errors you can see**
 
-<Card title="Staff Tools" icon="arrow-right" href="/commands/staff-tools">
-  Learn about notes, tags, and transcripts
+| Code | When |
+|------|------|
+| TC002 | You are not staff, or a non-creator pressed the answer buttons |
+| TC015 | The ticket is already closed or not in the open state |
+| TC017 | The channel is not a ticket |
+
+## Common questions
+
+**Why can't I close my own ticket?**
+The server has **Staff-only close** enabled. Ask a staff member to close it, or wait for them to send a close request you can accept.
+
+**I closed a ticket by mistake. Can I get it back?**
+Yes. Run `/reopen` in the closed channel. If auto-delete is enabled and the channel is already gone, the ticket cannot be reopened, but its transcript is still in the transcript channel if transcripts were enabled.
+
+**Does `/close silent:True` skip the transcript?**
+No. Silent only skips the DM to the creator. Transcripts, logs, and webhooks run as usual.
+
+**Can I close a ticket automatically after some time?**
+For ModMail tickets, `/close in:2h` schedules a close that any new activity cancels. For regular tickets, use auto-close in the dashboard or `/auto-close`, which closes tickets after a period of inactivity.
+
+**Why can't I add a role to this ticket?**
+Thread-style tickets cannot hold role permissions. Add the individual members instead.
+
+**Why does `/claim` say I cannot claim my own ticket?**
+Claims are for staff handling someone else's request. If you opened the ticket, another staff member needs to claim it.
+
+**I renamed the channel but the name looks different from what I typed.**
+Discord channel names are lowercase and allow only letters, digits, and hyphens. Spaces and other characters are removed, and the ticket number is appended automatically.
+
+<Card title="Still stuck?" icon="discord" href="https://ticketcord.com/discord">
+  Join the support Discord and ask the team
 </Card>

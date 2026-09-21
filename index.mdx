@@ -1,134 +1,123 @@
 ---
 title: "Welcome to TicketCord"
-description: "AI-powered Discord ticket management for communities of all sizes"
+description: "Documentation for TicketCord, the white-label Discord ticket bot with AI support, a web dashboard, and enterprise workflows"
 ---
 
-# Welcome to TicketCord
-
-The most powerful Discord ticket management platform with AI-powered features, custom branding, and enterprise-grade security.
+TicketCord runs a Discord ticket bot under your own application, so members see your name and avatar. You configure it from a web dashboard, staff work tickets in Discord with slash commands, and AI features answer common questions from your knowledge base. These docs cover setup, every command and setting, error codes, and billing.
 
 <Info>
-  **New to TicketCord?** Follow our [Quick Start Guide](/quickstart) to get your bot running in minutes.
+  **New here?** The [Quick Start](/quickstart) takes you from an empty Developer Portal to a working ticket panel in about ten minutes. Every new account starts a 14-day Enterprise trial with no card required.
 </Info>
 
-## Get Started
+## Set up
 
 <CardGroup cols={2}>
   <Card title="Quick Start" icon="rocket" href="/quickstart">
-    Get your bot up and running in minutes
+    Create the Discord application, connect it, run `/setup`, post a panel
   </Card>
-  <Card title="Bot Setup" icon="robot" href="/bot/overview">
-    Learn about bot features and configuration
+  <Card title="Installation" icon="robot" href="/bot/installation">
+    Developer Portal steps, intents, and the exact permissions the invite requests
+  </Card>
+  <Card title="Configuration" icon="gear" href="/bot/configuration">
+    Every dashboard setting for staff, structure, closing, automation, and transcripts
   </Card>
   <Card title="Dashboard Guide" icon="browser" href="/dashboard/overview">
-    Navigate the web dashboard
+    Tickets, bots, analytics, and account settings on the web
   </Card>
+</CardGroup>
+
+## Use
+
+<CardGroup cols={2}>
   <Card title="Commands" icon="terminal" href="/commands/overview">
-    Explore all 30 Discord commands
+    All 30 slash commands and the Find ticket context menu, with options, permissions, and error codes
   </Card>
-</CardGroup>
-
-## Core Features
-
-Everything you need for professional Discord support:
-
-<CardGroup cols={2}>
-  <Card title="Custom Branding" icon="palette" href="/billing/plans">
-    White-label your bot with custom name, avatar, and embed colors
+  <Card title="Troubleshooting" icon="wrench" href="/bot/troubleshooting">
+    Every TC error code, what causes it, and the fix
   </Card>
-  <Card title="AI-Powered Support" icon="sparkles" href="/ai/overview">
-    Smart auto-routing, knowledge base suggestions, and Atlas AI assistant
+  <Card title="Canned Responses" icon="bolt" href="/configuration/canned-responses">
+    Reusable replies for `/reply`
   </Card>
-  <Card title="Web Dashboard" icon="browser" href="/dashboard/overview">
-    Manage tickets, view transcripts, and configure settings from anywhere
-  </Card>
-  <Card title="Analytics" icon="chart-bar" href="/dashboard/analytics">
-    Track performance with detailed reports and insights
-  </Card>
-</CardGroup>
-
-## AI Features
-
-Powered by advanced AI to make support effortless:
-
-<CardGroup cols={3}>
-  <Card title="Knowledge Base" icon="book" href="/ai/knowledge-base">
-    Automatic suggestions from your content
-  </Card>
-  <Card title="Auto-Routing" icon="route" href="/ai/auto-routing">
-    Route tickets to the right team
-  </Card>
-  <Card title="Atlas AI" icon="robot" href="/ai/atlas">
-    Your AI assistant in the dashboard
-  </Card>
-  <Card title="Priority Detection" icon="arrow-up" href="/ai/priority-detection">
-    Automatically set ticket priority
-  </Card>
-  <Card title="Translation" icon="language" href="/ai/translation">
-    Translate tickets into the languages you choose
-  </Card>
-  <Card title="Tone Detection" icon="face-smile" href="/ai/sentiment-detection">
-    Detect user mood and urgency
-  </Card>
-</CardGroup>
-
-## Plans & Pricing
-
-<CardGroup cols={2}>
-  <Card title="Compare Plans" icon="table" href="/billing/plans">
-    Find the right plan for your community
-  </Card>
-  <Card title="Free Trial" icon="gift" href="/billing/trials">
-    Every new account starts with a 14-day Enterprise trial, no card required
-  </Card>
-</CardGroup>
-
-## Enterprise Features
-
-For large organizations with advanced needs:
-
-<CardGroup cols={2}>
   <Card title="Webhooks" icon="webhook" href="/integrations/webhooks">
     Send ticket events to external systems
   </Card>
-  <Card title="SLA Management" icon="clock" href="/configuration/sla-management">
-    Track response and resolution times
+</CardGroup>
+
+## AI features
+
+<CardGroup cols={3}>
+  <Card title="Knowledge Base" icon="book" href="/ai/knowledge-base">
+    Answer tickets from your docs and past resolutions
   </Card>
-  <Card title="Approval Workflows" icon="check-double" href="/configuration/approval-workflows">
-    Multi-stage approval processes
+  <Card title="Auto-Routing" icon="route" href="/ai/auto-routing">
+    Send tickets to the right team
   </Card>
-  <Card title="Scheduled Reports" icon="calendar" href="/features/scheduled-reports">
-    Automatic email reports
+  <Card title="Atlas AI" icon="robot" href="/ai/atlas">
+    Ask questions about your tickets in the dashboard
+  </Card>
+  <Card title="Priority Detection" icon="arrow-up" href="/ai/priority-detection">
+    Set priority automatically
+  </Card>
+  <Card title="Translation" icon="language" href="/ai/translation">
+    Translate between members and staff
+  </Card>
+  <Card title="Tone Detection" icon="face-smile" href="/ai/sentiment-detection">
+    Spot frustrated or urgent members
   </Card>
 </CardGroup>
 
-## Support & Resources
+## Enterprise workflows
 
 <CardGroup cols={2}>
-  <Card title="FAQ" icon="circle-question" href="/support/faq">
-    Common questions answered
+  <Card title="Approval Workflows" icon="check-double" href="/configuration/approval-workflows">
+    Require sign-off for refunds, bans, and exceptions
   </Card>
-  <Card title="Migration Guide" icon="right-left" href="/support/migration">
-    Switch from other ticket bots
+  <Card title="SLA Management" icon="clock" href="/configuration/sla-management">
+    Track response and resolution targets
   </Card>
-  <Card title="Troubleshooting" icon="wrench" href="/bot/troubleshooting">
-    Fix common issues
+  <Card title="Business Hours" icon="clock" href="/configuration/business-hours">
+    Only accept tickets when staff are available
   </Card>
-  <Card title="Discord Support" icon="discord" href="https://ticketcord.com/discord">
-    Get help from our community
+  <Card title="Scheduled Reports" icon="calendar" href="/features/scheduled-reports">
+    Automatic reports by email
   </Card>
 </CardGroup>
 
-## Quick Links
+## Plans and billing
+
+<CardGroup cols={2}>
+  <Card title="Compare Plans" icon="table" href="/billing/plans">
+    Free, Basic, Pro, and Enterprise side by side
+  </Card>
+  <Card title="Free Trial" icon="gift" href="/billing/trials">
+    What the 14-day Enterprise trial includes and what happens after
+  </Card>
+</CardGroup>
+
+## Quick links
 
 | Resource | Description |
 |----------|-------------|
-| [Dashboard](https://ticketcord.com/dashboard) | Access your TicketCord dashboard |
+| [Dashboard](https://ticketcord.com/dashboard) | Sign in and manage your bots |
 | [Discord Developer Portal](https://discord.dev) | Create your Discord application |
-| [Changelog](https://ticketcord.com/changelog) | See latest updates |
+| [Changelog](https://ticketcord.com/changelog) | What changed in each release |
+| [FAQ](/support/faq) | Short answers to common questions |
+| [Migration Guide](/support/migration) | Switching from another ticket bot |
 
----
+## Common questions
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.com/help">
-  Get help from our support team
+**Is TicketCord a bot I invite, or do I need my own?**
+Your own. You create a Discord application, paste its token into the dashboard, and TicketCord runs it. Members see your bot's name and avatar.
+
+**How much does it cost?**
+There is a Free plan with 1 bot and 5 open tickets per member. Paid plans add more bots, embeds, canned responses, AI, and workflows; see [Plans](/billing/plans) for prices.
+
+**Do I need to host anything?**
+No. TicketCord hosts and runs the bot. You only supply the token and configure it in the dashboard.
+
+**Where do I get help?**
+Join the [support Discord](https://ticketcord.com/discord) or use the [help center](https://ticketcord.com/help). When you report a bot error, include the `TC` code from its footer.
+
+<Card title="Need help?" icon="discord" href="https://ticketcord.com/discord">
+  Join the support Discord and ask the team
 </Card>

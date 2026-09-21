@@ -1,19 +1,39 @@
 ---
 title: "DM on Join"
-description: "Send new members a direct message that opens a ModMail ticket when they reply"
+description: "Send every new member a direct message that turns into a ModMail ticket when they reply"
 ---
 
-DM on Join sends a direct message to every member who joins your server. If they reply to it, TicketCord opens a ModMail ticket for them.
+DM on Join sends a direct message to each member who joins your server. The message invites them to reply if they need help, and because it comes from your bot, a reply is handled by ModMail and opens a ticket for them. It is for communities that want newcomers to know where support is before they go looking for a channel.
 
 <Info>
-  DM on Join is available on **Basic** and higher.
+  DM on Join needs the **Basic** plan or higher. On Free the toggle is locked with the hint "Upgrade to Basic or higher to use DM on Join", and the bot skips the DM even if the setting was saved earlier. ModMail must also be enabled on the server for replies to become tickets; see [ModMail](/bot/configuration).
 </Info>
 
-## Setting Up
+## Setting up
 
-Go to **Dashboard → Bots**, pick your bot, choose the server, open **Welcome Messages**, and turn on **DM on join**.
+<Steps>
+  <Step title="Open the Messages tab">
+    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **Messages** under the **Messaging** group. The **DM Users on Join** card is at the top of the page.
+  </Step>
+  <Step title="Turn it on">
+    Enable **DM Users on Join** ("Send a welcome DM to users when they join the server").
+  </Step>
+  <Step title="Write the message">
+    Fill in **Welcome Message**, or leave it empty to use the default text. Use `{server}` for the server name and `{username}` for the member's name.
+  </Step>
+  <Step title="Save">
+    Click **Save** or press `Ctrl/⌘ + S`. The next member to join receives the DM.
+  </Step>
+</Steps>
 
-The message is plain text, up to 500 characters. The default is:
+## Settings
+
+| Setting | Allowed values | Default |
+|---------|----------------|---------|
+| **DM Users on Join** | on or off | off |
+| **Welcome Message** | plain text, up to 500 characters; Discord markdown allowed | empty (uses the default below) |
+
+The default message:
 
 ```
 👋 **Welcome to {server}!**
@@ -23,22 +43,77 @@ Need help? Just reply to this message and I'll create a support ticket for you a
 
 ### Variables
 
-| Variable | Renders as |
-|----------|-----------|
-| `{server}` | The server name |
-| `{username}` | The new member's username |
+| Variable | Renders as | If unavailable |
+|----------|-----------|----------------|
+| `{server}` | The server name | `the server` |
+| `{username}` | The member's display name, or their username if they have none | `there` |
 
-## How Delivery Works
+Only these two variables exist. Anything else in braces is sent as typed.
 
-- Bots that join are skipped.
-- DMs are sent from a queue at a steady rate; a member who joins repeatedly receives at most one DM per 24 hours.
-- If a member has DMs closed, the message is dropped and nothing else is sent.
-- Messages older than an hour that were never delivered are discarded.
+### Example
 
-<Note>
-  There are no delay, condition, or fallback settings, and the DM cannot be an embed.
-</Note>
+```
+Hey {username}, welcome to {server}! 🎉
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+Grab your roles in #roles and say hi in #introductions. If anything is broken or you have a question, just reply to this message and a private ticket will be opened with our team.
+```
+
+## What happens
+
+1. A member joins. Bot accounts are ignored.
+2. The bot checks the owner's plan and that **DM Users on Join** is on for that server.
+3. The message is queued. Each bot sends at most 5 join DMs per 10 seconds, so a wave of joins is delivered in order over a short period instead of all at once.
+4. The member receives the DM. If they reply, ModMail opens a ticket in the server (or, if they already have an open ModMail ticket anywhere, the reply goes there).
+
+## Limits and gotchas
+
+- **One DM per member per 24 hours.** A member who leaves and rejoins within a day does not get a second DM. The 24-hour marker is set when the DM is queued, not when it is delivered, so it also applies if the first attempt could not be delivered.
+- **Closed DMs are not retried.** If the member does not allow DMs from server members, the message is dropped silently and nothing else is sent. There is no fallback channel message.
+- **Stale sends are discarded.** A queued DM that could not go out within an hour (for example because the bot was offline) is dropped rather than sent late.
+- The message is plain text. It cannot be an embed or a Components V2 container, and there is no delay, condition, or role targeting.
+- The dashboard text box accepts more than 500 characters, but the save is rejected with "DM on join message cannot exceed 500 characters". Keep it short.
+- The reply only becomes a ticket when ModMail is enabled on that server. With ModMail off, replies to the bot are ignored.
+
+<Warning>
+  A join DM reads as spam to some members and Discord may limit bots that send many unsolicited DMs. Keep the text short, useful, and clearly from your server, and prefer this feature on servers where newcomers genuinely need a way to reach staff.
+</Warning>
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| New members get no DM | The setting is off, the bot owner is on Free, or members have DMs closed | Check the toggle and plan; ask a test member to allow DMs from server members |
+| Your own test account got one DM and never another | The 24-hour rule | Wait a day or test with a different account |
+| Members reply but no ticket opens | ModMail is not enabled on the server | Turn ModMail on in the **ModMail** tab |
+| The reply landed in an older ticket | The member already had an open ModMail ticket, possibly on another server that uses the same bot | Close the old ticket first |
+| "DM on Join requires Basic, Pro, or Enterprise plan." | Free plan | Upgrade at [ticketcord.com/pricing](https://ticketcord.com/pricing) |
+| "DM on join message cannot exceed 500 characters" | The message is too long | Shorten it |
+| The DM shows `{username}` literally | A typo such as `{user}` or `{name}` | Use exactly `{username}` and `{server}` |
+| DMs arrive a few seconds late during a raid or event | The 5 per 10 seconds send rate | Expected; they are delivered in order |
+
+## Common questions
+
+**What does the new member see?**
+A direct message from your bot with your **Welcome Message** (or the default). If they reply, a ModMail ticket opens with your staff.
+
+**Can I add buttons or an embed to the DM?**
+No. The join DM is plain text with `{server}` and `{username}` variables.
+
+**Why did a returning member not get the DM again?**
+Each member receives at most one join DM per 24 hours per server, even if they leave and rejoin.
+
+**What if the member has DMs disabled?**
+Nothing is sent and nothing else happens. The bot does not post in a channel instead.
+
+**Does this need ModMail?**
+The DM itself does not, but replies only become tickets when ModMail is enabled on the server. Without it the invitation to reply leads nowhere.
+
+**Which plan do I need?**
+Basic or higher. The card is locked on Free.
+
+**Can I delay the DM or send it only to some members?**
+No. It is sent shortly after every non-bot join, with no delay or targeting options.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support
 </Card>
