@@ -7,6 +7,23 @@ description: "Error codes and solutions for common issues"
 
 When something goes wrong, TicketCord displays an error code to help identify the issue. Find your error code below for solutions.
 
+**How to spot a TicketCord error.** Every error the bot sends starts with a ❌ marker and ends with a small footer line showing the code, the TicketCord name (or your custom branding), and a "Learn more" link:
+
+```
+❌ Only staff members can claim tickets.
+-# TC002 • TicketCord • Learn more
+```
+
+Error cards (the red panels used for close, delete, reopen, setup, and purge failures) show the same code at the start of their footer. A message that has no `TC` code is **not** from TicketCord, even if it comes from a bot with the same name. That usually means another bot or script is running on the same token; see [Bot is offline](#bot-is-offline) below.
+
+### TC000 - Internal Error
+
+**What it means:** Something failed on TicketCord's side (database, unexpected error) rather than because of your input or configuration.
+
+**Solution:** Try the action again in a moment. If it keeps happening, [contact support](https://ticketcord.com/support) with the time and the command you used. TC000 errors are reported to our team automatically.
+
+---
+
 ### TC001 - Rate Limited
 
 **What it means:** Discord is temporarily blocking requests because too many actions were performed too quickly.
@@ -154,6 +171,84 @@ When something goes wrong, TicketCord displays an error code to help identify th
 <Tip>
   If you accidentally clicked the button twice, don't worry — only the first ticket will be created. Duplicate requests are automatically ignored.
 </Tip>
+
+---
+
+### TC014 - Plan Required
+
+**What it means:** The feature you tried to use needs a higher TicketCord plan than the bot owner currently has.
+
+**Common causes:**
+- Application forms, AI Help, quick replies, ticket statistics, summaries, or approval workflows on the Free plan
+- The trial AI token limit has been reached
+
+**Solution:** The bot owner can upgrade at [ticketcord.com/pricing](https://ticketcord.com/pricing). Non-AI features keep working in the meantime.
+
+---
+
+### TC015 - Ticket State Conflict
+
+**What it means:** The action does not match the ticket's current state.
+
+**Common causes:**
+- Closing, claiming, or renaming a ticket that is already closed
+- Claiming a ticket that someone else already claimed, or unclaiming one that is not claimed
+- Adding a tag or approval request that already exists
+
+**Solution:** Check the ticket's current status and try the action that applies. Reopen the ticket first if you need to change a closed one.
+
+---
+
+### TC016 - Ticket Limit Reached
+
+**What it means:** A per-user or per-ticket limit has been hit.
+
+**Common causes:**
+- The user already has the maximum number of open tickets
+- All ticket extensions for this ticket have been used
+- The ticket already has the maximum number of tags
+
+**Solution:** Close an existing ticket, or ask a server administrator to raise the limit in the dashboard under **Configuration → Ticket Limits**.
+
+---
+
+### TC017 - Wrong Context
+
+**What it means:** The command was used somewhere it does not apply.
+
+**Common causes:**
+- Running a ticket command outside a ticket channel
+- Running a server command in a DM
+- Using a ModMail-only option on a regular ticket
+
+**Solution:** Run the command inside the ticket channel or server it belongs to.
+
+---
+
+### TC018 - Feature Unavailable
+
+**What it means:** The feature is turned off, not supported here, or not available right now.
+
+**Common causes:**
+- The feature is disabled in the server configuration
+- Ticket creation is outside the configured business hours
+- The server uses ModMail mode, so button tickets are disabled
+- The setting is managed from the dashboard only
+- The bot is in maintenance mode or its ticket creation is paused
+
+**Solution:** Check the feature in the dashboard, or wait for business hours. For ModMail servers, send the bot a direct message instead of pressing a button.
+
+---
+
+### TC019 - Discord Limit Reached
+
+**What it means:** Discord's own capacity limits block the action.
+
+**Common causes:**
+- The server has reached Discord's 500 channel limit
+- Every configured ticket category already holds 50 channels
+
+**Solution:** Delete unused channels, add a backup ticket category, or switch to thread-style tickets in the dashboard.
 
 ---
 
