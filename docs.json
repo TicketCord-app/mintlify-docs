@@ -70,8 +70,7 @@
               "ai/knowledge-base",
               "ai/knowledge-base-sources",
               "ai/knowledge-base-settings",
-              "ai/knowledge-base-feedback",
-              "ai/train-command"
+              "ai/knowledge-base-feedback"
             ]
           },
           "ai/mcp",
@@ -80,7 +79,6 @@
           "ai/duplicate-detection",
           "ai/translation",
           "ai/sentiment-detection",
-          "ai/proactive-triggers",
           "ai/atlas"
         ]
       },
@@ -131,12 +129,12 @@
     "primary": {
       "type": "button",
       "label": "Support",
-      "href": "https://ticketcord.net/support"
+      "href": "https://ticketcord.com/support"
     }
   },
   "footer": {
     "socials": {
-      "website": "https://ticketcord.net"
+      "website": "https://ticketcord.com"
     }
   }
 }

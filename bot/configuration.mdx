@@ -37,8 +37,9 @@ This command creates:
 |----------|-------------|
 | 🎫 Tickets | Category where new tickets are created |
 | 📁 Closed Tickets | Category where closed tickets are moved |
-| Ticket Admin | Role with full ticket management access |
-| Ticket Support | Role with basic ticket access |
+| 📝 Ticket Logs | Category holding `#ticket-logs` and `#ticket-transcripts` |
+| Ticket Admin | Role with full ticket management access (**TicketCord Admin** on the Free plan) |
+| Ticket Support | Role with basic ticket access (**TicketCord Support** on the Free plan) |
 
 <Warning>
   The `/setup` command only creates Discord resources. You **must** complete the configuration on the dashboard for your bot to work.
@@ -48,12 +49,13 @@ This command creates:
 
 If `/setup` detects existing ticket categories or roles, you'll see options to:
 
-- **Create Anyway** - Creates new resources with unique names
-- **Use Existing** - Skip creation and configure existing resources on the dashboard
+- **Create Anyway (New Names)** - Creates a second set with TicketCord-prefixed names (🎫 TicketCord Tickets, 📁 TicketCord Closed, 📝 TicketCord Logs)
+- **Use Existing (Recommended)** - Skip creation and configure existing resources on the dashboard
+- **Cancel** - Stop setup without changing anything
 
 ## Step 2: Dashboard Configuration
 
-After running `/setup`, go to [ticketcord.net/dashboard](https://ticketcord.net/dashboard) to complete the setup:
+After running `/setup`, go to [ticketcord.com/dashboard](https://ticketcord.com/dashboard) to complete the setup:
 
 <Steps>
   <Step title="Select your bot and server">
@@ -96,7 +98,7 @@ Configure automatic ticket management in the dashboard:
 | Auto-close | Close tickets after inactivity period |
 | Auto-delete | Delete tickets after closing |
 | Auto-transcript | Generate transcripts when tickets close |
-| Auto-reminder | Remind staff of open tickets |
+| Auto-reminder | Post a reminder in tickets that have gone quiet, optionally tagging the creator |
 
 ### AI Features
 
@@ -116,9 +118,9 @@ Your bot includes these commands for managing tickets:
 | `/close` | Close the current ticket |
 | `/claim` | Claim a ticket |
 | `/transcript` | Generate a transcript |
-| `/add @user` | Add user to ticket |
-| `/remove @user` | Remove user from ticket |
+| `/add user:@user` | Add user to ticket |
+| `/remove user:@user` | Remove user from ticket |
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
-  Get instant support via private DM
+<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
 </Card>

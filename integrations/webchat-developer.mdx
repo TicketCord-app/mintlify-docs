@@ -3,6 +3,10 @@ title: "Developer Reference"
 description: "Pre-fill fields, configure CSP, and advanced widget embedding for developers"
 ---
 
+<Warning>
+  The Web Chat Widget is **not currently available**. It is disabled on all plans while its future is decided; the widget script returns a 404 and the settings below have no effect. This page is kept for reference only.
+</Warning>
+
 This page covers the technical details of embedding the Web Chat Widget: pre-filling visitor data, Content Security Policy configuration, framework-specific setup, and the JavaScript API.
 
 <Info>
@@ -19,7 +23,7 @@ Add attributes directly to the script tag:
 
 ```html
 <script
-  src="https://ticketcord.net/api/webchat/widget.js"
+  src="https://ticketcord.com/api/webchat/widget.js"
   data-widget-key="WK_your_key_here"
   data-visitor-name="Jane Smith"
   data-visitor-email="jane@example.com"
@@ -71,18 +75,18 @@ window.TicketCordWidget = {
 If your website uses a `Content-Security-Policy` header, you need to allow the widget's domain. Add the following directives:
 
 ```
-script-src 'self' https://ticketcord.net;
-connect-src 'self' https://ticketcord.net;
+script-src 'self' https://ticketcord.com;
+connect-src 'self' https://ticketcord.com;
 style-src 'self' 'unsafe-inline';
-img-src 'self' https://ticketcord.net https://cdn.discordapp.com;
+img-src 'self' https://ticketcord.com https://cdn.discordapp.com;
 ```
 
 ### Directive Breakdown
 
 | Directive | Why It's Needed |
 |-----------|----------------|
-| `script-src https://ticketcord.net` | The widget script itself |
-| `connect-src https://ticketcord.net` | API calls (config, session, messages) and the SSE stream |
+| `script-src https://ticketcord.com` | The widget script itself |
+| `connect-src https://ticketcord.com` | API calls (config, session, messages) and the SSE stream |
 | `style-src 'unsafe-inline'` | The widget injects its own styles into a shadow DOM |
 | `img-src https://cdn.discordapp.com` | Staff avatar images from Discord |
 
@@ -97,10 +101,10 @@ If you're using Next.js with a custom CSP in `next.config.ts`:
 ```typescript next.config.ts
 const cspDirectives = [
   "default-src 'self'",
-  "script-src 'self' https://ticketcord.net",
-  "connect-src 'self' https://ticketcord.net",
+  "script-src 'self' https://ticketcord.com",
+  "connect-src 'self' https://ticketcord.com",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' https://ticketcord.net https://cdn.discordapp.com",
+  "img-src 'self' https://ticketcord.com https://cdn.discordapp.com",
   // ... your other directives
 ]
 
@@ -129,7 +133,7 @@ If your framework restricts which domains can serve images (e.g., Next.js `image
 const nextConfig = {
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: 'ticketcord.net' },
+      { protocol: 'https', hostname: 'ticketcord.com' },
       { protocol: 'https', hostname: 'cdn.discordapp.com' },
     ]
   }
@@ -152,7 +156,7 @@ export default function Layout({ children }) {
     <>
       {children}
       <Script
-        src="https://ticketcord.net/api/webchat/widget.js"
+        src="https://ticketcord.com/api/webchat/widget.js"
         data-widget-key="WK_your_key_here"
         strategy="afterInteractive"
       />
@@ -174,7 +178,7 @@ export function ChatWidget() {
 
   return (
     <Script
-      src="https://ticketcord.net/api/webchat/widget.js"
+      src="https://ticketcord.com/api/webchat/widget.js"
       data-widget-key="WK_your_key_here"
       data-visitor-name={session?.user?.name ?? ''}
       data-visitor-email={session?.user?.email ?? ''}
@@ -201,7 +205,7 @@ In your main layout or `app.vue`:
 useHead({
   script: [
     {
-      src: 'https://ticketcord.net/api/webchat/widget.js',
+      src: 'https://ticketcord.com/api/webchat/widget.js',
       'data-widget-key': 'WK_your_key_here',
       defer: true
     }
@@ -216,7 +220,7 @@ Add this to your theme's `footer.php` before the closing `</body>` tag, or use a
 
 ```html
 <script
-  src="https://ticketcord.net/api/webchat/widget.js"
+  src="https://ticketcord.com/api/webchat/widget.js"
   data-widget-key="WK_your_key_here"
   defer
 ></script>
@@ -236,7 +240,7 @@ Paste the snippet before `</body>` in every page where you want the widget:
   <!-- Your page content -->
 
   <script
-    src="https://ticketcord.net/api/webchat/widget.js"
+    src="https://ticketcord.com/api/webchat/widget.js"
     data-widget-key="WK_your_key_here"
     defer
   ></script>
@@ -271,10 +275,10 @@ Paste the snippet before `</body>` in every page where you want the widget:
   <Accordion title="Widget loads but messages don't send">
     - Check that the bot is online in your dashboard.
     - Verify the ticket category exists and the bot has permissions to create channels in it.
-    - Look for rate limit errors in the console — the default is 10 messages per minute.
+    - Look for rate limit errors in the console — the default is 5 messages per minute per visitor (configurable from 1 to 60 in the dashboard).
   </Accordion>
 </AccordionGroup>
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
-  Get instant support via private DM
+<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
 </Card>

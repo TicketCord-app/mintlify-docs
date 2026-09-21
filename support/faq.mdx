@@ -20,11 +20,11 @@ Find answers to the most common questions about TicketCord.
   </Accordion>
 
   <Accordion title="Is there a ticket limit?">
-    No! All plans include unlimited tickets. There's no cap on how many tickets you can create.
+    Ticket volume is unlimited on every plan. The Free plan limits each user to 5 open tickets at a time; paid plans let you set this limit under **Limits** in the dashboard.
   </Accordion>
 
   <Accordion title="How long is ticket data stored?">
-    Closed-ticket content retention is configurable per server. On the Free plan, TicketCord-stored content for newly created closed tickets (messages, transcripts, attachments) is retained for up to 90 days. Basic, Pro, and Enterprise servers can choose 90, 180, or 365 days, or manual retention. When retention cleanup runs it removes the stored ticket content; ticket metadata remains. Tickets created before this retention control existed keep their previous treatment unless you delete them. See the [Privacy Policy](https://ticketcord.net/privacy) for details.
+    Closed-ticket content retention is configurable per server. On the Free plan, TicketCord-stored content for newly created closed tickets (messages, transcripts, attachments) is retained for up to 90 days. Basic, Pro, and Enterprise servers can choose delete on close, 30, 90, 180, or 365 days, or manual retention. When retention cleanup runs it removes the stored ticket content; ticket metadata remains. Tickets created before this retention control existed keep their previous treatment unless you delete them. See the [Privacy Policy](https://ticketcord.com/privacy) for details.
   </Accordion>
 
   <Accordion title="Can I use multiple bots on the same server?">
@@ -36,7 +36,7 @@ Find answers to the most common questions about TicketCord.
 
 <AccordionGroup>
   <Accordion title="How do I create my first bot?">
-    1. Sign in at [ticketcord.net/dashboard](https://ticketcord.net/dashboard)
+    1. Sign in at [ticketcord.com/dashboard](https://ticketcord.com/dashboard)
     2. Click **Create Bot**
     3. Follow the guide to create a Discord application
     4. Enter your bot token
@@ -66,7 +66,7 @@ Find answers to the most common questions about TicketCord.
   </Accordion>
 
   <Accordion title="How do I run the setup command?">
-    After inviting your bot, type `/setup` in any channel where the bot can see messages. This starts the interactive setup wizard.
+    After inviting your bot, type `/setup` in any channel where the bot can see messages. It creates the ticket categories, log channels, and staff roles for you. Use `/config` for an interactive settings panel, and the dashboard for everything else.
   </Accordion>
 </AccordionGroup>
 
@@ -78,14 +78,15 @@ Find answers to the most common questions about TicketCord.
   </Accordion>
 
   <Accordion title="What AI features are available?">
-    TicketCord includes several AI features (Pro/Enterprise plans):
-    - **Knowledge Base**: Automatic suggestions from your content
-    - **Auto-Routing**: Route tickets to the right team
-    - **Priority Detection**: Automatically set ticket priority
-    - **Duplicate Detection**: Find similar tickets
-    - **Translation**: Translate tickets to other languages
-    - **Sentiment Detection**: Detect user mood
-    - **Atlas AI**: Dashboard AI assistant
+    TicketCord includes several AI features:
+    - **Knowledge Base** (Pro and Enterprise): Automatic suggestions from your content
+    - **Priority Detection** (Pro and Enterprise): Automatically set ticket priority
+    - **Duplicate Detection** (Pro and Enterprise): Find similar tickets
+    - **Atlas AI** (Pro and Enterprise): Dashboard AI assistant
+    - **Auto-Routing** (Enterprise): Route tickets to the right team
+    - **Translation** (Enterprise): Translate tickets to other languages
+    - **Tone Detection** (Pro and Enterprise): Alert staff when a user is frustrated or angry
+    - **Sentiment journey** (Enterprise): Track how a user's mood changed over a ticket
   </Accordion>
 
   <Accordion title="What are webhooks?">
@@ -117,26 +118,25 @@ Find answers to the most common questions about TicketCord.
   </Accordion>
 
   <Accordion title="How does the free trial work?">
-    All paid plans have a 7-day free trial:
-    - €1 card verification to start (refunded instantly)
-    - Full access to all plan features
-    - Cancel anytime before trial ends
-    - Auto-downgrades to Free if no payment added
+    Every new account automatically gets a 14-day Enterprise trial:
+    - No card and no activation needed
+    - Limited to 1 bot, 2 knowledge base sources, 100 pages per source, and 1M AI tokens for the whole trial
+    - Returns to the Free plan when it ends; nothing is charged
   </Accordion>
 
   <Accordion title="Can I change plans?">
     Yes! You can upgrade or downgrade anytime:
     - Upgrades: Instant access, prorated billing
-    - Downgrades: Take effect at next billing date
-    - Cancel: Keep access until period ends
+    - Downgrades: Made through the billing portal from Manage Subscription
+    - Cancel: Keep access until the period ends
   </Accordion>
 
   <Accordion title="What payment methods are accepted?">
-    We accept all major credit cards (Visa, Mastercard, American Express) through Stripe. PayPal is not currently supported.
+    Cards and Link through Stripe, and cryptocurrency through NOWPayments (one-time, non-renewing entitlements).
   </Accordion>
 
   <Accordion title="Is there a refund policy?">
-    TicketCord is a digital service with immediate access upon purchase. During checkout, EU customers are asked to waive their 14-day withdrawal right as required by EU consumer protection law (Directive 2011/83/EU), since premium features activate instantly. Once your paid subscription begins, subscriptions are non-refundable. You can cancel anytime to prevent future charges. If you're on a free trial, you can cancel at any time without being charged. For billing issues, contact us at hi@ticketcord.net.
+    TicketCord is a digital service with immediate access upon purchase. During checkout, EU customers are asked to waive their 14-day withdrawal right as required by EU consumer protection law (Directive 2011/83/EU), since premium features activate instantly. Once your paid subscription begins, subscriptions are non-refundable. You can cancel anytime to prevent future charges. For billing issues, contact us at hi@ticketcord.com.
   </Accordion>
 
   <Accordion title="What happens to my data if I downgrade?">
@@ -173,11 +173,10 @@ Find answers to the most common questions about TicketCord.
   </Accordion>
 
   <Accordion title="How do I reset my bot?">
-    To reset your bot configuration:
-    1. Go to Dashboard → Bot Settings
-    2. Click **Reset Configuration**
-    3. Confirm the reset
-    4. Run `/setup` again in Discord
+    To reset a server's bot configuration:
+    1. Run `/config` in Discord (requires Administrator)
+    2. Choose **Reset Configuration** and confirm
+    3. Run `/setup` again if you also want fresh categories and roles
   </Accordion>
 
   <Accordion title="Can I self-host TicketCord?">
@@ -190,12 +189,10 @@ Find answers to the most common questions about TicketCord.
 <AccordionGroup>
   <Accordion title="Is my data secure?">
     Yes. We use:
-    - Strong encryption for sensitive data
+    - Strong encryption for sensitive data such as bot tokens
     - TLS for all connections
-    - EU-based hosting
-    - Regular security audits
 
-    See our [Privacy Policy](https://ticketcord.net/privacy) for details.
+    See our [Privacy Policy](https://ticketcord.com/privacy) for details.
   </Accordion>
 
   <Accordion title="What data do you collect?">
@@ -205,15 +202,15 @@ Find answers to the most common questions about TicketCord.
     - Account information (email from Discord)
     - Usage analytics
 
-    See our [Privacy Policy](https://ticketcord.net/privacy) for details.
+    See our [Privacy Policy](https://ticketcord.com/privacy) for details.
   </Accordion>
 
   <Accordion title="Can I export my data?">
-    Yes — data export is handled by request. Email [hi@ticketcord.net](mailto:hi@ticketcord.net) from the address on your account and we'll send your export. See the [data export guide](https://ticketcord.net/help/security/data-export) for what's included and typical turnaround.
+    Yes — data export is handled by request. Email [hi@ticketcord.com](mailto:hi@ticketcord.com) from the address on your account and we'll send your export. See the [data export guide](https://ticketcord.com/help/security/data-export) for what's included and typical turnaround.
   </Accordion>
 
   <Accordion title="How do I delete my account?">
-    Account deletion isn't self-serve today. Email [hi@ticketcord.net](mailto:hi@ticketcord.net) from the address on your account, say which account you want closed, and confirm you understand the deletion is permanent. Requests are processed within two business days. You can delete individual tickets and bots from the dashboard at any time. See [Delete your account](https://ticketcord.net/help/security/delete-account).
+    Account deletion isn't self-serve today. Email [hi@ticketcord.com](mailto:hi@ticketcord.com) from the address on your account, say which account you want closed, and confirm you understand the deletion is permanent. Requests are processed within two business days. You can delete individual tickets and bots from the dashboard at any time. See [Delete your account](https://ticketcord.com/help/security/delete-account).
   </Accordion>
 
   <Accordion title="How does TicketCord handle privacy and data rights?">
@@ -223,7 +220,7 @@ Find answers to the most common questions about TicketCord.
     - Configurable ticket-content retention
     - Consent controls for analytics cookies
 
-    See our [Privacy Policy](https://ticketcord.net/privacy) for the full picture, including the processors we use.
+    See our [Privacy Policy](https://ticketcord.com/privacy) for the full picture, including the processors we use.
   </Accordion>
 </AccordionGroup>
 
@@ -234,14 +231,14 @@ Find answers to the most common questions about TicketCord.
     Token allocation varies by plan:
     - Free: 0 tokens
     - Basic: 0 tokens
-    - Pro: Included allocation
-    - Enterprise: Maximum allocation
+    - Pro: 10M tokens per month
+    - Enterprise: 30M tokens per month
 
     Check your dashboard for current usage.
   </Accordion>
 
   <Accordion title="Do AI tokens roll over?">
-    No, tokens reset at the start of each billing cycle. Unused tokens don't carry over.
+    Monthly plan tokens reset at the start of each billing cycle and don't carry over. Purchased token packages never expire.
   </Accordion>
 
   <Accordion title="Why isn't the Knowledge Base giving good answers?">
@@ -249,7 +246,7 @@ Find answers to the most common questions about TicketCord.
     - Add more relevant content sources
     - Ensure content is up-to-date
     - Adjust confidence thresholds
-    - Use the training feature to improve
+    - Review what the bot learned from closed tickets in the Knowledge Base Q&A tab
 
     See [Knowledge Base Feedback](/ai/knowledge-base-feedback).
   </Accordion>
@@ -262,10 +259,10 @@ Find answers to the most common questions about TicketCord.
 ## Still Need Help?
 
 <CardGroup cols={2}>
-  <Card title="Discord Support" icon="discord" href="https://ticketcord.net/discord">
+  <Card title="Discord Support" icon="discord" href="https://ticketcord.com/discord">
     Join our community for help
   </Card>
-  <Card title="Email Support" icon="envelope" href="mailto:hi@ticketcord.net">
+  <Card title="Email Support" icon="envelope" href="mailto:hi@ticketcord.com">
     Contact us directly
   </Card>
 </CardGroup>

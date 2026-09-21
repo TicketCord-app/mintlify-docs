@@ -66,7 +66,7 @@ After I confirm authorization is complete, call the list_ticket_bots tool and sh
 Available tools:
 - Ticket read: list_ticket_bots, list_tickets, get_ticket, get_ticket_notes
 - Ticket management: reply_to_ticket, close_ticket, reopen_ticket, claim_ticket, unclaim_ticket, set_ticket_priority, add_ticket_tag, remove_ticket_tag, add_ticket_note
-- Knowledge Base read and search: list_knowledge_bases, get_knowledge_base, search_knowledge_base, list_knowledge_source_options, list_knowledge_entries
+- Knowledge Base read and search: list_knowledge_bases, get_knowledge_base, search_knowledge_base, list_knowledge_source_options, list_knowledge_entries, list_knowledge_cleanup_inventory
 - Knowledge Base settings and sources: update_knowledge_base_settings, create_knowledge_source, update_knowledge_source, index_knowledge_source, delete_knowledge_source
 - Knowledge Base entries: create_knowledge_entry, update_knowledge_entry, review_knowledge_entry, delete_knowledge_entry
 
@@ -258,6 +258,7 @@ Usage counters, plan limits, and internal settings remain read-only.
     - Search for relevant passages: `search_knowledge_base`
     - List available source choices: `list_knowledge_source_options`
     - List Knowledge Base entries: `list_knowledge_entries`
+    - List Knowledge Base cleanup candidates: `list_knowledge_cleanup_inventory`
   </Accordion>
 
   <Accordion title="Knowledge Base: settings and sources">

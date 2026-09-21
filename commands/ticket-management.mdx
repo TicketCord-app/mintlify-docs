@@ -10,15 +10,16 @@ These commands control the core ticket lifecycle and are available on all plans.
 Close the current ticket channel.
 
 ```
-/close [reason] [silent]
+/close [reason] [in] [silent]
 ```
 
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
 | `reason` | Text | No | Reason for closing the ticket |
-| `silent` | Boolean | No | Close without sending a notification message |
+| `in` | Text | No | ModMail tickets only: schedule the close after a delay, for example `30m`, `2h`, or `1d` |
+| `silent` | Boolean | No | Close without notifying the user (no DM is sent) |
 
-**Permission:** Ticket creator or staff
+**Permission:** Ticket creator, staff, server administrators, or the bot owner. If **Staff-only close** is enabled in the dashboard, the creator cannot close their own ticket. `in` and `silent` cannot be combined.
 
 **What happens:**
 - Channel is renamed from `ticket-XXXX` to `closed-XXXX`
@@ -109,12 +110,16 @@ Release your claim on a ticket.
 Add a user or role to the current ticket.
 
 ```
-/add <user_or_role>
+/add [user] [role] [ticket]
 ```
 
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
-| `user_or_role` | User/Role | Yes | The user or role to add |
+| `user` | User | No | The user to add |
+| `role` | Role | No | The role to add |
+| `ticket` | Text (autocomplete) | No | Ticket to add them to when running the command outside the ticket channel |
+
+Provide exactly one of `user` or `role`.
 
 **Permission:** Ticket creator or staff
 
@@ -125,8 +130,8 @@ Add a user or role to the current ticket.
 
 **Example:**
 ```
-/add @JohnDoe
-/add @Support Team
+/add user:@JohnDoe
+/add role:@Support Team
 ```
 
 ---
@@ -136,12 +141,16 @@ Add a user or role to the current ticket.
 Remove a user or role from the current ticket.
 
 ```
-/remove <user_or_role>
+/remove [user] [role] [ticket]
 ```
 
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
-| `user_or_role` | User/Role | Yes | The user or role to remove |
+| `user` | User | No | The user to remove |
+| `role` | Role | No | The role to remove |
+| `ticket` | Text (autocomplete) | No | Ticket to remove them from when running the command outside the ticket channel |
+
+Provide exactly one of `user` or `role`.
 
 **Permission:** Ticket creator or staff
 
@@ -151,7 +160,7 @@ Remove a user or role from the current ticket.
 - A notification is sent to the channel
 
 <Warning>
-  You cannot remove the ticket creator or staff roles from a ticket.
+  Removing the ticket creator asks for a double confirmation. Members holding a configured supervisor role cannot be removed.
 </Warning>
 
 ---
@@ -171,7 +180,7 @@ Rename the current ticket channel.
 **Permission:** Ticket creator or staff
 
 **What happens:**
-- Channel name changes to `ticket-XXXX-newname`
+- Channel name changes to `newname-XXXX` (your name followed by the ticket number)
 - Original ticket number is preserved
 - Helps identify tickets by topic
 
@@ -182,7 +191,7 @@ Rename the current ticket channel.
 ```
 
 <Info>
-  Channel names follow Discord's naming rules - lowercase, no spaces, max 100 characters.
+  Channel names follow Discord's naming rules - lowercase, no spaces. The name you provide can be up to 80 characters; the ticket number is appended automatically.
 </Info>
 
 ---

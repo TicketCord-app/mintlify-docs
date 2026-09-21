@@ -1,108 +1,69 @@
 ---
-title: "Free Trials"
-description: "Try a paid plan free for 7 days — once per account"
+title: "Free Trial"
+description: "Every new account starts with a 14-day Enterprise trial, no card required"
 ---
-## How Trials Work
+
+## How the Trial Works
 
 <CardGroup cols={3}>
-  <Card title="7 Days" icon="calendar">
-    One week to try your chosen plan
+  <Card title="14 Days" icon="calendar">
+    Two weeks of Enterprise features, starting the moment you sign in for the first time
   </Card>
-  <Card title="Once Per Account" icon="user-check">
-    The self-serve trial is available to first-time subscribers
+  <Card title="Automatic" icon="user-check">
+    Granted to every new account. There is nothing to activate.
   </Card>
-  <Card title="Cancel Anytime" icon="xmark">
-    No obligation to continue
+  <Card title="No Card" icon="credit-card">
+    No payment method is collected and nothing is charged when the trial ends
   </Card>
 </CardGroup>
 
-## Starting a Trial
-
-<Steps>
-  <Step title="Sign In">
-    Go to [ticketcord.net/dashboard](https://ticketcord.net/dashboard) and sign in with Discord
-  </Step>
-  <Step title="Choose a Plan">
-    Navigate to Billing and select **Basic**, **Pro**, or **Enterprise**
-  </Step>
-  <Step title="Start Trial">
-    Click **Start Free Trial** and complete checkout
-  </Step>
-</Steps>
-
 ## What's Included
 
-During your trial you get the features of your chosen plan, with one difference: **AI usage is capped at 1M tokens** for the trial period (instead of the plan's full monthly allocation).
+During the trial you get the Enterprise plan with these limits:
 
-### Basic Trial
-- 3 custom bots
-- Remove TicketCord branding
-- Analytics dashboard
-- 5 custom embeds
-- 25 canned responses
+| Limit | During the trial |
+|-------|------------------|
+| Custom bots | 1 |
+| Knowledge base sources | 2 |
+| Crawled pages per source | 100 |
+| AI tokens | 1M for the whole trial (not per month) |
 
-### Pro Trial
-- Everything in Basic, plus:
-- AI-powered features with token allocation
-- Atlas AI assistant
-- Knowledge base (2 sources)
-- Priority detection, duplicate detection, and more
+Everything else follows the Enterprise plan: webhooks, SLA management, business hours, approvals, and the AI features.
 
-### Enterprise Trial
-- Everything in Pro, plus:
-- 6 custom bots
-- 15 knowledge base sources
-- Webhooks (20 per guild)
-- SLA management
-- Business hours configuration
+<Info>
+  If you use up the 1M trial tokens, AI features pause until you subscribe. Everything that does not use AI keeps working.
+</Info>
 
 ## During Your Trial
 
 <AccordionGroup>
-  <Accordion title="Can I switch plans during the trial?">
-    Yes! You can upgrade or downgrade to a different trial plan at any time.
+  <Accordion title="Can I switch the trial to a different plan?">
+    No. The trial is always Enterprise. You can subscribe to any paid plan at any time; paid checkout bills immediately and replaces the trial.
   </Accordion>
 
   <Accordion title="Will I be charged automatically?">
-    Only if you add a payment method. Without payment info, your account automatically downgrades to Free when the trial ends.
-  </Accordion>
-
-  <Accordion title="How many AI tokens do I get during the trial?">
-    Trials include up to 1M AI tokens, regardless of plan. The full monthly allocation (10M on Pro, 30M on Enterprise) starts with your paid subscription. If you hit the trial cap, AI features pause but everything else keeps working.
+    No. No payment method is collected for the trial. When it ends, your account returns to the Free plan.
   </Accordion>
 
   <Accordion title="What happens to my data after the trial?">
-    Your tickets, transcripts, and settings are preserved, and only access to paid features is restricted. Note that on the Free plan, closed-ticket content retention is up to 90 days for tickets going forward — see [Plans & Pricing](/billing/plans).
+    Your tickets, transcripts, and settings are preserved; only access to paid features is restricted. On the Free plan, closed-ticket content retention is up to 90 days for tickets going forward, and bots beyond the Free limit of 1 are stopped. See [Plans & Pricing](/billing/plans).
   </Accordion>
 </AccordionGroup>
 
-## Converting to Paid
+## Subscribing
 
 <Steps>
-  <Step title="Add Payment Method">
-    Before your trial ends, go to Billing → **Add Payment Method**
+  <Step title="Open Billing">
+    Go to [ticketcord.com/dashboard](https://ticketcord.com/dashboard) and open **Billing**
   </Step>
-  <Step title="Choose Billing Cycle">
-    Select monthly or yearly billing (save 17% with yearly)
+  <Step title="Choose a Plan and Cycle">
+    Pick Basic, Pro, or Enterprise, monthly or yearly (yearly saves 17%)
   </Step>
-  <Step title="Confirm Subscription">
-    Complete the checkout to start your paid subscription
+  <Step title="Complete Checkout">
+    Pay by card or Link through Stripe, or with cryptocurrency. Your paid plan starts immediately.
   </Step>
 </Steps>
 
-## When Your Trial Ends
-
-### If You've Added Payment
-- Your subscription automatically starts
-- You're charged for your first billing period
-- All features continue uninterrupted
-
-### If You Haven't Added Payment
-- Account automatically downgrades to Free plan
-- Paid features become inaccessible
-- Your data is preserved
-- You can subscribe later to regain access
-
-<Card title="Start Your Free Trial" icon="play" href="https://ticketcord.net/dashboard">
-  Try any plan free for 7 days
+<Card title="Compare Plans" icon="table" href="/billing/plans">
+  See what each plan includes
 </Card>

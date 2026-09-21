@@ -13,19 +13,20 @@ Create the Discord infrastructure needed for your ticket system.
 /setup
 ```
 
-**Permission:** Administrator
+**Permission:** Administrator, or Manage Channels + Manage Roles
 
 **What it creates:**
 
 | Resource | Description |
 |----------|-------------|
-| **Tickets** category | Where new tickets are created |
-| **Closed Tickets** category | Where closed tickets are moved |
-| **Ticket Admin** role | Full ticket management access |
-| **Ticket Support** role | Basic ticket access |
+| **🎫 Tickets** category | Where new tickets are created |
+| **📁 Closed Tickets** category | Where closed tickets are moved |
+| **📝 Ticket Logs** category | Holds `#ticket-logs` and `#ticket-transcripts` |
+| **Ticket Admin** role | Full ticket management access (named **TicketCord Admin** on the Free plan) |
+| **Ticket Support** role | Basic ticket access (named **TicketCord Support** on the Free plan) |
 
 <Warning>
-  The `/setup` command only creates Discord resources. You **must** complete configuration on the [dashboard](https://ticketcord.net/dashboard) for your bot to work.
+  The `/setup` command only creates Discord resources. You **must** complete configuration on the [dashboard](https://ticketcord.com/dashboard) for your bot to work.
 </Warning>
 
 ### Handling Existing Resources
@@ -42,7 +43,7 @@ If `/setup` detects existing ticket categories or roles, you'll see options:
 
 <Steps>
   <Step title="Go to the dashboard">
-    Visit [ticketcord.net/dashboard](https://ticketcord.net/dashboard)
+    Visit [ticketcord.com/dashboard](https://ticketcord.com/dashboard)
   </Step>
   <Step title="Select resources">
     Choose the categories and roles created by `/setup`
@@ -62,12 +63,12 @@ If `/setup` detects existing ticket categories or roles, you'll see options:
 Send a custom embed message to a channel.
 
 ```
-/embed <embed_name> [channel]
+/embed <name> [channel]
 ```
 
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
-| `embed_name` | Choice | Yes | Name of the saved embed |
+| `name` | Choice | Yes | Name of the saved embed |
 | `channel` | Channel | No | Target channel (defaults to current) |
 
 **Permission:** Manage Messages
@@ -110,7 +111,7 @@ Send a custom embed message to a channel.
 Manage approval workflows for sensitive actions. Staff can request approval from senior staff before taking certain actions.
 
 ```
-/approval request <type> <reason> [urgency] [amount] [custom_type]
+/approval request <type> [reason] [urgency] [amount] [custom_type]
 /approval approve [reason]
 /approval reject <reason>
 /approval status
@@ -133,9 +134,9 @@ Manage approval workflows for sensitive actions. Staff can request approval from
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
 | `type` | Choice | Yes | Type of approval |
-| `reason` | Text | Yes | Detailed reason for request |
+| `reason` | Text | No | Detailed reason for request |
 | `urgency` | Choice | No | How urgent is this |
-| `amount` | Text | No | Amount involved (for refunds) |
+| `amount` | Number | No | Amount involved (for refunds) |
 | `custom_type` | Text | No | Custom type name |
 
 **Type choices:**
@@ -148,7 +149,7 @@ Manage approval workflows for sensitive actions. Staff can request approval from
 ### Requesting Approval
 
 ```
-/approval request type:refund reason:Customer received damaged product amount:$49.99 urgency:high
+/approval request type:refund reason:Customer received damaged product amount:49.99 urgency:high
 ```
 
 ### Approving/Rejecting
@@ -178,7 +179,7 @@ Only users with approval authority can approve or reject:
 </Steps>
 
 <Info>
-  Configure approval roles and notification channels in your dashboard under **Enterprise Features** → **Approvals**.
+  Configure approval roles and notification channels in your dashboard under **Approvals**.
 </Info>
 
 ---
@@ -188,17 +189,17 @@ Only users with approval authority can approve or reject:
 Bulk delete tickets from your server. **Use with caution.**
 
 ```
-/purge <type> [older_than]
+/purge [type]
 ```
 
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
-| `type` | Choice | Yes | What to purge |
-| `older_than` | Integer | No | Days threshold |
+| `type` | Choice | No | What to purge (defaults to `all`) |
 
 **Type choices:**
-- `closed` - Delete closed tickets only
 - `all` - Delete all tickets
+- `open` - Delete open tickets only
+- `closed` - Delete closed tickets only
 
 **Permission:** Server Owner only
 
@@ -210,7 +211,6 @@ Bulk delete tickets from your server. **Use with caution.**
 
 - Only the server owner can use this command
 - A confirmation dialog is shown before deletion
-- You can limit to tickets older than X days
 
 **Example:**
 ```
@@ -226,3 +226,59 @@ This deletes all closed tickets older than 30 days.
 <Card title="Utility Commands" icon="arrow-right" href="/commands/utility">
   Learn about help, on-call, and user lookups
 </Card>
+
+---
+
+## /auto-close
+
+Configure automatic closure of inactive tickets.
+
+```
+/auto-close <time>
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `time` | Text | Yes | Inactivity period such as `30M`, `2H`, or `1D`, or `off` to disable |
+
+**Permission:** Administrator  
+**Plan:** Basic or higher
+
+**Limits:** minimum 15 minutes, maximum 30 days.
+
+**Example:**
+```
+/auto-close time:2D
+/auto-close time:off
+```
+
+---
+
+## /config
+
+Open an interactive configuration panel for the ticket system inside Discord.
+
+```
+/config
+```
+
+**Permission:** Administrator
+
+The panel lets you review and toggle core settings without leaving Discord. Some settings are managed from the dashboard only; the panel tells you when that is the case.
+
+---
+
+## /diagnose
+
+Check the bot's permissions and configuration for the current server.
+
+```
+/diagnose
+```
+
+**Permission:** Staff only
+
+**What it checks:**
+- Whether the bot has the permissions it needs (View Channel, Send Messages, Manage Channels, and more)
+- Whether the ticket categories and staff roles in your configuration still exist
+- Common setup problems, with suggested fixes

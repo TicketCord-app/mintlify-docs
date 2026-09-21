@@ -6,7 +6,7 @@ description: "Integrate TicketCord with external services via webhooks"
 Webhooks allow you to receive real-time notifications when events occur in your ticket system. Use them to integrate with services like Zapier, Make.com, Slack, Jira, or your own custom applications.
 
 <Info>
-  Webhooks are an **Enterprise** feature. [Upgrade your plan](https://ticketcord.net/pricing) to access webhooks.
+  Webhooks are an **Enterprise** feature. [Upgrade your plan](https://ticketcord.com/pricing) to access webhooks.
 </Info>
 
 ## Quick Start
@@ -221,10 +221,13 @@ Every webhook request includes these headers:
 
 Failed webhook deliveries are automatically retried:
 
-- **Maximum retries**: 3 attempts
-- **Backoff**: Exponential (1s, 2s, 4s)
+- **Attempts**: 1 delivery plus up to 3 retries by default (configurable per webhook, 0 to 5)
+- **Backoff**: Exponential, 1s, 2s, 4s by default (initial delay 100 ms to 10 s, multiplier 1 to 5, capped at 5 minutes)
+- **429 responses**: not counted as a failed attempt; delivery pauses for the `Retry-After` value (default 60 seconds) and is requeued
 - **Success codes**: Any 2xx response is considered successful
 - **Timeout**: 30 seconds per request
+- **Limits**: 20 webhooks per server, 60 deliveries per minute per webhook, HTTPS endpoints only (no private addresses)
+- **Logs**: Delivery logs are kept for 30 days
 
 ---
 
@@ -835,17 +838,18 @@ echo json_encode(['received' => true]);
 
 ### Testing Your Receiver
 
-Use the **Test** button in the TicketCord dashboard to send a test webhook to your endpoint. This sends a `test.ping` event:
+Use the **Test Fire** button in the TicketCord dashboard to send a test delivery to your endpoint. It is sent under the first event type the webhook subscribes to (so the event header will be, for example, `ticket.created`), with a test payload:
 
 ```json
 {
-  "event": "test.ping",
-  "timestamp": 1702483200,
   "data": {
-    "message": "This is a test webhook from TicketCord",
-    "testMode": true
-  },
-  "attemptNumber": 1
+    "test": true,
+    "message": "This is a test webhook delivery from TicketCord",
+    "timestamp": "2026-09-21T09:00:00.000Z",
+    "botId": "...",
+    "guildId": "...",
+    "webhookId": "..."
+  }
 }
 ```
 
@@ -858,6 +862,6 @@ Check the **View Logs** option in the dashboard to see:
 - Error messages for failed deliveries
 - Retry attempts and timing
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
-  Get instant support via private DM
+<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
 </Card>

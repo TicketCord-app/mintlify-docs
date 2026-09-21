@@ -12,7 +12,7 @@ Manage internal staff notes on a ticket. Notes are only visible to staff members
 ```
 /note add <content>
 /note view
-/note remove <note_id>
+/note remove <number>
 ```
 
 ### Subcommands
@@ -62,8 +62,8 @@ Displays all notes on the current ticket in chronological order.
 Manage tags on the current ticket for organization and filtering.
 
 ```
-/tag add <tag>
-/tag remove <tag>
+/tag add <name>
+/tag remove <name>
 /tag list
 /tag clear
 ```
@@ -113,10 +113,17 @@ Shows all tags currently on the ticket.
 Generate a transcript of the ticket conversation.
 
 ```
-/transcript
+/transcript [channel] [user] [limit] [evidence]
 ```
 
-**Permission:** Ticket creator or staff
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `channel` | Channel | No | Send the transcript to this channel instead of the configured one (staff only) |
+| `user` | User | No | DM the transcript to a specific user (staff only) |
+| `limit` | Integer | No | Only include the most recent N messages (default: all) |
+| `evidence` | Boolean | No | Include Discord IDs and message links (staff only) |
+
+**Permission:** Ticket creator or staff. The `channel`, `user`, and `evidence` options are staff only.
 
 **What happens:**
 - Creates a formatted record of all messages
@@ -126,16 +133,18 @@ Generate a transcript of the ticket conversation.
 
 ### Transcript Formats
 
-Transcripts can be delivered as:
+The transcript is generated as an HTML file and delivered to:
 
-| Format | Description |
-|--------|-------------|
-| **Discord Message** | Posted directly in the channel |
-| **Web Page** | Hosted HTML page with full formatting |
-| **Channel Archive** | Saved to your configured transcript channel |
+| Destination | When |
+|-------------|------|
+| **Transcript channel** | By default, the channel configured in the dashboard |
+| **Another channel** | When staff pass the `channel` option |
+| **A user's DMs** | When staff pass the `user` option |
+
+The command needs a transcript channel configured in the dashboard. Evidence transcripts (`evidence:True`) can only go to staff members or staff-only channels.
 
 <Info>
-  Configure transcript settings in your dashboard under **Automation** → **Transcripts**.
+  Configure transcript settings in your dashboard under **Ticket Lifecycle** → **Transcripts**.
 </Info>
 
 ---
@@ -145,12 +154,12 @@ Transcripts can be delivered as:
 Send a pre-configured canned response.
 
 ```
-/reply <response_name>
+/reply <shortcut>
 ```
 
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
-| `response_name` | Choice | Yes | Name of the canned response |
+| `shortcut` | Text (autocomplete) | Yes | Shortcut of the canned response |
 
 **Permission:** Staff only  
 **Plan:** Basic or higher
@@ -176,7 +185,7 @@ Send a pre-configured canned response.
 | `escalate` | "I'm escalating this to our senior team. You'll hear back within 24 hours." |
 
 <Tip>
-  Use variables in your replies: `{user}` for mention, `{ticket}` for ticket number.
+  Use variables in your replies: `{{user}}` for the creator mention and `{{ticketNumber}}` for the ticket number. The older `{user}` and `{ticketNumber}` forms still work.
 </Tip>
 
 ---
@@ -198,10 +207,9 @@ Set the priority level for a ticket. Adds a visual indicator to the channel name
 - `high` - Adds orange indicator
 - `medium` - Adds yellow indicator
 - `low` - Adds green indicator
-- `none` - Removes priority indicator
 
 **Permission:** Staff only  
-**Plan:** Requires AI plan (Pro or higher)
+**Plan:** All plans
 
 **What happens:**
 - Channel name gets priority emoji prefix
@@ -234,20 +242,20 @@ View ticket statistics for the current server.
 | `period` | Choice | No | Time period for stats |
 
 **Choices:**
-- `today` - Today's statistics
-- `week` - Last 7 days
-- `month` - Last 30 days
+- `7d` - Last 7 days
+- `30d` - Last 30 days
+- `90d` - Last 90 days
 - `all` - All-time statistics
 
 **Permission:** Staff only  
-**Plan:** Pro or higher
+**Plan:** Basic or higher
 
 **Statistics include:**
-- Total tickets opened/closed
-- Average resolution time
-- Staff response times
-- Ticket volume by category
-- Peak hours
+- Total, open, and closed tickets
+- Average first response time and average resolution time
+- Top ticket creators
+- Priority breakdown
+- Tickets created per day
 
 **Example:**
 ```
@@ -261,3 +269,118 @@ View ticket statistics for the current server.
 <Card title="Administration Commands" icon="arrow-right" href="/commands/admin">
   Learn about setup, embeds, and approvals
 </Card>
+
+---
+
+## /ai-help
+
+Get an AI-generated reply suggestion for the current ticket. The suggestion is shown only to you; you can send it as is, edit it first, or discard it.
+
+```
+/ai-help
+```
+
+**Permission:** Staff only  
+**Plan:** Pro or higher
+
+---
+
+## /summary
+
+Generate an AI summary of the ticket conversation, for example before handing the ticket to a colleague.
+
+```
+/summary [format]
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `format` | Choice | No | Summary style |
+
+**Choices:**
+- `detailed` - Full analysis
+- `executive` - Key points
+- `handoff` - Staff transition notes
+- `brief` - Quick overview
+
+**Permission:** Staff only  
+**Plan:** Pro or higher
+
+---
+
+## /context
+
+Show how much of the AI conversation context this ticket is using.
+
+```
+/context
+```
+
+**Permission:** Staff only
+
+---
+
+## /translation
+
+Turn AI translation on or off for the current ticket.
+
+```
+/translation <enabled>
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `enabled` | Boolean | Yes | `True` to enable translation, `False` to disable |
+
+**Permission:** Staff only. Translation must be enabled for the server in the dashboard first.
+
+---
+
+## /claims
+
+See the tickets you have claimed, or another staff member's claimed tickets.
+
+```
+/claims [user]
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `user` | User | No | Show another staff member's claimed tickets |
+
+**Permission:** Staff only
+
+---
+
+## /feedback
+
+Ask the ticket creator to rate the support they received.
+
+```
+/feedback <ticket> <rating> [staff] [comment]
+```
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `ticket` | Text (autocomplete) | Yes | The ticket to rate |
+| `rating` | Choice | Yes | 1 to 5 stars |
+| `staff` | Text (autocomplete) | No | The staff member who helped |
+| `comment` | Text | No | Optional comment |
+
+---
+
+## /modmail
+
+Inspect ModMail evidence for the current ticket.
+
+```
+/modmail message <number>
+/modmail evidence
+```
+
+| Subcommand | Description |
+|------------|-------------|
+| `message <number>` | Look up the linked Discord IDs for a message number from the ModMail transcript |
+| `evidence` | Show a compact evidence pack for this ModMail ticket |
+
+**Permission:** Staff only. Works in ModMail ticket channels only.

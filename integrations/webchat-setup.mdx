@@ -3,6 +3,10 @@ title: "Widget Setup"
 description: "Enable the Web Chat Widget and embed it on your website"
 ---
 
+<Warning>
+  The Web Chat Widget is **not currently available**. It is disabled on all plans while its future is decided; the widget script returns a 404 and the settings below have no effect. This page is kept for reference only.
+</Warning>
+
 This guide walks you through enabling the widget in your dashboard and adding the embed snippet to your website.
 
 ## Prerequisites
@@ -38,7 +42,7 @@ Copy the script tag shown in the dashboard and paste it into your website's HTML
 
 ```html
 <script
-  src="https://ticketcord.net/api/webchat/widget.js"
+  src="https://ticketcord.com/api/webchat/widget.js"
   data-widget-key="WK_your_key_here"
   defer
 ></script>
@@ -93,9 +97,9 @@ The widget validates the embedding page's origin against your allowed domains li
 |--------|--------|
 | `https://example.com` | Yes |
 | `https://shop.example.com` | Yes |
-| `http://localhost:3000` | No — localhost is automatically allowed in development mode |
+| `http://localhost:3000` | No: localhost and plain HTTP origins are rejected |
 | `example.com` | No — missing protocol |
-| `https://example.com/support` | No — no paths allowed |
+| `https://example.com/support` | Accepted, but stored as `https://example.com` (only the origin is kept) |
 
 <Card title="Developer Reference" icon="code" href="/integrations/webchat-developer">
   Pre-fill fields, configure CSP headers, and more

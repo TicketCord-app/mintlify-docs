@@ -2,279 +2,74 @@
 title: "Canned Responses"
 description: "Create reusable response templates for common questions"
 ---
-Save time with pre-written responses that can be quickly inserted into tickets.
 
-## What Are Canned Responses?
-
-Canned responses are pre-written templates that staff can quickly use when responding to tickets. They help:
-
-- **Save Time**: No need to type the same thing repeatedly
-- **Ensure Consistency**: Same quality answers every time
-- **Reduce Errors**: Pre-approved responses are accurate
-- **Train New Staff**: Templates show best practices
+Canned responses (also called quick replies) are pre-written answers your staff send with `/reply`.
 
 ## Plan Limits
 
-| Plan | Canned Responses |
-|------|-----------------|
-| Free | 0 |
+| Plan | Canned responses |
+|------|------------------|
+| Free | Not available |
 | Basic | 25 |
 | Pro | 25 |
 | Enterprise | Unlimited |
 
-## Creating Canned Responses
+## Creating a Response
 
-<Steps>
-  <Step title="Navigate to Settings">
-    Dashboard → Configuration → Canned Responses
-  </Step>
-  <Step title="Click Create">
-    Select **Create New Response**
-  </Step>
-  <Step title="Enter Details">
-    Add name, shortcut, and content
-  </Step>
-  <Step title="Save Response">
-    Template is now available
-  </Step>
-</Steps>
+Go to **Dashboard → Bots**, pick your bot, choose the server, and open the **Quick Replies** tab.
 
-### Response Fields
+| Field | Limit |
+|-------|-------|
+| **Name** | Up to 100 characters |
+| **Shortcut** | Up to 20 characters, stored in lowercase |
+| **Content** | Up to 2,000 characters |
+| **Category** | Optional, up to 50 characters, for grouping and filtering |
 
-| Field | Description |
-|-------|-------------|
-| **Name** | Descriptive title (e.g., "Refund Policy") |
-| **Shortcut** | Quick code (e.g., `refund`) |
-| **Category** | Group related responses |
-| **Content** | The actual response text |
+## Variables
 
-## Using Variables
+Write variables as `{{name}}`. The older `{name}` form also works. Unknown variables render as empty text.
 
-Make responses dynamic with variables:
-
-### Available Variables
-
-| Variable | Replaced With |
-|----------|--------------|
-| `{{user}}` | Ticket creator's name |
-| `{{user_mention}}` | @mention of creator |
-| `{{staff}}` | Your (staff) name |
-| `{{ticket_id}}` | Ticket number |
-| `{{category}}` | Ticket category name |
-| `{{server}}` | Discord server name |
-| `{{date}}` | Current date |
+| Variable | Renders as |
+|----------|-----------|
+| `{{user}}` or `{{user.mention}}` | Mention of the ticket creator |
+| `{{user.displayName}}` | Creator's display name |
+| `{{user.username}}` | Creator's username |
+| `{{user.id}}` | Creator's user ID |
+| `{{ticket.number}}` | Ticket number |
+| `{{ticket.id}}` | Ticket ID |
+| `{{ticket.category}}` | Ticket category |
+| `{{ticket.priority}}` | Ticket priority ("Normal" when none) |
+| `{{ticket.createdAt}}` | Creation time as a Discord timestamp |
+| `{{guild.name}}` | Server name |
+| `{{guild.memberCount}}` | Server member count |
+| `{{staff.displayName}}` | Display name of the staff member sending the reply |
+| `{{staff.username}}` | Username of the staff member |
+| `{{now}}` | Current date and time |
+| `{{today}}` | Today's date |
 | `{{time}}` | Current time |
 
-### Example with Variables
+Filters can be appended, for example `{{user.username|upper}}`, `{{ticket.createdAt|relative}}`. Available filters: `upper`, `lower`, `capitalize`, `date`, `time`, `relative`.
 
-**Template:**
-```
-Hi {{user}}! 
+## Sending a Response
 
-Thank you for contacting {{server}} support. 
-I'm {{staff}} and I'll be helping you with ticket #{{ticket_id}} today.
-
-How can I assist you?
-```
-
-**Rendered:**
-```
-Hi John! 
-
-Thank you for contacting Awesome Server support. 
-I'm Sarah and I'll be helping you with ticket #1234 today.
-
-How can I assist you?
-```
-
-## Organizing Responses
-
-### Categories
-
-Group responses by type:
-
-- **Greetings**: Welcome messages
-- **Billing**: Payment-related responses
-- **Technical**: Common tech support answers
-- **Policies**: Rules and guidelines
-- **Closures**: Closing messages
-
-### Searching
-
-Find responses quickly:
-
-- Search by name
-- Search by shortcut
-- Filter by category
-
-## Using in Tickets
-
-### Via Command
-
-Use the `/quickreply` command:
+Inside a ticket, staff run:
 
 ```
-/quickreply <shortcut>
+/reply shortcut:refund
 ```
 
-Example:
-```
-/quickreply refund
-```
+The `shortcut` option autocompletes from your saved responses. Only staff can use it; the Free plan cannot.
 
-### Via Shortcut
-
-Type the shortcut preceded by a trigger:
-
-```
-!refund
-```
-
-Or configure your preferred trigger character.
-
-### Via Dashboard
-
-When replying in dashboard:
-
-1. Click **Insert Template** or use shortcut
-2. Search or browse responses
-3. Click to insert
-4. Edit if needed before sending
-
-## Writing Effective Responses
-
-### Best Practices
-
-<Tip>
-  **Be Personal**
-  Use variables to personalize. Avoid sounding robotic.
-</Tip>
-
-<Tip>
-  **Be Complete**
-  Include all relevant information. Avoid back-and-forth.
-</Tip>
-
-<Tip>
-  **Be Clear**
-  Use simple language. Avoid jargon.
-</Tip>
-
-<Tip>
-  **Include Next Steps**
-  Tell user what happens next or what they need to do.
-</Tip>
-
-### Example Templates
-
-**Greeting:**
-```
-Hi {{user}}! 
-
-Thanks for reaching out. I'm reviewing your question 
-and will have an answer for you shortly.
-```
-
-**Refund Policy:**
-```
-Hi {{user}},
-
-I understand you're inquiring about a refund. Here's our policy:
-
-• Refunds available within 30 days of purchase
-• Original payment method will be credited
-• Processing takes 5-7 business days
-
-Would you like me to process a refund for you?
-```
-
-**Closing - Resolved:**
-```
-Great, I'm glad we could help! I'll close this ticket now.
-
-If you have any other questions, feel free to open a new ticket.
-
-Have a great day, {{user}}!
-```
+<Note>
+  There is no text trigger such as `!refund`, and responses cannot be inserted from the dashboard reply box. `/reply` is the only way to send one.
+</Note>
 
 ## Managing Responses
 
-### Editing
+- Edit or delete responses from the same tab; search and filter by category.
+- Each response shows how many times it has been used.
+- Responses belong to one server. To reuse them elsewhere, create them again on the other server.
 
-1. Click on the response to edit
-2. Make changes
-3. Save
-
-Changes apply immediately to future uses.
-
-### Duplicating
-
-Create a copy to make variations:
-
-1. Click response menu (⋮)
-2. Select **Duplicate**
-3. Edit the copy
-4. Save with new name
-
-### Deleting
-
-1. Click response menu (⋮)
-2. Select **Delete**
-3. Confirm deletion
-
-<Warning>
-  Deleted responses cannot be recovered.
-</Warning>
-
-## Sharing Responses
-
-### Per-Server
-
-By default, canned responses are per-server:
-
-- Each server has its own set
-- Staff sees responses for current server
-
-### Copying Between Servers
-
-To use the same responses across servers:
-
-1. Export from source server
-2. Import to target server
-3. Adjust server-specific content
-
-## Analytics
-
-Track response usage:
-
-| Metric | Description |
-|--------|-------------|
-| **Times Used** | How often response is used |
-| **Last Used** | When it was last used |
-| **Popular** | Most frequently used |
-
-Use this to:
-
-- Identify most common questions
-- Update outdated responses
-- Create new responses for gaps
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Response not showing">
-    Check that you haven't reached your plan's limit.
-  </Accordion>
-
-  <Accordion title="Variables not replacing">
-    Ensure variables use correct format: `{{variable}}`
-  </Accordion>
-
-  <Accordion title="Can't find response">
-    Try searching by name or check the category filter.
-  </Accordion>
-</AccordionGroup>
-
-<Card title="Need Help?" icon="headset" href="https://ticketcord.net/discord">
-  Questions about canned responses? Join our Discord
+<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
 </Card>

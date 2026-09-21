@@ -1,278 +1,69 @@
 ---
 title: "Approval Workflows"
-description: "Set up multi-stage approval processes for tickets"
+description: "Require sign-off from an approver role before sensitive actions"
 ---
-Create structured approval processes for tickets that require authorization before closing or taking action.
+
+The Approval Process lets staff request sign-off from an approver role before taking a sensitive action such as a refund or a ban. The request lives on the ticket and is decided in Discord or on the dashboard.
 
 <Info>
-  Multi-stage approval workflows are an **Enterprise** feature.
+  The Approval Process is an **Enterprise** feature. [Upgrade your plan](https://ticketcord.com/pricing) to access it.
 </Info>
 
-## What Are Approval Workflows?
+<Note>
+  Multi-step approval chains are not yet available. The dashboard shows them as "Coming soon", and the bot only processes the single-step mode described here.
+</Note>
 
-Approval workflows allow you to:
+## Setting Up
 
-- Require manager sign-off before closing tickets
-- Create multi-step approval chains
-- Track approval status and history
-- Automate escalation for stalled approvals
-
-## Use Cases
-
-<CardGroup cols={2}>
-  <Card title="Refund Requests" icon="credit-card">
-    Require finance approval for refunds
-  </Card>
-  <Card title="Account Changes" icon="user-pen">
-    Manager approval for account modifications
-  </Card>
-  <Card title="Escalations" icon="arrow-up">
-    Review before escalating to senior staff
-  </Card>
-  <Card title="Sensitive Actions" icon="shield">
-    Multi-level sign-off for sensitive operations
-  </Card>
-</CardGroup>
-
-## Setting Up Approval Workflows
-
-### Creating a Workflow
-
-<Steps>
-  <Step title="Navigate to Settings">
-    Dashboard → Configuration → Approval Workflows
-  </Step>
-  <Step title="Click Create">
-    Select **Create New Workflow**
-  </Step>
-  <Step title="Name Your Workflow">
-    Give it a descriptive name (e.g., "Refund Approval")
-  </Step>
-  <Step title="Configure Stages">
-    Add approval stages with approvers
-  </Step>
-  <Step title="Set Triggers">
-    Define when this workflow activates
-  </Step>
-  <Step title="Save Workflow">
-    Workflow is now active
-  </Step>
-</Steps>
-
-### Workflow Components
-
-| Component | Description |
-|-----------|-------------|
-| **Stages** | Steps in the approval process |
-| **Approvers** | Who can approve each stage |
-| **Triggers** | What starts the workflow |
-| **Actions** | What happens after approval/rejection |
-| **Timeouts** | Auto-escalation if not acted on |
-
-## Configuring Stages
-
-### Adding Stages
-
-Each workflow can have multiple stages:
-
-1. Click **Add Stage**
-2. Enter stage name (e.g., "Manager Review")
-3. Select approvers (roles or specific users)
-4. Set approval rules (any one, all required, majority)
-5. Configure timeout (optional)
-
-### Stage Order
-
-Stages execute sequentially:
-
-```
-Stage 1 → Stage 2 → Stage 3 → Complete
-```
-
-Each stage must be approved before the next begins.
-
-### Approval Rules
-
-| Rule | Description |
-|------|-------------|
-| **Any One** | Any single approver can approve |
-| **All Required** | Every approver must approve |
-| **Majority** | More than half must approve |
-| **Specific Count** | Minimum number of approvals |
-
-## Setting Approvers
-
-### By Role
-
-Select Discord roles that can approve:
-
-- All users with that role can approve
-- Useful for teams (e.g., @Managers)
-- Role changes automatically reflected
-
-### By User
-
-Select specific users:
-
-- Named individuals
-- Useful for single points of authority
-- Must update if person changes
-
-<Tip>
-  Use role-based approvers when possible for easier maintenance.
-</Tip>
-
-## Workflow Triggers
-
-### Automatic Triggers
-
-Workflows can start automatically when:
-
-| Trigger | Description |
-|---------|-------------|
-| **Category** | Ticket is in specific category |
-| **Tag** | Ticket has specific tag |
-| **Priority** | Ticket is high/urgent priority |
-| **Keyword** | Message contains keywords |
-| **Close Request** | User requests closure |
-
-### Manual Triggers
-
-Staff can manually request approval:
-
-- Use `/approval request` command
-- Select workflow from dropdown
-- Workflow begins for that ticket
-
-## The Approval Process
-
-### For Approvers
-
-When a ticket needs approval:
-
-1. Approvers receive a notification
-2. Ticket shows "Pending Approval" status
-3. Approvers can view ticket details
-4. Click **Approve** or **Reject**
-5. Add optional comments
-
-### Approval Controls
-
-In the ticket, approvers see:
-
-- Current stage name
-- Who needs to approve
-- Time waiting
-- Approve/Reject buttons
-- Comment field
-
-### Status Tracking
-
-| Status | Meaning |
-|--------|---------|
-| **Pending** | Waiting for approval |
-| **Approved** | Stage approved, moving to next |
-| **Rejected** | Request denied |
-| **Expired** | Timeout reached |
-| **Completed** | All stages approved |
-
-## Actions After Approval
-
-### On Approval
-
-Configure what happens when approved:
-
-- Close the ticket
-- Move to different category
-- Assign to specific user
-- Send notification
-- Execute custom action
-
-### On Rejection
-
-Configure rejection behavior:
-
-- Keep ticket open
-- Send message to creator
-- Assign for follow-up
-- Log rejection reason
-
-## Timeouts & Escalation
-
-### Setting Timeouts
-
-For each stage, optionally configure:
+Go to **Dashboard → Bots**, pick your bot, choose the server, and open the **Approvals** tab.
 
 | Setting | Description |
 |---------|-------------|
-| **Timeout Duration** | Hours/days before timeout |
-| **Timeout Action** | What happens on timeout |
-| **Reminder** | Notification before timeout |
+| **Approver role** | The Discord role whose members can approve or reject requests |
+| **Approval types** | Which of `refund`, `ban`, `policy_exception`, `escalation`, and `custom` may be requested (at least one) |
+| **Custom types** | Up to 10 named custom types, used with `type:custom` |
+| **Require reason** | Whether requests must include a reason (default on) |
+| **Notify customer** | Whether the ticket creator is told about the decision (default on) |
+| **Timeout** | Hours before an undecided request expires: 1 to 168, default 48 |
+| **Audit log** | Optional Discord channel that receives every decision, with or without the reasons |
 
-### Timeout Actions
+## Requesting Approval
 
-When a stage times out:
+Staff run the command inside the ticket:
 
-- **Auto-approve**: Proceed to next stage
-- **Auto-reject**: Reject the request
-- **Escalate**: Notify higher authority
-- **Remind**: Send another notification
+```
+/approval request type:<refund|ban|policy_exception|escalation|custom> [reason] [urgency] [amount] [custom_type]
+```
 
-## Best Practices
+- `urgency` is `low`, `medium` (default), or `high`
+- `amount` is a number, useful for refunds
+- `custom_type` names the custom type when `type:custom`
 
-<Tip>
-  **Keep It Simple**
-  Start with 1-2 stage workflows. Add complexity only when needed.
-</Tip>
+The approver role is pinged in the ticket. A ticket can hold one open request at a time.
 
-<Tip>
-  **Set Reasonable Timeouts**
-  24-48 hours for most approvals prevents bottlenecks.
-</Tip>
+## Deciding
 
-<Tip>
-  **Use Role-Based Approvers**
-  Easier to maintain when staff changes.
-</Tip>
+Approvers act in Discord or from **Dashboard → Approvals** (and the approval pane on the ticket page):
 
-<Tip>
-  **Document Your Workflows**
-  Help staff understand when and why approvals are needed.
-</Tip>
+```
+/approval approve [reason]
+/approval reject reason:<required>
+/approval status
+```
 
-## Managing Workflows
+The decision is recorded on the ticket, announced in the channel, sent to the audit log channel if configured, and, when **Notify customer** is on, shared with the ticket creator.
 
-### Editing Workflows
+## Statuses
 
-1. Go to Approval Workflows settings
-2. Click on the workflow to edit
-3. Make changes
-4. Save
+| Status | Meaning |
+|--------|---------|
+| **Pending** | Waiting for a decision |
+| **Approved** | An approver approved it |
+| **Rejected** | An approver rejected it, with a reason |
+| **Timed out** | Nobody decided within the timeout |
 
-<Note>
-  Changes don't affect tickets already in the workflow.
-</Note>
+Nothing else happens automatically on a decision or a timeout; the outcome is informational.
 
-### Disabling Workflows
-
-- Toggle workflow off to pause
-- Existing tickets complete with old rules
-- New tickets won't trigger the workflow
-
-### Deleting Workflows
-
-<Warning>
-  Deleting a workflow cancels all pending approvals using it.
-</Warning>
-
-## Viewing Approval History
-
-Track approval activity:
-
-- All approvals in audit log
-- Filter by workflow, approver, outcome
-- Export for compliance reporting
-
-<Card title="Need Help?" icon="headset" href="https://ticketcord.net/discord">
-  Questions about approvals? Join our Discord
+<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
 </Card>

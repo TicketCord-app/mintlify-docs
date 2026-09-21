@@ -5,17 +5,17 @@ description: "Get your TicketCord bot running in about 10 minutes"
 
 ## Step 1: Sign In
 
-Go to the [TicketCord Dashboard](https://ticketcord.net/dashboard) and sign in with your Discord account.
+Go to the [TicketCord Dashboard](https://ticketcord.com/dashboard) and sign in with your Discord account.
 
 <Info>
-  You'll need **Manage Server** permission on the Discord server where you want to add the bot.
+  You'll need **Administrator** permission (or be the owner) on the Discord server where you want to add the bot. Discord also requires **Manage Server** to invite any bot.
 </Info>
 
 ## Step 2: Create Your Bot
 
-1. Click **Create Bot** in the dashboard
-2. Enter your bot's name and upload an avatar
-3. Paste your Discord bot token from the [Discord Developer Portal](https://discord.dev)
+1. Click **Add Bot** in the dashboard
+2. Paste your Discord bot token from the [Discord Developer Portal](https://discord.dev)
+3. TicketCord validates the token and reads the bot's name and avatar from Discord
 
 <Warning>
   Never share your bot token with anyone. It gives full access to your bot.
@@ -29,11 +29,13 @@ Go to the [TicketCord Dashboard](https://ticketcord.net/dashboard) and sign in w
 
 ## Step 4: Run Setup
 
-In your Discord server, run the `/setup` command to configure:
+In your Discord server, run the `/setup` command. It creates the Discord resources for you, with no prompts:
 
-- Ticket category (where tickets are created)
-- Staff roles (who can see and manage tickets)
-- Log channel (where ticket events are logged)
+- The **🎫 Tickets** and **📁 Closed Tickets** categories
+- The **📝 Ticket Logs** category with `#ticket-logs` and `#ticket-transcripts`
+- The **Ticket Admin** and **Ticket Support** roles
+
+Then finish the configuration (which roles count as staff, panels, automation) on the [dashboard](https://ticketcord.com/dashboard). Use `/config` in Discord for an interactive settings panel.
 
 ## You're Done!
 
