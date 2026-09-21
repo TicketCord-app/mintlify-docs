@@ -6,7 +6,7 @@ description: "Teach your bot to automatically answer questions from your documen
 The Knowledge Base lets you connect your documentation, FAQs, or website to your bot. When users open tickets, your bot automatically suggests relevant answers based on what you've taught it.
 
 <Info>
-  Knowledge Base is a **Pro** feature. [Upgrade your plan](https://ticketcord.net/pricing) to access it.
+  Knowledge Base is available on **Pro** and **Enterprise**. [Upgrade your plan](https://ticketcord.com/pricing) to access it.
 </Info>
 
 ## How It Works
@@ -21,15 +21,15 @@ Your support team doesn't need to type the same answers repeatedly. The bot hand
 
 <Steps>
   <Step title="Enable Knowledge Base">
-    Go to your bot's dashboard → select your server → **AI Features** → **Knowledge Base**
+    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **AI & Knowledge** → **Knowledge Base**
 
     Toggle the switch to enable it.
   </Step>
   <Step title="Add a Source">
-    Click **Add Source** and enter:
+    Click **Add Knowledge Source** and enter:
     - **URL** - Link to your documentation page
     - **Title** - A name to identify this source
-    - **Type** - Single page or documentation site
+    - **Type** - Single page, documentation site, Discord channel, pasted text, or a GitHub repository (Enterprise)
 
     Click **Save**. TicketCord automatically queues the first scan.
   </Step>
@@ -51,8 +51,10 @@ You can add different types of content sources:
 | Type | Best For | How It Works |
 |------|----------|--------------|
 | **Single Page** | FAQ pages, specific guides | Scans one page only |
-| **Documentation Site** | Full documentation | Crawls multiple pages (up to 100) |
+| **Documentation Site** | Full documentation | Crawls multiple pages (up to 100 on Pro, 500 on Enterprise) |
 | **Discord Channel** | Announcements, rules | Indexes messages from a channel |
+| **Text** | Internal notes, policies | Indexes content you paste (up to 50,000 characters) |
+| **GitHub Repository** | Code and docs in a repo (Enterprise) | Syncs files from a connected repository |
 
 ### Single Page
 
@@ -68,10 +70,10 @@ The bot scans just that one page and learns from its content.
 Use this for complete documentation sites. The bot will:
 1. Start from your main page
 2. Follow links to discover more pages
-3. Scan up to 100 pages automatically
+3. Scan up to 100 pages automatically (500 on Enterprise)
 
 <Tip>
-  Set the **Crawl Depth** to control how many pages are scanned. Start with 1-2 and increase if needed.
+  **Pages to Read** sets how many pages are scanned (1, 5, 10, 15, 20, 25, 50, 75, or 100; up to 500 on Enterprise). 1 means the start page only.
 </Tip>
 
 ### Discord Channel
@@ -91,34 +93,21 @@ The bot reads messages from the channel and learns from them.
 
 Each source has settings you can customize:
 
-### Update Frequency
+### Auto-refresh
 
 How often the bot checks for changes:
 
 | Frequency | When to Use |
 |-----------|-------------|
 | **Manual** | Content rarely changes |
+| **Realtime** | Discord channels and connected repositories that should stay in sync |
 | **Daily** | Active documentation with frequent updates |
 | **Weekly** | Moderate update frequency |
 | **Monthly** | Stable content that rarely changes |
 
 <Info>
-  You can always manually re-index a source by clicking the **Refresh** button.
+  You can always re-index a source by clicking **Refresh**. A source can be refreshed once every 24 hours.
 </Info>
-
-### Priority
-
-Sources with higher priority (1-10) are checked first when answering questions. Use this when you have:
-- Official documentation (high priority)
-- Community guides (lower priority)
-
-### Categories
-
-Assign sources to specific ticket categories. For example:
-- Billing documentation → only used for "Billing" tickets
-- Technical guides → only used for "Technical Support" tickets
-
-Leave empty to use the source for all tickets.
 
 ## AI Settings
 
@@ -134,25 +123,25 @@ Choose how detailed AI suggestions should be:
 | **Balanced** | Mix of context and actionable steps (recommended) |
 | **Helpful** | Detailed explanations with extra context |
 
-### Confidence Threshold
+### Match Strictness
 
-The minimum confidence level (0-100%) required before showing a suggestion:
+The minimum confidence (10-100%) required before showing a suggestion:
 
-- **70%+ (default)** - Only shows suggestions the AI is confident about
-- **50-70%** - Shows more suggestions, but some may be less accurate
+- **70%+** - Only shows suggestions the AI is confident about
+- **50-70%** - Shows more suggestions, but some may be less accurate (the default is 50%)
 - **Below 50%** - Not recommended, may show irrelevant suggestions
 
 <Tip>
-  Start with 70% and adjust based on your results. Lower it if the bot isn't suggesting answers often enough.
+  Start with the default of 50% and adjust based on your results. Raise it if suggestions are often wrong, lower it if the bot rarely answers.
 </Tip>
 
 ## Behavior Settings
 
 Control when and how the bot provides suggestions.
 
-### Stop After Staff Response
+### Stop on Staff Response
 
-When enabled, the bot stops suggesting answers once a staff member replies. This prevents the AI from interrupting staff conversations.
+When enabled (off by default), the bot stops suggesting answers once a staff member replies. This prevents the AI from interrupting staff conversations.
 
 ### Respect Staff Presence
 
@@ -210,35 +199,24 @@ The bot understands when users want to talk to a human. Phrases like:
 
 Will trigger immediate escalation to your team.
 
-## The /train Command
+## Learning from Closed Tickets
 
-The `/train` command lets you teach your bot from historical ticket conversations.
+The bot learns from your own support conversations automatically. There is no command to run.
 
 ### How It Works
 
-1. Run `/train` in your Discord server
-2. Choose how many days of history to analyze (default: 90 days)
-3. The bot scans resolved tickets and learns Q&A pairs
-4. This knowledge is added to your Knowledge Base
+1. When a ticket closes, the bot reviews the conversation
+2. Answers that staff gave are extracted as question-and-answer pairs
+3. Pairs above your confidence threshold are added to the Knowledge Base
+4. Pairs below the threshold wait for approval in the **Q&A** tab of the Knowledge Base
 
 <Info>
-  Only administrators can use the `/train` command.
+  Learning is available on Pro and Enterprise plans and is on by default for newly configured knowledge bases. Manage it under **Knowledge Base** → **Learning**: the auto-approve threshold (default 70%), the daily cap on auto-approved entries (default 50), notifications with an **Undo** button, and automatic merging of near-duplicate entries.
 </Info>
 
-### When to Use It
+### Reviewing What Was Learned
 
-- When first setting up Knowledge Base
-- After resolving many new types of issues
-- To capture tribal knowledge from your team
-
-### AI Consent
-
-The first time you run `/train`, you'll be asked to accept AI data processing terms. This is required because:
-- Ticket conversations are sent to AI for analysis
-- The AI extracts question-answer pairs
-- These pairs are stored in your Knowledge Base
-
-Only the bot owner can accept these terms.
+Open the Knowledge Base **Q&A** tab to approve, edit, or reject suggested pairs. Auto-approved pairs can be undone from the notification the bot posts.
 
 ## Limits by Plan
 
@@ -249,7 +227,7 @@ Only the bot owner can accept these terms.
 | Auto-Updates | ✅ | ✅ |
 | Feedback Analytics | ✅ | ✅ |
 
-<Card title="Upgrade Your Plan" icon="rocket" href="https://ticketcord.net/pricing">
+<Card title="Upgrade Your Plan" icon="rocket" href="https://ticketcord.com/pricing">
   Get more sources and AI tokens with Enterprise
 </Card>
 
@@ -260,7 +238,7 @@ Only the bot owner can accept these terms.
 1. **Check if enabled** - Make sure Knowledge Base is toggled on
 2. **Check sources** - At least one source should be indexed (green status)
 3. **Lower confidence** - Try lowering the confidence threshold to 50%
-4. **Check triggers** - Make sure "On Ticket Creation" is enabled
+4. **Check triggers** - Make sure the minimum message length is not filtering out real questions
 
 ### Indexing Failed
 
@@ -275,6 +253,6 @@ Only the bot owner can accept these terms.
 3. **Use categories** - Limit which tickets can use each source
 4. **Enable feedback** - Let users vote to improve suggestions
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
-  Get instant support via private DM
+<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
 </Card>

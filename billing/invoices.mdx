@@ -1,146 +1,27 @@
 ---
 title: "Invoices & Payment History"
-description: "View and download your TicketCord invoices and payment history"
+description: "View your payment history and manage billing details"
 ---
-Access all your billing documents and payment records from the TicketCord dashboard.
 
-## Viewing Your Invoices
+## Payment History
 
-<Steps>
-  <Step title="Open Dashboard">
-    Go to [ticketcord.net/dashboard](https://ticketcord.net/dashboard) and sign in
-  </Step>
-  <Step title="Navigate to Billing">
-    Click your profile icon → **Billing**
-  </Step>
-  <Step title="View Payment History">
-    Scroll down to see your complete payment history
-  </Step>
-</Steps>
+**Dashboard → Billing** lists every payment with its date, description, amount and currency, status (**paid**, **failed**, or **pending**), provider (**Stripe** or **Crypto**), and a link to the Stripe invoice when there is one.
 
-## Invoice Information
+## Invoices, Payment Methods, and Billing Details
 
-Each invoice includes:
+Click **Manage billing** to open the Stripe customer portal. There you can:
 
-| Field | Description |
-|-------|-------------|
-| Invoice Number | Unique identifier for the transaction |
-| Date | When the payment was processed |
-| Plan | The subscription plan purchased |
-| Billing Period | Start and end dates of the billing cycle |
-| Amount | Total charged (including any discounts) |
-| Status | Paid, Pending, or Failed |
-| Payment Method | Last 4 digits of the card used |
+- Download invoice PDFs
+- Update your payment method
+- Change the billing email, company name, and VAT number
+- Retry a failed payment
 
-## Downloading Invoices
-
-To download a PDF invoice:
-
-1. Find the invoice in your payment history
-2. Click the **Download** or **PDF** icon next to it
-3. The invoice will download to your device
-
-<Tip>
-  Downloaded invoices are formatted for business use and include all details needed for expense reporting or tax purposes.
-</Tip>
-
-## Invoice Contents
-
-Your PDF invoice includes:
-
-- TicketCord company information
-- Your billing details
-- Invoice number and date
-- Itemized charges
-- Applied discounts or credits
-- Tax information (if applicable)
-- Payment method used
-- Total amount paid
-## Managing Billing Information
-### Updating Your Billing Email
-Invoices are sent to your account email by default. To use a different email:
-1. Go to **Billing** → **Billing Details**
-2. Update the billing email address
-3. Save changes
-### Adding Company Information
-For business invoices, you can add:
-- Company name
-- VAT/Tax ID (for EU businesses)
-- Billing address
-<Note>
-  Adding a valid EU VAT number may exempt you from VAT charges on your subscription.
-</Note>
-## Payment Statuses
-| Status | Meaning |
-|--------|---------|
-| **Paid** | Payment successfully processed |
-| **Pending** | Payment is being processed |
-| **Failed** | Payment could not be processed |
-| **Refunded** | Payment was refunded to your card |
+Crypto purchases through NOWPayments are one-time entitlements and do not produce Stripe invoices; they appear in the payment history with the **Crypto** provider.
 
 ## Failed Payments
 
-If a payment fails:
+Stripe retries failed card payments and emails you. If payment keeps failing, the subscription ends and the account returns to the Free plan.
 
-1. **Check Your Card**: Ensure your payment method is valid and has sufficient funds
-2. **Update Payment**: Go to Billing → Payment Methods to update your card
-3. **Retry Payment**: Click **Retry** next to the failed payment
-4. **Grace Period**: You have a few days to resolve payment issues before service interruption
-<Warning>
-  After multiple failed payment attempts, your account may be downgraded to the Free plan. All your data is preserved and you can resubscribe anytime.
-</Warning>
 ## Refunds
-### Requesting a Refund
-To request a refund, contact us at hi@ticketcord.net with:
-- Your account email
-- Invoice number
-- Reason for refund request
-### EU Withdrawal Rights
-Under EU law (Directive 2011/83/EU), consumers have a 14-day withdrawal right for digital goods. However, since TicketCord provides **immediate access** to premium features upon purchase, you are asked to waive this right during checkout. Once you consent and your subscription begins, it is non-refundable.
 
-If you did not waive this right during checkout and have not used any paid features, you may still be eligible for withdrawal within 14 days. Contact us at hi@ticketcord.net with your invoice details.
-
-See our [Terms of Service](https://ticketcord.net/terms) for full details.
-
-### Refund Processing
-
-- Refunds are processed to your original payment method
-- Processing time: 5-10 business days
-- Partial refunds may be issued for prorated periods
-
-## Tax Information
-
-### VAT for EU Customers
-
-- VAT is charged based on your country of residence
-- Businesses with valid VAT IDs may be exempt
-- VAT amounts are shown separately on invoices
-
-### Tax Receipts
-
-All invoices serve as tax receipts and include:
-
-- Tax amounts (where applicable)
-- Tax identification numbers
-- Business registration information
-
-## Billing Support
-
-<AccordionGroup>
-  <Accordion title="I didn't receive my invoice">
-    Check your spam folder. If still missing, go to Billing to download it directly, or contact support.
-  </Accordion>
-  <Accordion title="I was charged incorrectly">
-    Contact us at hi@ticketcord.net with your invoice number and we'll investigate promptly.
-  </Accordion>
-  <Accordion title="I need an invoice for a past purchase">
-    All past invoices are available in your Billing dashboard. You can download them anytime.
-  </Accordion>
-  <Accordion title="Can I get a custom invoice format?">
-    For enterprise customers, we can accommodate special invoicing requirements. Contact hi@ticketcord.net.
-  </Accordion>
-</AccordionGroup>
-
-<Card title="Need Billing Help?" icon="headset" href="mailto:hi@ticketcord.net">
-  Contact our billing support team
-</Card>
+TicketCord provides immediate access to digital features, and EU customers waive the withdrawal right at checkout. Subscriptions are non-refundable; cancel any time to stop future charges. For billing issues, contact [hi@ticketcord.com](mailto:hi@ticketcord.com).

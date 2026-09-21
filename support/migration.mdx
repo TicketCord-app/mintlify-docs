@@ -29,7 +29,7 @@ Switching to TicketCord from another ticket bot? This guide helps make the trans
     Note your current configuration: categories, roles, messages, automation
   </Step>
   <Step title="Create TicketCord Bot">
-    Sign up and create your bot at [ticketcord.net](https://ticketcord.net)
+    Sign up and create your bot at [ticketcord.com](https://ticketcord.com)
   </Step>
   <Step title="Configure Settings">
     Recreate your setup in TicketCord dashboard
@@ -61,18 +61,18 @@ Switching to TicketCord from another ticket bot? This guide helps make the trans
 ### Configuration Mapping
 
 **Panels → Embeds:**
-1. Go to Dashboard → Configuration → Embeds
+1. Open the server configuration (Dashboard → Bots → your bot → Servers → the server) and go to **Panels & Embeds**
 2. Create new embed with similar design
 3. Add buttons for ticket creation
 4. Deploy to your support channel
 
 **Teams → Staff Roles:**
-1. Go to Configuration → Staff
+1. In the server configuration, go to **Staff**
 2. Add your existing Discord roles
 3. Set permissions for each role
 
 **Auto-close → Automation:**
-1. Go to Configuration → Automation
+1. In the server configuration, go to **Auto-Close & Reminders**
 2. Enable auto-close
 3. Set timing and conditions
 
@@ -82,7 +82,7 @@ Switching to TicketCord from another ticket bot? This guide helps make the trans
 
 | ModMail | TicketCord |
 |---------|------------|
-| DM-based tickets | Channel or DM-based |
+| DM-based tickets | Channel tickets or ModMail (DM-based) |
 | Single thread per user | Multiple tickets possible |
 | Server-specific bot | Custom bot per setup |
 
@@ -98,7 +98,7 @@ Switching to TicketCord from another ticket bot? This guide helps make the trans
 
 ### Migration Steps
 
-1. **Enable DM Mode** (if desired):
+1. **Enable ModMail** (if desired):
    - Configure bot to accept DM tickets
    - Set up welcome message for DM tickets
 
@@ -147,13 +147,13 @@ When migrating, you gain:
 
 | Setting | Where in TicketCord |
 |---------|---------------------|
-| Welcome message | Configuration → Welcome |
-| Staff roles | Configuration → Staff |
-| Categories | Configuration → Categories |
-| Close reasons | Configuration → Close Settings |
-| Transcripts | Configuration → Transcripts |
-| Auto-close | Configuration → Automation |
-| Custom embeds | Configuration → Embeds |
+| Welcome message | Server configuration → Welcome Messages |
+| Staff roles | Server configuration → Staff |
+| Categories | Server configuration → Structure |
+| Close settings | Server configuration → Closing |
+| Transcripts | Server configuration → Transcripts |
+| Auto-close | Server configuration → Auto-Close & Reminders |
+| Custom embeds | Server configuration → Panels & Embeds |
 
 ## Handling Historical Data
 
@@ -270,10 +270,10 @@ We're upgrading to a new ticket system! Here's what you need to know:
 ## Need Help Migrating?
 
 <CardGroup cols={2}>
-  <Card title="Discord Support" icon="discord" href="https://ticketcord.net/discord">
+  <Card title="Discord Support" icon="discord" href="https://ticketcord.com/discord">
     Get help from our community
   </Card>
-  <Card title="Email Support" icon="envelope" href="mailto:hi@ticketcord.net">
+  <Card title="Email Support" icon="envelope" href="mailto:hi@ticketcord.com">
     Contact us for migration assistance
   </Card>
 </CardGroup>

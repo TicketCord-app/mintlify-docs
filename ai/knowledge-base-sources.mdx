@@ -9,10 +9,10 @@ Sources are the content your bot learns from. This guide walks you through addin
 
 <Steps>
   <Step title="Open Knowledge Base Settings">
-    Go to your bot's dashboard → select your server → **AI Features** → **Knowledge Base**
+    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **AI & Knowledge** → **Knowledge Base**
   </Step>
-  <Step title="Click Add Source">
-    Click the **Add Source** button in the Sources section.
+  <Step title="Click Add Knowledge Source">
+    Click the **Add Knowledge Source** button in the Sources section.
   </Step>
   <Step title="Fill in the Details">
     Enter the required information based on your source type.
@@ -50,13 +50,13 @@ Best for multi-page documentation with linked content.
 **Settings:**
 - **URL** - The starting page URL (usually your docs homepage)
 - **Title** - A name for this source (e.g., "Product Documentation")
-- **Crawl Depth** - How many pages to scan (1-5 levels deep)
+- **Pages to Read** - How many pages to scan: 1, 5, 10, 15, 20, 25, 50, 75, or 100 (up to 500 on Enterprise)
 
 **How crawling works:**
 1. The bot visits your starting URL
 2. It finds all links on that page
 3. It follows those links and scans each page
-4. This continues until it reaches your crawl depth limit or 100 pages
+4. This continues until it reaches your page limit (100 on Pro, 500 on Enterprise)
 
 **Example use cases:**
 - Full product documentation
@@ -65,7 +65,7 @@ Best for multi-page documentation with linked content.
 - Guide collections
 
 <Warning>
-  Higher crawl depths take longer to index. Start with 1-2 and increase if needed.
+  Larger page limits take longer to index. Start small and increase if needed.
 </Warning>
 
 ### Discord Channel
@@ -96,8 +96,8 @@ Each source shows its current status:
 | Status | Meaning |
 |--------|---------|
 | **Pending** | Source added but not yet indexed |
-| **Indexing** | Currently scanning content |
-| **Completed** | Ready to use |
+| **Preparing** | Currently reading content; documentation sites show "Reading X/Y" progress |
+| **Content saved** | Ready to use |
 | **Failed** | Something went wrong (check the error message) |
 
 ### Re-indexing a Source
@@ -109,7 +109,7 @@ To update a source with new content:
 3. Wait for indexing to complete
 
 <Tip>
-  Set up automatic updates (daily/weekly/monthly) if your content changes frequently.
+  Set **Auto-refresh** (daily, weekly, or monthly) if your content changes frequently. Discord channels and connected repositories can also sync in realtime.
 </Tip>
 
 ### Deleting a Source
@@ -138,27 +138,6 @@ Quality sources with clear, well-written content work better than many sources w
 Good titles help you manage sources later:
 - ✅ "Billing FAQ - Payments and Refunds"
 - ❌ "Page 1"
-
-### Set Appropriate Priorities
-
-If you have multiple sources, set priorities:
-- **10 (highest)** - Official documentation, FAQs
-- **5 (default)** - General guides
-- **1 (lowest)** - Community content, older guides
-
-Higher priority sources are checked first when answering questions.
-
-### Use Categories for Accuracy
-
-Limit sources to relevant ticket categories:
-
-| Source | Categories |
-|--------|------------|
-| Billing docs | Billing, Payments |
-| Technical guides | Technical Support |
-| Getting started | General |
-
-This prevents the billing FAQ from answering technical questions.
 
 ### Keep Content Updated
 
@@ -202,6 +181,6 @@ This means no usable content was found. Check:
 
 Try a different page or use a Discord channel source instead.
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
-  Get instant support via private DM
+<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
 </Card>

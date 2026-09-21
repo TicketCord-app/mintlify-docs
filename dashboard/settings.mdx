@@ -1,245 +1,34 @@
 ---
 title: "Account Settings"
-description: "Manage your profile, preferences, and account settings"
+description: "Appearance, language, billing, and your data rights"
 ---
-Customize your TicketCord experience with profile settings, notifications, themes, and more.
 
-## Accessing Settings
+TicketCord has no separate settings page. Account options live in the sidebar account menu and the top bar.
 
-<Steps>
-  <Step title="Open Dashboard">
-    Go to [ticketcord.net/dashboard](https://ticketcord.net/dashboard)
-  </Step>
-  <Step title="Click Profile">
-    Click your avatar in the top right corner
-  </Step>
-  <Step title="Select Settings">
-    Choose **Settings** from the dropdown
-  </Step>
-</Steps>
+## Appearance
 
-## Profile Settings
+Open the account menu at the bottom of the sidebar and choose **Light**, **Dark**, or **System**.
 
-### Basic Information
+## Language
 
-Your profile shows:
+Use the language switcher in the top bar. The dashboard is available in 12 languages: English, Čeština, Deutsch, Nederlands, Español, Français, Italiano, 日本語, Polski, Português, Русский, and Türkçe.
 
-| Field | Source | Editable |
-|-------|--------|----------|
-| **Avatar** | From Discord | No (syncs from Discord) |
-| **Username** | From Discord | No (syncs from Discord) |
-| **Email** | From Discord | Change in Discord |
-| **Display Name** | Custom | Yes |
+Bot messages in Discord are configured per server under **Language** and support 19 languages: Arabic, Chinese (Simplified and Traditional), Czech, Dutch, English, French, German, Hindi, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish, and Vietnamese.
 
-### Updating Profile
+## Profile
 
-- **Display Name**: Your preferred name shown in the dashboard
-- Profile syncs automatically from Discord
-- To change avatar/username, update in Discord
+Your name and avatar are taken from your Discord account and cannot be edited in TicketCord.
 
-## Notification Settings
+## Billing
 
-### Email Notifications
+**Billing** in the sidebar shows your plan and payment history and opens the Stripe billing portal. See [Manage Subscription](/billing/manage-subscription).
 
-Configure which emails you receive:
+## Your Data
 
-| Notification | Description |
-|--------------|-------------|
-| **Billing** | Payment confirmations, invoices |
-| **Product Updates** | New features, announcements |
-| **Security** | Login alerts, security notifications |
-| **Weekly Summary** | Usage and performance digest |
+- **Export**: email [hi@ticketcord.com](mailto:hi@ticketcord.com); see [Data Export](/features/gdpr-export).
+- **Delete account**: email us; deletion is completed within two business days. See [Delete your account](https://ticketcord.com/help/security/delete-account).
+- **Privacy policy**: [ticketcord.com/privacy](https://ticketcord.com/privacy).
 
-### Dashboard Notifications
+## Getting Help
 
-In-app notifications for:
-
-- Ticket activity
-- Bot status changes
-- System alerts
-- Feature tips
-
-### Managing Notifications
-
-<Steps>
-  <Step title="Go to Notifications">
-    Settings → Notifications
-  </Step>
-  <Step title="Toggle Categories">
-    Enable/disable notification types
-  </Step>
-  <Step title="Save Changes">
-    Changes apply immediately
-  </Step>
-</Steps>
-
-## Theme Settings
-
-### Dark/Light Mode
-
-| Mode | Description |
-|------|-------------|
-| **Light** | Bright background, dark text |
-| **Dark** | Dark background, light text |
-| **System** | Follows your OS preference |
-
-### Changing Theme
-
-1. Go to Settings → Appearance
-2. Select your preferred theme
-3. Theme applies immediately
-
-<Tip>
-  Use the keyboard shortcut to quickly toggle theme (shown in Settings).
-</Tip>
-
-## Language Settings
-
-### Supported Languages
-
-The dashboard is available in:
-
-- English
-- Deutsch (German)
-- Español (Spanish)
-- Français (French)
-- Nederlands (Dutch)
-- Português (Portuguese)
-- Русский (Russian)
-
-### Changing Language
-
-<Steps>
-  <Step title="Go to Settings">
-    Settings → Language
-  </Step>
-  <Step title="Select Language">
-    Choose from the dropdown
-  </Step>
-  <Step title="Confirm">
-    Page reloads in new language
-  </Step>
-</Steps>
-
-<Note>
-  Bot messages to users use a separate language setting configured per-server (18 languages available).
-</Note>
-
-## Keyboard Shortcuts
-
-### Viewing Shortcuts
-
-Press `Ctrl/Cmd + /` anywhere to see all available shortcuts.
-
-### Common Shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl/Cmd + K` | Open command palette |
-| `Ctrl/Cmd + B` | Toggle sidebar |
-| `Ctrl/Cmd + /` | Show shortcuts |
-| `Escape` | Close modal/dialog |
-
-### Command Palette
-
-The command palette (`Ctrl/Cmd + K`) lets you:
-
-- Navigate to any page
-- Search tickets
-- Run quick actions
-- Access settings
-
-## Privacy Settings
-
-### Data Controls
-
-| Option | Description |
-|--------|-------------|
-| **Export Data** | Request a copy of your data by email |
-| **Delete Account** | Request permanent account deletion by email |
-
-### Export Your Data
-
-Data export is handled by request:
-
-1. Email [hi@ticketcord.net](mailto:hi@ticketcord.net) from the address on your TicketCord account
-2. Say you'd like a data export and which account it's for
-3. We'll reply with your export
-
-See the [data export guide](https://ticketcord.net/help/security/data-export) and our [Privacy Policy](https://ticketcord.net/privacy) for more information.
-
-### Delete Account
-
-<Warning>
-  Account deletion is permanent and cannot be undone. All bots, tickets, and data are permanently deleted.
-</Warning>
-
-Account deletion isn't self-serve today. To delete your account:
-
-1. Email [hi@ticketcord.net](mailto:hi@ticketcord.net) from the address on your TicketCord account
-2. Say which account you want closed
-3. Confirm in a sentence that you understand the deletion is permanent
-
-Requests are processed within two business days, and we'll email you when it's done. You can delete individual tickets and bots from the dashboard yourself at any time. Full walkthrough: [Delete your account](https://ticketcord.net/help/security/delete-account).
-
-## Session Management
-
-### Active Sessions
-
-View where you're signed in:
-
-- Browser/device type
-- Location (approximate)
-- Last active time
-- Current session indicator
-
-### Signing Out
-
-- **This device**: Click **Sign Out** in profile menu
-- **All devices**: Settings → Security → Sign Out Everywhere
-
-## Connected Services
-
-### Discord Connection
-
-Your Discord account is the primary authentication:
-
-- Cannot be changed (sign in with different account to switch)
-- Permissions requested during sign-in
-- Revoke access in Discord settings if needed
-
-### Revoking Access
-
-To disconnect TicketCord from Discord:
-
-1. Go to Discord → User Settings → Authorized Apps
-2. Find TicketCord
-3. Click **Deauthorize**
-
-<Note>
-  Revoking Discord access will sign you out of TicketCord but won't delete your data.
-</Note>
-
-## Billing Settings
-
-Access billing from Settings or Profile menu:
-
-- View current plan
-- Manage subscription
-- Update payment method
-- View invoices
-
-See [Manage Subscription](/billing/manage-subscription) for details.
-
-## Help & Support
-
-From settings, you can:
-
-- View documentation
-- Contact support
-- Report bugs
-- Submit feature requests
-
-<Card title="Need Help?" icon="headset" href="https://ticketcord.net/discord">
-  Join our Discord for support
-</Card>
+**Support** in the sidebar has the contact email and the Discord invite. Sign out from the account menu.

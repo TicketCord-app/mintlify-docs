@@ -20,7 +20,7 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 
 **What it means:** Something failed on TicketCord's side (database, unexpected error) rather than because of your input or configuration.
 
-**Solution:** Try the action again in a moment. If it keeps happening, [contact support](https://ticketcord.com/support) with the time and the command you used. TC000 errors are reported to our team automatically.
+**Solution:** Try the action again in a moment. If it keeps happening, [contact support](https://ticketcord.com/help) with the time and the command you used. TC000 errors are reported to our team automatically.
 
 ---
 
@@ -34,7 +34,7 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 - Pinning/unpinning tickets quickly
 - Discord limits channel edits to 2 per 10 minutes
 
-**Solution:** Wait 5-10 minutes and try again. This is a Discord limitation, not a TicketCord issue.
+**Solution:** Wait 10-15 minutes and try again. This is a Discord limitation, not a TicketCord issue.
 
 <Tip>
   When you hit this limit, TicketCord will still save your changes (like pinning a ticket). The visual update (channel name change) will be applied automatically once the rate limit resets.
@@ -44,7 +44,7 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 
 ### TC002 - Permission Denied
 
-**What it means:** The bot lacks the required permissions to perform the action.
+**What it means:** You, or the bot, lack a permission the action needs. For example, only staff can claim tickets, and only the bot owner or a server administrator can change staff roles. When the bot itself is missing a Discord permission, the causes below apply.
 
 **Common causes:**
 - Bot role is below other roles in the hierarchy
@@ -72,7 +72,7 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 - Staff role was deleted
 
 **Solution:**
-1. Go to [ticketcord.net/dashboard](https://ticketcord.net/dashboard)
+1. Go to [ticketcord.com/dashboard](https://ticketcord.com/dashboard)
 2. Select your bot and server
 3. Update the configuration to select existing channels/roles
 4. Or run `/setup` again to create new resources
@@ -109,23 +109,23 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 **What it means:** No valid option was selected, or the selected resource doesn't meet requirements.
 
 **Common causes:**
-- No roles/channels selected in a dropdown
-- Ticket limit reached for your plan
-- No suitable text channels exist in the server
+- No roles, channels, or options selected in a dropdown
+- An answer that is not one of the allowed choices in an application form
 
-**Solution:** Make sure to select an option from the dropdown. If you've hit your ticket limit, close some existing tickets or upgrade your plan.
+**Solution:** Make sure to select an option from the dropdown and try again.
 
 ---
 
 ### TC010 - Unknown Action
 
-**What it means:** An internal error occurred processing your request.
+**What it means:** The bot received a button, menu, or subcommand it does not recognise.
 
-**Solution:** Try the action again. If it persists, [contact support](https://ticketcord.net/support).
+**Common causes:**
+- A panel posted by an older configuration whose buttons were since removed or regenerated
+- A button that belongs to a different bot or application
+- An unknown subcommand
 
-<Note>
-  This error is rare and usually indicates a bug. Please report it so we can fix it.
-</Note>
+**Solution:** Ask a server administrator to post the panel again from the dashboard. If the message came from a bot with a `TC` code footer but the action still fails, [contact support](https://ticketcord.com/help).
 
 ---
 
@@ -134,7 +134,7 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 **What it means:** The server hasn't been configured yet, or the configuration was reset.
 
 **Solution:**
-1. Go to [ticketcord.net/dashboard](https://ticketcord.net/dashboard)
+1. Go to [ticketcord.com/dashboard](https://ticketcord.com/dashboard)
 2. Select your bot and server
 3. Complete the configuration wizard
 4. Make sure to save your settings
@@ -165,6 +165,8 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 **Common causes:**
 - Clicking the "Open Ticket" button multiple times rapidly
 - Submitting the ticket form more than once within a few seconds
+- Extending an auto-close reminder repeatedly
+- Re-opening a ModMail conversation right after closing one
 
 **Solution:** Wait about 10 seconds and try again. This limit is per user, per server.
 
@@ -179,7 +181,7 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 **What it means:** The feature you tried to use needs a higher TicketCord plan than the bot owner currently has.
 
 **Common causes:**
-- Application forms, AI Help, quick replies, ticket statistics, summaries, or approval workflows on the Free plan
+- Application forms, AI Help, quick replies, ticket statistics, summaries, auto-close, or approval workflows on the Free plan
 - The trial AI token limit has been reached
 
 **Solution:** The bot owner can upgrade at [ticketcord.com/pricing](https://ticketcord.com/pricing). Non-AI features keep working in the meantime.
@@ -208,7 +210,7 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 - All ticket extensions for this ticket have been used
 - The ticket already has the maximum number of tags
 
-**Solution:** Close an existing ticket, or ask a server administrator to raise the limit in the dashboard under **Configuration → Ticket Limits**.
+**Solution:** Close an existing ticket, or ask a server administrator to raise the limit in the dashboard under **Limits** (Basic plan or higher; the Free plan is fixed at 5 open tickets per user).
 
 ---
 
@@ -235,6 +237,8 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 - The server uses ModMail mode, so button tickets are disabled
 - The setting is managed from the dashboard only
 - The bot is in maintenance mode or its ticket creation is paused
+- The ticket button belongs to a panel that was deactivated
+- Reopening a ModMail ticket with the standard controls (not supported)
 
 **Solution:** Check the feature in the dashboard, or wait for business hours. For ModMail servers, send the bot a direct message instead of pressing a button.
 
@@ -248,7 +252,7 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 - The server has reached Discord's 500 channel limit
 - Every configured ticket category already holds 50 channels
 
-**Solution:** Delete unused channels, add a backup ticket category, or switch to thread-style tickets in the dashboard.
+**Solution:** Delete unused channels (enable auto-delete on close so closed tickets clean themselves up), enable overflow categories in the dashboard, or switch to threaded tickets.
 
 ---
 
@@ -258,11 +262,15 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 
 **Possible causes:**
 - Bot token was reset in Discord Developer Portal
+- Privileged Gateway Intents were turned off (Discord error 4014)
 - Bot was removed from the server
+- The same token is also running somewhere else, so another process answers instead of TicketCord
 
 **Solution:**
 1. Check if the bot is still in your server
 2. If the token was reset, go to the dashboard and click **Update Credentials** to enter the new token
+3. Enable **Server Members Intent** and **Message Content Intent** in the Developer Portal, then restart the bot from the dashboard
+4. If replies arrive without a `TC` code footer, stop the other bot or script using the token, reset the token, and update it in the dashboard
 
 ### Tickets not creating
 
@@ -284,7 +292,7 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 - Category permissions misconfigured
 
 **Solution:**
-1. Assign staff the Ticket Admin or Ticket Support role
+1. Assign staff the Ticket Admin or Ticket Support role (named TicketCord Admin / TicketCord Support on the Free plan)
 2. Verify these roles are selected in dashboard configuration
 3. Check that the ticket category allows these roles to view channels
 
@@ -304,6 +312,6 @@ Error cards (the red panels used for close, delete, reopen, setup, and purge fai
 
 ## Still Need Help?
 
-<Card title="Contact Support" icon="headset" href="https://ticketcord.net/support">
+<Card title="Contact Support" icon="headset" href="https://ticketcord.com/help">
   Get help via private DM from our support team
 </Card>

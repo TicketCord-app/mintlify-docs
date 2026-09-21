@@ -47,7 +47,7 @@ Control how detailed AI suggestions should be:
   </Accordion>
 </AccordionGroup>
 
-### Confidence Threshold
+### Match Strictness
 
 The minimum confidence level before showing a suggestion.
 
@@ -58,7 +58,7 @@ The minimum confidence level before showing a suggestion.
 | **Low (below 50%)** | Shows many suggestions. Higher chance of irrelevant answers. |
 
 <Tip>
-  Start at 70% (default). Lower it if users aren't getting suggestions, raise it if suggestions are often wrong.
+  The default is 50%. Lower it if users aren't getting suggestions, raise it if suggestions are often wrong.
 </Tip>
 
 ### Max Response Tokens
@@ -66,7 +66,9 @@ The minimum confidence level before showing a suggestion.
 Limits how long AI responses can be. The default (2000 tokens) allows for complete, detailed answers.
 
 - **Lower values** (500-1000): Shorter, more concise answers
-- **Higher values** (2000+): Longer, more detailed answers
+- **Higher values** (up to 3000): Longer, more detailed answers
+
+The allowed range is 200 to 3000 tokens.
 
 <Info>
   1 token ≈ 4 characters. 2000 tokens ≈ 1500 words maximum.
@@ -76,28 +78,9 @@ Limits how long AI responses can be. The default (2000 tokens) allows for comple
 
 Control when the bot provides suggestions.
 
-### On Ticket Creation
-
-When enabled, the bot reads the user's initial message and immediately suggests relevant answers.
-
-**Best for:**
-- Most support setups
-- Providing instant help
-- Reducing time-to-first-response
-
-### Trigger Keywords
-
-Add specific words that trigger Knowledge Base searches:
-
-**Example keywords:**
-- `help`, `how do I`, `can I`
-- Product-specific terms like `refund`, `upgrade`, `cancel`
-
-Leave empty to trigger on all messages.
-
 ### Delay Before Suggestion
 
-Wait time (in seconds) before the bot sends a suggestion. Default is 2 seconds.
+Wait time (in seconds) before the bot sends a suggestion. Default is 10 seconds; the allowed range is 5 to 60 seconds.
 
 **Why use a delay:**
 - Gives users time to send follow-up messages
@@ -105,9 +88,9 @@ Wait time (in seconds) before the bot sends a suggestion. Default is 2 seconds.
 - Allows message batching for multi-message questions
 
 **Settings:**
-- **0 seconds** - Immediate response (may interrupt users)
-- **2-5 seconds** - Recommended for most setups
-- **10+ seconds** - For slower-paced support
+- **5 seconds** - Fastest response (may interrupt users who are still typing)
+- **10 seconds** - The default, recommended for most setups
+- **20+ seconds** - For slower-paced support
 
 ### Minimum Message Length
 
@@ -124,7 +107,7 @@ Only trigger on messages with at least this many characters. Default is 10.
 
 ## Behavior Settings
 
-### Stop After Staff Response
+### Stop on Staff Response
 
 When enabled, the bot stops suggesting answers once a staff member replies.
 
@@ -160,7 +143,7 @@ When enabled, AI only suggests answers outside your configured business hours.
 - Weekend/holiday coverage
 
 <Info>
-  Configure your business hours in **Server Settings** → **Automation** → **Business Hours**.
+  Configure your business hours in the **Business Hours** tab of the server configuration (Enterprise).
 </Info>
 
 ## Display Settings
@@ -180,7 +163,7 @@ When enabled, suggestions include:
 - Cleaner, simpler suggestions
 - You prefer users to stay in Discord
 
-### Show Confidence Score
+### Show Match Score
 
 When enabled, suggestions show the AI's confidence percentage.
 
@@ -218,9 +201,9 @@ For teams that want fast, minimal AI assistance:
 | Setting | Value |
 |---------|-------|
 | Response Style | Concise |
-| Confidence Threshold | 80% |
-| Delay | 0 seconds |
-| Stop After Staff Response | ✅ Enabled |
+| Match Strictness | 80% |
+| Delay | 5 seconds |
+| Stop on Staff Response | ✅ Enabled |
 
 ### Comprehensive Support
 
@@ -229,9 +212,9 @@ For teams that want detailed AI assistance:
 | Setting | Value |
 |---------|-------|
 | Response Style | Helpful |
-| Confidence Threshold | 60% |
-| Delay | 3 seconds |
-| Stop After Staff Response | ❌ Disabled |
+| Match Strictness | 60% |
+| Delay | 10 seconds |
+| Stop on Staff Response | ❌ Disabled |
 | Show Source Info | ✅ Enabled |
 
 ### After-Hours Coverage
@@ -241,10 +224,10 @@ For AI-only support outside business hours:
 | Setting | Value |
 |---------|-------|
 | Response Style | Helpful |
-| Confidence Threshold | 70% |
+| Match Strictness | 70% |
 | Outside Business Hours Only | ✅ Enabled |
-| Auto-Escalation | ✅ Enabled |
+| Auto-Escalate to Staff | ✅ Enabled |
 
-<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
-  Get instant support via private DM
+<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
 </Card>

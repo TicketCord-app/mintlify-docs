@@ -2,280 +2,73 @@
 title: "SLA Management"
 description: "Define and track Service Level Agreements for your support"
 ---
-Set response time targets, track compliance, and ensure your team meets support commitments.
+
+SLA Management sets first-response and resolution targets per priority, warns staff before targets are missed, and records whether each ticket met its SLA.
 
 <Info>
-  SLA management is an **Enterprise** feature.
+  SLA Management is an **Enterprise** feature. [Upgrade your plan](https://ticketcord.com/pricing) to access it.
 </Info>
 
-## What is SLA Management?
-
-Service Level Agreements (SLAs) define:
-
-- **Response time targets** - How quickly to respond
-- **Resolution time targets** - How quickly to resolve
-- **Escalation rules** - What happens if targets are missed
-- **Compliance tracking** - Monitor performance against targets
-
-## Setting Up SLAs
-
-### Creating an SLA Policy
+## Setting Up
 
 <Steps>
-  <Step title="Navigate to SLA Settings">
-    Dashboard → Configuration → SLA Management
+  <Step title="Open the SLA tab">
+    Go to **Dashboard → Bots**, pick your bot, choose the server, and open the **SLA** tab. Turn **SLA Management** on.
   </Step>
-  <Step title="Click Create Policy">
-    Select **Create New SLA Policy**
+  <Step title="Set targets per priority">
+    Each priority has a **first response** target (1 to 1,440 minutes) and a **resolution** target (1 to 10,080 minutes).
   </Step>
-  <Step title="Name Your Policy">
-    Give it a descriptive name (e.g., "Standard Support")
-  </Step>
-  <Step title="Define Targets">
-    Set response and resolution time goals
-  </Step>
-  <Step title="Configure Escalation">
-    What happens when targets are missed
-  </Step>
-  <Step title="Save Policy">
-    Policy is now active
+  <Step title="Choose notifications">
+    Pick a notification channel, and whether to notify the staff role and the first responder. Optionally move the ticket to the top of its category on warning, and notify when a target is met.
   </Step>
 </Steps>
 
-## SLA Targets
+### Default Targets
 
-### Response Time
+| Priority | First response | Resolution |
+|----------|----------------|------------|
+| Low | 240 min | 2,880 min (48 h) |
+| Medium | 120 min | 1,440 min (24 h) |
+| High | 60 min | 480 min (8 h) |
+| Critical | 15 min | 120 min (2 h) |
 
-Time until first staff reply:
-
-| Priority | Example Target |
-|----------|---------------|
-| Urgent | 15 minutes |
-| High | 1 hour |
-| Medium | 4 hours |
-| Low | 24 hours |
-
-### Resolution Time
-
-Time until ticket is closed:
-
-| Priority | Example Target |
-|----------|---------------|
-| Urgent | 4 hours |
-| High | 8 hours |
-| Medium | 24 hours |
-| Low | 72 hours |
-
-### Configuring Targets
-
-For each priority level, set:
-
-| Setting | Description |
-|---------|-------------|
-| **Target Time** | Hours/minutes to meet |
-| **Warning Threshold** | When to show warning (e.g., 75%) |
-| **Breach Threshold** | When SLA is breached (100%) |
-
-## Business Hours
-
-SLA timers can respect business hours:
-
-### Setting Business Hours
-
-1. Go to Configuration → Business Hours
-2. Define your operating schedule
-3. Set timezone
-4. Add holidays (optional)
-
-### Example Schedule
-
-| Day | Hours |
-|-----|-------|
-| Monday-Friday | 9:00 AM - 6:00 PM |
-| Saturday | 10:00 AM - 2:00 PM |
-| Sunday | Closed |
-
-### Timer Behavior
-
-| Option | Description |
-|--------|-------------|
-| **24/7** | Timer runs continuously |
-| **Business Hours** | Timer pauses outside hours |
-| **Hybrid** | Different rules per priority |
-
-<Tip>
-  For urgent tickets, consider 24/7 SLA. For low priority, business hours is often appropriate.
-</Tip>
-
-## SLA Conditions
-
-### Applying SLAs
-
-SLAs can apply based on:
-
-| Condition | Example |
-|-----------|---------|
-| **Priority** | All urgent tickets |
-| **Category** | Billing category |
-| **Tag** | VIP customers |
-| **User Role** | Premium members |
-
-### Multiple Policies
-
-When multiple policies could apply:
-
-- Most specific policy wins
-- Priority order can be configured
-- First matching policy applies
+<Note>
+  SLA priorities are Low, Medium, High, and Critical. A ticket set to **Urgent** with `/priority` uses the Critical targets.
+</Note>
 
 ## Escalation Rules
 
-### Warning Actions
+Two built-in rules fire as a target approaches:
 
-When approaching breach (e.g., 75% of time):
+| Rule | Default trigger | Adjustable range |
+|------|-----------------|------------------|
+| **Warning** | 75% of the target elapsed | 50% to 99% |
+| **Critical** | 90% of the target elapsed | 50% to 99% (always above Warning) |
 
-- Highlight ticket in dashboard
-- Send notification to assignee
-- Alert team channel
-- Add warning indicator
+For each rule choose who to notify (roles and users), an optional delay in minutes, and one or more actions:
 
-### Breach Actions
+| Action | What it does |
+|--------|--------------|
+| **Ping** | Mentions the chosen roles and users in the ticket |
+| **DM** | Sends them a direct message |
+| **Channel alert** | Posts to the notification channel |
+| **Reassign** | Reassigns the ticket |
 
-When SLA is breached:
+**Auto-escalation** can repeat the escalation up to a maximum level (1 to 10) with a delay between levels (1 to 1,440 minutes).
 
-| Action | Description |
-|--------|-------------|
-| **Reassign** | Move to senior staff |
-| **Notify** | Alert managers |
-| **Escalate** | Trigger escalation workflow |
-| **Log** | Record for reporting |
+**Breach notifications** are sent when a target is missed; you can include ticket details, customer info, and performance context.
 
-### Configuring Escalation
+## Business Hours
 
-<Steps>
-  <Step title="Open Policy">
-    Edit the SLA policy
-  </Step>
-  <Step title="Go to Escalation">
-    Select the Escalation tab
-  </Step>
-  <Step title="Add Rules">
-    Define warning and breach actions
-  </Step>
-  <Step title="Set Recipients">
-    Who should be notified
-  </Step>
-  <Step title="Save">
-    Escalation rules are active
-  </Step>
-</Steps>
+Enable **Business hours only** to pause SLA timers outside your configured [Business Hours](/configuration/business-hours). This is the only way timers pause; there is no manual pause.
 
-## Monitoring SLAs
+## Tracking and Reports
 
-### Dashboard View
+- Each ticket records an SLA status: **met**, **breached**, **partial breach**, or **active**.
+- **Dashboard → Analytics** shows SLA breach warnings and staff SLA misses.
+- **Dashboard → Escalations** lists escalations raised for SLA breaches.
+- SLA analytics can be filtered by date range, priority, and status.
 
-The SLA dashboard shows:
-
-- **Active Tickets**: Current SLA status for open tickets
-- **At Risk**: Tickets approaching breach
-- **Breached**: Tickets past target
-- **Compliance Rate**: Percentage meeting SLA
-
-### Visual Indicators
-
-In ticket lists:
-
-| Indicator | Meaning |
-|-----------|---------|
-| 🟢 Green | On track |
-| 🟡 Yellow | At warning threshold |
-| 🔴 Red | Breached |
-| ⚪ Gray | SLA paused (awaiting customer) |
-
-### SLA Clock Display
-
-Each ticket shows:
-
-- Time remaining (or elapsed since breach)
-- Target time
-- Current status
-- Pause/resume state
-
-## Pausing SLAs
-
-### Automatic Pauses
-
-SLA can pause when:
-
-- Waiting for customer response
-- Ticket is on hold
-- Outside business hours (if configured)
-- Pending approval
-
-### Manual Pauses
-
-Staff can pause SLA when:
-
-1. Click SLA indicator on ticket
-2. Select **Pause SLA**
-3. Add reason (optional)
-4. SLA clock stops
-
-<Note>
-  Remember to resume SLA when work continues.
-</Note>
-
-## Reporting
-
-### SLA Reports
-
-Track compliance over time:
-
-| Metric | Description |
-|--------|-------------|
-| **Compliance Rate** | % of tickets meeting SLA |
-| **Avg. Response Time** | Mean first response time |
-| **Avg. Resolution Time** | Mean time to close |
-| **Breaches** | Count of SLA breaches |
-
-### Filtering Reports
-
-- By date range
-- By SLA policy
-- By priority
-- By staff member
-- By category
-
-### Exporting
-
-Export SLA data for:
-
-- Management reporting
-- Compliance documentation
-- Historical analysis
-
-## Best Practices
-
-<Tip>
-  **Start Conservative**
-  Set achievable targets initially. Tighten as you improve.
-</Tip>
-
-<Tip>
-  **Differentiate by Priority**
-  Not every ticket needs a 1-hour response. Match targets to importance.
-</Tip>
-
-<Tip>
-  **Use Business Hours**
-  Avoid overnight breaches by setting appropriate business hours.
-</Tip>
-
-<Tip>
-  **Review Regularly**
-  Analyze SLA data monthly to identify improvement opportunities.
-</Tip>
-
-<Card title="Need Help?" icon="headset" href="https://ticketcord.net/discord">
-  Questions about SLA? Join our Discord
+<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
 </Card>

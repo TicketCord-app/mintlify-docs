@@ -1,252 +1,44 @@
 ---
-title: "DM Welcome Messages"
-description: "Automatically welcome new members via direct message"
+title: "DM on Join"
+description: "Send new members a direct message that opens a ModMail ticket when they reply"
 ---
-Send personalized welcome messages to new members when they join your Discord server.
 
-## What Are DM Welcome Messages?
+DM on Join sends a direct message to every member who joins your server. If they reply to it, TicketCord opens a ModMail ticket for them.
 
-When a new member joins your server, TicketCord can:
+<Info>
+  DM on Join is available on **Basic** and higher.
+</Info>
 
-- Send them a direct message automatically
-- Welcome them to your community
-- Provide helpful links and information
-- Explain how to get support
+## Setting Up
 
-## Setting Up DM Welcome
+Go to **Dashboard → Bots**, pick your bot, choose the server, open **Welcome Messages**, and turn on **DM on join**.
 
-<Steps>
-  <Step title="Navigate to Settings">
-    Dashboard → Configuration → Welcome Messages
-  </Step>
-  <Step title="Enable DM Welcome">
-    Toggle **DM Welcome** on
-  </Step>
-  <Step title="Customize Message">
-    Write your welcome message
-  </Step>
-  <Step title="Add Embed (Optional)">
-    Create a rich embed for the message
-  </Step>
-  <Step title="Save">
-    DM welcome is now active
-  </Step>
-</Steps>
-
-## Message Configuration
-
-### Plain Text Message
-
-Simple text-only welcome:
+The message is plain text, up to 500 characters. The default is:
 
 ```
-Welcome to our server, {{user}}!
+👋 **Welcome to {server}!**
 
-We're glad to have you here. If you need any help, 
-just open a ticket by clicking the button in #support.
-
-Enjoy your stay!
+Need help? Just reply to this message and I'll create a support ticket for you automatically.
 ```
 
-### Rich Embed
+### Variables
 
-Create a visually appealing embed:
+| Variable | Renders as |
+|----------|-----------|
+| `{server}` | The server name |
+| `{username}` | The new member's username |
 
-| Field | Purpose |
-|-------|---------|
-| **Title** | Headline (e.g., "Welcome!") |
-| **Description** | Main welcome text |
-| **Color** | Sidebar color |
-| **Thumbnail** | Server logo |
-| **Fields** | Links, rules, info |
-| **Footer** | Additional note |
+## How Delivery Works
 
-## Available Variables
+- Bots that join are skipped.
+- DMs are sent from a queue at a steady rate; a member who joins repeatedly receives at most one DM per 24 hours.
+- If a member has DMs closed, the message is dropped and nothing else is sent.
+- Messages older than an hour that were never delivered are discarded.
 
-Personalize messages with variables:
+<Note>
+  There are no delay, condition, or fallback settings, and the DM cannot be an embed.
+</Note>
 
-| Variable | Replaced With |
-|----------|--------------|
-| `{{user}}` | New member's name |
-| `{{user_mention}}` | @mention of member |
-| `{{server}}` | Server name |
-| `{{member_count}}` | Current member count |
-| `{{date}}` | Current date |
-
-### Example with Variables
-
-```
-Welcome to {{server}}, {{user}}! 🎉
-
-You're member #{{member_count}}!
-
-Need help? Just open a support ticket and our team will assist you.
-```
-
-## Embed Design
-
-### Using Embed Designer
-
-1. Click **Create Embed** in welcome settings
-2. Design your embed visually
-3. Preview how it looks
-4. Save when satisfied
-
-### Sample Welcome Embed
-
-```
-╔═══════════════════════════════════════╗
-║  🎉 Welcome to Awesome Community!     ║
-╠═══════════════════════════════════════╣
-║  Hey {{user}}!                        ║
-║                                       ║
-║  Thanks for joining us. Here are      ║
-║  some helpful links to get started:   ║
-║                                       ║
-║  📜 Rules: #rules                     ║
-║  💬 Chat: #general                    ║
-║  🎫 Support: #support                 ║
-╠═══════════════════════════════════════╣
-║  Need help? Open a ticket anytime!    ║
-╚═══════════════════════════════════════╝
-```
-
-## Delivery Options
-
-### Timing
-
-Configure when the message sends:
-
-| Option | Description |
-|--------|-------------|
-| **Immediate** | Send as soon as they join |
-| **Delayed** | Wait X seconds/minutes |
-
-<Tip>
-  A small delay (10-30 seconds) can feel more natural than instant messages.
-</Tip>
-
-### Conditions
-
-Optionally send only if:
-
-- Member accepts rules (if using Discord's rules screening)
-- Member has verified email
-- Member is not a bot
-
-## Handling Failures
-
-### Why DMs Might Fail
-
-DMs can fail to deliver if:
-
-- User has DMs disabled from server members
-- User blocked the bot
-- Discord rate limits
-
-### Fallback Options
-
-When DM fails:
-
-| Option | Description |
-|--------|-------------|
-| **None** | Do nothing |
-| **Channel Message** | Post in a channel instead |
-| **Log** | Record failure for review |
-
-## Best Practices
-
-<Tip>
-  **Keep It Brief**
-  Long messages feel overwhelming. Stick to essentials.
-</Tip>
-
-<Tip>
-  **Be Helpful**
-  Include useful links: rules, FAQ, support channel.
-</Tip>
-
-<Tip>
-  **Don't Spam**
-  One welcome message is enough. Avoid multiple messages.
-</Tip>
-
-<Tip>
-  **Test It**
-  Send yourself a test message to verify formatting.
-</Tip>
-
-## Example Messages
-
-### Simple Welcome
-
-```
-Welcome to our community, {{user}}! 
-
-If you need any help, head to #support and click the button to open a ticket.
-```
-
-### Detailed Welcome
-
-```
-Welcome to {{server}}, {{user}}! 🎉
-
-Here's everything you need to get started:
-
-📋 Read the rules in #rules
-💬 Introduce yourself in #introductions  
-❓ Ask questions in #general
-🎫 Need support? Open a ticket in #support
-
-Our team is here to help. Enjoy your stay!
-```
-
-### Support-Focused
-
-```
-Hi {{user}}, welcome!
-
-Quick tip: If you ever need help, just head to #support and click "Create Ticket". 
-
-Our team typically responds within a few hours.
-
-Have a great time here!
-```
-
-## Monitoring
-
-### Delivery Stats
-
-Track welcome message performance:
-
-- Messages sent
-- Delivery failures
-- Failure reasons
-
-### Review Logs
-
-View recent welcome activities:
-
-- Who received messages
-- When sent
-- Delivery status
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Messages not sending">
-    Check that DM Welcome is enabled and your bot has proper permissions.
-  </Accordion>
-
-  <Accordion title="High failure rate">
-    Many users disable DMs from server members. Consider a fallback channel message.
-  </Accordion>
-
-  <Accordion title="Message looks wrong">
-    Preview your message before enabling. Check variable syntax.
-  </Accordion>
-</AccordionGroup>
-
-<Card title="Need Help?" icon="headset" href="https://ticketcord.net/discord">
-  Questions about DM welcome? Join our Discord
+<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
 </Card>

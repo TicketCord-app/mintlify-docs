@@ -8,7 +8,7 @@ description: "Create your Discord bot and connect it to TicketCord"
 Before you begin, you'll need:
 
 - A Discord account
-- **Manage Server** permission on your target server
+- **Administrator** permission on your target server (or be the server owner)
 - A Discord bot application (we'll create this below)
 
 ## Create a Discord Application
@@ -48,7 +48,7 @@ Before you begin, you'll need:
     - **Server Members Intent**
     - **Message Content Intent**
 
-    Discord requires you to enable these yourself — TicketCord cannot turn them on for you. If they're off, your bot can't connect and Discord reports a "disallowed intent" error (code 4014).
+    Enable these yourself in the Developer Portal. If they are off, Discord rejects the connection with a "disallowed intent" error (code 4014). TicketCord makes one automatic attempt to enable them for you when that happens; if the bot still cannot connect, turn them on manually and restart the bot from the dashboard.
 
     <Warning>
       Don't disable these later. Turning them off will break your bot until they're re-enabled.
@@ -72,14 +72,11 @@ Before you begin, you'll need:
 
 <Steps>
   <Step title="Sign in to Dashboard">
-    Go to [ticketcord.net/dashboard](https://ticketcord.net/dashboard) and sign in with Discord.
+    Go to [ticketcord.com/dashboard](https://ticketcord.com/dashboard) and sign in with Discord.
   </Step>
 
   <Step title="Add Custom Bot">
-    Click **Add Bot** and enter your credentials:
-    - **Client ID** - Found in your Discord application's General Information
-    - **Client Secret** - Found in your Discord application's OAuth2 settings
-    - **Bot Token** - The token you copied earlier
+    Click **Add Bot** and paste your **Bot Token** (the token you copied earlier). TicketCord reads the application ID from the token; no Client ID or Client Secret is needed.
 
     <Info>
       Validation checks your credentials and connection. If it fails with a "disallowed intent" (4014) error, go back to the Developer Portal and enable the two Privileged Gateway Intents, then validate again.
@@ -101,14 +98,22 @@ TicketCord bots need these permissions to function properly:
 
 | Permission | Reason |
 |------------|--------|
-| Manage Channels | Create and delete ticket channels |
+| View Channel | See the channels it works in |
+| Manage Channels | Create, rename, move, and delete ticket channels |
 | Manage Roles | Manage ticket access permissions |
+| Manage Webhooks | Deliver logs and transcripts |
 | Send Messages | Send ticket messages and responses |
+| Send Messages in Threads | Reply in thread-style tickets |
+| Create Public / Private Threads | Open thread-style tickets |
+| Manage Threads | Archive and rename thread tickets |
+| Manage Messages | Pin panels and clean up ticket messages |
+| Pin Messages | Pin the welcome message in tickets |
 | Embed Links | Send rich embed messages |
 | Attach Files | Send transcripts and attachments |
 | Read Message History | Read ticket conversations |
 | Add Reactions | Add reactions to messages |
-| Use External Emojis | Use custom emoji in embeds |
+| Mention Everyone | Ping staff roles when a ticket opens |
+| Use Application Commands | Register and run slash commands |
 
 <Info>
   When you invite your bot through the TicketCord dashboard, all required permissions are **automatically configured** for you.

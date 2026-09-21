@@ -3,204 +3,56 @@ title: "Priority Detection"
 description: "Automatically set ticket priority based on content and urgency"
 ---
 
-Priority Detection uses AI to analyze ticket content and automatically assign a priority level. Urgent issues get flagged immediately, while routine questions stay at normal priority.
+Priority Detection uses AI to analyze ticket content and assign a priority. Urgent issues get flagged early; routine questions stay at normal priority.
 
 <Info>
-  Priority Detection is a **Pro** feature. [Upgrade your plan](https://ticketcord.net/pricing) to access it.
+  Priority Detection is a **Pro** feature (Pro and Enterprise). [Upgrade your plan](https://ticketcord.com/pricing) to access it.
 </Info>
 
 ## How It Works
 
-1. User opens a ticket or sends a message
-2. AI analyzes the content for urgency signals
-3. AI assigns a priority: Low, Medium, High, or Critical
-4. The ticket channel name and/or staff are updated
+1. A user opens a ticket or sends a message
+2. After the analysis delay, the AI reads the conversation for urgency signals
+3. If its confidence is above your threshold, it assigns Low, Medium, High, or Urgent
+4. The channel name gets a priority emoji and, for High and Urgent, a card is posted to your logs channel
 
-**Example:**
-> User: "Our entire team can't access the platform and we have a client demo in 30 minutes!"
+| Priority | Emoji | Typical content |
+|----------|-------|-----------------|
+| **Low** | 🟢 | General questions, no urgency |
+| **Medium** | 🟡 | Standard issues |
+| **High** | 🟠 | Significant impact or frustration |
+| **Urgent** | 🔴 | Time-sensitive, major impact (the AI calls this "critical" in its analysis) |
 
-AI detects urgency ("can't access", "entire team", "30 minutes") and sets **Critical** priority.
-
-## Priority Levels
-
-| Priority | When Used | Example |
-|----------|-----------|---------|
-| **Low** | General questions, no urgency | "What are your business hours?" |
-| **Medium** | Standard issues, normal handling | "I need help resetting my password" |
-| **High** | Significant impact or frustration | "This feature stopped working today" |
-| **Critical** | Urgent, time-sensitive, major impact | "System is down, losing revenue" |
-
-## Getting Started
-
-<Steps>
-  <Step title="Enable Priority Detection">
-    Go to **AI Features** → **Priority Detection** and toggle it on.
-  </Step>
-  <Step title="Configure Settings">
-    Choose your analysis mode and notification preferences.
-  </Step>
-  <Step title="Test It">
-    Open a test ticket with urgent language to verify it works.
-  </Step>
-</Steps>
+Channel names become `🔴-ticket-0001` and so on. Renaming is best effort: Discord allows two channel renames per 10 minutes, so the rename can be skipped while the priority is still recorded.
 
 ## Settings
 
-### Analysis Mode
+Open **Dashboard → Bots → your bot → Servers → the server → AI Features → Conversation**.
 
-Choose when AI analyzes for priority:
+| Setting | Options |
+|---------|---------|
+| **Analysis mode** | First message, first three messages, or smart detection (default) |
+| **Delay before analysis** | Default 30 seconds. The bot always waits at least 30 seconds so rapid follow-up messages are included |
+| **Confidence threshold** | 10% to 100%, default 70% |
+| **Update channel name** | Add the emoji to the channel name (default on) |
+| **Notify staff** | Post a detection card to the logs channel for High and Urgent tickets (default on; needs a logs channel) |
+| **Override existing** | Replace a priority staff already set (default off) |
+| **Auto-escalate high priority** | Raise an escalation for High and Urgent tickets |
 
-| Mode | Description | Best For |
-|------|-------------|----------|
-| **First Message** | Analyze immediately | Quick prioritization |
-| **First 3 Messages** | Wait for more context | Better accuracy |
-| **Smart Detection** | AI decides timing | Recommended |
+## Working with Staff
 
-<Tip>
-  **Smart Detection** recognizes urgency keywords and analyzes quickly for those, while waiting for more context on ambiguous tickets.
-</Tip>
-
-### Delay Before Analysis
-
-How long to wait before analyzing (in seconds):
-- **0** - Immediate (may interrupt user typing)
-- **15-30** - Recommended (lets user finish)
-- **60+** - For multi-message context
-
-### Confidence Threshold
-
-Minimum AI confidence before setting priority:
-- **70%+ (default)** - Only set when confident
-- **50-70%** - Set priority more often
-- **Below 50%** - May be inaccurate
-
-### Auto-Update Channel Name
-
-When enabled, the bot adds a priority indicator to the ticket channel name:
-
-```
-🔴 ticket-12345-john     (Critical)
-🟠 ticket-12346-jane     (High)
-🟡 ticket-12347-mike     (Medium)
-🟢 ticket-12348-sara     (Low)
-```
-
-<Info>
-  This gives your team an instant visual indicator of ticket priority.
-</Info>
-
-### Notify Staff
-
-When enabled, the bot pings your staff role when a high or critical priority ticket is detected.
-
-### Override Existing
-
-When enabled, AI can change the priority even if one was already set:
-- **Enabled** - AI always updates priority
-- **Disabled** - AI only sets priority if none exists
-
-## What AI Looks For
-
-The AI analyzes several signals:
-
-### Urgency Words
-
-Words that suggest time pressure:
-- "urgent", "ASAP", "immediately", "right now"
-- "deadline", "time-sensitive", "critical"
-- Specific times: "in 30 minutes", "by tomorrow"
-
-### Impact Words
-
-Words that suggest significant consequences:
-- "entire team", "all users", "everyone"
-- "can't work", "completely broken", "major issue"
-- "losing money", "losing customers"
-
-### Emotional Signals
-
-Signs of frustration or stress:
-- Multiple exclamation marks
-- ALL CAPS sections
-- Expressions of frustration
-
-### Context Clues
-
-Business context that adds urgency:
-- Mentions of clients, demos, presentations
-- References to revenue or contracts
-- Time-sensitive events
-
-## Accuracy Tips
-
-### Be Clear About Urgency
-
-AI works best when users clearly express urgency:
-- ✅ "This is urgent - our payment system is down"
-- ❌ "Hey, payment isn't working" (could be urgent or not)
-
-### Use Ticket Forms
-
-Add a priority field to your ticket forms:
-- Users can self-select priority
-- AI uses this as additional context
-- Reduces missed urgent tickets
-
-### Review and Adjust
-
-Check AI accuracy regularly:
-- Are critical tickets being flagged?
-- Are routine tickets staying low priority?
-- Adjust confidence threshold based on results
-
-## Combining with Other Features
-
-Priority Detection works well with:
-
-### Auto-Routing
-
-Route high-priority tickets to senior staff:
-```
-Priority: High or Critical → Senior Support category
-```
-
-### SLA Management
-
-Set faster response times for higher priorities:
-```
-Critical: 15 minutes
-High: 1 hour
-Medium: 4 hours
-Low: 24 hours
-```
-
-### Sentiment Detection
-
-Combine priority with sentiment for better routing:
-```
-High Priority + Angry Sentiment → Escalation team
-```
+Staff can always set priority by hand with `/priority level:<urgent|high|medium|low>`. With **Override existing** off, the AI never changes a priority a staff member set.
 
 ## Troubleshooting
 
-### Priority Not Being Set
+### Priority is never set
 
-1. **Check if enabled** - Verify Priority Detection is on
-2. **Check confidence** - Lower the threshold if needed
-3. **Check analysis mode** - "Smart Detection" may wait longer
+Check the feature is enabled, the owner's plan is Pro or higher, and lower the confidence threshold.
 
-### Wrong Priority Assigned
+### No notification arrives
 
-1. **Check content** - Does the message clearly indicate urgency?
-2. **Adjust confidence** - Raise threshold for more accuracy
-3. **Use ticket forms** - Let users self-select priority
+Notifications go to the logs channel configured for the server; set one under **Structure**.
 
-### Staff Not Being Notified
-
-1. **Check notify setting** - Make sure "Notify Staff" is enabled
-2. **Check staff role** - Verify your staff role is configured
-3. **Check priority** - Notifications only trigger for High/Critical
-
-<Card title="Need Help?" icon="headset" href="https://ticketcord.net/support">
-  Get instant support via private DM
+<Card title="Need Help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
 </Card>

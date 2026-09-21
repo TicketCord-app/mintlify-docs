@@ -10,8 +10,8 @@ TicketCord offers flexible pricing to fit communities of all sizes, from small D
   <Card title="Free" icon="gift">
     Perfect for small communities getting started with ticket management.
     - 1 custom bot
-    - Unlimited tickets
-    - 20+ Discord commands
+    - Unlimited ticket volume (max 5 open tickets per user)
+    - 30 Discord commands
     - Web dashboard access
     - Community support
   </Card>
@@ -45,8 +45,8 @@ TicketCord offers flexible pricing to fit communities of all sizes, from small D
 |---------|------|-------|-----|------------|
 | **Bots & Tickets** |
 | Custom Discord bots | 1 | 3 | 3 | 6 |
-| Tickets per month | Unlimited | Unlimited | Unlimited | Unlimited |
-| Closed-ticket content retention | Up to 90 days | 90/180/365 days or manual | 90/180/365 days or manual | 90/180/365 days or manual |
+| Tickets per month | Unlimited (max 5 open per user) | Unlimited | Unlimited | Unlimited |
+| Closed-ticket content retention | Delete on close, 30, or 90 days (default 90) | Delete on close, 30/90/180/365 days, or manual (default 365) | Delete on close, 30/90/180/365 days, or manual (default 365) | Delete on close, 30/90/180/365 days, or manual (default 365) |
 | **Branding** |
 | TicketCord footer | Required | Removed | Removed | Custom |
 | Custom bot status | No | Yes | Yes | Yes |
@@ -55,7 +55,7 @@ TicketCord offers flexible pricing to fit communities of all sizes, from small D
 | Custom embeds | 1 | 5 | 5 | 15 |
 | Canned responses | 0 | 25 | 25 | Unlimited |
 | **AI Features** |
-| AI tokens/month | 0 | 0 | Included | Maximum |
+| AI tokens/month | 0 | 0 | 10M | 30M |
 | Atlas AI assistant | No | No | Yes | Yes |
 | Knowledge base sources | 0 | 0 | 2 | 15 |
 | Smart auto-routing | No | No | No | Yes |
@@ -76,23 +76,24 @@ TicketCord offers flexible pricing to fit communities of all sizes, from small D
 ## Billing Options
 ### Monthly vs Yearly
 Save **17%** when you choose yearly billing:
-| Plan | Monthly | Yearly (per month) | Yearly Total |
-|------|---------|-------------------|--------------|
-| Basic | Check pricing page | ~17% off | Save 2 months |
-| Pro | Check pricing page | ~17% off | Save 2 months |
-| Enterprise | Check pricing page | ~17% off | Save 2 months |
+| Plan | Monthly | Yearly | Yearly saving |
+|------|---------|--------|---------------|
+| Basic | €3.50 | €34.99 | €7.01 (17%) |
+| Pro | €6.99 | €68.99 | €14.89 (17%) |
+| Enterprise | €12.99 | €128.99 | €26.89 (17%) |
+
+Prices are in EUR. The [pricing page](https://ticketcord.com/pricing) is always the source of truth.
 <Tip>
   Yearly plans are billed upfront for the full year and automatically renew unless cancelled.
 </Tip>
 ## Free Trial
-Paid plans include a **7-day free trial** (available once per account):
-- Access to your plan's features during the trial
-- AI usage during the trial is capped at 1M tokens (instead of the full plan allocation)
-- Cancel anytime before the trial ends
-- Converts to a paid subscription after the trial if a payment method is on file
+Every new account automatically starts on a **14-day Enterprise trial**. There is nothing to activate and no card is required:
+- Enterprise features during the trial, limited to 1 bot, 2 knowledge base sources, and 100 crawled pages per source
+- AI usage during the trial is capped at 1M tokens for the whole trial (instead of the plan's monthly allocation)
+- When the trial ends the account returns to the Free plan; nothing is charged
 
 <Note>
-  If you don't add a payment method before the trial ends, your account will automatically downgrade to the Free plan.
+  Paid checkout bills immediately. Subscribing during the trial replaces the trial with your paid plan.
 </Note>
 
 ## What Happens When You Upgrade?
@@ -119,15 +120,15 @@ Paid plans include a **7-day free trial** (available once per account):
 ## Frequently Asked Questions
 <AccordionGroup>
   <Accordion title="Can I change plans anytime?">
-    Yes! You can upgrade or downgrade your plan at any time from the billing dashboard. Changes take effect immediately.
+    Yes. Upgrades take effect immediately with prorated billing. Downgrades are made through the billing portal from **Manage Subscription**.
   </Accordion>
 
   <Accordion title="What payment methods do you accept?">
-    We accept all major credit cards (Visa, Mastercard, American Express) and some debit cards through Stripe. PayPal is not currently supported.
+    Cards and Link through Stripe, and cryptocurrency through NOWPayments. Crypto purchases are one-time entitlements for a fixed period; they do not renew automatically.
   </Accordion>
 
   <Accordion title="Is there a refund policy?">
-    TicketCord provides immediate access to premium features upon purchase. During checkout, EU customers are asked to waive their 14-day withdrawal right as required by EU law, since digital services begin immediately. Once your paid subscription begins, subscriptions are non-refundable. You can cancel anytime to prevent future charges. Free trial users can cancel at any time without being charged. See our [Terms of Service](https://ticketcord.net/terms) for full details.
+    TicketCord provides immediate access to premium features upon purchase. During checkout, EU customers are asked to waive their 14-day withdrawal right as required by EU law, since digital services begin immediately. Once your paid subscription begins, subscriptions are non-refundable. You can cancel anytime to prevent future charges. See our [Terms of Service](https://ticketcord.com/terms) for full details.
   </Accordion>
 
   <Accordion title="What counts as a 'bot'?">
@@ -135,19 +136,19 @@ Paid plans include a **7-day free trial** (available once per account):
   </Accordion>
 
   <Accordion title="Do unused AI tokens roll over?">
-    No, AI tokens reset at the beginning of each billing cycle and do not roll over to the next month.
+    Monthly plan tokens reset at the beginning of each billing cycle and do not roll over. Purchased token packages (10M, 20M, 50M) are one-time and never expire.
   </Accordion>
 
   <Accordion title="Can I get a custom plan?">
-    For organizations with special requirements, contact us at hi@ticketcord.net to discuss custom enterprise pricing.
+    For organizations with special requirements, contact us at hi@ticketcord.com to discuss custom enterprise pricing.
   </Accordion>
 </AccordionGroup>
 ## Ready to Get Started?
 <CardGroup cols={2}>
-  <Card title="Start Free Trial" icon="play" href="https://ticketcord.net/dashboard">
-    Try any paid plan free for 7 days
+  <Card title="Get Started" icon="play" href="https://ticketcord.com/dashboard">
+    Sign in to start your 14-day Enterprise trial
   </Card>
-  <Card title="Contact Sales" icon="envelope" href="mailto:hi@ticketcord.net">
+  <Card title="Contact Sales" icon="envelope" href="mailto:hi@ticketcord.com">
     Questions about Enterprise? Let's talk
   </Card>
 </CardGroup>
