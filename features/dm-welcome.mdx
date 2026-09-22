@@ -13,13 +13,13 @@ DM on Join sends a direct message to each member who joins your server. The mess
 
 <Steps>
   <Step title="Open the Messages tab">
-    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **Messages** under the **Messaging** group. The **DM Users on Join** card is at the top of the page.
+    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **Messages** under the **Messaging** group. In the **Automatic messages** card, the **DM to new members** row is under **When a member joins**.
   </Step>
   <Step title="Turn it on">
-    Enable **DM Users on Join** ("Send a welcome DM to users when they join the server").
+    Turn on the switch on the **DM to new members** row ("Sent when someone joins the server").
   </Step>
   <Step title="Write the message">
-    Fill in **Welcome Message**, or leave it empty to use the default text. Use `{server}` for the server name and `{username}` for the member's name.
+    Click the row to open it, and fill in **DM text**, or leave it empty to use the default text. Use `{server}` for the server name and `{username}` for the member's name.
   </Step>
   <Step title="Save">
     Click **Save** or press `Ctrl/⌘ + S`. The next member to join receives the DM.
@@ -30,8 +30,8 @@ DM on Join sends a direct message to each member who joins your server. The mess
 
 | Setting | Allowed values | Default |
 |---------|----------------|---------|
-| **DM Users on Join** | on or off | off |
-| **Welcome Message** | plain text, up to 500 characters; Discord markdown allowed | empty (uses the default below) |
+| **DM to new members** | on or off | off |
+| **DM text** | plain text, up to 500 characters; Discord markdown allowed | empty (uses the default below) |
 
 The default message:
 
@@ -61,7 +61,7 @@ Grab your roles in #roles and say hi in #introductions. If anything is broken or
 ## What happens
 
 1. A member joins. Bot accounts are ignored.
-2. The bot checks the owner's plan and that **DM Users on Join** is on for that server.
+2. The bot checks the owner's plan and that **DM to new members** is on for that server.
 3. The message is queued. Each bot sends at most 5 join DMs per 10 seconds, so a wave of joins is delivered in order over a short period instead of all at once.
 4. The member receives the DM. If they reply, ModMail opens a ticket in the server (or, if they already have an open ModMail ticket anywhere, the reply goes there).
 
@@ -94,7 +94,7 @@ Grab your roles in #roles and say hi in #introductions. If anything is broken or
 ## Common questions
 
 **What does the new member see?**
-A direct message from your bot with your **Welcome Message** (or the default). If they reply, a ModMail ticket opens with your staff.
+A direct message from your bot with your **DM text** (or the default). If they reply, a ModMail ticket opens with your staff.
 
 **Can I add buttons or an embed to the DM?**
 No. The join DM is plain text with `{server}` and `{username}` variables.
