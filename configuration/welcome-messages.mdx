@@ -1,0 +1,323 @@
+---
+title: "Welcome Messages"
+description: "Design the message TicketCord posts when a ticket opens, choose which tickets use it, and place individual form answers exactly where you want them"
+---
+
+The welcome message is the first message in every new ticket. It greets the member, tells staff what the ticket is about, and carries the **Claim**, **Pin**, and **Close** buttons. You build welcome messages as reusable designs in a visual designer, set one as the default for each kind of ticket, and can give any single button, dropdown option, form, or application a design of its own. Variables fill in details when the ticket opens: the member's name, the ticket number, all of their form answers at once, or one answer at a time with form answer variables. It is for any server that wants tickets to open with its own wording and layout, and with the details staff need at a glance.
+
+<Info>
+  Welcome messages and designs work on every plan. On Free, a small "Powered by TicketCord.com" line is added at the end of each welcome message. The **Quick Replies Dropdown** and applications need **Basic** or higher, and your own **Footer** text inside a design needs **Enterprise**. To edit welcome messages you must be the bot owner, or hold a role granted dashboard access for the server.
+</Info>
+
+## How welcome messages fit together
+
+- **Designs** are reusable messages built in the designer. A server can have up to 25.
+- **Ticket type defaults** decide which design each kind of ticket sends.
+- **Per-button choices** override the default for one button, dropdown option, form, or application.
+
+Each way of opening a ticket belongs to one ticket type, which is a tab under **Ticket type defaults**:
+
+| Tab | Tickets it covers |
+|-----|-------------------|
+| **Button** | A button or section button whose **When clicked** is **Ticket**, and tickets opened from an Auto Support thread |
+| **Dropdown** | A dropdown option whose **When clicked** is **Ticket** |
+| **Modal** | Every form: a button, dropdown option, or section button whose **When clicked** is **Form**, plus older form buttons and dropdown forms |
+| **Application** | Every application: a button, dropdown option, or section button whose **When clicked** is **Application** |
+| **ModMail** | Tickets opened by sending the bot a direct message |
+
+<Note>
+  Forms opened from a dropdown option use the **Modal** tab, not **Dropdown**. The **Dropdown** tab only covers options that open a ticket straight away.
+</Note>
+
+## Creating a design
+
+<Steps>
+  <Step title="Open the Messages tab">
+    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **Messages** under the **Messaging** group. Below the **DM Users on Join** and **When a ticket closes** cards are **Your welcome message designs** (the library, with a counter out of 25) and **Ticket type defaults**.
+  </Step>
+  <Step title="Create the design">
+    Click **Create design**, enter a **Design name** such as `Support welcome`, and click **Create design** again. The designer opens with a starter message: `{ticketTitle}` as a heading, `{welcomeMessage}` under it, and the Claim, Pin, and Close buttons.
+  </Step>
+  <Step title="Build the message">
+    In the preview, add **text**, **separator**, **gallery**, and **section** blocks to up to three containers. A section is text with a thumbnail image beside it. Each container has an **Accent color** picker and **Container settings** with its **Allowed mentions**. The last container's settings also hold the **Footer**. Above the preview, **Control Buttons** chooses which buttons the message carries and whether they sit **Inside container** or **Outside container**. You can also describe the message you want in the **Assistant** panel and let it build the design for you.
+  </Step>
+  <Step title="Add variables">
+    Click inside a text block where the value should go, open **Variables**, and pick one. It is inserted at the cursor. With no text block selected, it is copied instead. The preview shows sample values, while the saved message keeps the variable.
+  </Step>
+  <Step title="Save">
+    Click **Save changes**. Every ticket type and button that uses the design sends the new version in tickets opened from then on.
+  </Step>
+</Steps>
+
+To change a design later, click **Edit** on its card in the library. **Duplicate** copies it as `name (copy)`, and **Delete** removes it after a confirmation.
+
+## Choosing which tickets use a design
+
+### Set the default for a ticket type
+
+<Steps>
+  <Step title="Pick the ticket type">
+    In **Ticket type defaults**, click the tab: **Button**, **Dropdown**, **Modal**, **Application**, or **ModMail**.
+  </Step>
+  <Step title="Turn on the custom message">
+    Switch on **Enable Custom Welcome Message**. While it is off, that ticket type sends the built-in TicketCord message, unless a button has a design of its own.
+  </Step>
+  <Step title="Pick the design">
+    Under **Welcome message**, choose a design. **TicketCord default** keeps the built-in message. **Create new design…** creates a design and sets it as this type's default. **Edit design** opens the chosen design in the designer.
+  </Step>
+  <Step title="Save">
+    Click **Save changes** on the save bar at the bottom of the page.
+  </Step>
+</Steps>
+
+The card on each design in the library shows where it is used, for example "Default for: Modal, Application", or "Not attached to any ticket type yet".
+
+### Give one button, option, form, or application its own design
+
+Open **Messaging → Panels & Embeds**, open the panel, and click the button or dropdown option. Under **When clicked**:
+
+- **Ticket**: pick the design in **Welcome message**.
+- **Form** or **Application**: expand **Routing** and pick the design in **Welcome message**.
+
+**Server default** uses the ticket type's default from the **Messages** tab. Save the panel to apply the change.
+
+### Which welcome message is sent
+
+When a ticket opens, TicketCord uses the first of these that applies:
+
+1. The design picked in **Welcome message** on the button, dropdown option, form, or application that opened the ticket. This applies even when the ticket type's **Enable Custom Welcome Message** switch is off.
+2. The ticket type's default on the **Messages** tab, when **Enable Custom Welcome Message** is on.
+3. The built-in TicketCord welcome message.
+
+A design that no longer exists is skipped, and TicketCord moves down the list. If a design renders nothing at all, for example because every block held only an empty form answer, the ticket type's older message or the built-in message is sent instead.
+
+## Settings
+
+### Ticket type defaults (Messages tab)
+
+| Setting | Allowed values | Default |
+|---------|----------------|---------|
+| **Enable Custom Welcome Message** | on or off, per ticket type | off |
+| **Welcome message** | **TicketCord default**, or any design that is compatible with the ticket type. A type that still has a message from the old editor shows **Legacy message (classic editor)** instead of **TicketCord default**, with a **Convert to a design** button | **TicketCord default** |
+| **Show User Avatar** (ModMail tab) | on or off. Shows the member's avatar as a thumbnail beside the first text block | on |
+| **Include form answers** (Dropdown and Modal tabs), **Include application answers** (Application tab) | on or off. Only shown while the type sends a legacy classic message, and adds the answers under it. Designs ignore it | on |
+| **Enable Quick Replies** | on or off. Adds a dropdown of prepared answers to the welcome message. **Basic** or higher | off |
+| **Quick Replies Placement** | **Inside container** or **Outside container** | **Inside container** |
+| **Dropdown Placeholder Text** | up to 150 characters | `Select a common issue...` |
+| **Response Options** | up to 25, each with an **Option Label** (1 to 100 characters), an **Option Description** (up to 100), and a **Response Message** (1 to 2,000) | none |
+
+When a member picks a quick reply, the **Response Message** is shown only to them.
+
+### Designer
+
+| Setting | Allowed values | Default |
+|---------|----------------|---------|
+| **Design name** | 1 to 100 characters, no `.` or `$`, unique on the server | none |
+| **Control Buttons** | any of **Claim Button**, **Pin Button**, and **Close Button**, on every plan | all three |
+| **Control Buttons Placement** | **Inside container** (inside the last container) or **Outside container** (below the message) | **Inside container** |
+| **Accent color** (per container) | any color, or none | none |
+| **Allowed mentions** (per container) | any of **Role mentions**, **User mentions**, and **@everyone and @here** | all three |
+| **Footer** (last container) | up to 2,048 characters, shown as small grey text at the end. **Enterprise** only | empty |
+
+A design's control buttons replace the ticket type's own button settings whenever that design is used.
+
+### Panel designer
+
+| Setting | Allowed values | Default |
+|---------|----------------|---------|
+| **Welcome message** (on a button or option set to **Ticket**, or under **Routing** for a form or application) | **Server default**, or any design that is compatible with that kind of ticket | **Server default** |
+
+## Variables
+
+Type variables as `{name}` or pick them from **Variables** in the designer. Names are case-sensitive, and a name TicketCord does not know is shown exactly as typed. The **Works on** column lists the ticket types where a variable has a value. A design that uses a variable outside those types cannot be picked for them.
+
+| Variable | Shows | Works on |
+|----------|-------|----------|
+| `{user}` | A mention of the member who opened the ticket. This pings them | All |
+| `{displayName}` | The member's server nickname, or their display name, or their username. No ping | All |
+| `{username}` | The member's Discord username. No ping | All |
+| `{userId}` | The member's Discord ID | All |
+| `{accountAge}` | How old the member's Discord account is, for example `2 years` | All |
+| `{joinedServer}` | When the member joined the server, as relative time such as "3 months ago" | All |
+| `{roles}` | The member's role names separated by commas, up to 15. Never pings a role | All |
+| `{ticketNumber}` | The ticket number with leading zeros, for example `0043`. Add the `#` yourself | All |
+| `{server}` | The server name | All |
+| `{serverId}` | The server ID | All |
+| `{subject}` | The label of the button or dropdown option the member used. For a form or application with no such label, its title | Dropdown, Modal, Application |
+| `{description}` | Every answered question as a labeled block: the question in bold, then the answer. Always empty on dropdown tickets, which have no form | Dropdown, Modal, Application |
+| `{form.…}` | One question's answer. See [Form answer variables](#form-answer-variables) | Modal, Application |
+| `{previousTickets}` | How many of the member's tickets on this server have been closed | ModMail |
+| `{firewallBlocked}` | How many other servers using this bot block the member with a firewall, for example `2 other servers`. Empty when none | ModMail |
+| `{ticketTitle}` | The stock ticket heading, "🎫 Support Ticket Created", in the bot's language | All |
+| `{welcomeMessage}` | The stock greeting, including a mention of the member, in the bot's language | All |
+| `{subjectLabel}`, `{descriptionLabel}` | "Subject" and "Description" in the bot's language | All |
+| `{formDetailsLabel}`, `{applicationDetailsLabel}` | "Form Details" and "Application Details" in the bot's language | All |
+| `{separator}` | A divider line. It always starts on a new line | All |
+
+The **Variables** panel also lists the close message variables, marked "close messages only", because designs can be used as close messages too. In a welcome message they are shown exactly as typed.
+
+When a member's labeled answers together are longer than 1,000 characters, `{description}` shows "The full responses are posted below." and TicketCord posts every answer in full in separate messages right below the welcome message.
+
+## Form answer variables
+
+A form answer variable places one form question's answer anywhere in a design, for example:
+
+```
+**Product:** {form.3f9a1c2b7d4e5f6}
+**Order number:** {form.9c2e4b7a1d3f5e8}
+```
+
+The part after `form.` identifies the question itself, not its position or its label. You never need to type or know it: you pick the question by its label and TicketCord inserts the right variable.
+
+### Adding a form answer
+
+<Steps>
+  <Step title="Build the form first">
+    In **Panels & Embeds**, set a button or dropdown option's **When clicked** to **Form** or **Application**, add the questions, and save the panel.
+  </Step>
+  <Step title="Open the design">
+    On the **Messages** tab, click **Edit** on the design's card, or **Edit design** under the ticket type's picker.
+  </Step>
+  <Step title="Place the cursor">
+    Click in the text block where the answer should go, for example right after `**Product:** `.
+  </Step>
+  <Step title="Pick the question">
+    Open **Variables**. The **Form answers** section at the top lists the server's forms. Forms that use this design come first and are marked **Uses this design**, followed by **Other forms**. Each form shows its title, the panel it is in, and its questions by label. Click a question to insert its variable at the cursor.
+  </Step>
+  <Step title="Check the preview and save">
+    In the designer preview, the variable shows as the question's label in brackets, such as `[Product]`. A variable whose question no longer exists shows `[Deleted question]`. Click **Save changes**.
+  </Step>
+</Steps>
+
+Everywhere else on the dashboard, such as the design cards and the ticket type preview, form answer variables show the sample text `Form answer`.
+
+A form counts as using this design when the design is picked in its own **Welcome message**, or when the form has no design of its own and this design is the default on the **Modal** tab (or the **Application** tab, for applications) with **Enable Custom Welcome Message** on.
+
+### What it shows
+
+| Question type | Shows |
+|---------------|-------|
+| **Short** or **Paragraph** text | The answer as the member typed it, with line breaks kept |
+| **Select** | The labels of the chosen options, separated by commas |
+| **File upload** | The number of files, for example `📎 2 file(s), posted below`, in the bot's language. The files themselves are posted in the ticket separately |
+
+Mentions such as `@everyone` and code block formatting in an answer are shown as plain text, the same as in `{description}`, so an answer can never ping anyone.
+
+### When it is empty
+
+A form answer variable shows nothing when:
+
+- The ticket was opened through a form that does not have that question. One design can serve several forms, and each variable only fills from its own question.
+- The question was optional and the member left it blank.
+- The question was deleted from the form.
+- The ticket came from an application built in the old panel editor (see [Supported forms](#supported-forms)).
+
+A text block that contains nothing but an empty variable is left out of the message. Text you wrote around the variable, such as `**Product:**`, is still shown.
+
+### Reordering, renaming, and deleting questions
+
+Reordering the questions or renaming a question's label never moves or breaks its variable, and the designer preview shows the new label. Deleting a question makes its variable empty. A new question gets a new variable, even if it has the same label as a deleted one, so insert it again.
+
+Duplicating a button that has a form copies the form with the same questions, so one variable fills from either copy. The **Form answers** list shows each such question once, under the first form.
+
+### Length
+
+All of a ticket's form answers share 1,000 characters in the welcome message. This counts every answer the member gave, including questions your design does not place. When the answers together fit, each one is shown in full. When they are longer, short answers stay whole, the longest are shortened to the same length and end in `...`, and TicketCord posts every answer in full in separate **Form responses** messages (**Application responses** for applications) right below the welcome message, so nothing is lost.
+
+In the designer, form answer variables count as 1,000 characters toward the message's 4,000-character text limit, however many different ones you use. Placing the same variable twice counts 2,000, three times 3,000.
+
+### Where they work
+
+Form answer variables only have answers in tickets opened through a form or an application, which are the **Modal** and **Application** ticket types. A design that contains one cannot be used:
+
+- as the default for the **Button**, **Dropdown**, or **ModMail** tab,
+- on a button or dropdown option whose **When clicked** is **Ticket**, or
+- as a close message.
+
+Pickers show such a design as "name (incompatible variables)" and do not let you choose it. If the design is already used in one of those places, the **Form answers** section warns "This design is also used where there are no form answers (another ticket type or a close message), so it cannot be saved with a form answer. Use a separate design for this form." **Duplicate** the design and use the copy for the form.
+
+### Supported forms
+
+- Forms and applications made in the panel designer, on buttons, dropdown options, and section buttons.
+- Older form buttons and dropdown forms from the previous panel editor.
+
+Applications made in the old panel editor do not support form answer variables: they are not listed under **Form answers**, and their variables are always empty. Rebuild the application in the panel designer by setting **When clicked** to **Application**.
+
+### Using the assistant
+
+The **Assistant** panel in the designer knows your server's forms and their questions, and prefers the forms that use this design. Ask it, for example, to "show the Product answer under a heading" and it inserts the matching form answer variable.
+
+## What happens when a ticket opens
+
+1. The member opens a ticket. TicketCord picks the welcome message in the order described in [Which welcome message is sent](#which-welcome-message-is-sent).
+2. Variables are filled in. Form answers are made safe to display and shortened if they pass the 1,000-character budget.
+3. The welcome message is posted. Staff pings configured for the ticket appear above it, then your containers, the control buttons, the quick replies dropdown, and the **AI Help** button when [AI Help for Staff](/ai/atlas) is on. ModMail tickets also get **Alert**, **Subscribe**, and **Mute** buttons. On Free, a "Powered by TicketCord.com" line is added at the bottom.
+4. TicketCord pins the welcome message, when the bot has permission to.
+5. For forms and applications, answers that were too long for the welcome message follow in full in **Form responses** or **Application responses** messages.
+6. Files from file upload questions are posted in the ticket after that.
+
+If the finished message would pass Discord's 4,000-character limit, the longest text blocks are shortened so the message can still be sent.
+
+## Limits and gotchas
+
+- **25 designs per server.** Designs cannot be renamed: duplicate the design, point your ticket types and buttons at the copy, and delete the original.
+- **Size.** Up to 3 containers, 10 items per container, and 4,000 characters of text across the whole message. A design can hold at most 28 components, counting containers, every block, and its control buttons, because TicketCord keeps the rest of Discord's 40 for the pings, avatar, and buttons it adds when the ticket opens.
+- **`{separator}` only works in text blocks.** Inside a section it is shown exactly as typed.
+- **The member is only pinged where the design says so.** Include `{user}`, or `{welcomeMessage}`, which contains a mention. Unticking **User mentions** in **Allowed mentions** never stops the ping for the member or the staff pings TicketCord adds.
+- **Changes apply to new tickets.** Welcome messages already posted do not change.
+- **Images** must be HTTPS links on a supported image host, such as Discord's CDN, Imgur, GitHub, Cloudinary, or Unsplash, or be uploaded in the designer (PNG, JPEG, GIF, or WebP, up to 8 MB). Other links are rejected when you save.
+- **Footer text is Enterprise only.** Saving a design on a lower plan removes its footer text.
+- **Deleting a design.** Ticket types that used it go back to their default message. Buttons keep the name, shown as "name (deleted)" in the panel designer, and use the ticket type default until you pick another design or create one with the same name.
+
+<Warning>
+  A design shows form answers only where you place `{description}` or form answer variables. It never adds them on its own, and the **Include form answers** switch does not apply to designs. If a design used for forms has neither, staff do not see the answers in the welcome message. This also applies after you **Convert to a design** from a legacy message.
+</Warning>
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| The built-in message is sent instead of your design | **Enable Custom Welcome Message** is off for that ticket type, no design is picked, the change was not saved, or you set the design on the wrong tab | Turn the switch on, pick the design, and click **Save changes**. Forms use the **Modal** tab |
+| One button sends a different message than the rest | That button, option, form, or application has its own **Welcome message** | Set it to **Server default** in the panel designer |
+| A form answer variable is empty | The ticket came through a form without that question, the member skipped an optional question, the question was deleted, or it is an application from the old panel editor | Check the question is in that form (the designer preview shows `[Deleted question]` for deleted ones). Rebuild old applications in the panel designer |
+| An answer ends in `...` | The member's answers together passed 1,000 characters | Expected. The full answers are in the **Form responses** messages below the welcome message |
+| `{description}` shows "The full responses are posted below." | The labeled answers together passed 1,000 characters | Expected. The full answers are posted right below |
+| A design shows "(incompatible variables)" and cannot be picked | It uses variables that have no value for that ticket type, such as a form answer variable on the **Button** tab | Edit the design, or use a separate design there |
+| Saving the design fails with "cannot be used for … tickets because it contains: `{form.…}`" | The design is also used by a ticket type or close message that has no form answers | Duplicate the design and use the copy for the form, or stop using it in the other place first |
+| "All text combined can't exceed 4000 characters" after adding a form answer | Form answer variables count as 1,000 characters, more if one is repeated | Shorten other text, or avoid placing the same variable several times |
+| **Form answers** says "No forms in this server yet." | No panel has a form or application with questions | Add one in **Panels & Embeds**, save the panel, and reopen the designer |
+| A form is missing from **Form answers** | It is an application from the old panel editor, it has no questions, or its questions are listed under another form it was duplicated from | Rebuild old applications in the panel designer. A duplicated form's variables fill from either copy |
+| The member was not pinged | The design has neither `{user}` nor `{welcomeMessage}` | Add `{user}` |
+| Staff cannot see the form answers | The design has neither `{description}` nor a form answer variable | Add `{description}` or place the answers you need |
+| An image does not show, or saving rejects it | The link is not HTTPS or not on a supported image host | Upload the image in the designer, or use a Discord or Imgur link |
+| A variable is shown as typed, such as `{closedBy}` | It is a close message variable, or the name is misspelled or has the wrong capitalization | Use the exact names in the [Variables](#variables) table |
+
+## Common questions
+
+**How do I show just one form answer, like the product name, in the welcome message?**
+Open the design in the designer, click in a text block, open **Variables**, and pick the question under **Form answers**. Its form answer variable is inserted at the cursor and shows only that question's answer when a ticket opens through that form.
+
+**Why is my form answer variable blank in some tickets?**
+It only fills in tickets opened through the form that has that question, and only when the member answered it. Tickets from another form sharing the design, skipped optional questions, and deleted questions all leave it empty.
+
+**Can several forms share one welcome message design?**
+Yes. Place form answer variables from each form. Each ticket fills in the variables for the form it was opened through, and the others stay empty and are left out when they are alone in a text block.
+
+**What happens to the variable if I reorder, rename, or delete a question?**
+Reordering and renaming never break it, because the variable is tied to the question itself. Deleting the question makes the variable empty, and the designer preview shows `[Deleted question]`.
+
+**Why was a long answer cut off with "..."?**
+All of a ticket's form answers share 1,000 characters in the welcome message. When they are longer, the longest are shortened, and every answer is posted in full in **Form responses** messages right below the welcome message.
+
+**Can I use a form answer variable on a normal Ticket button or in ModMail?**
+No. Those tickets have no form answers, so the dashboard does not let you use a design with form answer variables there, or as a close message. Use a separate design for your forms.
+
+**How do I give one button its own welcome message?**
+In **Panels & Embeds**, click the button and pick a design in **Welcome message**. For a form or application, it is under **Routing**. It overrides the ticket type's default even when **Enable Custom Welcome Message** is off.
+
+**Do I need a paid plan for custom welcome messages?**
+No. Designs work on every plan. Free adds a "Powered by TicketCord.com" line, the quick replies dropdown and applications need Basic or higher, and custom footer text needs Enterprise.
+
+<Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
+  Join our Discord server for support
+</Card>

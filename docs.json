@@ -57,7 +57,8 @@
           "configuration/sla-management",
           "configuration/escalation-rules",
           "configuration/business-hours",
-          "configuration/canned-responses"
+          "configuration/canned-responses",
+          "configuration/welcome-messages"
         ]
       },
       {
