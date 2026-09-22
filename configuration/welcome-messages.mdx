@@ -6,34 +6,34 @@ description: "Design the message TicketCord posts when a ticket opens, choose wh
 The welcome message is the first message in every new ticket. It greets the member, tells staff what the ticket is about, and carries the **Claim**, **Pin**, and **Close** buttons. You build welcome messages as reusable designs in a visual designer, set one as the default for each kind of ticket, and can give any single button, dropdown option, form, or application a design of its own. Variables fill in details when the ticket opens: the member's name, the ticket number, all of their form answers at once, or one answer at a time with form answer variables. It is for any server that wants tickets to open with its own wording and layout, and with the details staff need at a glance.
 
 <Info>
-  Welcome messages and designs work on every plan. On Free, a small "Powered by TicketCord.com" line is added at the end of each welcome message. The **Quick Replies Dropdown** and applications need **Basic** or higher, and your own **Footer** text inside a design needs **Enterprise**. To edit welcome messages you must be the bot owner, or hold a role granted dashboard access for the server.
+  Welcome messages and designs work on every plan. On Free, a small "Powered by TicketCord.com" line is added at the end of each welcome message. The **Self-help menu** and applications need **Basic** or higher, and your own **Footer** text inside a design needs **Enterprise**. To edit welcome messages you must be the bot owner, or hold a role granted dashboard access for the server.
 </Info>
 
 ## How welcome messages fit together
 
 - **Designs** are reusable messages built in the designer. A server can have up to 25.
-- **Ticket type defaults** decide which design each kind of ticket sends.
+- **Automatic messages** set which design each kind of ticket sends when it opens.
 - **Per-button choices** override the default for one button, dropdown option, form, or application.
 
-Each way of opening a ticket belongs to one ticket type, which is a tab under **Ticket type defaults**:
+Each way of opening a ticket belongs to one ticket type, which is a row under **Automatic messages → When a ticket opens**:
 
-| Tab | Tickets it covers |
+| Row | Tickets it covers |
 |-----|-------------------|
-| **Button** | A button or section button whose **When clicked** is **Ticket**, and tickets opened from an Auto Support thread |
-| **Dropdown** | A dropdown option whose **When clicked** is **Ticket** |
-| **Modal** | Every form: a button, dropdown option, or section button whose **When clicked** is **Form**, plus older form buttons and dropdown forms |
-| **Application** | Every application: a button, dropdown option, or section button whose **When clicked** is **Application** |
-| **ModMail** | Tickets opened by sending the bot a direct message |
+| **Button tickets** | A button or section button whose **When clicked** is **Ticket**, and tickets opened from an Auto Support thread |
+| **Dropdown tickets** | A dropdown option whose **When clicked** is **Ticket** |
+| **Modal tickets** | Every form: a button, dropdown option, or section button whose **When clicked** is **Form**, plus older form buttons and dropdown forms |
+| **Application tickets** | Every application: a button, dropdown option, or section button whose **When clicked** is **Application** |
+| **ModMail tickets** | Tickets opened by sending the bot a direct message |
 
 <Note>
-  Forms opened from a dropdown option use the **Modal** tab, not **Dropdown**. The **Dropdown** tab only covers options that open a ticket straight away.
+  Forms opened from a dropdown option use **Modal tickets**, not **Dropdown tickets**. **Dropdown tickets** only covers options that open a ticket straight away.
 </Note>
 
 ## Creating a design
 
 <Steps>
   <Step title="Open the Messages tab">
-    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **Messages** under the **Messaging** group. Below the **DM Users on Join** and **When a ticket closes** cards are **Your welcome message designs** (the library, with a counter out of 25) and **Ticket type defaults**.
+    Go to **Dashboard → Bots**, pick your bot, choose the server, and open **Messages** under the **Messaging** group. The **Automatic messages** card lists every message TicketCord sends on its own, and **Message designs** below it is the library, with a counter out of 25.
   </Step>
   <Step title="Create the design">
     Click **Create design**, enter a **Design name** such as `Support welcome`, and click **Create design** again. The designer opens with a starter message: `{ticketTitle}` as a heading, `{welcomeMessage}` under it, and the Claim, Pin, and Close buttons.
@@ -56,14 +56,14 @@ To change a design later, click **Edit** on its card in the library. **Duplicate
 ### Set the default for a ticket type
 
 <Steps>
-  <Step title="Pick the ticket type">
-    In **Ticket type defaults**, click the tab: **Button**, **Dropdown**, **Modal**, **Application**, or **ModMail**.
-  </Step>
-  <Step title="Turn on the custom message">
-    Switch on **Enable Custom Welcome Message**. While it is off, that ticket type sends the built-in TicketCord message, unless a button has a design of its own.
+  <Step title="Find the ticket type">
+    In **Automatic messages**, keep **When a ticket opens** selected at the top of the card, and find the row: **Button tickets**, **Dropdown tickets**, **Modal tickets**, **Application tickets**, or **ModMail tickets**.
   </Step>
   <Step title="Pick the design">
-    Under **Welcome message**, choose a design. **TicketCord default** keeps the built-in message. **Create new design…** creates a design and sets it as this type's default. **Edit design** opens the chosen design in the designer.
+    Choose a design in the row's picker. **TicketCord default** sends the built-in message, unless a button has a design of its own. **Create new design…** creates a design and sets it for this type.
+  </Step>
+  <Step title="Check the preview">
+    Click the row to open it. It shows a preview of what the type sends, including the built-in message when the type is on **TicketCord default**, and the type's extra options. **Edit design** opens the chosen design in the designer.
   </Step>
   <Step title="Save">
     Click **Save changes** on the save bar at the bottom of the page.
@@ -85,28 +85,27 @@ Open **Messaging → Panels & Embeds**, open the panel, and click the button or 
 
 When a ticket opens, TicketCord uses the first of these that applies:
 
-1. The design picked in **Welcome message** on the button, dropdown option, form, or application that opened the ticket. This applies even when the ticket type's **Enable Custom Welcome Message** switch is off.
-2. The ticket type's default on the **Messages** tab, when **Enable Custom Welcome Message** is on.
+1. The design picked in **Welcome message** on the button, dropdown option, form, or application that opened the ticket. This applies even when the ticket type is on **TicketCord default**.
+2. The design (or **Legacy message (classic editor)**) picked for the ticket type under **Automatic messages**.
 3. The built-in TicketCord welcome message.
 
 A design that no longer exists is skipped, and TicketCord moves down the list. If a design renders nothing at all, for example because every block held only an empty form answer, the ticket type's older message or the built-in message is sent instead.
 
 ## Settings
 
-### Ticket type defaults (Messages tab)
+### Automatic messages: when a ticket opens
 
 | Setting | Allowed values | Default |
 |---------|----------------|---------|
-| **Enable Custom Welcome Message** | on or off, per ticket type | off |
-| **Welcome message** | **TicketCord default**, or any design that is compatible with the ticket type. A type that still has a message from the old editor shows **Legacy message (classic editor)** instead of **TicketCord default**, with a **Convert to a design** button | **TicketCord default** |
-| **Show User Avatar** (ModMail tab) | on or off. Shows the member's avatar as a thumbnail beside the first text block | on |
-| **Include form answers** (Dropdown and Modal tabs), **Include application answers** (Application tab) | on or off. Only shown while the type sends a legacy classic message, and adds the answers under it. Designs ignore it | on |
-| **Enable Quick Replies** | on or off. Adds a dropdown of prepared answers to the welcome message. **Basic** or higher | off |
-| **Quick Replies Placement** | **Inside container** or **Outside container** | **Inside container** |
+| Design picker (one per ticket type row) | **TicketCord default**, or any design that is compatible with the ticket type. A type that still has a message from the old editor also offers **Legacy message (classic editor)**; open the row for a **Convert to a design** button | **TicketCord default** |
+| **Show User Avatar** (**ModMail tickets** row) | on or off. Shows the member's avatar as a thumbnail beside the first text block | on |
+| **Include form answers** (**Dropdown tickets** and **Modal tickets** rows), **Include application answers** (**Application tickets** row) | on or off. Only shown while the type sends a legacy message (classic or Components V2), and adds the answers the message does not already show. Designs and the built-in message ignore it | on |
+| **Self-help menu** | on or off. Adds a dropdown of prepared answers to the welcome message, including the built-in one. **Basic** or higher | off |
+| **Self-help menu placement** | **Inside container** or **Outside container**. Shown while the menu is on and the type sends a design | **Inside container** |
 | **Dropdown Placeholder Text** | up to 150 characters | `Select a common issue...` |
 | **Response Options** | up to 25, each with an **Option Label** (1 to 100 characters), an **Option Description** (up to 100), and a **Response Message** (1 to 2,000) | none |
 
-When a member picks a quick reply, the **Response Message** is shown only to them.
+When a member picks an answer from the self-help menu, the **Response Message** is shown only to them.
 
 ### Designer
 
@@ -176,7 +175,7 @@ The part after `form.` identifies the question itself, not its position or its l
     In **Panels & Embeds**, set a button or dropdown option's **When clicked** to **Form** or **Application**, add the questions, and save the panel.
   </Step>
   <Step title="Open the design">
-    On the **Messages** tab, click **Edit** on the design's card, or **Edit design** under the ticket type's picker.
+    On the **Messages** tab, click **Edit** on the design's card, or open the ticket type's row under **Automatic messages** and click **Edit design**.
   </Step>
   <Step title="Place the cursor">
     Click in the text block where the answer should go, for example right after `**Product:** `.
@@ -191,7 +190,7 @@ The part after `form.` identifies the question itself, not its position or its l
 
 Everywhere else on the dashboard, such as the design cards and the ticket type preview, form answer variables show the sample text `Form answer`.
 
-A form counts as using this design when the design is picked in its own **Welcome message**, or when the form has no design of its own and this design is the default on the **Modal** tab (or the **Application** tab, for applications) with **Enable Custom Welcome Message** on.
+A form counts as using this design when the design is picked in its own **Welcome message**, or when the form has no design of its own and this design is picked for **Modal tickets** (or **Application tickets**, for applications) under **Automatic messages**.
 
 ### What it shows
 
@@ -230,7 +229,7 @@ In the designer, form answer variables count as 1,000 characters toward the mess
 
 Form answer variables only have answers in tickets opened through a form or an application, which are the **Modal** and **Application** ticket types. A design that contains one cannot be used:
 
-- as the default for the **Button**, **Dropdown**, or **ModMail** tab,
+- as the design for **Button tickets**, **Dropdown tickets**, or **ModMail tickets**,
 - on a button or dropdown option whose **When clicked** is **Ticket**, or
 - as a close message.
 
@@ -251,7 +250,7 @@ The **Assistant** panel in the designer knows your server's forms and their ques
 
 1. The member opens a ticket. TicketCord picks the welcome message in the order described in [Which welcome message is sent](#which-welcome-message-is-sent).
 2. Variables are filled in. Form answers are made safe to display and shortened if they pass the 1,000-character budget.
-3. The welcome message is posted. Staff pings configured for the ticket appear above it, then your containers, the control buttons, the quick replies dropdown, and the **AI Help** button when [AI Help for Staff](/ai/atlas) is on. ModMail tickets also get **Alert**, **Subscribe**, and **Mute** buttons. On Free, a "Powered by TicketCord.com" line is added at the bottom.
+3. The welcome message is posted. Staff pings configured for the ticket appear above it, then your containers, the control buttons, the self-help menu, and the **AI Help** button when [AI Help for Staff](/ai/atlas) is on. ModMail tickets also get **Alert**, **Subscribe**, and **Mute** buttons. On Free, a "Powered by TicketCord.com" line is added at the bottom.
 4. TicketCord pins the welcome message, when the bot has permission to.
 5. For forms and applications, answers that were too long for the welcome message follow in full in **Form responses** or **Application responses** messages.
 6. Files from file upload questions are posted in the ticket after that.
@@ -277,12 +276,12 @@ If the finished message would pass Discord's 4,000-character limit, the longest 
 
 | Symptom | Cause | Fix |
 |---------|-------|-----|
-| The built-in message is sent instead of your design | **Enable Custom Welcome Message** is off for that ticket type, no design is picked, the change was not saved, or you set the design on the wrong tab | Turn the switch on, pick the design, and click **Save changes**. Forms use the **Modal** tab |
+| The built-in message is sent instead of your design | The ticket type is on **TicketCord default**, the change was not saved, or you picked the design on the wrong row | Pick the design on the right row and click **Save changes**. Forms use **Modal tickets** |
 | One button sends a different message than the rest | That button, option, form, or application has its own **Welcome message** | Set it to **Server default** in the panel designer |
 | A form answer variable is empty | The ticket came through a form without that question, the member skipped an optional question, the question was deleted, or it is an application from the old panel editor | Check the question is in that form (the designer preview shows `[Deleted question]` for deleted ones). Rebuild old applications in the panel designer |
 | An answer ends in `...` | The member's answers together passed 1,000 characters | Expected. The full answers are in the **Form responses** messages below the welcome message |
 | `{description}` shows "The full responses are posted below." | The labeled answers together passed 1,000 characters | Expected. The full answers are posted right below |
-| A design shows "(incompatible variables)" and cannot be picked | It uses variables that have no value for that ticket type, such as a form answer variable on the **Button** tab | Edit the design, or use a separate design there |
+| A design shows "(incompatible variables)" and cannot be picked | It uses variables that have no value for that ticket type, such as a form answer variable on **Button tickets** | Edit the design, or use a separate design there |
 | Saving the design fails with "cannot be used for … tickets because it contains: `{form.…}`" | The design is also used by a ticket type or close message that has no form answers | Duplicate the design and use the copy for the form, or stop using it in the other place first |
 | "All text combined can't exceed 4000 characters" after adding a form answer | Form answer variables count as 1,000 characters, more if one is repeated | Shorten other text, or avoid placing the same variable several times |
 | **Form answers** says "No forms in this server yet." | No panel has a form or application with questions | Add one in **Panels & Embeds**, save the panel, and reopen the designer |
@@ -313,10 +312,10 @@ All of a ticket's form answers share 1,000 characters in the welcome message. Wh
 No. Those tickets have no form answers, so the dashboard does not let you use a design with form answer variables there, or as a close message. Use a separate design for your forms.
 
 **How do I give one button its own welcome message?**
-In **Panels & Embeds**, click the button and pick a design in **Welcome message**. For a form or application, it is under **Routing**. It overrides the ticket type's default even when **Enable Custom Welcome Message** is off.
+In **Panels & Embeds**, click the button and pick a design in **Welcome message**. For a form or application, it is under **Routing**. It overrides the ticket type's choice, even when that is **TicketCord default**.
 
 **Do I need a paid plan for custom welcome messages?**
-No. Designs work on every plan. Free adds a "Powered by TicketCord.com" line, the quick replies dropdown and applications need Basic or higher, and custom footer text needs Enterprise.
+No. Designs work on every plan. Free adds a "Powered by TicketCord.com" line, the self-help menu and applications need Basic or higher, and custom footer text needs Enterprise.
 
 <Card title="Need help?" icon="headset" href="https://ticketcord.com/discord">
   Join our Discord server for support
