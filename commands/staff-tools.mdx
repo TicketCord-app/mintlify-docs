@@ -117,9 +117,9 @@ Send a canned response by its shortcut.
 
 **Plan:** Basic or higher. Basic and Pro can use up to 25 canned responses (the first 25 by creation date); Enterprise has no limit.
 
-**What happens:** the saved response is posted in the ticket. `{{user}}` is replaced with the creator's mention and `{{ticketNumber}}` with the ticket number; the older `{user}` and `{ticketNumber}` forms still work.
+**What happens:** the saved response is posted in the ticket with its variables filled in, for example `{user}` becomes the creator's mention and `{ticket.number}` (or `{ticketNumber}`) becomes the ticket number such as `#0042`. Variables use single braces; double braces such as `{{user}}` do not work. See [Canned Responses](/configuration/canned-responses) for every variable.
 
-Create responses in the dashboard under **Canned Responses**, each with a shortcut and content.
+Create responses in the dashboard under **Quick Replies**, each with a name, a shortcut, and content.
 
 **Errors:** TC014 (Free plan, or the response is beyond your plan's limit), TC004 (no response with that shortcut), TC002 (not staff).
 

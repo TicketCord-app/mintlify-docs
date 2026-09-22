@@ -45,7 +45,7 @@ Old tickets stay wherever the old bot stored them. Export them from the old bot 
 
   <Step title="Recreate panels (Messaging)">
     - **Panels & Embeds**: build one embed per old panel. Add a button per old ticket type, or a dropdown if the old panel used a select menu. If the old bot collected answers in a form before opening the ticket, attach a form to the button; multi-step application forms need Basic or higher. Post each embed to its channel with the dashboard **Post** button or `/embed <name> [channel]`.
-    - **Messages**: recreate the message users see when a ticket opens. Welcome messages are designs you can reuse across buttons. Per-button welcome messages let each ticket type have its own text.
+    - **Messages**: recreate the message users see when a ticket opens. Welcome messages are reusable designs: set one as the default for each ticket type, and pick a different design on any button, dropdown option, form, or application that needs its own text. See [Welcome Messages](/configuration/welcome-messages).
     - **Quick Replies**: add each of the old bot's snippets or canned replies with the same shortcut so staff keep their muscle memory. Staff send them with `/reply <shortcut>`. Basic and Pro allow 25, Enterprise unlimited.
 
     Plan limits for saved embeds: Free 1, Basic and Pro 5, Enterprise 15. If you are consolidating several old panels, count them first.
@@ -54,7 +54,7 @@ Old tickets stay wherever the old bot stored them. Export them from the old bot 
   <Step title="Recreate the ticket lifecycle (Ticket Lifecycle)">
     - **Opening**: how new tickets open, archiving behaviour, and the per-user open-ticket limit under **Ticket Limits Per User** (fixed at 5 on Free, configurable on Basic and higher).
     - **Claiming**: whether staff claim tickets and what claiming changes.
-    - **Closing**: the close confirmation and the DM sent to the user on close. Custom close messages are Basic and higher.
+    - **Closing**: the close confirmation and whether the user gets a DM when their ticket closes. The text of the close notice and the close DM is a design you pick on **Messages** under **When a ticket closes** (Basic and higher).
     - **Auto-Close & Reminders**: the inactivity timer (`/auto-close 2H`, `1D`, and so on; minimum 15 minutes, maximum 30 days) and the reminders sent before closing. Basic and higher.
     - **Feedback**: rating prompt after close, if the old bot had one.
     - **Tags**: recreate any categories or labels staff used to sort tickets; staff apply them with `/tag`.
@@ -97,7 +97,7 @@ Old tickets stay wherever the old bot stored them. Export them from the old bot 
 | Snippets / canned replies / macros | **Quick Replies** | Same shortcuts, `/reply` |
 | Per-user open-ticket limit, archiving | **Opening** | Free is fixed at 5 open tickets per user |
 | Claim settings | **Claiming** | |
-| Close confirmation, close DM | **Closing** | |
+| Close confirmation, close DM | **Closing** | The close notice and close DM text are designs picked on **Messages** (Basic and higher) |
 | Inactivity auto-close | **Auto-Close & Reminders** | Basic and higher |
 | Rating / feedback prompt | **Feedback** | |
 | Ticket categories or labels | **Tags** | |
