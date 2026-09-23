@@ -91,6 +91,7 @@ On Free the open-ticket limit is always 5 per user, whatever the server configur
 | Knowledge base sources | 0 | 0 | 2 | 15 |
 | Pages crawled per website source | 0 | 0 | 100 | 500 |
 | Atlas AI assistant (dashboard) | No | No | Yes | Yes |
+| Design **Assistant** in the panel and welcome message designers | No | No | Yes | Yes |
 | AI Help for staff (`/ai-help`) and AI summaries (`/summary`) | No | No | Yes | Yes |
 | Priority detection | No | No | Yes | Yes |
 | Duplicate detection | No | No | Yes | Yes |
@@ -135,7 +136,9 @@ When you run low:
 - **Dashboard → Usage → Extra Tokens** sells one-time packages to Pro and Enterprise accounts: 10M for €4.99, 20M for €8.99, and 50M for €21.99. Extra tokens never expire, carry over between billing cycles, and are only spent after the monthly allocation is used up.
 - Enterprise triples the monthly allocation compared with Pro.
 
-When tokens run out, AI features pause until the next reset or until you add tokens. Everything that does not use AI keeps working: ticket creation, staff tools, transcripts, automation. In a ticket the bot hands the conversation to staff ("I'm connecting you with a team member who can continue helping you") and staff see a notice that the AI token quota has been reached. On the signup trial the same happens when the 1,000,000-token trial allowance is used up.
+The design **Assistant** in the dashboard (the chat beside the panel and welcome message designers, the off-hours message, and knowledge base Q&A) also spends tokens. Every reply is charged to the bot owner's tokens, including replies a staff member with dashboard access asks for. On the signup trial it draws from the 1,000,000-token trial allowance, and the sidebar's token count goes down as each reply is built.
+
+When tokens run out, AI features pause until the next reset or until you add tokens. The design **Assistant** stops taking requests and says the tokens are used up; the bot owner gets a **Get more tokens** button that opens **Dashboard → Usage**. Everything that does not use AI keeps working: ticket creation, staff tools, transcripts, automation. In a ticket the bot hands the conversation to staff ("I'm connecting you with a team member who can continue helping you") and staff see a notice that the AI token quota has been reached. On the signup trial the same happens when the 1,000,000-token trial allowance is used up.
 
 <Note>
   Basic includes no AI tokens and cannot buy token packages. If you want AI, choose Pro or Enterprise.

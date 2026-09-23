@@ -39,7 +39,7 @@ Each way of opening a ticket belongs to one ticket type, which is a row under **
     Click **Create design**, enter a **Design name** such as `Support welcome`, and click **Create design** again. The designer opens with a starter message: `{ticketTitle}` as a heading, `{welcomeMessage}` under it, and the Claim, Pin, and Close buttons.
   </Step>
   <Step title="Build the message">
-    In the preview, add **text**, **separator**, **gallery**, and **section** blocks to up to three containers. A section is text with a thumbnail image beside it. Each container has an **Accent color** picker and **Container settings** with its **Allowed mentions**. The last container's settings also hold the **Footer**. Above the preview, **Control Buttons** chooses which buttons the message carries and whether they sit **Inside container** or **Outside container**. You can also describe the message you want in the **Assistant** panel and let it build the design for you.
+    In the preview, add **text**, **separator**, **gallery**, and **section** blocks to up to three containers. A section is text with a thumbnail image beside it. Each container has an **Accent color** picker and **Container settings** with its **Allowed mentions**. The last container's settings also hold the **Footer**. Above the preview, **Control Buttons** chooses which buttons the message carries and whether they sit **Inside container** or **Outside container**. On Pro and Enterprise you can also describe the message you want in the **Assistant** panel and let it build the design for you.
   </Step>
   <Step title="Add variables">
     Click inside a text block where the value should go, open **Variables**, and pick one. It is inserted at the cursor. With no text block selected, it is copied instead. The preview shows sample values, while the saved message keeps the variable.
@@ -243,6 +243,10 @@ Pickers show such a design as "name (incompatible variables)" and do not let you
 Applications made in the old panel editor do not support form answer variables: they are not listed under **Form answers**, and their variables are always empty. Rebuild the application in the panel designer by setting **When clicked** to **Application**.
 
 ### Using the assistant
+
+<Info>
+  The **Assistant** needs **Pro** or **Enterprise** on the bot owner's account, including the free trial. Each reply uses the bot owner's AI tokens, also when a staff member asks. On other plans the panel shows an upgrade notice instead of the chat. See [AI tokens](/billing/plans#ai-tokens).
+</Info>
 
 The **Assistant** panel in the designer knows your server's forms and their questions, and prefers the forms that use this design. Ask it, for example, to "show the Product answer under a heading" and it inserts the matching form answer variable.
 
