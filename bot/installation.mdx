@@ -30,6 +30,10 @@ TicketCord runs your own Discord bot: you create the application in Discord's De
     <Frame>
       <img src="/images/PublicBot.png" alt="Disable public bot setting" />
     </Frame>
+
+    If Discord refuses with "Private application cannot have a default authorization link", open the **Installation** tab, set **Install Link** to **None**, save, and switch **Public Bot** off again. TicketCord builds its own invite link, so the default one is not needed.
+
+    Leave **Requires OAuth2 Code Grant** off. When it is on, Discord blocks the invite with "Integration requires code grant".
   </Step>
 
   <Step title="Enable the two privileged intents">
@@ -117,6 +121,8 @@ The invite does not ask for Administrator, Manage Server, or any moderation perm
 | Symptom | Cause | Fix |
 |---------|-------|-----|
 | Validation fails with 4014 / disallowed intent | Server Members Intent or Message Content Intent is off | Enable both on the **Bot** tab, then validate again |
+| The invite fails with "Integration requires code grant" | **Requires OAuth2 Code Grant** is on for your application | Open the **Bot** tab in the Developer Portal, switch **Requires OAuth2 Code Grant** off, save, and invite the bot again from the dashboard |
+| "Private application cannot have a default authorization link" when you turn off Public Bot | The **Installation** tab still has a default install link | Set **Install Link** to **None** on the **Installation** tab, save, then switch **Public Bot** off |
 | Bot shows offline after you reset the token | The old token no longer works | Open the bot in the dashboard, click **Update Credentials**, paste the new token. The bot restarts on its own |
 | Bot is online but slash commands do not appear | The invite lacked the `applications.commands` scope | Kick the bot and invite it again from the dashboard, then reload Discord (Ctrl+R / Cmd+R) |
 | Replies arrive without a `TC` code footer | Something else is running the same token | Stop the other program, reset the token, and update it in the dashboard |
@@ -124,6 +130,9 @@ The invite does not ask for Administrator, Manage Server, or any moderation perm
 | "TicketCord isn't a member of this server" (TC004) | The bot was kicked | Invite it again from the dashboard |
 
 ## Common questions
+
+**Why does Discord say "Integration requires code grant" when I invite my bot?**
+The application has **Requires OAuth2 Code Grant** switched on in the Discord Developer Portal. TicketCord invites the bot with a standard bot invite, which Discord rejects while that setting is on. Open the **Bot** tab, switch **Requires OAuth2 Code Grant** off, save, and invite the bot again from the dashboard.
 
 **Can I use an existing bot application?**
 Yes. Paste its token. Make sure Public Bot is off and both privileged intents are on, and invite it from the dashboard so the permissions are right.
