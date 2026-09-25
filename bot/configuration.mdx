@@ -99,6 +99,8 @@ Other groups cover **Messaging** (welcome messages, quick replies), **AI & Knowl
 3. The welcome message is posted, staff are pinged if configured, and the logs channel records the event.
 4. Staff work the ticket with the [commands](/commands/overview). When it closes, the channel is renamed `closed-XXXX` and moved (or deleted), the transcript is posted, the creator is DMed, and feedback is requested if enabled.
 
+With threaded tickets, the bot opens a thread instead of a channel. Discord only shows a private thread to people who are in it, so the bot adds the creator and every member with a staff role, or with one of the button's **Allowed Staff Roles** when the button sets them. Members who are given one of those roles while the ticket is open are added automatically. If business hours are on and staff are on call (`/on-call`), only on-call staff are added, and later role changes add nobody.
+
 ## Quick changes from Discord
 
 `/config` opens a panel where administrators and staff can change staff roles, the transcript and logs channels, and ticket categories, and toggle auto-close, DM on close, and auto-delete without opening the dashboard. Everything else is dashboard-only.
