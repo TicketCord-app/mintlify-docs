@@ -1,37 +1,65 @@
-# TicketCord Documentation
+<p align="center">
+  <a href="https://ticketcord.com">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="logo-dark.svg">
+      <img src="logo-light.svg" alt="TicketCord" width="260">
+    </picture>
+  </a>
+</p>
 
-Official documentation for [TicketCord](https://ticketcord.net) — the AI-powered Discord ticket bot platform.
+<h3 align="center">An AI Discord ticket bot that drafts in your team's voice.</h3>
 
-## What is TicketCord?
+<p align="center">
+  <a href="https://docs.ticketcord.com"><strong>Read the docs</strong></a> ·
+  <a href="https://ticketcord.com">Website</a> ·
+  <a href="https://ticketcord.com/pricing">Pricing</a> ·
+  <a href="https://ticketcord.com/discord">Discord</a> ·
+  <a href="https://status.ticketcord.net">Status</a>
+</p>
 
-TicketCord is a Discord ticket management platform that lets communities run fully customizable support systems with their own bots. Features include AI-powered auto-routing, knowledge base suggestions, custom ticket forms, web dashboard, analytics, and more.
+<br>
 
-- **Website:** [ticketcord.net](https://ticketcord.net)
-- **Dashboard:** [ticketcord.net/dashboard](https://ticketcord.net/dashboard)
-- **Support:** [ticketcord.net/discord](https://ticketcord.net/discord)
+TicketCord runs a Discord ticket bot under your own application, so members see your bot's name and avatar, not ours. You set it up from a web dashboard, your staff work tickets in Discord or in the web inbox, and AI answers common questions from your knowledge base, handing off to a person when it matters.
 
-## Documentation
+Every new account starts with a 14-day Enterprise trial. No card needed.
 
-This repo powers the [TicketCord documentation site](https://docs.ticketcord.net) built with [Mintlify](https://mintlify.com). Topics covered:
+## Where to start
 
-- **Getting Started** — Quick start guide and bot setup
-- **Dashboard** — Ticket management, bot management, analytics
-- **Commands** — 20+ Discord slash commands
-- **AI Features** — Knowledge base, auto-routing, priority detection, translation, sentiment analysis, Atlas AI
-- **Configuration** — Approval workflows, SLA management, escalation rules, business hours
-- **Integrations** — Webhooks for external systems
-- **Billing** — Plans, subscriptions, and trials
+| If you want to | Go to |
+| --- | --- |
+| Get a ticket panel running in about ten minutes | [Quick Start](https://docs.ticketcord.com/quickstart) |
+| Create the Discord application and invite the bot | [Installation](https://docs.ticketcord.com/bot/installation) |
+| Look up a slash command | [Commands](https://docs.ticketcord.com/commands/overview) (all 30, plus the Find ticket context menu) |
+| Teach the AI your answers | [Knowledge Base](https://docs.ticketcord.com/ai/knowledge-base) |
+| Fix an error code like `TC004` | [Troubleshooting](https://docs.ticketcord.com/bot/troubleshooting) |
+| Compare plans or change yours | [Plans](https://docs.ticketcord.com/billing/plans) · [Manage Subscription](https://docs.ticketcord.com/billing/manage-subscription) |
+| Move over from another ticket bot | [Migration](https://docs.ticketcord.com/support/migration) |
 
-## Links
+## What the docs cover
 
-| Resource | URL |
-|----------|-----|
-| Website | [ticketcord.net](https://ticketcord.net) |
-| Documentation | [docs.ticketcord.net](https://docs.ticketcord.net) |
-| Discord | [ticketcord.net/discord](https://ticketcord.net/discord) |
-| Status | [status.ticketcord.net](https://ticketcord.net/status) |
-| Product Hunt | [producthunt.com/products/ticketcord](https://www.producthunt.com/products/ticketcord) |
+- **Getting started:** setup, the dashboard, and running the bot in your server
+- **Commands:** every slash command with its options, permissions, and errors
+- **AI:** knowledge base, auto-routing, priority and duplicate detection, translation, and connecting Claude Code or Codex
+- **Workflows:** approvals, SLAs, escalation rules, business hours, canned responses, welcome messages
+- **Integrations and billing:** webhooks, plans, trials, invoices
 
-## License
+## Domains
 
-Copyright © 2026 TicketCord. All rights reserved.
+TicketCord lives at [ticketcord.com](https://ticketcord.com) and these docs at [docs.ticketcord.com](https://docs.ticketcord.com). The original [ticketcord.net](https://ticketcord.net) and docs.ticketcord.net addresses still work and redirect there.
+
+## Contributing
+
+This repository is the source of [docs.ticketcord.com](https://docs.ticketcord.com), built with [Mintlify](https://mintlify.com). Pushes to `main` publish automatically.
+
+```bash
+npx mint dev            # preview at http://localhost:3000
+npx mint broken-links   # run before opening a pull request
+```
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before writing. Every page has to match what TicketCord does in production today.
+
+## Help
+
+Questions or problems: join the [Discord](https://ticketcord.com/discord) or email [hi@ticketcord.com](mailto:hi@ticketcord.com).
+
+<sub>Copyright © 2026 TicketCord. All rights reserved.</sub>
