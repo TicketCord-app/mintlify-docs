@@ -7,7 +7,7 @@
   </picture>
 </a>
 
-<h2>📦 The docs have moved to <a href="https://ticketcord.com/docs">ticketcord.com/docs</a></h2>
+<h2>The docs have moved to <a href="https://ticketcord.com/docs">ticketcord.com/docs</a></h2>
 
 <p>This repository is retired. Every page now lives on the TicketCord site,<br>with search, Ask AI, and a Markdown copy of each page for AI tools.</p>
 
@@ -36,10 +36,10 @@
 
 [TicketCord](https://ticketcord.com) is a white-label Discord ticket bot with AI support. It runs under **your own Discord application**, so members see your bot's name and avatar, not ours.
 
-- 🎫 **Set up from a web dashboard:** panels, forms, and welcome messages without touching config files.
-- 💬 **Work tickets anywhere:** staff reply in Discord or in the web inbox.
-- ✨ **AI that knows your product:** answers common questions from your knowledge base and hands off to a person when it matters.
-- 🎁 **Try everything:** every new account starts with a 14-day Enterprise trial, no card needed.
+- **Set up from a web dashboard:** panels, forms, and welcome messages without touching config files.
+- **Work tickets anywhere:** staff reply in Discord or in the web inbox.
+- **AI that knows your product:** answers common questions from your knowledge base and hands off to a person when it matters.
+- **Try everything:** every new account starts with a 14-day Enterprise trial, no card needed.
 
 ## Where to start
 
@@ -55,14 +55,14 @@
 
 ## Every page
 
-### 🚀 Getting Started
+### Getting Started
 
 | Page | What it covers |
 | :-- | :-- |
 | [**Welcome to TicketCord**](https://ticketcord.com/docs) | Documentation for TicketCord, the white-label Discord ticket bot with AI support, a web dashboard, and enterprise workflows |
 | [**Quick Start**](https://ticketcord.com/docs/quickstart) | From an empty Developer Portal to a working ticket panel in about ten minutes |
 
-### 🖥️ Dashboard
+### Dashboard
 
 | Page | What it covers |
 | :-- | :-- |
@@ -72,7 +72,7 @@
 | [**Analytics & Reports**](https://ticketcord.com/docs/dashboard/analytics) | Read the analytics page: what each number measures, how it is calculated, and where to find staff, SLA, and sentiment views |
 | [**Account Settings**](https://ticketcord.com/docs/dashboard/settings) | Where to change the dashboard theme and language, manage billing, and exercise your data rights |
 
-### 🤖 Bot
+### Bot
 
 | Page | What it covers |
 | :-- | :-- |
@@ -81,7 +81,7 @@
 | [**Configuration**](https://ticketcord.com/docs/bot/configuration) | Turn a freshly invited bot into a working ticket system: run /setup, save the essentials in the dashboard, post a panel, and tune automation |
 | [**Troubleshooting**](https://ticketcord.com/docs/bot/troubleshooting) | Every TC error code with the situations that produce it and the fix, plus the most common bot problems |
 
-### ⌨️ Commands
+### Commands
 
 | Page | What it covers |
 | :-- | :-- |
@@ -91,7 +91,7 @@
 | [**Administration**](https://ticketcord.com/docs/commands/admin) | Commands for server setup, posting ticket panels, in-Discord configuration, diagnostics, auto-close, approvals, and bulk deletion |
 | [**Utility Commands**](https://ticketcord.com/docs/commands/utility) | Help, on-call availability, user ticket lookup, and ticket feedback |
 
-### ⚙️ Configuration
+### Configuration
 
 | Page | What it covers |
 | :-- | :-- |
@@ -102,7 +102,7 @@
 | [**Canned Responses**](https://ticketcord.com/docs/configuration/canned-responses) | Write reusable reply templates with variables and send them in any ticket with /reply |
 | [**Welcome Messages**](https://ticketcord.com/docs/configuration/welcome-messages) | Design the message TicketCord posts when a ticket opens, choose which tickets use it, and place individual form answers exactly where you want them |
 
-### ✨ AI Features
+### AI Features
 
 | Page | What it covers |
 | :-- | :-- |
@@ -119,7 +119,7 @@
 | [**Tone Detection**](https://ticketcord.com/docs/ai/sentiment-detection) | Set up Tone Detection so a role is pinged when a customer sounds angry, frustrated, upset, or confused, and understand the Enterprise sentiment journey |
 | [**Atlas AI**](https://ticketcord.com/docs/ai/atlas) | What Atlas is, where it appears in Discord and the dashboard, what it can and cannot do, and the current status of the dashboard assistant |
 
-### 🧩 Features
+### Features
 
 | Page | What it covers |
 | :-- | :-- |
@@ -130,13 +130,13 @@
 | [**Auto-Close on User Leave**](https://ticketcord.com/docs/features/user-leave-closure) | Close a member's open tickets automatically when they leave, are kicked, or are banned |
 | [**Data Export**](https://ticketcord.com/docs/features/gdpr-export) | Request a copy of your TicketCord data, what the export contains, and how long it takes |
 
-### 🔌 Integrations
+### Integrations
 
 | Page | What it covers |
 | :-- | :-- |
 | [**Webhooks**](https://ticketcord.com/docs/integrations/webhooks) | Receive signed HTTP notifications for 23 ticket events and connect TicketCord to Zapier, Make, Slack, or your own service |
 
-### 💳 Billing
+### Billing
 
 | Page | What it covers |
 | :-- | :-- |
@@ -145,7 +145,7 @@
 | [**Free Trial**](https://ticketcord.com/docs/billing/trials) | Every new account starts with 14 days of Enterprise, no card required: what is included, what is capped, and what happens when it ends |
 | [**Invoices & Payment History**](https://ticketcord.com/docs/billing/invoices) | Where to find every payment, download invoices, update your card and billing details, and what to do when a payment fails |
 
-### 🛟 Support
+### Support
 
 | Page | What it covers |
 | :-- | :-- |
