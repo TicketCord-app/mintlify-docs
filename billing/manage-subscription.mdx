@@ -29,7 +29,7 @@ Banners appear above the tiles when relevant: "Your Enterprise trial is active" 
     In **Plans & Pricing** leave **Card** selected, pick **Monthly** or **Yearly** (yearly is about 17% cheaper), and click **Upgrade to Basic**, **Upgrade to Pro**, or **Upgrade to Enterprise**.
   </Step>
   <Step title="Complete Your Purchase">
-    A consent dialog opens showing the plan and price ("You will be charged €X for the month/year. Your subscription will automatically renew until cancelled."). Tick both boxes, which start unticked:
+    A consent dialog opens showing the plan and price ("You will be charged €X for the month/year. Your subscription will automatically renew until cancelled."). If you already have a card subscription on a lower plan, the dialog shows the exact amount charged today instead ("You will be charged €X today for Pro until 7 September 2027, after a credit for any unused time on your current plan. After that, your subscription renews at €Y per year until cancelled."). Tick both boxes, which start unticked:
 
     - **I want immediate access to my subscription features**
     - **I agree to the Right to Withdrawal waiver** ("You understand that services begin upon purchase, and you waive your Right to Withdrawal once those services begin.")
@@ -37,7 +37,9 @@ Banners appear above the tiles when relevant: "Your Enterprise trial is active" 
     Click **Continue**. By continuing you also agree to the Paid Services Terms. A confirmation email is sent after purchase.
   </Step>
   <Step title="Pay">
-    If you have no active subscription, you are sent to Stripe Checkout to pay by card or Link. The checkout page has a field for a promotion code. If you already have an active card subscription on a lower plan, there is no checkout: the plan is changed on your existing subscription right away, with credit for the unused part of the old plan and a charge for the difference, and your billing date stays the same.
+    If you have no active subscription, you are sent to Stripe Checkout to pay by card or Link. The checkout page has a field for a promotion code.
+
+    If you already have an active card subscription on a lower plan, there is no checkout. The amount shown in the dialog is charged to your saved payment method right away: the new plan for the rest of your billing period, minus a credit for the unused part of the old plan. The plan changes only once that payment succeeds. If it is declined, nothing changes and nothing is charged; update your payment method in **Manage Subscription** and try again. Your renewal date does not move. Going from monthly to yearly, the yearly period counts from the start of your current billing period, so the first charge covers the time until that period's anniversary. If the price changes before you confirm, the dialog shows the new amount and asks you to tick both boxes again.
   </Step>
   <Step title="Confirmation">
     You are returned to Billing with "Subscription activated!". The new plan is live immediately; the **Current Plan** card updates and any bots that were **Plan Limited** can be started from **Bots**.
@@ -50,7 +52,16 @@ Banners appear above the tiles when relevant: "Your Enterprise trial is active" 
 
 ## Downgrade to a lower paid plan
 
-Downgrades are not done from the plan cards directly. When you are on a card subscription, the card for a lower plan shows **Downgrade to Basic** (or Pro). Clicking it opens the Stripe billing portal, the same place **Manage Subscription** leads to. In the portal choose the lower plan.
+When you are on a card subscription, the card for a lower plan shows **Downgrade to Basic** (or Pro). Pick **Monthly** or **Yearly** first, then click it. A **Switch to Basic** dialog explains the change; click **Schedule change** to confirm.
+
+- The change takes effect at the end of the billing period you have already paid for. Until then you keep your current plan and all of its features.
+- Nothing is charged, refunded, or credited when you schedule it. From that date the subscription renews at the lower plan's price.
+- The **Current Plan** card shows "Plan change scheduled" with the date. Click **Keep Pro** (the button names your current plan) to undo it before then.
+- Choosing a different lower plan before that date replaces the scheduled one.
+- A downgrade cannot be scheduled during a trial, while the subscription is set to cancel, or while a payment is past due.
+- To upgrade or cancel while a downgrade is scheduled, click **Keep …** first.
+
+Moving to Free is a cancellation: the **Free** card opens the Stripe billing portal (see [Cancel](#cancel)).
 
 What changes when the downgrade takes effect is listed under [What happens when you downgrade](/billing/plans#what-happens-when-you-downgrade-or-a-plan-ends): bots above the new limit stop with the status **Plan Limited** (oldest bots stay running), features the new plan does not include are switched off but keep their settings, and nothing is deleted.
 
@@ -58,7 +69,7 @@ What changes when the downgrade takes effect is listed under [What happens when 
 
 <Steps>
   <Step title="Open the portal">
-    On the **Current Plan** card click **Manage Subscription**. This opens the Stripe billing portal for your account.
+    On the **Current Plan** card click **Manage Subscription**. This opens the Stripe billing portal for your account. If a downgrade is scheduled, click **Keep …** on the card first; the portal cannot cancel a subscription while a plan change is scheduled.
   </Step>
   <Step title="Cancel the plan">
     Choose to cancel the subscription and confirm.
